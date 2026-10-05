@@ -1,0 +1,302 @@
+# Hébé — Contexte du projet (à donner en début de conversation)
+
+App web (PWA) de batch cooking pour 1 personne : elle génère une semaine de repas calibrés sur des objectifs nutritionnels, guide les sessions de cuisine et produit la liste de courses. Hébergée sur GitHub Pages, données stockées dans le navigateur (localStorage).
+
+## Profil et contraintes
+- Utilisateur principal : Pierre, homme, 24 ans, 185 cm, 97 kg, 20 % de masse grasse. L'app doit aussi convenir aux femmes (calculs, textes accordés, guide de masse grasse).
+- Méthode « Zero to Hero » adaptée : métabolisme = moyenne Harris-Benedict (formule homme du tableur, ou version révisée femme) et Katch-McArdle ; maintenance = métabolisme × activité (4 niveaux : 1,35 / 1,5 / 1,65 / 1,8) ; protéines = moyenne (1,5 g/kg, 2 g/kg de masse maigre) ; lipides = 1,2 g/kg de masse maigre, jamais sous 25 % des calories (femme) ou 20 % (homme) ; glucides = le reste.
+- 4 programmes en pourcentage de la maintenance : P1 0 / +5 / +10 %, P2 −10 %, P3 −10 / −15 %, P4 −10 / −15 / −20 %. Plancher : jamais sous le métabolisme de base, ni sous 1 200 kcal (femme) ou 1 500 kcal (homme).
+- Matériel : **une poêle, un air fryer, un autocuiseur**. Pas de four, pas de wok, pas de casserole. Mixeur seulement pour 3 collations (lassi, bowl açaí, shake café).
+- Une seule session de batch par semaine, le dimanche, pour toute la semaine (v127). Lundi à mercredi : boîtes au frigo ; jeudi à dimanche : boîtes congelées, décongelées la veille au frigo (rappel « Ce soir » sur la carte du jour). Budget visé ~60 €/semaine (le moteur écarte les semaines > 70 €), mais **aucun prix n'est affiché**.
+
+## Architecture
+- `data/` : `household.js` (le foyer : une fiche par personne, migration de l'ancien profil, accord des textes avec `[masculin|féminin]`), `ingredients.js` (base d'ingrédients : macros, bornes, formats magasin, unités naturelles), `recipes.js` (**généré, ne pas modifier à la main**), `calculator.js` (programmes), `user.js`, `log.js`, `prefs.js` (notes 👍/👎), `photos.js`, `migrate.js`.
+- `js/` : `optimizer.js` (calibrage des portions), `weekgen.js` (génération de semaine, remplacement de plat, imprévu, recalcul), vues `week.js`, `cook.js`, `shopping.js`, `recipes.js`, `recipeDetail.js`, `settings.js` (« Mon programme »), `welcome.js` (accueil au premier lancement), `profileUi.js` (composants communs à l'accueil et à Mon programme), `bodyfat.js` (guides homme et femme).
+- `build.js` assemble `js/app.js`. Après chaque modification : `node build.js` et **incrémenter `hebe-vXX` dans `sw.js`** (actuellement hebe-v194).
+- `outils/recettes/` : sources des recettes + `generer.js` (noms courts, astuces, étapes rédigées). `outils/tests/` : `precision.js`, `macros.js`, `feculents.js`, `parcours.py` (navigateur, foyer de deux déjà renseigné, avec et sans autocuiseur). Voir `outils/README.md`.
+- L'utilisateur met à jour GitHub **à la main par le site web** (pas de terminal) : toujours lister les fichiers modifiés.
+- Mise à jour automatique (v128) : à chaque ouverture, l'app vérifie s'il y a une nouvelle version et se recharge seule une fois installée (`js/main.js`). Ne jamais conseiller « Effacer les données du site » : cela supprime le profil et la semaine (localStorage).
+
+## Règles du moteur (validées)
+- Plats ≈ 40 % des calories du jour chacun ; seule la protéine principale varie ; meat/fish ≤ 350 g ; **toute la viande achetée est utilisée** : le total tombe toujours sur des barquettes entières, en combinant les formats vendus (`packs`, ex. 500 g et 250 g pour le poulet et le bœuf, 250 g et 125 g pour le saumon), puis le reste de chaque assiette (féculent, protéine secondaire) est recalculé pour rester dans la cible.
+- Minimums proportionnels : les minimums de féculent et de protéine sont pensés pour une assiette de 1 140 kcal et diminuent en proportion (jusqu'à 50 %). Pour les petits besoins, les plats trop copieux même au minimum sont écartés.
+- Féculent principal d'un plat ≥ ~230 g cuit (riz 90 g cru, pâtes/orzo/nouilles/lentilles 100 g, semoule 105 g, boulgour 95 g, quinoa 85 g, pdt/patate douce 300 g), max ~440 g cuit. Riz au lait (collation) ≤ 60 g.
+- Unités naturelles, arrondies à l'entier : pain et blanc de poulet en tranches (40 g), cheddar (20 g), carré frais en carrés (25 g, boîte de 8), wraps (60 g), pitas (70 g), pain burger.
+- Chaque jour (v187) : d'abord une collation (2 options qui changent chaque jour, s'il reste au moins 200 kcal), puis le meilleur complément (tartines, fruit, amandes, fromage blanc-cacahuète), puis rattrapage en deux passes. La tartine n'est plus prioritaire (Pierre : « tartine miel toutes les semaines »). Lipides : le manque pèse presque autant que le manque de protéines.
+- Jamais d'accompagnement qui répète un féculent du plat. Poisson frais seulement en session 1.
+- Résultats actuels : 98 à 100 % des jours à ±7 % des calories pour tous les profils testés (Pierre 2 838 kcal, 2 300, 1 800, femme 1 642, petit gabarit 1 253).
+
+## Whey (v120)
+Question « As-tu de la whey ? » par personne. Sans whey (v125) : chaque collation et chaque petit-déjeuner qui contient de la whey a sa version où seule la whey change (identifiant + « S », ex. K01S, B01S, B13S) : on augmente le laitage déjà présent (skyr, fromage blanc, yaourt grec), sinon on ajoute du skyr ; whey simplement retirée pour K08 et K11. Photo de la recette d'origine via le champ `photo`. B11 supprimé (doublon de B01S). Test : `outils/tests/preferences.js`.
+
+## Semaine en une session, congélation, repas libres (v127)
+- Une session le dimanche. Conservation : 3 jours au frigo (`FRIDGE_DAYS`), au-delà la boîte est marquée `frozen` (congélateur). Poisson et fruits de mer : lundi ou mardi. Plats qui ne se congèlent pas bien (`FRESH_ONLY` : W02, W04, W09, W10, W11, W13, W15, W19, W27) : dans les 3 premiers jours. Au plus un plat de chaque catégorie par semaine ; 4 plats en général.
+- Cuisiner : rangement plat par plat (frigo ou congélateur, avec les jours), éléments à garder à part pour les boîtes congelées (tomate, concombre, salade, avocat, herbes, yaourt), plats à manger en premier.
+- Petits-déjeuners préparés à l'avance : seulement tant qu'ils se gardent (âge depuis le dimanche) ; ensuite, petit-déjeuner minute. Collation préparée à l'avance : seulement les energy balls (une semaine).
+- Repas libres (remplacent la cantine) : n'importe quel midi ou soir, par personne (`free: ['0-lunch', …]`). Pseudo-recette L01 : part de la journée réservée (tranches de 100 kcal), ni cuisinée ni achetée. Calories réservées choisies par personne (`freeKcal` : léger 600, normal 900, copieux 1 200, ou 0 = part habituelle d'un plat) (v129).
+- Accompagnements retirés (SA01 à SA12, S01 à S04 : `retired`) : les plats sont complets.
+
+## Profil modifié en cours de semaine (v119)
+Si les besoins ou la formule d'une personne changent après la génération, la Semaine affiche un message. Besoins modifiés : « Recalculer les portions » (mêmes plats, portions recalculées à partir d'aujourd'hui, barquettes entières en comptant la viande déjà mangée, collations recalées sans report des jours passés) ou « Nouvelle semaine ». Formule modifiée : nouvelle semaine nécessaire. Petit-déjeuner ou whey modifiés (v122) : « Mettre à jour la semaine » remplace seulement les petits-déjeuners et les collations à partir d'aujourd'hui (plats du midi et du soir inchangés).
+
+## Fonctions existantes
+Semaine (une grande carte par jour, jours passés repliés, « Collations » au lieu de « En plus ») · détail du jour (changer un plat, imprévu léger/normal/copieux avec compensation, ❤️ sur les photos) · Cuisiner (phases numérotées, étape « Maintenant ») · Courses (par rayon, placard mémorisé « J'en ai ») · fiches recettes (photo pleine largeur, ajout d'ingrédients mémorisé + recalcul des collations) · Mon programme (fiches programme avec graphiques, guide masse grasse 8-40 %, réglage manuel avec appui long).
+
+## Équipement (v124)
+Question « Qu'as-tu dans ta cuisine ? » à l'accueil (plaques de cuisson, four, air fryer, autocuiseur, micro-ondes, mixeur), modifiable dans Mon programme (section « Ta cuisine »). Profils repris : plaques, air fryer, autocuiseur, micro-ondes et mixeur. `js/adapt.js` détecte les besoins de chaque recette d'après ses étapes et réécrit les étapes : air fryer → four (+20 °C, temps × 1,3), autocuiseur → cocotte ou casserole avec une version vérifiée par plat (voir « Véracité des temps de cuisson »), finitions du repas à la poêle s'il n'y a ni air fryer ni four, réchauffage à la poêle sans micro-ondes. Les recettes impossibles (mixeur absent, etc.) sont écartées du moteur. Les étapes d'origine restent dans `r.baseSteps`.
+
+## Sécurité alimentaire (v125)
+Règles à respecter dans toutes les recettes :
+- jamais d'eau chaude du robinet (elle n'est pas faite pour la consommation) : eau froide, ou eau chauffée à l'autocuiseur, à la casserole ;
+- viande hachée crue : cuite pendant la session ou congelée tout de suite, décongélation la veille au frigo, cuisson jusqu'à ce qu'elle ne soit plus rose (smash burger congelé en boules, garniture du lahmacun cuite) ;
+- petits fruits rouges surgelés mangés sans cuisson : chauffés 2 minutes jusqu'à frémissement, puis refroidis (recommandation sanitaire française) ;
+- pousses de soja toujours cuites ;
+- marinade longue et décongélation : au frigo, jamais à température ambiante ;
+- riz cuit : en boîtes dès qu'il a tiédi, jamais plus d'une heure à température ambiante ; réchauffage « jusqu'à ce que ce soit bien chaud partout » ;
+- poisson et crevettes cuits : 2 jours au frigo (placés en début de semaine) ; rappel des dates limites pour la session du mercredi.
+
+## Véracité des temps de cuisson (v126)
+Les temps doivent être vrais pour l'aliment et la découpe, avec un repère concret (« tendre à la fourchette », « plus rose au centre », « jus clair »). Corrigés en v126 : curry vert 5 minutes sous pression (dés de blanc), tajine 7 minutes, mujaddara 6 minutes + 10 minutes de décompression naturelle, youvetsi 30 minutes + 10 minutes (macreuse), tinga en morceaux épais, pollo a la brasa 18 à 20 minutes à l'air fryer, brocoli surgelé 10 minutes.
+Sans autocuiseur, pas de formule : chaque étape sous pression a une version rédigée et vérifiée pour la cocotte ou la casserole (table STOVE de `js/adapt.js`). Sans version vérifiée, la recette est indisponible sans autocuiseur (cas du youvetsi : 1 h 30 à la cocotte, trop long pour une session). Riz à la casserole : 1,7 fois son poids d'eau. Four à la place de l'air fryer : +20 °C, temps × 1,3.
+
+## Rédaction des recettes (v123)
+Étapes complètes et sans à-peu-près, uniquement avec le matériel disponible (poêle, air fryer, autocuiseur ; pas de casserole : l'eau bouillante se chauffe dans l'autocuiseur en mode dorer, couvercle ouvert). Quantités d'eau toujours précisées « par portion ». Découpes, temps, températures et conservation indiqués. Les ingrédients cités existent dans la recette.
+Chaque plat suit le même ordre : préparation, cuisson, puis trois étapes repérées par leur début, utilisées par la page Cuisiner :
+- « Riz : … » : le riz de toute la session est cuit en une seule fois (quantité totale calculée, 1,5 fois son poids d'eau, 5 minutes sous pression, 10 minutes de repos) ;
+- « Mise en boîtes : … » : dernière phase de la session ;
+- « Au moment de manger : … » : récapitulatif à part, pas pendant la session (réchauffage au micro-ondes ou à la poêle).
+Page Cuisiner : petits-déjeuners et collations à préparer à l'avance = phases de la session avec quantités totales ; les autres = « à faire au moment », avec ce qu'il reste à faire (v124). Un seul autocuiseur, donc le plat sous pression est lancé d'abord, les plats à la poêle et à l'air fryer se font pendant sa cuisson, les autres plats à l'autocuiseur suivent, puis le riz. Vérifié sur les 870 combinaisons de deux plats : aucun conflit.
+
+## Reprise complète des recettes (v145)
+Revue une par une avec Pierre : 49 recettes (31 plats, 7 petits-déjeuners, 6 collations, 5 compléments). Règles : ingrédients faciles à trouver chez Lidl, aucun produit allégé (lait de coco, emmental, cheddar, fromage frais, crème : versions classiques), plus de skyr (fromage blanc partout, y compris les versions sans whey), plus de dinde. Supprimées (`RETIRED` dans generer.js) : W23, W24, W26, B10, B12, B13, K01, K03, K07, K09, K11, S06, S09, S16. Nouveaux plats : W31 raviolis croustillants au poulet (feuilles de riz), W32 bol hot honey, W33 pâtes crémeuses au poulet, W34 boulettes de bœuf laquées. Nouveaux ingrédients : feuilles de riz, chou chinois, tomates séchées, ketchup, vinaigre de cidre, nouilles aux œufs. Détail complet de chaque recette : document « Hébé · Recettes validées ».
+
+## Placard rétabli dans la liste de courses (v194)
+- Bug ancien (déjà présent en v169, sans doute depuis une réécriture du chargeur) : dans data/ingredients.js, `pantry: !!opts.pantry, fridge: …` se trouvait à la fin d'un commentaire (`// formats vendus…`), donc ignoré : aucun des 45 ingrédients de placard n'était reconnu, et la section « Placard : à vérifier » avec « J'en ai » avait disparu. Corrigé et testé dans le navigateur (14 produits, « J'en ai » → « Déjà chez toi », mémorisé dans `hebe_pantry_have`).
+- Effet de bord attendu : l'estimation du coût de la semaine n'inclut plus les produits de placard (comme prévu à l'origine).
+
+## Sauvegarde des données (v193)
+- Mon programme → carte « Tes données » (sous « Ta cuisine ») : **Sauvegarder** crée `hebe-sauvegarde-AAAA-MM-JJ.json` ({ app: 'hebe', version: 1, date, data }) avec toutes les clés `hebe_*` et `diet_*` du localStorage ; sur téléphone, fenêtre de partage (`navigator.share` avec fichier), sinon téléchargement. Date affichée : « Dernière sauvegarde : jamais / aujourd'hui / le … » (`hebe_last_backup`).
+- **Restaurer** : choix d'un fichier, contrôle (app = 'hebe'), confirmation avec la date, puis remplacement de toutes les clés `hebe_*`/`diet_*` et rechargement. Fichier invalide : alerte, rien n'est touché.
+- Testé dans le navigateur : aller-retour à l'identique. Limite : sur un nouveau téléphone, il faut d'abord passer l'écran d'accueil (créer une fiche) pour atteindre Mon programme et restaurer — un lien « Restaurer une sauvegarde » sur l'accueil serait plus direct (à proposer, maquette d'abord).
+
+## Retrait des compléments S13 et S14 (v192)
+- S13 (salade grecque express) et S14 (bol de corn flakes au lait) retirés : ajoutés sans l'accord de Pierre. `LEFTOVER_FILLER` : fromage blanc → S08, carré frais et pain → S12, wraps → K13, avocat → K12.
+- Effet mesuré (100 semaines) : salade 86 → 77 %, lait 89 → 87 %, le reste inchangé ; précision 95-100 %.
+
+## Charcuterie en tranches, recettes qui partagent un produit, restes reportés (v191)
+- Charcuterie : `CHARC_MAX` = 160 g, soit 4 tranches de 40 g par personne et par semaine (une barquette). Elle peut monter par tranches entières pour finir la barquette, jamais au-delà. Jambon 37 → 93 % consommé.
+- `SHARE_KEYS` (lait de coco, feta, carré frais, crème, houmous, cottage, avocat, wraps, pitas, pains burger, charcuterie, fromage blanc, yaourt grec) : si la semaine en contient, plats (`pickMain`), petits-déjeuners et collations qui l'utilisent sont favorisés (×3).
+- Fromage frais remplacé par le **carré frais** dans toutes les recettes (portions emballées à l'unité) : K13, B07, B14, SN06, L04, L08 et pâtes au thon ; 25 ou 50 g (carrés entiers). Noms mis à jour.
+- `KEEP_2W` (carrés frais ; pains, wraps, pitas, pains burger, lait de coco en bac à glaçons et feta émiettée au congélateur) : le reste est enregistré (`hebe_leftovers`) et la semaine suivante favorise les recettes qui l'utilisent.
+- Résultat (100 semaines, 1 personne) : produits qui ne se gardent pas tous ≥ 79 % (avocat 79, herbes 80, concombre et crème 85, salade et fromage blanc 86, lait 89, yaourt, jambon et thon 93, le reste 98-100 %). Précision 97-100 %, régimes, deux laitages, repas libres au vert.
+
+## Produits frais consommés en entier (v190)
+- Demande de Pierre : tout ce qui est frais doit être consommé dans la semaine. Fromage blanc en pots de **1 kg**. Produits frais vendus à la pièce : poids d'une pièce dans `buy` (ingredients.js ; concombre 350, avocat 170, poivron 180, courgette 250, aubergine 300, salade 250, herbes 30, tomates cerises 250, champignons 250, pain 500, baguette 250) — pour le calage seulement, la liste de courses ne change pas.
+- `snapFresh` (weekgen.js, remplace `snapDairy`) sur `FRESH_KEYS` (viande, charcuterie, laitages frais, pains, légumes à la pièce, conserves ouvertes) : en deux phases. Phase « repas » avant les collations (plats, petits-déjeuners ; les collations compensent ensuite les calories). Phase « collations » après (repas comptés mais fixes) avec compléments de reste (`LEFTOVER_FILLER` : fromage blanc → S08, carré frais et pain → S12, wraps et fromage frais → K13, salade/concombre/feta/tomates cerises → S13, lait → S14, avocat → K12), aux mêmes calories que le complément remplacé, seulement si leurs autres produits frais sont déjà achetés, jusqu'à 7 jours. Bornes : produit léger (≤ 100 kcal/100 g) jusqu'à son max ; dense : +15 % dans les repas, pas de hausse dans les collations. Réduction possible pour éviter un paquet de plus (≤ 30 % dans les repas, 20 % dans les collations). Unités entières pour les produits comptés à l'unité. `trimOver` : retire un complément sans produit frais si la journée dépasse sa cible de plus de 3 %.
+- Nouveaux compléments : S13 salade grecque express, S14 bol de corn flakes au lait (photos à faire). Chou chinois retiré : W18 poivron, W31 courgette râpée (tête de 800 g pour 60-100 g utilisés).
+- Résultat (100 semaines, 1 personne ; test `node outils/tests/frais.js [semaines] [2]`) : viandes, conserves, poivron, courgette, aubergine, champignons, tomates cerises, tofu, pitas, baguette, gnocchis, cottage 98-100 % ; lait 92, yaourt grec 94, concombre 87, fromage blanc 86, crème 85, herbes 83, avocat 81, salade 78 %. **Restent mauvais** : fromage frais et jambon 37, carré frais 41, lait de coco 50, feta 54, wraps et pain 65-67 %. Cause : produits denses utilisés en petite quantité dans une seule recette (finir le paquet ferait exploser les calories : essayé, précision tombée à 55 %). Jambon et blanc de poulet en tranches : barquette 160 g pour un plafond de charcuterie de 150 g/semaine. Pistes : choisir ensemble les recettes qui partagent un produit (lait de coco, feta…), congeler pains et wraps, revoir le plafond de charcuterie.
+- Précision 95-100 % sur tous les profils ; régimes, deux laitages et repas libres au vert.
+
+## Laitages en pots entiers (v189)
+- Demande de Pierre : consommer tout le fromage blanc acheté. Constat : fromage blanc 63-67 % consommé (reste médian 200-250 g par semaine), yaourt grec 60-69 %.
+- `snapDairy` (weekgen.js, fin de `generateWeekOnce`, après les collations) : fromage blanc, yaourt grec, cottage, yaourt sans lactose. Sur toute la semaine du foyer, les quantités de tous les repas qui en contiennent (plats, sauces, accompagnements, petits-déjeuners, collations) sont ajustées pour tomber sur des pots entiers : finir le dernier pot, ou réduire si on dépasse un pot d'au plus 20 % (une petite quantité, ex. sauce, peut baisser de 20 % au plus). Arrondi au gramme puis correction pour tomber pile. Fromage blanc pris une seule fois et déjà au maximum : le reste va dans S08 (fromage blanc, miel, cacahuète) à la place d'un complément ou d'une collation rapide, un jour sans autre laitage en bol, chez une personne dont le régime l'autorise.
+- Résultat (40-80 semaines) : fromage blanc 99-100 %, yaourt grec 97-100 % ; quelques semaines (≈ 1 sur 30) gardent 200-250 g quand aucune journée ne permet d'en ajouter. Test : `node outils/tests/laitages_pots.js`.
+- Cas limite connu (déjà en v188) : motif mardi entier + mercredi soir libres, ≈ 15 % des semaines avec 3 portions d'écart, 1 % avec un plat à 1 portion.
+
+## Collations préparées + collations rapides (v188)
+- Demande de Pierre : 1 ou 2 collations préparées le dimanche (cookies, barres, roses des sables…), le reste en collations rapides (fromage blanc, yaourt…).
+- `pickSnacks` : 1 ou 2 collations préparées (au hasard), rotation [préparée, rapide, préparée ou rapide, rapide] : chaque jour le choix se fait entre 2 voisines, donc une préparée et une rapide. Pas de pénalité de variété pour les préparées (faites pour plusieurs jours).
+- Mesure (40 semaines) : Pierre, toujours 1 ou 2 préparées par semaine (25 semaines à 2), chacune 2 à 3 jours, collation 6,8 jours sur 7 ; profil féminin, 0 à 2 (3 semaines sans : petites journées), collation 5 jours sur 7. Précision 97-100 %.
+
+## Variété des collations (v187)
+- Constat : tartine carré frais-miel 6,9 jours sur 7, toutes les semaines ; les vraies collations ½ jour par semaine chacune.
+- `fillRemainder` : collation en premier (si ≥ 200 kcal restent), puis compléments, 2 passes de rattrapage (gros profils). Tartines plafonnées à 3 jours/semaine (`WEEK_CAPS`) ; pour le reste, pénalité de variété : score × (1 + 0,6 × jours déjà servis dans la semaine) (`weekUseOf` dans weekgen.js, transmis à tous les appels de `fillDay`, y compris en cours de semaine). Des plafonds stricts partout avaient fait chuter la précision (46 % des jours pour un gros profil en jeûne) : abandonnés.
+- Résultat (30 semaines) : Pierre, tartine miel 1,1 jour/semaine, fruit 5,3, amandes 1,4, une collation différente presque chaque jour ; profil féminin, fruit 3,2, collations variées. Précision 98-100 % sur tous les profils, régimes et repas libres inchangés.
+
+## Calories réservées par repas libre (v186)
+- Bloc masqué tant qu'aucun repas libre n'est coché (week.js, `freeKcalHTML`), affiché dès le premier.
+- Choix : Léger 600, Normal 900, Copieux 1200, **Ajuster** (remplace « Habituel ») : réglage − / + par 100 kcal, de 300 à 2000, qui part de la taille d'un plat de la personne (`usualFreeKcal` : `plateTarget` avec la part de sa formule ; ≈ 900 kcal pour Pierre en classique, ≈ 1100 en jeûne). Données : `freeKcal` (0 = taille d'un plat) et `freeKcalAdj` (Ajuster choisi). Le moteur est inchangé (`m.freeKcal || taille d'un plat`).
+
+## Repas libres testés en profondeur (v185)
+- Test `outils/tests/repas_libres.js` : 17 scénarios (cantine, week-end, soirs, alternances, début ou fin de semaine chargés, 10 libres sur 14, aléatoires), 60 semaines chacun.
+- Corrigé : même plat midi et soir le même jour (jusqu'à 1 semaine sur 5 avec le week-end libre) : passe d'échange dans `schedule`, et les 16 premiers essais refusent une semaine qui en contient. Semaines vides (jusqu'à 11 % avec seulement le lundi midi libre !) : les plats frais (poisson, `FRESH_ONLY`) sont plafonnés selon les jours et les repas réellement cuisinés dans les 2 ou 3 premiers jours (`early`, `fishEarly`, `earlyMeals`), partagés entre eux.
+- Contrôle exhaustif : tous les motifs à 1 ou 2 repas libres (1 260 semaines) et 1 200 semaines aléatoires de 3 à 10 libres : 0 semaine vide, 0 plat à 1 portion, 0 plat mangé trop tard, 100 % des jours à ±7 %. Restent 3 semaines sur 1 200 (8-9 repas libres) avec le même plat midi et soir, en dernier recours.
+
+## Portions homogènes (v184)
+- Constat (capture de Pierre) : 4-2-1-4 portions ; mesure : 1 plat sur 9 à 1 portion, répartitions 7-3-2-2, 6-3-2-2-1.
+- `allocate(n, plats, days, level)` : au moins 2 portions par plat (`MIN_PORTIONS`), au plus 2 d'écart (`MAX_SPREAD`). Les 8 premiers essais gardent le nombre de plats habituel (≈ 4 portions chacun) et retirent d'autres plats ; ensuite un plat de plus ; essais 16-21 : minimum 2 seulement ; 22-23 : dernier recours. Derniers essais sans poisson frais.
+- Plats « à manger frais » : autant que les repas des 3 premiers jours le permettent (2 portions chacun ; des midis libres en réduisent le nombre) — corrige une semaine vide rare (1/200, déjà en v183).
+- Bœuf : un plat par semaine, jusqu'à 4 portions (`RED_MEAT_DISHES = 1`, `RED_MEAT_MEALS = 4`, `RED_MEAT_PER_DISH = 4`). Contrepartie acceptée par Pierre : les plats de bœuf sortent 2 à 3 fois moins souvent que ceux au poulet (préféré à deux plats de bœuf avec 5 plats à cuisiner certaines semaines).
+- Résultat (150 semaines par cas) : semaine complète 4-4-3-3 ou 4-4-4-2 ; 3 midis libres 4-4-3 ; cantine 3-3-3 ou 4-3-2 ; aucun plat à 1 portion, aucune semaine vide, 4 plats par session.
+
+## Collations « classiques allégés » (v181)
+- K15 roses des sables au beurre de cacahuète, K16 tiramisu minute en verrine (non préparé à l'avance : 3 jours au frigo seulement), K17 barres de céréales dattes-cacahuètes, K18 barres façon Snickers aux dattes, K19 bouchées façon Bounty (lait de coco, pas de fromage blanc : règle des deux laitages), K20 barres granola à l'air fryer, K21 cookies banane-pépites à l'air fryer. Refusé : barres façon Kinder Country. Allégées par la recette (chocolat noir, dattes à la place du sucre, whey), jamais par des produits « light ».
+- Portions de 215 à 324 kcal (fiche = recalcul ingrédients, Atwater à ±3 %). Versions sans whey : la whey est retirée (`NO_WHEY_DROP`), sauf le tiramisu (plus de yaourt grec).
+- Collations préparées le dimanche : une par semaine, tirée parmi K06, K08 et celles étiquetées `semaine` (`pickSnacks`).
+- Nouveaux ingrédients : `boudoirs` (gluten : `GLUTEN_OUT1`), `coco_rapee` (Ciqual 24430, 15007).
+- Photos : K16 à K21 intégrées en v182, K15 en v183.
+
+## 20 plats de poulet et de bœuf (v177)
+- W56 à W75 ajoutés dans `outils/recettes/nouveautes.js` (étapes complètes) : pâtes épicées au poulet (sriracha), pâtes cajun, pâtes fajitas sauce cheddar, pâtes poulet-pesto, paprikás de poulet sur nouilles, stroganoff de bœuf haché, penne et boulettes de bœuf, poulet aux champignons et purée, poulet ail-herbes et grenailles, bowl buffalo, poêlée bœuf-pommes de terre et œuf au plat, picadillo cubain, keema aloo, bowl poulet marocain-semoule, poulet shawarma-boulgour-tahini, bœuf-quinoa épicé, curry de poulet et naans au fromage, burritos de bœuf (sans riz : le générateur impose 90 g de riz minimum à tout plat qui en contient), Philly cheesesteak (`FRESH_ONLY` : baguette), mafé de bœuf.
+- Bibliothèque : 71 plats (58 poulet et bœuf). `farine` compte comme famille « pain » (naans). Étiquette de cuisine « Français » ajoutée.
+- Piège rappel : pas d'apostrophe droite dans `SHORT_NAMES` (« Poulet ail et herbes »).
+- Mesure 200 semaines, Pierre perte progressive, poulet + bœuf : chaque plat sort 11 à 21 fois (moyenne 15, écart-type 2) ; part des familles = part des plats (riz 33 %, pommes de terre 21 %, pâtes 19 %, pain 17 %, céréales 10 %). Variété sur 20 semaines : 57 à 61 plats. Cas le plus difficile (femme stricte lactose + gluten en jeûne) : 95 % des jours à ±7 %, à surveiller.
+- Photos : W56 à W75 intégrées en v178, W73 en v179, W46 à W55 en v180 : tous les plats ont leur photo (prompts dans les conversations v174, v175 et v177). Prompt de base Gemini : bloc CAMERA AND LIGHT / FOOD / SETTING / NEVER.
+
+## Répartition uniforme des plats (v176)
+- **Principe (Pierre)** : chaque plat doit sortir à peu près aussi souvent que les autres ; s'il y a plus de plats au riz, il y a plus de riz au final. La règle v171 « une famille de féculents par plat » est supprimée, ainsi que les pénalités de famille de féculents et de protéine dans `pickMain`.
+- **Tour de rôle** : mémoire `hebe_served_mains` = { n : semaines générées, last : { id : semaine de dernière sortie } } (remplace `hebe_recent_mains`, 12 derniers plats). Poids d'un plat = (semaines depuis sa dernière sortie / cycle)⁴, plafonné à 1, cycle = nombre de plats possibles / 4. 👍 ×2,2.
+- **Garde-fous gardés** : au plus 3 plats d'une même famille de féculents par semaine (`STARCH_MAX`), un poisson frais, 2 plats « à manger frais » (`FRESH_ONLY`, un seul s'il y a un poisson frais : tout ce qui ne se congèle pas tient dans les 3 premiers jours), plafond de bœuf, plats capables de remplir l'assiette (85 %).
+- **Mesure (200 semaines, profil Pierre perte progressive)** : poulet + bœuf, 38 plats : chaque plat sort 20 à 32 fois (moyenne 24, écart-type 2,9 ; avant : 8 à 118 fois). Toutes protéines, 51 plats : 13 à 24 fois. Part de chaque famille de féculents = sa part de plats (riz 47 % des plats → 48 % des sorties). Variété sur 20 semaines (test foyer_regimes) : 40 à 42 plats différents (avant 29 à 32). Test : `node outils/tests/repartition.js [poulet boeuf]`.
+
+## Wraps sans accompagnement, plats trop petits écartés (v175)
+- **Jamais de pommes de terre avec un wrap** (demande de Pierre). W55 : avocat à la place des potatoes.
+- **Plats capables de remplir l'assiette** (weekgen.js, `FITS`) : avant de choisir la semaine, le moteur écarte les plats qui n'atteignent pas 85 % de l'assiette de chaque personne une fois calibrés (wraps, pitas, sandwichs plafonnés pour les très gros profils), s'il reste au moins 12 plats. Résultat mis en cache par plat et par assiette (vitesse : 0,21 s par semaine, contre 0,17 s en v173). Mesure : rien d'écarté pour Pierre en perte progressive ni pour Léa ; 9 plats pour un profil prise de muscle en jeûne ; ce profil passe de 88-96 % à 99-100 % des jours dans la cible.
+
+## Bœuf assoupli et nouveaux plats, lot 1 (v174)
+- **Bœuf** (demande de Pierre) : jusqu'à 2 plats de bœuf par semaine, 3 repas au total, 2 au plus par plat (`RED_MEAT_DISHES`, `RED_MEAT_MEALS`, `RED_MEAT_PER_DISH`). Mesure : 2,6 repas/semaine, ~1 kg cru au plus pour Pierre (au-dessus du repère de 500 g cuits, choix assumé).
+- **Nouveaux plats** dans `outils/recettes/nouveautes.js` (étapes complètes dans le fichier, branché par generer.js ; noms courts dans `SHORT_NAMES`). Issus de recherches de tendances (octobre 2026). Lot 1, W46 à W55 : mac and cheese poulet barbecue-miel, pâtes feta-tomates cerises aux crevettes, pâtes façon lasagne au cottage, bouchées de saumon et grenailles, poulet miel-moutarde à la crème, pommes de terre farcies façon lasagne, bowl elote crevettes-quinoa, salade dense haricots-boulgour-feta, aubergines laquées tofu-quinoa, wrap plié thon-cheddar-avocat. Refusés par Pierre : orzo, bol grec.
+- **Lots suivants validés (20 plats poulet et bœuf)** : pâtes épicées au poulet (sriracha, pas de gochujang), pâtes cajun au poulet, pâtes fajitas au poulet sauce cheddar, pâtes poulet-pesto-tomates cerises, paprikás de poulet sur nouilles, stroganoff de bœuf haché, penne sauce tomate crémeuse et boulettes de bœuf, poulet crémeux aux champignons-purée-haricots verts, poulet ail-herbes et grenailles, bowl poulet buffalo-pommes de terre-sauce yaourt, poêlée bœuf-pommes de terre-poivrons, picadillo cubain, keema aloo, bowl poulet marocain-semoule-chou-fleur, poulet shawarma-boulgour-tahini, poêlée bœuf-quinoa, curry poulet-pois chiches et naans au fromage, burritos bœuf miel-paprika fumé, Philly cheesesteak, mafé de bœuf.
+- Cottage cheese ajouté à `LACTOSE_OUT` (il contient du lactose). Nouvelles étiquettes de cuisine dans recipeDetail.js : méditerranéen, scandinave, hongrois, russe, cubain, sénégalais, cajun.
+- Photos : prompts au format VESSEL / LAYOUT / TEXTURES / GARNISH / DO NOT ADD, avec le message d'ouverture habituel de Pierre.
+
+## Règle sur les ingrédients
+- **Jamais de nouvelle recette, collation ou complément sans l'accord explicite de Pierre** : proposer d'abord, attendre sa validation (S13 salade grecque et S14 corn flakes ajoutés sans accord en v190, retirés en v192).
+- **Jamais de dinde** : retirée de toute l'app à la demande de Pierre (v144) ; poulet ou bœuf à la place. Ne jamais en reproposer.
+
+## Calcium (v173)
+- Constat (Ciqual, 30 semaines) : toi 1 010 mg/j en classique, ~850 en jeûne ; femme 1 570-1 850 kcal ~600-640 mg/j pour 950 conseillés. Les petits gabarits n'ont presque pas de place pour les collations : le levier est le petit-déjeuner et les plats.
+- `calciumPer100kcal(r)` (optimizer.js). Petits-déjeuners riches en calcium (≥ 70 mg pour 100 kcal) deux fois plus probables (`caBreakfast` dans `pickBreakfasts`). B15 « Œufs brouillés et tartines » : + 20 g d'emmental râpé hors du feu.
+- Résultat : femme classique 643 → 722 mg/j, toi classique 1 010 → 1 084. En jeûne, une femme reste vers 600 mg : à traiter par les plats (nouvelles recettes avec laitages : yaourt, feta, parmesan).
+- Un bonus calcium dans les compléments (`fillRemainder`) a été essayé : sans effet (pas de place pour les collations chez les petits gabarits), retiré.
+- Répétition mesurée (52 semaines) depuis la règle « une famille de féculents par plat » : W07 couscous 29 fois/an (seul plat aux céréales non bœuf ; W05 et W40 sont au bœuf, plafonné), W45 22, W18 18, W17 17 ; certains plats au riz jamais. À corriger par de nouvelles recettes en céréales, pâtes et pommes de terre.
+
+## Notifications (v172)
+- `toast(msg, kind)` (utils.js) : fond blanc, bordure `--line-2`, ombre douce, pastille sauge cochée ; `kind = 'warn'` : pastille terracotta « ! » (rôle alert). Le vert foncé (`--text`) en fond a été abandonné à la demande de Pierre.
+- Alertes actuelles : valeur hors limites (Mon programme), « Il faut au moins des plaques de cuisson ou un autocuiseur », « Aucun autre plat disponible pour le moment ». Toute nouvelle erreur doit passer `'warn'`.
+
+## Glucides variés et réglage « Riz et pâtes » (v171)
+- **Variété des glucides** (weekgen.js, `STARCH_FAMILY`) : familles riz (riz, riz blanc, nouilles de riz), pâtes (pâtes, nouilles aux œufs, orzo, pâtes sans gluten), pain (pain, pita, baguette, tortilla, pain burger, versions sans gluten), pdt (pomme de terre, patate douce, gnocchis), céréale (boulgour, semoule, quinoa). Une famille différente par plat tant que c'est possible, 2 plats au plus par famille en dernier recours (`STARCH_MAX`), poids ÷ (1 + 12 × plats de la même famille). Même règle au remplacement d'un plat. Résultat sur 60 semaines : 4 familles différentes et un seul plat au riz chaque semaine (23 plats sur 41 sont au riz). Contrepartie : un peu moins de plats différents sur 20 semaines (29-32 au lieu de 31-34).
+- **Réglage « Riz et pâtes »** (Mon programme, sous « Ton régime », commun au foyer) : Complets (par défaut) / Classiques / Plat par plat. `getStaples()`, `setStaples()`, `getDishStaple()`, `setDishStaple()` dans household.js (`h.staples`, `h.staplesByDish`). En mode plat par plat, choix Complet / Blanc (ou Complètes / Classiques) sur la fiche du plat, sous les valeurs nutritionnelles.
+- **js/staples.js** (`applyStaples()`, appelé à la fin de `applyDiet()`, donc après l'équipement et le régime) : `riz` → `riz_blanc`, `pates` → `pates_classiques` (nouveaux ingrédients, valeurs de la v169, micronutriments Ciqual 9100 et 9810), valeurs nutritionnelles recalculées, nom (« riz complet » → « riz basmati »), étapes ramenées aux textes de la v169 (table `TEXTS`), temps affiché −15 min pour les plats au riz d'origine (pas pour le riz qui remplace le boulgour ou la semoule en sans gluten). Toute nouvelle étape de riz complet doit avoir sa version classique dans `TEXTS`.
+- **Session du dimanche** (cook.js) : une cuisson par type de riz ; si riz complet et riz blanc la même session, le complet d'abord (autocuiseur : l'un après l'autre ; casserole : deux casseroles).
+- Tests : `outils/tests/riz_pates.js` (3 modes, avec et sans autocuiseur, sans gluten, semaine générée en classique) ; `parcours.py` clique sur le réglage et sur le choix de la fiche.
+- Limite connue : les photos montrent du riz blanc, même en mode complet.
+
+## Qualité nutritionnelle (v170)
+- **Riz et pâtes complets** : `riz` = riz complet (350 kcal, 7 P, 71,4 G, 2,8 L, Ciqual 9102), `pates` = pâtes complètes (353, 11,8, 67,6, 2,2, Ciqual 9870). Cuisson du riz complet : 20 min sous pression avec 1,7 fois son poids d'eau + 10 min de décompression naturelle ; à la casserole 35 min avec 2,5 fois son poids d'eau + 10 min de repos (sources : 15 à 25 min sous pression selon l'appareil, valeur du milieu, à confirmer par Pierre après essai). Textes mis à jour dans `generer.js` (22 étapes « Riz : »), `adapt.js` (casserole), `cook.js` (session), `diet.js` (substitution sans gluten). Temps de cuisson affiché des plats au riz : +15 min. W06 mujaddara : riz 14 min seul, puis lentilles 6 min. W30 : riz à la tomate 20 min, 1,4 fois l'eau. W33 : pâtes complètes 5 min. W14 renommé « Butter chicken & riz complet ». Semoule, wraps, pitas et pain burger restent classiques (versions complètes pas sûres chez Lidl).
+- **Fruits et oléagineux** : beurre de cacahuète dans B01, amandes dans B02 (ajoutées le matin) et B16, fruit de saison avec B06 et B15 (les photos ne montrent pas ces ajouts). Dans les compléments (`fillRemainder`), score × 0,6 pour les recettes avec oléagineux, × 0,85 avec fruits ; ordre S07 amandes, S05 fruit, S08. Limite : les oléagineux ne montent pas pour les petits gabarits (lipides déjà atteints) ; piste à valider avec Pierre : remplacer une partie de l'huile ou du fromage par des oléagineux dans les recettes.
+- **Bœuf** : un seul plat de bœuf par semaine, 2 repas au plus (`RED_MEAT_MEALS`), soit ≤ 500 g cuits même pour les grosses assiettes (repère Santé publique France). Assoupli seulement si l'on n'a choisi que du bœuf comme protéine. Même règle au remplacement d'un plat.
+- **Charcuterie** (`jambon_blanc`, `poulet_tranches`) : 150 g par personne et par semaine au plus (`CHARC_MAX`, `charcLeft()` dans weekgen.js), appliqué aux petits-déjeuners (remplacement par un autre petit-déjeuner sans charcuterie), aux collations et compléments, au remplacement de plat, au recalcul et au changement de préférences.
+- **Protéines** : les assiettes portent 110 % de leur part (`plateProteinShare: 1.1`, contre 0,9) pour compenser la tartine au poulet en tranches désormais plafonnée : plus de vraie viande ou poisson, moins de charcuterie.
+- **Collations des régimes stricts** : si la version à la whey d'une collation est interdite par le régime, sa version sans whey est proposée même à qui prend de la whey (`snackPool`).
+- **Micronutriments** : `js/micros.js` (table Ciqual 2020, 130 ingrédients ; fibres, sel, AGS, calcium, fer, magnésium, potassium, zinc, vitamines A, D, C, B9, B12, oméga-3) ; `dayMicros()`, `weekMicros()`, repères ANSES `MICRO_REFS`. Moyenne par jour enregistrée dans `plan.microsBy`, **non affichée**. Constats (30 semaines simulées) : fibres 44 g/j (Pierre) et 31 g/j (femme), sel 5 à 6 g/j ; calcium bas pour tous (500 à 730 mg pour 950), vitamine D basse ; chez la femme, fer (12 mg pour 16) et B12 (3,3 µg pour 4) un peu justes.
+- Tests : calories 100 % à ±7 % sur tous les profils, protéines au niveau de v169, régimes sans interdit servi. Script de mesure nutritionnelle : voir la conversation v170 (bœuf, charcuterie, fruits, oléagineux, micronutriments, avant/après).
+- À surveiller : une semaine à 4 plats au riz demande ~2,7 kg de riz et 4,6 L d'eau en une fois (déjà le cas en v169), probablement plus que la capacité de l'autocuiseur.
+
+## Semaine sans mention de décongélation (v169)
+Les grandes vignettes de la Semaine n'affichent plus « Décongelé au frigo depuis la veille » (`bigTile(label, items, frozen = false)` dans la carte du jour) ; la mention reste dans le détail de la journée. Le rappel « Ce soir, sors du congélateur… » est inchangé.
+
+## Illustration de la cantine (v168)
+Repas libre précisé « Cantine » : vignette avec l'illustration IA du plateau de cantine (`img/art/cantine.webp`), sur le fond vert pâle du repas libre, image décalée vers le bas (`.art-pic.art-low`) ; `cantineThumb()` dans data/photos.js.
+
+## Un seul laitage en bol par jour (v167)
+`fillRemainder` (optimizer.js) reçoit les ingrédients des repas du jour (`dayKeys`) : si un fromage blanc ou un yaourt (`DAIRY_BASES`) est déjà au petit-déjeuner ou dans une collation choisie, aucun autre laitage en bol n'est ajouté ce jour-là (le moteur prend une autre collation ou un autre complément). Test `outils/tests/laitages.js` : 0 jour sur 210 avec deux laitages. 2e collation autorisée dès 120 kcal manquantes (plafond 650) : compense en partie le profil prise de muscle 3 300 kcal en jeûne (89 %, toujours le point faible). Noms courts : S11 « Tartine poulet », S12 « Tartine miel ».
+
+## Cantine, dimanche, retour en haut (v166)
+Détail d'une journée : sous un repas libre, choix « Repas libre » / « Cantine » (`data-kind`) ; stocké sur l'élément du repas (`kind: 'cantine'`, conservé par `normalizeItem` dans data/log.js, qui ne gardait jusque-là qu'une liste fixe de champs) ; la vignette affiche « Cantine », calories réservées inchangées. Plus de mention du dimanche (« Prépare ta semaine », Cuisiner avant la première semaine, carte « Ta session de cuisine »). Fin du parcours d'accueil : retour en haut de la Semaine. Pistes proposées : illustration dédiée à la cantine ; aligner le détail de la journée sur les vignettes de la Semaine.
+
+## Six corrections (v165)
+Équipement (accueil et Mon programme) : plus de phrase sous les appareils, sauf l'alerte sans plaques ni autocuiseur. Masse grasse : consigne unique, descriptions de 2-3 mots, note « ± 3 % suffit » (+ repère femme). Mon programme : l'encart Programme/Objectif de la fiche (`data-edit="protocol"`) ouvre le choix des programmes. Recettes : 3e menu « Goût » (Tout/Sucré/Salé ; sucré = tag 'sucré', salé = le reste). Courses : conseil affiché seulement tant que rien n'est coché. Cuisiner : vignettes des plats en colonne sous 400 px, « Voir la recette » sans « › ».
+
+## Accueil : liste et conclusion (v164)
+Phrase d'accroche supprimée ; quatre points forts (41 plats du monde, portions calculées, une seule session de cuisine par semaine, courses toutes prêtes) avec points de couleur (`.wl-points`), puis « Plus qu'à cuisiner ! » (`.wl-end`). Illustration : version où le bras de l'homme n'est pas coupé. Test « logo en haut, puis illustration » refusé.
+
+## Accueil illustré, dates en heure locale (v163)
+Bug corrigé : `getTodayDate` et `getWeekDates` (data/log.js) passaient par toISOString (UTC) : en France entre minuit et 2 h, la date du jour et la semaine reculaient d'un jour. Nouvelle fonction `localYMD(d)` ; libellés du bandeau calculés depuis la vraie date (`dayIdx`). Écran d'accueil : illustration IA `img/art/accueil.webp` (le couple en session de batch cooking) sur fond vert pâle avec formes miel et terracotta ; adapté aux écrans courts. Icônes IA des points forts refusées.
+
+## Semaine : un jour à l'écran (v162)
+Bandeau des 7 jours (`.day-strip`, jour choisi en vert, jours passés estompés, point bleu = poisson, point terracotta = repas libre) ; une seule carte de jour (`selectedDay`, aujourd'hui par défaut). Vignettes de même taille pour le petit-déjeuner et les collations (`.dv-minis`, étiquettes « Petit-déj » et « Collation »). Nom court B05 : « Fromage blanc granola ».
+
+## Finitions (v161)
+Cuisiner : boutons « Retour » et « Étape suivante » côte à côte, sans ‹ ›. Mon programme : plus de crayons ; accueil « Bienvenue dans ton programme Prénom ! » puis « C'est ici que tu retrouveras… ». Étape du riz : liste avec virgules (`listFr`).
+
+## Cuisiner étape par étape, fiche modifiable (v160)
+Cuisiner : la phase en cours s'affiche en grand avec son étape (« Étape 2 sur 4 »), boutons « Retour » et « Étape suivante » (« Terminer » à la fin) ; phases terminées repliées (« ✓ fait », un toucher les rouvre), phases à venir repliées avec leur nombre d'étapes ; carte « Session terminée » avec « Recommencer » ; bloc « Rangement » toujours visible. Progression enregistrée comme avant (`hebe_cook_…`). « Voir la recette › » ne se coupe plus. Mon programme : chaque valeur de la fiche est un bouton (`data-edit`) qui ouvre un panneau (prénom, âge, taille, poids, masse grasse avec accès aux silhouettes, quotidien) ; formulaires « Tes informations » et « Ton quotidien » supprimés. Semaine et Courses : inchangées (Pierre veut tout voir d'un coup). Maquettes refusées : bandeau des 7 jours, courses repliables, grille de recettes, grands champs de mesures.
+
+## Illustrations des protéines (v159)
+Les emojis des boutons de protéines (préparation de la semaine) sont remplacés par des illustrations générées par IA dans le style de l'app (aquarelle mate) : `img/art/prot-poulet.webp` (cuisse rôtie), `prot-boeuf` (pavé), `prot-crevettes`, `prot-saumon` (pavé), `prot-tofu` (lentilles et pois chiches), 96 px, affichées en 26 px (`.prot-chip .prot-emoji img`). Les pictogrammes au trait dessinés en SVG ont été refusés.
+
+## Repas libres en capsules, textes allégés (v158)
+Section « Repas libres » de la préparation de la semaine : phrase « Un repas que tu ne cuisines pas : restaurant, invitation, cantine. », puis une capsule par jour (soleil = midi en haut, lune = soir en bas, moitié choisie en terracotta ; `.free-caps`, `.free-pill`, boutons `.free-cell`), légende midi/soir, puis calories réservées en segments (`.free-seg2` : Léger 600, Normal 900, Copieux 1200, Habituel « un plat »). Tes repas : sous-titres retirés de « Au petit-déjeuner » et « Protéine en poudre (whey) ». 
+
+## Protéines des personnes sans lactose (v157)
+Sans lactose, les compléments protéinés (tartines au carré frais, fromage blanc) disparaissent : `plateTarget(T, share, boost)` reçoit `proteinBoost(id)` (1,25 si lactose ≥ 1, sinon 1) pour que ses plats portent plus de protéines à calories égales. Foyer réel testé (`outils/tests/foyer_regimes.js`) : elle 97-100 % des jours, protéines 84-86 g sur 88 en classique (au lieu de 75-78) ; Pierre 98-100 %. Variété restante pour elle en lactose + gluten : plus de 30 plats, 2 petits-déjeuners (salés), 2 collations. Pierre a refusé l'ajout de nouvelles recettes.
+
+## Régime sans gluten (v156)
+Même module `js/diet.js`. « Sensibilité » (1) ou « Strict » (2). Remplacements (niveau le plus strict du foyer) : semoule et boulgour → riz (étapes réécrites pour le tajine W07, les köfte W05 et le taboulé W40, avec ou sans autocuiseur), pâtes et nouilles aux œufs → pâtes sans gluten cuites à la casserole, pain, baguette, pain burger → pain sans gluten, pita et wraps → wraps sans gluten ; en strict, sauce soja → tamari. Oignons frits retirés (ingrédient et étapes). Écartées pour la personne : chapelure et gnocchis (W12, W41) dans les deux niveaux ; flocons d'avoine, granola, corn-flakes en strict. `dietOk(r, lac, glu)`, `glutenOf(id)`, plan `glutenBy`, alerte Semaine commune lactose/gluten. Les étapes repartent toujours de `r._eqSteps` (posé par applyEquipment). Test : `outils/tests/gluten.js` (100 %, cumul gluten et lactose stricts 98-100 %). Bug corrigé : la version sans autocuiseur du tajine mentionnait encore le citron confit.
+Point ouvert (antérieur) : profil prise de muscle à 3 300 kcal en formule jeûne à 91-93 % des jours (certains jours jusqu'à 15 % sous la cible) depuis la suppression des collations caloriques à la revue ; abaisser le seuil de la 2e collation ne suffit pas, à corriger dans le moteur.
+
+## Régime sans lactose (v155)
+Module `js/diet.js` (appelé après `applyEquipment()` au démarrage, quand le régime ou l'équipement change, et au début de `generateWeek`). Pour une personne en « Intolérance » (1) ou « Strict » (2) : recettes contenant fromage blanc, fromage frais, carré frais ou whey écartées pour elle (`r.lacOut`, `dietOk(r, lac)`) ; remplacements globaux selon le niveau le plus strict du foyer (plats communs) : yaourt grec → yaourt nature sans lactose, lait → boisson à l'avoine, crème → crème de coco ; en strict, cheddar et feta → emmental. Parmesan et emmental gardés. Noms, ingrédients, macros et étapes réécrits (`retext`). Plats : filtrés au niveau du foyer ; petits-déjeuners, collations et compléments : par personne (`lactoseOf(id)`, `fillDay(..., lac)`). Plan : `lactoseBy` ; Semaine : alerte « Ton régime a changé » → nouvelle semaine. Onglet Recettes : recettes exclues cachées. Versions sans whey non proposées aux personnes sans lactose (essayé : précision en baisse à 95 %). Test : `outils/tests/lactose.js` (99-100 %, foyer mixte 98-100 %). Bug corrigé : les compléments retirés S09 et S16 pouvaient encore être servis.
+
+## Tasty crousty, manifeste, README (v154)
+Tasty crousty : sauce crémeuse (yaourt grec, mayonnaise allégée, soja, ail) sur le riz, puis filet de sauce chili douce (thaï) et de sriracha sur le poulet, oignons frits ; ingrédients `sauce_chili` et `sriracha` ajoutés. Manifeste : « Hébé — Bien manger sans y penser », plus aucune mention de PONOS. README réécrit (l'ancien décrivait une version « DIET » noir et or). Appareils de cuisine : restent en SVG par choix de Pierre.
+
+## Corrections d'affichage (v153)
+Cartes du foyer : deux illustrations de même taille (rond, 120 px au plus, proportionnel à la carte), couple dézoomé, titres en clamp(). Repas libre : quatrième choix « Plat / habituel ». Fiche Hébé : cadre de la photo dessiné par-dessus (`.idf-photo::after`). Onglet Recettes : deux menus déroulants natifs « Catégorie » et « Protéine » (sans emoji), vert quand un filtre est actif, nombre de recettes affiché en direct (`.rc-filters`, `.rc-select`, `.rc-count`).
+
+## Textes mis à jour (v152)
+Accueil : « cuisinée en une seule session le dimanche » et nombre de plats calculé automatiquement (41). Cuisiner (avant la première semaine) : « ta session de cuisine du dimanche ». Semaine : carte « Ta session de cuisine ». Expressions des personnages essayées (coucou, cuisine, courses) mais refusées par Pierre : non intégrées. Point ouvert : le manifeste dit encore « Hébé — jeunesse & vitalité » / « l'app-sœur de PONOS ».
+
+## Personnages et illustrations en images (v151)
+Les personnages et le tablier/joker ne sont plus dessinés en SVG : images détourées générées par IA dans `img/art/` (man, woman, man_bowl, couple, tablier, joker, en webp transparent). `avatar(sex)` et `idPhoto(sex)` (profileUi.js) renvoient ces images ; cartes du foyer en `.hh-art-1` / `.hh-art-2` (images de fond) ; `artFor` (photos.js) renvoie `.art-pic`. Les anciennes fonctions SVG (hhGuy, hhHer, HH1, HH2) restent dans le code mais ne sont plus affichées. Appareils de cuisine (`TOOL_ART`) restent en SVG par choix.
+
+## Photos complètes (v150)
+Toutes les recettes actives ont leur photo (61 sur 61) : ajout de W37 à W41, W43 à W45, B01, B02, B05, B06, B07, B15, B16, K13, K14. Retirées à la demande de Pierre : W42 (nuggets) et B14 (tartines poulet). Muffins aux œufs (B06) sans pain. Bibliothèque : 41 plats, 7 petits-déjeuners, 8 collations, 5 compléments. Photos à refaire éventuellement : W01 (montre encore un curry vert) et W08 (montre des haricots noirs).
+
+## Onglet Recettes (v149)
+N'affiche que les recettes validées : 42 plats, 8 petits-déjeuners, 8 collations, 5 compléments (63). Onglet « Entrées » supprimé, EN01 et EN02 ajoutées à RETIRED (le moteur ne remplit jamais le créneau entrée).
+
+## Photos (v148)
+Ajoutées : W31 à W36 (720×720, webp, générées avec Gemini à partir du message d'ouverture de Pierre et d'un bloc VESSEL / LAYOUT / TEXTURES / GARNISH / DO NOT ADD par recette, décrivant le plat tel qu'il est servi à la fin de la recette). Restent à faire : W37 à W45, les 8 petits-déjeuners, K13 et K14.
+
+## Nouvelles recettes, série 3 (v147)
+W44 curry de colin au lait de coco et aux épinards (poisson frais : lundi ou mardi), W45 pâtes au thon, tomates et olives (thon en boîte : compte comme un plat normal, congelable), B16 porridge banane-cannelle (version sans whey automatique au fromage blanc), K13 mini-wrap thon et fromage frais, K14 croque-monsieur jambon-fromage (ingrédient jambon blanc ajouté). Total : 42 plats, 8 petits-déjeuners, 8 collations, 5 compléments.
+
+## Nouvelles recettes, série 2 (v146)
+Validées une par une : W35 tasty crousty healthy (poulet aux corn-flakes à l'air fryer, sauce yaourt + mayonnaise allégée à la demande de Pierre, oignons frits), W36 fajitas de poulet, W37 riz sauté au poulet et à l'œuf, W38 bœuf sauté aux poivrons, W39 pâtes bolognaise aux légumes, W40 kefta, houmous et taboulé, W41 gnocchis poêlés au poulet, W42 nuggets maison et potatoes sauce barbecue, W43 bowl kebab. Total : 40 plats. Nouveaux ingrédients : corn-flakes, oignons frits, mayonnaise allégée (seule exception à la règle « pas d'allégé », demandée par Pierre), gnocchis frais. À manger frais : W35, W36, W40, W41, W42.
+
+## Pas de dinde (v144)
+La dinde est retirée de toute l'app : poulet haché à la place de la dinde hachée (larb), blanc de poulet en tranches à la place du blanc de dinde (tartine quotidienne, wrap et tartines du petit-déjeuner), plus de bouton « Dinde » dans les protéines.
+
+## Préférences de design et de rédaction
+- **Toujours montrer un rendu ou une planche d'un changement visuel et attendre la validation avant de l'intégrer.**
+- DA : vert sauge, fond crème, **Fraunces** (titres) + **Outfit** (texte), formes très arrondies, couleurs par famille de plat et par rayon. Pas d'ombres lourdes, pas de cartes blanches « carrées ».
+- **Pas d'icônes gadget**, rester simple et clair ; préférer des graphiques propres et des phrases claires. Proposer avant de faire les gros changements visuels.
+- Français correct, phrases complètes, tutoiement ; pas d'abréviations (AC, AF, c.à.c) ; pas de point médian « · » au milieu d'une phrase (seulement entre des données).
+
+## Illustrations (v129)
+Dessins vectoriels faits main dans `js/profileUi.js` : pour le foyer, l'homme (v143 : cheveux bruns en banane, peau claire, cou court, polo vert sauge, sans lunettes ni barbe) avec son bol (« Pour moi »), puis le même homme avec sa compagne en haut terracotta (« Pour nous deux ») ; un dessin par appareil de cuisine. Pas d'étiquette au-dessus des titres de l'accueil. Les mêmes personnages servent de portraits « Un homme » et « Une femme » (choix du profil, sélecteur de personne, résumé) (v131). Pas de choix de personnage. En haut de la Semaine, l'avatar de la personne active remplace l'icône en forme de cible et ouvre Mon programme (v133) ; le livre et l'avatar sont deux boutons ronds identiques de 42 px (v134). v135 : Recettes devient un onglet de la barre du bas (Semaine, Cuisiner, Courses, Recettes), le livre disparaît de l'en-tête ; la fiche recette a le bouton retour rond commun et ramène à l'onglet d'origine.
+
+## Fiche d'identité (v142)
+En haut de Mon programme, à la place de « Ce que tu dépenses par jour » : bandeau vert « Fiche Hébé » avec numéro de la personne, photo d'identité (le personnage sur fond blanc, centrée verticalement), prénom, âge, taille, poids, masse grasse, quotidien (libellé court), puis encart à la couleur du programme avec le programme et l'objectif. Mise à jour en direct.
+
+## Repas libre et repas dehors (v132)
+Pas de photo : illustrations dessinées dans `data/photos.js` (`ART`), utilisées par `dishThumb` et la fiche. Repas libre (L01) : le tablier au repos, dans le même style que le joker (v133 : tablier crème à liseré, sans reflet sur le médaillon, simple poche vert sauge, sans ustensiles (v139), un seul tablier (v140), accroché à un crochet mural, bride passée par-dessus, légèrement penché (v141), éclats dorés ; sans halo blanc en v134). Repas dehors (X01) : le joker, dans sa version d'origine (reflet et couverts d'origine, rétablis en v138).
+
+## Photos
+`img/dishes/<code>.webp` (720×720), déclarées dans `data/photos.js`. Générées avec un « style de base » (lin beige, lumière gauche, 45°, céramique mouchetée) + un bloc par plat (VESSEL / LAYOUT / TEXTURES / GARNISH / DO NOT ADD).
+- Manquent encore (v131) : petits-déjeuners B01, B02, B05, B06, B07, B10, B12, B13, B14, B15, le complément S06 (pain complet). Les versions sans whey (identifiant + S) reprennent la photo d'origine. SA01 (frites de patate douce) est faite et sert aussi à S02. Les autres accompagnements (SA…, S01, S03, S04) et les entrées ne seront pas faits.
+
+## Chantier en cours : foyer et régimes (validé)
+Découpage en quatre livraisons :
+1. **Profils et calculs** : fait (v113, v114 pour l'accueil sans valeurs par défaut).
+   **Nouvel accueil illustré** (v115) : collage de plats, foyer (1 ou 2), profil avec illustrations homme et femme, mesures, quotidien, repas et régime (frise de la journée), objectif avec fiches « i », résumé du foyer. Fond blanc cassé de l'app ; les réponses sont des cartes claires entourées d'un liseré de couleur de famille, plus épais quand elles sont choisies (v116). Même principe dans Mon programme (v117) : moins de fonds pastel, liserés et chiffres colorés. Style uniformisé (v121) : comme le reste de l'app, cartes blanches translucides, sélection en sauge (fond sauge clair et contour sauge), un seul accent. Exception voulue (v122) : les cartes des programmes gardent leur couleur pâle (vert, bleu, miel, terracotta). Pas d'arc-en-ciel ailleurs. La couleur reste dans le contenu (photos, illustrations, frise des repas, macros, pastilles Midi, Soir et Petit-déjeuner). Mon programme : pas de choix homme ou femme, « Ajouter une personne » en fin de page. Les modifications ne font plus remonter la page. Foyer à une personne, calculs adaptés aux femmes, activité, pourcentages, garde-fous, guide féminin, accueil, migration.
+2. **Deux personnes** : fait (v115). Un planning commun, portions calculées pour chacun, journal par personne (`diet_log`, `diet_log_m2`), cantine par personne, barquettes calculées sur le total du foyer, répartition des boîtes au prénom dans Cuisiner, courses communes, sélecteur de personne dans Semaine et Mon programme, section Foyer (nombre de personnes, budget). Prévu au départ : journal par membre, mêmes recettes avec portions individuelles, répartition des boîtes au prénom, courses communes, budget global réglable, sessions toujours sous 1 h.
+3. **Régimes** (à faire ; les réponses sont déjà enregistrées par l'accueil, mais pas encore appliquées) : lactose et gluten, deux niveaux chacun (léger ou strict). Marqueurs 0/1/2 sur les ingrédients, substituts courants (tamari, pâtes, pain et wraps sans gluten, produits sans lactose, whey isolat), sinon recette écartée. Plats du batch au régime le plus strict, collations individuelles, tartine adaptée.
+4. **Petits-déjeuners et formules** : fait (v117). Onze petits-déjeuners simples, de 2 à 5 minutes le matin (`outils/recettes/petits_dejeuners.js` : B01, B02, B05, B06, B07, B10 à B15), sucrés ou salés, avec ou sans whey. Par personne : préférence sucré, salé ou les deux, deux recettes en alternance par session (une recette préparée à l'avance ne dépasse pas sa durée au frigo). Calibrage en mode « B ». Affichage : ligne « Matin » au-dessus des cartes Midi et Soir, section Petits-déjeuners dans Cuisiner, filtre dans Recettes. Test : `outils/tests/formules.js`. Prévu au départ : formule jeûne (déjeuner 40 %, dîner 40 %, reste 20 %) ou classique (petit-déjeuner 20 %, déjeuner 32 %, dîner 32 %, reste 16 %), une dizaine de petits-déjeuners sans mixeur (liste validée).
+Pas de question grossesse ni allaitement. Aucun profil par défaut : une nouvelle installation démarre vide (prénom, sexe, mesures, activité et programme à renseigner, âge de 18 à 99 ans). Un ancien profil n'est repris que s'il avait vraiment été rempli, et le sexe est toujours demandé.
+
+## Idées en attente
+Suivi de progression (poids, tour de taille, passage d'étape automatique) · séances et performances (rangs Bronze → Grand maître du tableur) · repas de saison · sauvegarde/export des données · nettoyage de `styles.css` (nombreuses couches).

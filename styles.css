@@ -406,7 +406,6 @@ img { display: block; }
 /* couleur courante selon la famille */
 .fam-poulet    { --c: var(--honey); --t: var(--honey-t); }
 .fam-boeuf     { --c: var(--terra); --t: var(--terra-t); }
-.fam-dinde     { --c: var(--bloom); --t: var(--bloom-t); }
 .fam-saumon    { --c: var(--sky);   --t: var(--sky-t); }
 .fam-crevettes { --c: var(--coral); --t: var(--coral-t); }
 .fam-tofu      { --c: var(--leaf);  --t: var(--leaf-t); }
@@ -596,9 +595,14 @@ img { display: block; }
 .toast {
   position: fixed; left: 50%; bottom: calc(96px + var(--safe-b)); transform: translateX(-50%); z-index: 300;
   max-width: calc(100% - 40px); padding: 11px 18px; border-radius: 999px;
-  background: var(--text); color: #fff; font-size: 14px; font-weight: 500; text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,.18); animation: up .25s cubic-bezier(.2,.8,.2,1); transition: opacity .3s;
+  background: var(--surface); color: var(--text); font-size: 13.5px; font-weight: 600; line-height: 1.3; text-align: left;
+  border: 1px solid var(--line-2); box-shadow: 0 10px 28px rgba(42,58,48,.14), 0 2px 6px rgba(42,58,48,.06);
+  animation: up .25s cubic-bezier(.2,.8,.2,1); transition: opacity .3s;
+  display: flex; align-items: center; gap: 10px; width: max-content; padding: 9px 16px 9px 9px;
 }
+.toast-ic { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--sage-t); color: var(--accent); }
+.toast-ic svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.toast.warn .toast-ic { background: var(--terra-t); color: #B4673F; font-size: 15px; font-weight: 800; }
 .toast.out { opacity: 0; }
 
 .toast { bottom: auto; top: calc(14px + env(safe-area-inset-top, 0px)); animation: fade .2s ease; }
@@ -929,3 +933,631 @@ img { display: block; }
 .past-days summary::-webkit-details-marker { display: none; }
 .past-days summary span { padding: 1px 8px; border-radius: 999px; background: var(--sunken); font-size: 12px; }
 .past-days .day-card { opacity: .7; }
+
+/* ═══ Mon programme : finitions ═══ */
+.page-head { display: flex; align-items: center; gap: 12px; padding-top: 18px; }
+.page-head .hb-page-title { padding: 0; }
+.round-back {
+  width: 40px; height: 40px; flex-shrink: 0; padding: 0; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255,255,255,.85); box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+.round-back svg { width: 20px; height: 20px; fill: none; stroke: var(--text); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.set-hero { margin-top: 14px; }
+
+/* cases « Tes informations » : tiennent dans les petits écrans */
+.profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.profile-cell { min-width: 0; padding: 10px; }
+.pc-control { gap: 4px; min-width: 0; }
+.pc-value { flex: 1; min-width: 0; gap: 2px; }
+.pcell-btn { width: 30px; height: 30px; flex-shrink: 0; font-size: 17px; }
+.pcell-input { width: 100%; min-width: 0; max-width: 3.6em; font-size: 17px; padding: 0; }
+.pc-unit { flex-shrink: 0; }
+
+/* cette phase / quand passer à la suite */
+.phase-guide { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.pg-now { padding: 16px 18px; border-radius: 24px; background: var(--t, var(--sage-t)); }
+.pg-next { padding: 16px 18px; border-radius: 24px; background: rgba(255,255,255,.75); }
+.pg-kicker { font-size: 12px; font-weight: 700; color: var(--text-2); letter-spacing: .02em; }
+.pg-big { font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.25; margin: 6px 0 6px; }
+.pg-now p, .pg-next p { font-size: 14px; line-height: 1.5; color: var(--text-2); }
+.pg-next p { color: var(--text); margin-top: 10px; }
+.pg-steps { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.pg-chip { display: flex; flex-direction: column; padding: 8px 12px; border-radius: 14px; background: var(--sunken); font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+.pg-chip b { font-family: var(--serif); font-size: 16px; font-weight: 500; color: var(--text); margin-top: 1px; }
+.pg-chip.on { background: var(--t, var(--sage-t)); box-shadow: inset 0 0 0 1.5px var(--c, var(--sage)); }
+.pg-arrow { flex: 1; max-width: 60px; height: 2px; background: var(--line-2); position: relative; }
+.pg-arrow::after { content: ''; position: absolute; right: -1px; top: -4px; width: 8px; height: 8px; border-top: 2px solid var(--line-2); border-right: 2px solid var(--line-2); transform: rotate(45deg); }
+.pg-next.last { background: var(--t, var(--sage-t)); }
+
+/* courses : explication */
+.shop-hint { font-size: 13.5px; color: var(--text-2); margin-top: 6px; line-height: 1.45; }
+/* valeur + unité centrées ensemble entre − et + */
+.pc-value { justify-content: center; align-items: baseline; gap: 3px; }
+.pcell-input { max-width: none; flex: 0 0 auto; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* ═══ Courses : en-tête visuel ═══ */
+.shop-card { padding: 16px 18px; border-radius: 26px; background: linear-gradient(150deg, #E4EEE6 0%, #F6F1E6 100%); }
+.shop-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.shop-card .shop-meta { font-size: 13px; font-weight: 600; color: var(--text-2); }
+.shop-count { display: flex; align-items: baseline; gap: 6px; margin-top: 2px; }
+.shop-count b { font-family: var(--serif); font-size: 38px; font-weight: 500; line-height: 1; }
+.shop-count span { font-size: 14px; font-weight: 600; color: var(--text-2); }
+.clear-btn { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.85); font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+.shop-bar { height: 10px; margin-top: 12px; border-radius: 999px; background: rgba(255,255,255,.8); overflow: hidden; }
+.shop-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #9DB8A6, var(--sage)); transition: width .3s; }
+.shop-tip { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,.75); font-size: 13.5px; line-height: 1.4; color: var(--text); }
+.shop-tip-check { position: relative; width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; background: var(--sage); }
+.shop-tip-check::after { content: ''; position: absolute; left: 7.5px; top: 4px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.shop-tip.done { justify-content: center; font-weight: 600; color: var(--accent); }
+.shop-card.all-done .shop-count b { color: var(--accent); }
+
+/* Quand passer à la suite : schéma centré */
+.pg-steps { justify-content: center; }
+.pg-arrow { flex: 0 0 48px; }
+
+/* ════════════════════════════════════════════════════════════
+   Profil : prénom et sexe, activité, notes de garde-fou, accueil
+════════════════════════════════════════════════════════════ */
+/* Prénom et sexe */
+.id-card { margin-bottom: 10px; padding: 14px; border-radius: 22px; background: rgba(255,255,255,.7); }
+.id-field { display: block; }
+.id-name {
+  width: 100%; padding: 11px 14px; border-radius: 14px; border: 1.5px solid transparent;
+  background: var(--bg); font-size: 17px; font-weight: 500; color: var(--text);
+}
+.id-name::placeholder { color: var(--muted); font-weight: 400; }
+.id-name:focus { outline: none; border-color: var(--sage); background: #fff; }
+.id-sex { margin-top: 14px; }
+.id-sex .hb-seg { background: var(--bg); }
+.id-sex .hb-seg-btn { padding: 10px 6px; }
+.id-sex .hb-seg-btn.on { background: var(--sage); color: #fff; box-shadow: none; }
+.id-error { margin-top: 10px; font-size: 13.5px; font-weight: 500; color: #A4553A; }
+
+/* Activité : quatre niveaux */
+.act-list { display: grid; gap: 8px; }
+.act-opt {
+  display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 16px;
+  border-radius: 22px; background: rgba(255,255,255,.7); text-align: left;
+}
+.act-opt.on { background: var(--sage-t); box-shadow: inset 0 0 0 2px var(--sage); }
+.act-bars { display: flex; align-items: flex-end; gap: 3px; height: 20px; flex-shrink: 0; }
+.act-bars i { display: block; width: 5px; border-radius: 3px; background: var(--line-2); }
+.act-bars i:nth-child(1) { height: 7px; } .act-bars i:nth-child(2) { height: 11px; }
+.act-bars i:nth-child(3) { height: 15px; } .act-bars i:nth-child(4) { height: 20px; }
+.act-bars i.f { background: var(--sage); }
+.act-txt { flex: 1; min-width: 0; }
+.act-txt b { display: block; font-size: 14.5px; font-weight: 600; }
+.act-txt span { display: block; font-size: 12.5px; line-height: 1.4; color: var(--text-2); margin-top: 1px; }
+.act-check { position: relative; width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--line-2); }
+.act-opt.on .act-check { background: var(--sage); box-shadow: none; }
+.act-opt.on .act-check::after { content: ''; position: absolute; left: 7.5px; top: 4px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+/* Garde-fous sur l'objectif */
+.tc-note { margin-top: 12px; padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,.75); font-size: 13px; line-height: 1.45; color: var(--text-2); }
+
+/* Silhouette féminine : pli de la brassière */
+.bf-fold { fill: none; stroke: #8FAE99; stroke-width: 1; stroke-linecap: round; }
+
+
+.pcell-input::placeholder { color: var(--muted); }
+
+/* ════════════════════════════════════════════════════════════
+   Accueil, foyer, profil illustré, repas et régime (v115)
+   Couleurs : celles de l'app (sauge pour l'action et la sélection, teintes de famille en fond de carte)
+════════════════════════════════════════════════════════════ */
+.welcome-view { display: flex; flex-direction: column; min-height: 100dvh; padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-bottom: calc(100px + var(--safe-b)); }
+.wl-top { display: flex; align-items: center; gap: 14px; min-height: 40px; }
+.wl-spacer { width: 40px; height: 40px; }
+.wl-progress { flex: 1; display: flex; gap: 6px; }
+.wl-progress i { flex: 1; height: 6px; border-radius: 999px; background: var(--line); transition: background .25s; }
+.wl-progress i.on { background: var(--sage); }
+.wl-kick { margin-top: 26px; font-size: 13px; font-weight: 600; color: var(--accent); }
+.wl-title { font-family: var(--serif); font-weight: 500; font-size: 33px; line-height: 1.1; letter-spacing: -0.02em; margin: 6px 0 18px; }
+.wl-top + .wl-title { margin-top: 26px; }
+.wl-who { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; padding: 5px 13px 5px 5px; border-radius: 999px; background: var(--sage-t); color: var(--accent); font-size: 13px; font-weight: 600; }
+.wl-who-n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--sage); color: #fff; font-size: 12px; }
+.wl-who + .wl-title { margin-top: 12px; }
+.wl-error { margin-top: 12px; font-size: 13.5px; font-weight: 500; line-height: 1.4; color: #A4553A; }
+/* bouton principal accroché en bas de l'écran */
+.wl-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; padding: 14px var(--g) calc(18px + var(--safe-b)); background: linear-gradient(180deg, rgba(244,246,241,0) 0%, var(--bg) 38%); }
+.wl-cta .hb-btn { display: block; width: 100%; max-width: 480px; margin: 0 auto; height: 56px; font-size: 16px; }
+.wl-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.wl-pills span { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.pl-honey { background: var(--honey-t); color: #8A5A1C; } .pl-sky { background: var(--sky-t); color: #2F6280; } .pl-leaf { background: var(--leaf-t); color: #4E7A35; }
+
+/* Bienvenue : collage de plats */
+.wl-hello-view, .welcome-view.wl-hello { padding-top: 0; }
+.wl-hero { position: relative; height: 410px; margin: 0 calc(-1 * var(--g)); border-radius: 0 0 46px 46px; background: var(--sage-t); overflow: hidden; }
+.wl-blob { position: absolute; border-radius: 50%; }
+.wl-blob.b1 { width: 380px; height: 380px; left: -130px; top: -160px; background: var(--sage-l); opacity: .45; }
+.wl-blob.b2 { width: 230px; height: 230px; right: -70px; top: 240px; background: var(--honey-t); }
+.wl-ph { position: absolute; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 6px var(--bg); }
+.wl-ph.p0 { width: 54%; aspect-ratio: 1; left: 6%; top: 16%; }
+.wl-ph.p1 { width: 38%; aspect-ratio: 1; left: 55%; top: 9%; }
+.wl-ph.p2 { width: 30%; aspect-ratio: 1; left: 58%; top: 47%; }
+.wl-ph.p3 { width: 32%; aspect-ratio: 1; left: 25%; top: 67%; }
+.wl-hello { padding-top: 22px; }
+.wl-hello .brand-word { font-size: 60px; }
+.wl-hello .wl-lead { margin-top: 16px; font-size: 16px; line-height: 1.5; color: var(--text-2); }
+
+/* Coche de sélection commune */
+.sel-check { position: absolute; top: 14px; right: 14px; width: 24px; height: 24px; border-radius: 50%; background: var(--sage); display: none; }
+.sel-check::after { content: ''; position: absolute; left: 8.5px; top: 4.5px; width: 5px; height: 11px; border: solid #fff; border-width: 0 2.2px 2.2px 0; transform: rotate(45deg); }
+.on > .sel-check { display: block; }
+
+/* Foyer */
+.hh-list { display: grid; gap: 12px; }
+.hh-card { position: relative; display: flex; align-items: center; gap: 16px; width: 100%; padding: 18px; border-radius: 30px; background: var(--t); text-align: left; }
+.hh-card.on { box-shadow: inset 0 0 0 2px var(--sage); }
+.hh-plates { position: relative; width: 112px; height: 92px; flex-shrink: 0; }
+.hh-plates img { position: absolute; width: 82px; height: 82px; border-radius: 50%; object-fit: cover; }
+.hh-1 img { left: 15px; top: 5px; }
+.hh-2 img:first-child { left: 0; top: 0; } .hh-2 img:last-child { left: 30px; top: 10px; box-shadow: 0 0 0 4px var(--t); }
+.hh-txt b { display: block; font-family: var(--serif); font-weight: 500; font-size: 23px; line-height: 1.15; padding-right: 22px; }
+.hh-txt span { display: block; margin-top: 4px; font-size: 13.5px; line-height: 1.4; color: var(--text-2); }
+
+/* Prénom et profil illustré */
+.id-block .id-field { display: block; padding: 12px 16px; border-radius: 22px; background: rgba(255,255,255,.7); }
+.id-block .id-name { padding: 2px 0 0; border: none; background: transparent; font-size: 20px; }
+.id-block .id-name:focus { background: transparent; }
+.id-block .id-field:focus-within { box-shadow: inset 0 0 0 2px var(--sage); }
+.sx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.sx-card { position: relative; padding: 12px 12px 14px; border-radius: 28px; background: var(--t); text-align: center; }
+.sx-card.on { box-shadow: inset 0 0 0 2px var(--sage); }
+.sx-card .av-svg { display: block; width: 100%; height: auto; }
+.sx-card b { display: block; margin-top: 6px; font-size: 15.5px; font-weight: 600; }
+
+/* Repas : formules avec frise de la journée */
+.fm-list { display: grid; gap: 12px; }
+.fm-card { position: relative; display: block; width: 100%; padding: 14px 16px 6px; border-radius: 26px; background: var(--t); text-align: left; }
+.fm-card.on { box-shadow: inset 0 0 0 2px var(--sage); }
+.fm-card b { display: block; font-size: 15.5px; font-weight: 600; padding-right: 30px; }
+.fm-desc { display: block; margin-top: 2px; font-size: 12.5px; color: var(--text-2); }
+.fm-tl { position: relative; display: block; height: 56px; margin-top: 8px; }
+.fm-tl-ln { position: absolute; left: 0; right: 0; top: 20px; height: 2px; border-radius: 2px; background: rgba(42,58,48,.14); }
+.fm-tl-fast { position: absolute; left: 0; width: 28%; top: 14px; height: 14px; border-radius: 9px; background: repeating-linear-gradient(135deg, rgba(42,58,48,.12) 0 4px, transparent 4px 8px); }
+.fm-tl-d { position: absolute; top: 21px; transform: translate(-50%, -50%); border-radius: 50%; box-shadow: 0 0 0 3px rgba(255,255,255,.75); }
+.fm-tl-t { position: absolute; top: 37px; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
+.fm-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; }
+.fm-legend span { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+.fm-legend i { width: 9px; height: 9px; border-radius: 50%; }
+.sub-head { margin: 24px 0 10px; font-family: var(--serif); font-size: 20px; font-weight: 500; }
+.dt-card { margin-top: 12px; padding: 14px 16px; border-radius: 22px; background: var(--t); }
+.dt-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.dt-top b { font-size: 15px; font-weight: 600; }
+.dt-top span { font-size: 12px; color: var(--text-2); text-align: right; }
+.dt-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 10px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.75); }
+.dt-btn { padding: 9px 2px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: var(--text-2); text-align: center; }
+.dt-btn.on { background: var(--sage); color: #fff; }
+
+/* Résumé du foyer */
+.sm-list { display: grid; gap: 12px; }
+.sm-card { padding: 16px 18px; border-radius: 28px; background: var(--t); }
+.sm-head { display: flex; align-items: center; gap: 12px; }
+.sm-av { width: 54px; height: 54px; flex-shrink: 0; }
+.sm-av .av-svg { width: 100%; height: 100%; }
+.sm-head b { display: block; font-size: 17px; font-weight: 600; }
+.sm-head span { display: block; font-size: 12.5px; color: var(--text-2); }
+.sm-kcal { margin-top: 12px; font-family: var(--serif); font-size: 34px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
+.sm-kcal span { font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.sm-maint { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+.sm-card .tc-macros { margin-top: 12px; }
+
+/* Sélecteur de personne (Semaine, Mon programme) */
+.who-switch { display: flex; gap: 8px; margin: 12px 0 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.7); }
+.who-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 5px 10px 5px 5px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--text-2); }
+.who-btn.on { background: var(--sage); color: #fff; }
+.who-av { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; background: var(--sage-t); flex-shrink: 0; }
+.who-av .av-svg { width: 100%; height: 100%; }
+.page-head + .who-switch { margin-top: 16px; }
+
+/* Cuisiner : répartition des boîtes par personne */
+.ck-split { display: grid; gap: 8px; margin-top: 10px; }
+.ck-split-dish { padding: 10px 12px; border-radius: 18px; background: var(--t, rgba(255,255,255,.75)); }
+.ck-split-name { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.ck-split-row { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; font-size: 13.5px; color: var(--text-2); }
+.ck-split-row span:first-child { font-weight: 600; color: var(--text); }
+
+/* Mon programme : budget */
+.budget-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 14px 16px; border-radius: 22px; background: rgba(255,255,255,.7); }
+.budget-row b { display: block; font-size: 14.5px; font-weight: 600; }
+.budget-row span { font-size: 12.5px; color: var(--text-2); }
+.bud-val { min-width: 62px; text-align: center; font-family: var(--serif); font-size: 19px; color: var(--text) !important; }
+@media (prefers-reduced-motion: reduce) { .wl-progress i { transition: none; } }
+.set-section .id-block { margin-bottom: 12px; }
+
+/* ── Petit-déjeuner dans la semaine et dans Cuisiner ── */
+.dv-morning { display: flex; align-items: center; gap: 12px; width: 100%; margin-bottom: 12px; padding: 8px 14px 8px 8px; border-radius: 20px; background: rgba(255,255,255,.75); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--honey) 45%, transparent); text-align: left; }
+.dv-morning .dish-ph { width: 64px; height: 64px; border-radius: 18px; flex-shrink: 0; font-size: 30px; background: var(--honey-t); }
+.dv-mo-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.dv-mo-lbl { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: var(--honey-t); color: #8A5A1C; font-size: 12px; font-weight: 600; }
+.dv-mo-name { font-family: var(--serif); font-size: 15.5px; font-weight: 500; line-height: 1.25; }
+.dv-morning .dv-k { flex-shrink: 0; }
+.ck-bk { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 8px; padding: 10px 14px 10px 10px; border-radius: 20px; background: rgba(255,255,255,.75); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--honey) 45%, transparent); text-align: left; }
+.ck-bk .dish-ph { width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0; }
+.ck-bk-txt { flex: 1; min-width: 0; }
+.ck-bk-txt b { display: block; font-size: 14.5px; font-weight: 600; }
+.ck-bk-txt span { display: block; font-size: 12.5px; color: var(--text-2); margin-top: 1px; }
+
+/* Formule changée depuis la génération de la semaine */
+.formula-note { margin: 12px 0 16px; padding: 16px 18px; border-radius: 24px; background: rgba(255,255,255,.8); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--honey) 55%, transparent); }
+.formula-note b { display: block; font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.25; }
+.formula-note p { margin: 6px 0 12px; font-size: 14px; line-height: 1.45; color: var(--text-2); }
+.formula-note .hb-btn { width: 100%; }
+
+.fn-rows { margin-top: 10px; display: grid; gap: 4px; }
+.fn-row { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; color: var(--text-2); }
+.fn-row span:first-child { font-weight: 600; color: var(--text); }
+.fn-row strong { color: var(--text); font-weight: 600; }
+.formula-note .fn-second { margin-top: 8px; background: transparent; box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--text); }
+
+.dt-seg-2 { grid-template-columns: 1fr 1fr; }
+
+
+/* ════════════════════════════════════════════════════════════
+   Uniformisation (v121) : le style du reste de l'app
+   Cartes blanches translucides, sélection en sauge, la couleur reste dans le contenu
+   (photos, illustrations, frise des repas, barres de macros, pastilles Midi et Soir).
+════════════════════════════════════════════════════════════ */
+.hh-card, .sx-card, .fm-card, .dt-card, .sm-card, .act-opt {
+  background: rgba(255,255,255,.72) !important; box-shadow: none;
+}
+.hh-card.on, .sx-card.on, .fm-card.on, .act-opt.on {
+  background: var(--sage-t) !important; box-shadow: inset 0 0 0 2px var(--sage);
+}
+/* Ton objectif : chaque programme garde sa couleur pâle, comme à l'origine dans l'app */
+.welcome-view .proto-card, .settings-view .proto-card { background: color-mix(in srgb, var(--t) 75%, #fff) !important; box-shadow: none; }
+.welcome-view .proto-card.active, .settings-view .proto-card.active { background: var(--t) !important; box-shadow: inset 0 0 0 2px var(--c); }
+.sel-check, .hh-card .sel-check, .sx-card .sel-check, .fm-card .sel-check, .act-opt.on .act-check { background: var(--sage); }
+.welcome-view .proto-card .proto-check, .settings-view .proto-card .proto-check { background: var(--c); }
+.welcome-view .proto-info, .settings-view .proto-info { background: rgba(255,255,255,.85); }
+.hh-2 img:last-child { box-shadow: 0 0 0 4px #fff; }
+.hh-card.on .hh-2 img:last-child { box-shadow: 0 0 0 4px var(--sage-t); }
+.sx-card .av-svg circle:first-child { fill: var(--bg); opacity: 1; }
+.sx-card.on .av-svg circle:first-child { fill: #fff; opacity: .8; }
+.dt-seg { background: var(--bg); }
+.dt-btn.on { background: var(--sage); color: #fff; }
+.act-bars i.f { background: var(--sage); }
+.id-block .id-field, .welcome-view .profile-cell { background: rgba(255,255,255,.72); box-shadow: none; }
+.id-block .id-field:focus-within { box-shadow: inset 0 0 0 2px var(--sage); }
+.bf-guide-btn { background: rgba(255,255,255,.72) !important; box-shadow: none !important; }
+.bf-guide-ic { background: var(--sage-t) !important; }
+.sm-av .av-svg circle:first-child { fill: var(--sage-t); opacity: 1; }
+/* accueil : un seul accent, le sauge */
+.wl-progress i.on { background: var(--sage); }
+.wl-kick { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 13px; font-weight: 600; color: var(--accent); }
+.wl-kick i { display: none; }
+.wl-who + .wl-kick { margin-top: 12px; }
+.wl-kick + .wl-title { margin-top: 6px; }
+.wl-who { background: var(--sage-t); color: var(--accent); }
+.wl-who-n { background: var(--sage); }
+.wl-hero { height: 400px; border-radius: 0 0 44px 44px; background: var(--sage-t); }
+.wl-blob.b1 { width: 340px; height: 340px; left: -120px; top: -150px; background: var(--sage-l); opacity: .35; }
+.wl-blob.b2 { display: none; }
+.wl-ph { box-shadow: 0 0 0 5px var(--sage-t); }
+.wl-pills span { background: rgba(255,255,255,.72) !important; color: var(--accent) !important; box-shadow: none; }
+/* Mon programme */
+.settings-view .target-card { background: linear-gradient(150deg, #E4EEE6, #F6F1E6); box-shadow: none; }
+.settings-view .pg-now, .settings-view .pg-next, .settings-view .pg-next.last { background: rgba(255,255,255,.72); box-shadow: none; }
+.settings-view .pg-chip.on { background: var(--sage-t); box-shadow: inset 0 0 0 1.5px var(--sage); }
+.settings-view .phase-step { background: rgba(255,255,255,.72); }
+.settings-view .tc-note { background: rgba(255,255,255,.75); }
+.hh-row { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 2px; padding: 14px 16px; border-radius: 22px; background: rgba(255,255,255,.72); text-align: left; }
+.hh-plus { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; background: var(--sage-t); color: var(--accent); font-size: 24px; line-height: 1; }
+.hh-row-txt { flex: 1; min-width: 0; }
+.hh-row-txt b { display: block; font-size: 14.5px; font-weight: 600; }
+.hh-row-txt span { display: block; margin-top: 1px; font-size: 12.5px; color: var(--text-2); }
+.hh-remove .hh-row-txt b { color: #A4553A; }
+.hh-members { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.hh-mem { padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.72); }
+.hh-mem b { display: block; font-size: 14.5px; font-weight: 600; }
+.hh-mem span { font-size: 12.5px; color: var(--text-2); }
+/* Semaine : petit-déjeuner, message de mise à jour, collations */
+.dv-morning, .ck-bk { box-shadow: none; background: var(--bg); }
+.formula-note { background: var(--sage-t); box-shadow: none; }
+.formula-note .fn-second { background: rgba(255,255,255,.7); box-shadow: none; }
+.today-extra span { display: inline-block; margin-right: 6px; padding: 2px 9px; border-radius: 999px; background: var(--bg); font-size: 12px; font-weight: 600; color: var(--accent); }
+/* Détail du jour : Changer et Imprévu, intégrés sous chaque plat */
+.dv-swaps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.dv-acts { display: flex; gap: 0; padding: 3px; border-radius: 14px; background: rgba(255,255,255,.72); }
+.dv-acts .act-btn { flex: 1; padding: 8px 4px; border-radius: 11px; font-size: 13px; font-weight: 600; color: var(--accent); text-align: center; }
+.dv-acts .act-btn + .act-btn { box-shadow: -1px 0 0 var(--line); border-radius: 0 11px 11px 0; }
+.dv-acts .act-btn:active { background: var(--sage-t); }
+.dv-acts.is-out { flex-direction: column; align-items: stretch; gap: 2px; }
+.dv-acts .out-tag { padding: 6px 8px 2px; font-size: 12.5px; line-height: 1.35; color: var(--text-2); text-align: center; }
+.dv-acts.is-out .act-btn { box-shadow: none; border-radius: 11px; }
+
+/* Cuisiner : riz de la session, récapitulatif au moment de manger */
+.ck-phase-rice { --t: var(--sage-t); }
+.ck-meals { display: grid; gap: 8px; }
+.ck-meal { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 20px; background: rgba(255,255,255,.72); }
+.ck-meal .dish-ph { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; }
+.ck-meal b { display: block; font-size: 14.5px; font-weight: 600; }
+.ck-meal p { margin-top: 2px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+
+.ck-phase-extra { --t: var(--honey-t); }
+.ck-meal { text-align: left; width: 100%; }
+.ck-meal-n { display: block; margin-top: 1px; font-size: 12px; font-weight: 600; color: var(--accent); }
+
+/* ── Touches de couleur légères (v124) ── */
+/* Mon programme : guide de masse grasse, phase en cours, étape suivante et réglage manuel à la couleur du programme */
+.settings-view .bf-guide-btn { background: color-mix(in srgb, var(--sky-t) 80%, #fff) !important; }
+.settings-view .bf-guide-ic { background: rgba(255,255,255,.85) !important; }
+.settings-view .pg-now { background: var(--t, var(--sage-t)) !important; }
+.settings-view .pg-next, .settings-view .pg-next.last { background: color-mix(in srgb, var(--t, var(--sage-t)) 55%, #fff) !important; }
+.settings-view .pg-chip.on { background: #fff; box-shadow: inset 0 0 0 1.5px var(--c, var(--sage)); }
+.settings-view .set-manual { background: color-mix(in srgb, var(--t, var(--sage-t)) 45%, #fff); }
+/* Repas : une couleur par sujet (régime, petit-déjeuner, whey) */
+.dt-card { background: color-mix(in srgb, var(--t) 70%, #fff) !important; }
+.dt-card .dt-seg { background: rgba(255,255,255,.8); }
+.dt-card .dt-btn.on { background: color-mix(in srgb, var(--c) 85%, #2A3A30); color: #fff; }
+/* Équipement */
+.eq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.eq-card { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 14px 14px 14px; border-radius: 22px; background: rgba(255,255,255,.72); text-align: left; }
+.eq-card.on { background: var(--sage-t); box-shadow: inset 0 0 0 2px var(--sage); }
+.eq-card b { font-size: 14.5px; font-weight: 600; padding-right: 26px; }
+.eq-card span:not(.sel-check) { font-size: 12px; line-height: 1.35; color: var(--text-2); }
+.eq-card .sel-check { top: 12px; right: 12px; width: 22px; height: 22px; }
+.eq-card .sel-check::after { left: 7.5px; top: 4px; }
+.eq-count { margin-top: 12px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+
+.ck-note-safe { margin: 4px 0 10px; padding: 10px 12px; border-radius: 14px; background: var(--honey-t); font-size: 13px; line-height: 1.45; color: var(--text); }
+
+/* Régime : lactose et gluten dans un seul bloc */
+.dt-row { margin-top: 12px; }
+.dt-row + .dt-row { padding-top: 4px; }
+.dt-row-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.dt-row-top span { font-size: 14px; font-weight: 600; }
+.dt-row-top em { font-style: normal; font-size: 12px; color: var(--text-2); }
+.dt-row .dt-seg { margin-top: 6px; }
+
+/* Repas libres et congélation (v127) */
+.free-hint { margin: -2px 0 8px; font-size: 12.5px; line-height: 1.4; color: var(--text-2); }
+.free-grid { display: grid; grid-template-columns: 44px repeat(7, 1fr); gap: 6px; align-items: center; }
+.free-day { text-align: center; font-size: 12px; font-weight: 600; color: var(--text-2); }
+.free-lbl { font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+.free-cell { height: 34px; border-radius: 12px; background: rgba(255,255,255,.8); box-shadow: inset 0 0 0 1.5px var(--line-2); }
+.free-cell.on { background: var(--sage); box-shadow: none; }
+.thaw-note { margin-top: 10px; padding: 10px 12px; border-radius: 16px; background: var(--sky-t); font-size: 13.5px; line-height: 1.45; color: var(--text); }
+.thaw-note b { display: block; font-size: 12px; font-weight: 700; color: #2F6280; margin-bottom: 1px; }
+.dv-frozen { display: block; margin-top: 2px; font-size: 11.5px; font-weight: 600; color: #2F6280; }
+.ck-first { margin-top: 10px; padding: 8px 12px; border-radius: 14px; background: rgba(255,255,255,.75); font-size: 13px; line-height: 1.4; color: var(--text); }
+
+/* Foyer : cartes plus grandes, illustrations dessinées */
+.hh-card { padding: 22px 20px; min-height: 150px; gap: 18px; }
+.hh-plates { width: 130px; height: 110px; display: grid; place-items: center; }
+.hh-plates svg { width: 100%; height: 100%; }
+.hh-txt b { font-size: 26px; }
+.hh-txt span { font-size: 14px; }
+/* Équipement : un dessin par appareil */
+.eq-card { padding: 12px 14px 14px; }
+.eq-art { display: block; width: 56px; height: 48px; margin-bottom: 6px; }
+.eq-art svg { width: 100%; height: 100%; }
+.eq-desc { font-size: 12px; line-height: 1.35; color: var(--text-2); }
+/* Repas libres : calories réservées */
+.free-kcal { margin-bottom: 10px; }
+.free-kcal-lbl { display: block; font-size: 12.5px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+.free-seg { grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,.8); }
+.free-seg .dt-btn { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 7px 2px; font-size: 12px; }
+.free-seg .dt-btn small { font-size: 10.5px; font-weight: 500; opacity: .8; }
+.free-seg .dt-btn.on { background: var(--sage); color: #fff; }
+.hh-plates { width: 140px; height: 130px; }
+.hh-2 { width: 160px; }
+/* Foyer : illustration au-dessus du texte */
+.hh-list { grid-template-columns: 1fr 1fr; }
+.hh-card { flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 18px 14px 20px; min-height: 0; }
+.hh-plates, .hh-2 { width: 100%; max-width: 170px; height: 130px; }
+.hh-txt b { font-size: 22px; padding-right: 0; }
+.hh-txt span { font-size: 13px; }
+.hh-card .sel-check { top: 12px; right: 12px; }
+
+/* Illustrations dessinées : repas libre (tablier), repas dehors (joker) */
+.dish-ph-art { display: block; overflow: hidden; background: none; }
+.dish-ph-art svg { width: 100%; height: 100%; display: block; }
+.dv-photo .dish-ph-art { width: 100%; height: 100%; }
+.rd-art { width: 100%; aspect-ratio: 1; }
+.rd-art svg { width: 100%; height: 100%; display: block; }
+
+/* En-tête de la Semaine : deux boutons ronds identiques, le livre et l'avatar (qui ouvre Mon programme) */
+.hb-top-actions { gap: 10px; margin-right: 0; align-items: center; }
+.hb-top-actions .hb-icon { width: 42px; height: 42px; background: rgba(255,255,255,.75); color: var(--text); }
+.hb-top-actions .hb-icon svg { width: 20px; height: 20px; stroke-width: 1.8; }
+.hb-avatar { width: 42px; height: 42px; padding: 0; border-radius: 50%; overflow: hidden; background: var(--sage-t); flex-shrink: 0; }
+.hb-avatar .av-svg { width: 118%; height: 118%; margin: -9% 0 0 -9%; display: block; }
+.hb-avatar .av-svg circle:first-child { fill: var(--sage-t); opacity: 1; }
+.hb-avatar:active, .hb-top-actions .hb-icon:active { transform: scale(.96); }
+
+/* Recettes : onglet de la barre du bas */
+.hb-tab-head { padding-top: calc(14px + env(safe-area-inset-top, 0px)); margin-bottom: 4px; }
+.rd-back.round-back { position: absolute; width: 40px; height: 40px; background: rgba(255,255,255,.88); box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.rd-back.round-back svg { width: 20px; height: 20px; stroke-width: 2.2; }
+
+/* Mon programme : fiche d'identité (bandeau, photo d'identité sur fond blanc, champs en pointillés) */
+.idf { margin: 14px 0 6px; border-radius: 28px; overflow: hidden; background: #FBF8F2; box-shadow: inset 0 0 0 1.5px #E2D6C0; }
+.idf-band { display: flex; justify-content: space-between; padding: 9px 16px; background: var(--sage); color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.idf-body { display: flex; gap: 14px; padding: 16px; align-items: center; }
+.idf-photo { position: relative; width: 96px; height: 118px; flex-shrink: 0; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: inset 0 0 0 1.5px #E2D6C0; }
+.idf-photo svg { position: absolute; left: 50%; bottom: 0; width: 118%; height: auto; transform: translateX(-50%); display: block; }
+.idf-fields { flex: 1; min-width: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; }
+.idf-full { grid-column: 1 / 3; }
+.idf-f { border-bottom: 1.5px dotted #D8CBB3; padding-bottom: 3px; }
+.idf-f span, .idf-stamp span { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.idf-f b { font-size: 16px; font-weight: 600; color: var(--text); }
+.idf-f b.idf-name { font-family: var(--serif); font-size: 22px; font-weight: 500; }
+.idf-stamp { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 0 16px 16px; padding: 10px 12px; border-radius: 14px; background: var(--t, var(--sage-t)); }
+.idf-stamp b { font-size: 15px; font-weight: 600; }
+.idf-goal { text-align: right; flex-shrink: 0; }
+.idf-goal b { font-family: var(--serif); font-size: 20px; font-weight: 500; }
+
+/* Personnages et illustrations en images (v151) */
+.av-pic { position: relative; display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--avbg, #E4EEE6); }
+.av-pic.av-f { --avbg: #FBEBE3; }
+.av-pic img { position: absolute; left: 50%; bottom: 0; width: 104%; transform: translateX(-50%); display: block; }
+.sx-card .av-pic { background: var(--bg, var(--avbg)); }
+.sx-card.on .av-pic { background: rgba(255,255,255,.8); }
+.hb-avatar .av-pic, .sm-av .av-pic, .who-av .av-pic { width: 100%; height: 100%; margin: 0; }
+.hb-avatar .av-pic img { width: 112%; }
+.idf-photo .idf-img { position: absolute; left: 50%; bottom: 0; width: 112%; transform: translateX(-50%); display: block; }
+.hh-art { display: block; margin: auto; background-repeat: no-repeat; }
+.hh-art-1 { width: 120px; height: 120px; border-radius: 50%; background-color: #E4EEE6; background-image: url(img/art/man_bowl.webp); background-size: 118% auto; background-position: 50% 20%; }
+.hh-art-2 { width: 120px; height: 120px; border-radius: 50%; background-color: #FBEBE3; background-image: url(img/art/couple.webp); background-size: 142% auto; background-position: 50% 100%; }
+.art-pic { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.art-pic img { width: 80%; height: auto; display: block; }
+.rd-art .art-pic img { width: 62%; }
+
+/* v153 : fiche (cadre par-dessus l'image), onglet Recettes (deux menus déroulants), cartes du foyer */
+.idf-photo::after { content: ''; position: absolute; inset: 0; border-radius: 14px; box-shadow: inset 0 0 0 1.5px #E2D6C0; pointer-events: none; }
+.idf-photo .idf-img { width: 100%; }
+.hh-card .hh-plates { width: 100%; max-width: 120px; height: auto; aspect-ratio: 1; }
+.hh-card .hh-art-1, .hh-card .hh-art-2 { width: 100%; height: 100%; }
+.rc-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.rc-select { position: relative; display: flex; flex-direction: column; gap: 1px; padding: 9px 34px 10px 15px; border-radius: 18px; background: rgba(255,255,255,.85); box-shadow: inset 0 0 0 1.5px var(--line-2); cursor: pointer; }
+.rc-select span { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.rc-select select { -webkit-appearance: none; appearance: none; width: 100%; padding: 0; border: 0; background: transparent; font: 600 15px var(--sans); color: var(--text); outline: none; cursor: pointer; }
+.rc-select::after { content: ''; position: absolute; right: 16px; top: 50%; width: 7px; height: 7px; border-right: 2px solid var(--text-2); border-bottom: 2px solid var(--text-2); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.rc-select.on { background: var(--sage-t); box-shadow: inset 0 0 0 1.5px var(--sage); }
+.rc-count { margin: 12px 4px 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+/* titres des cartes du foyer : taille qui suit la largeur de l'écran */
+.hh-card .hh-txt b { font-size: clamp(17px, 5.4vw, 22px); }
+.hh-card .hh-txt span { font-size: clamp(12px, 3.6vw, 13px); }
+
+/* v158 : repas libres en capsules (une par jour, midi en haut, soir en bas) */
+.free-hint { margin: 2px 0 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.4; }
+.free-caps { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.free-cap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.free-cap > span { font-size: 11.5px; font-weight: 700; color: var(--muted); }
+.free-pill { width: 100%; display: flex; flex-direction: column; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.75); box-shadow: inset 0 0 0 1.5px var(--line-2); }
+.free-pill .free-cell { display: grid; place-items: center; width: 100%; height: 34px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #C9C3B4; box-shadow: none; }
+.free-pill .free-cell + .free-cell { border-top: 1.5px solid var(--line-2); }
+.free-pill .free-cell svg { width: 15px; height: 15px; }
+.free-pill .free-cell.on { background: #D98E6B; color: #fff; }
+.free-leg { display: flex; justify-content: center; gap: 14px; margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+.free-leg span { display: flex; align-items: center; gap: 4px; } .free-leg svg { width: 13px; height: 13px; }
+.free-kcal { margin: 14px 0 0; }
+.free-seg2 { display: grid; grid-template-columns: repeat(4, 1fr); padding: 3px; border-radius: 16px; background: var(--sunken); }
+.free-seg2 button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 7px 2px; border-radius: 13px; font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+.free-seg2 button small { font-size: 10.5px; font-weight: 500; color: var(--muted); }
+.free-seg2 button.on { background: var(--surface, #fff); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+/* v159 : illustrations des protéines dans les boutons */
+.prot-chip .prot-emoji { display: inline-grid; place-items: center; width: 26px; height: 26px; }
+.prot-chip .prot-emoji img { width: 26px; height: 26px; object-fit: contain; display: block; }
+
+/* v160 : Cuisiner étape par étape */
+.ck-menu-link { white-space: nowrap; }
+.ck-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 8px 0; padding: 13px 16px; border-radius: 18px; background: rgba(255,255,255,.6); font-size: 14px; font-weight: 600; color: var(--text); text-align: left; }
+.ck-row.done { color: var(--muted); }
+.ck-row-ok { color: var(--sage); } .ck-row-n { color: var(--muted); font-weight: 500; }
+.ck-row-ok, .ck-row-n { flex-shrink: 0; margin-left: 12px; white-space: nowrap; }
+.ck-cur { margin: 10px 0; padding: 16px; border-radius: 26px; background: var(--t, var(--honey-t)); }
+.ck-cur.ck-phase-rice, .ck-cur.ck-phase-end, .ck-cur.ck-phase-extra { background: var(--honey-t); }
+.ck-cur-step { margin-top: 12px; padding: 18px; border-radius: 20px; background: #fff; font-size: 17px; line-height: 1.5; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+.ck-cur-k { margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--c, #C7913F); }
+.ck-cur-nav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 14px; }
+.ck-cur-nav button { padding: 14px; border-radius: 999px; font: 700 15px var(--sans); text-align: center; }
+.ck-prev { background: #fff; color: var(--text); box-shadow: 0 2px 10px rgba(0,0,0,.06); } .ck-prev:disabled { opacity: .45; box-shadow: none; }
+.ck-next { background: var(--sage); color: #fff; box-shadow: 0 4px 14px rgba(95,123,104,.28); }
+.ck-finished { text-align: center; background: var(--sage-t); } .ck-finished p { margin: 6px 0 12px; color: var(--text-2); }
+.ck-restart { padding: 10px 16px; border-radius: 999px; background: #fff; font: 600 14px var(--sans); color: var(--text-2); }
+/* v160 : fiche modifiable */
+button.idf-f { display: block; width: 100%; text-align: left; position: relative; padding-right: 16px; }
+button.idf-f:active { opacity: .6; }
+.edit-sheet .hb-h2 { text-align: center; margin-bottom: 6px; }
+.edit-step { display: flex; align-items: center; justify-content: space-between; margin: 16px 0 18px; }
+.edit-btn { width: 54px; height: 54px; border-radius: 50%; background: var(--sage-t); color: var(--sage); font-size: 26px; display: grid; place-items: center; }
+.edit-val { display: flex; align-items: baseline; justify-content: center; gap: 6px; flex: 1; }
+.edit-input { width: 3.6ch; border: 0; background: transparent; text-align: center; font: 500 44px var(--serif); color: var(--text); outline: none; }
+.edit-val span { font-size: 18px; color: var(--muted); }
+.edit-name { width: 100%; box-sizing: border-box; margin: 14px 0 16px; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--line-2); font: 500 20px var(--serif); color: var(--text); }
+.edit-sheet .bf-guide-btn { margin-bottom: 14px; }
+
+/* v161 : accueil de Mon programme */
+.pg-hello { margin: 10px 2px 16px; font-size: 14.5px; line-height: 1.45; color: var(--text-2); }
+.pg-hello b { display: block; margin-bottom: 3px; font-family: var(--serif); font-size: 19px; font-weight: 500; color: var(--text); }
+.pg-hello span { display: block; }
+
+/* v162 : un jour à l'écran, bandeau des 7 jours, vignettes petit-déjeuner et collations */
+.day-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 4px 0 14px; }
+.day-strip button { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0 7px; border-radius: 16px; background: rgba(255,255,255,.75); color: var(--text); }
+.day-strip button span { font-size: 10.5px; font-weight: 700; color: var(--muted); }
+.day-strip button b { font-family: var(--serif); font-size: 17px; font-weight: 500; }
+.day-strip button.past { opacity: .5; }
+.day-strip button.today b { color: var(--sage); }
+.day-strip button.on { background: var(--sage); color: #fff; opacity: 1; }
+.day-strip button.on span { color: #E8F0E9; } .day-strip button.on b { color: #fff; }
+.ds-dots { display: flex; gap: 3px; height: 6px; } .ds-dots i { width: 6px; height: 6px; border-radius: 50%; }
+.ds-dots .dot-fish { background: #6FA3C0; } .ds-dots .dot-free { background: #E9A98B; }
+.day-strip button.on .ds-dots .dot-fish { background: #CFE3EE; } .day-strip button.on .ds-dots .dot-free { background: #F6D3C2; }
+.dv-minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.dv-mini { display: flex; flex-direction: column; min-width: 0; text-align: left; }
+.dv-mini .dv-photo { aspect-ratio: 1; border-radius: 18px; }
+.dv-mini .dv-photo .hb-tile-lbl { top: 7px; left: 7px; padding: 3px 8px; font-size: 10.5px; }
+.dv-mini-name { margin-top: 6px; font-family: var(--serif); font-size: 14px; font-weight: 500; line-height: 1.15; color: var(--text); }
+.dv-mini .dv-k { margin-top: 2px; font-size: 11.5px; }
+.lbl-morning { background: var(--honey-t) !important; color: #B07A2A !important; }
+.lbl-snack { background: var(--sage-t) !important; color: #5F7B68 !important; }
+
+/* v163 : nouvel écran d'accueil illustré */
+.wl-hero { height: auto !important; min-height: 0; padding-top: 28px; display: flex; align-items: flex-end; justify-content: center; background: linear-gradient(180deg, #E4EEE6 0%, #EEF3EA 100%) !important; }
+.wl-hero .wl-blob.b1 { width: 300px; height: 300px; top: 40px; right: -90px; left: auto; bottom: auto; background: #FBEBE3; opacity: .8; }
+.wl-hero .wl-blob.b2 { width: 180px; height: 180px; top: 70px; left: -60px; right: auto; bottom: auto; background: #FBF0DD; opacity: 1; }
+.wl-art { position: relative; display: block; width: 100%; max-width: 460px; height: auto; margin-bottom: -2px; }
+.wl-points { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.wl-points div { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 600; color: var(--text); }
+.wl-points i { flex-shrink: 0; width: 9px; height: 9px; margin-left: 4px; border-radius: 50%; }
+/* écrans courts : l'illustration se réduit et le texte garde la place du bouton fixé en bas */
+.wl-art { max-height: 46vh; width: auto; max-width: 100%; }
+.wl-hello { padding-bottom: 104px; }
+@media (max-height: 700px) { .wl-art { max-height: 37vh; } .wl-hero { padding-top: 18px; } .wl-hello .brand-word { font-size: 46px; } .wl-hello { padding-top: 16px; } .wl-hello .wl-lead { margin-top: 10px; font-size: 15px; } .wl-points { margin-top: 12px; gap: 8px; } }
+
+/* v164 : accueil sans phrase d'accroche, liste puis conclusion */
+.wl-hello .brand-tag + .wl-points { margin-top: 20px; }
+.wl-end { margin: 18px 0 0; font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--sage); letter-spacing: -.01em; }
+@media (max-height: 700px) { .wl-end { margin-top: 12px; font-size: 18px; } }
+
+/* v165 */
+.ck-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ck-menu-item { min-width: 0; }
+.ck-menu-name { overflow-wrap: anywhere; }
+.rc-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.rc-select { padding: 8px 26px 9px 12px; }
+.rc-select::after { right: 12px; }
+.rc-select select { font-size: 14px; text-overflow: ellipsis; }
+button.idf-stamp { display: flex; width: calc(100% - 28px); text-align: left; font: inherit; color: inherit; }
+button.idf-stamp:active { opacity: .7; }
+/* écrans étroits : vignettes des plats en colonne (photo, puis nom et lien) */
+@media (max-width: 400px) {
+  .ck-menu-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px; }
+  .ck-menu-name { overflow-wrap: normal; font-size: 14px; }
+  .ck-menu-link { font-size: 12.5px; }
+}
+
+/* v166 : repas libre ou cantine */
+.dv-kind { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 3px; border-radius: 999px; background: var(--sunken); }
+.dv-kind .act-btn { border-radius: 999px; background: transparent; box-shadow: none; color: var(--text-2); }
+.dv-kind .act-btn.on { background: var(--surface, #fff); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+/* v168 : illustration de la cantine, un peu plus bas dans la vignette */
+.art-pic.art-low img { margin-top: 16%; }
+
+/* Riz et pâtes complets ou classiques (v171) */
+.dt-note { margin-top: 8px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+.rd-staple { margin: 14px 0 4px; padding: 14px 16px; border-radius: 22px; background: color-mix(in srgb, var(--leaf-t) 70%, #fff); }
+.rd-staple .dt-seg { grid-template-columns: 1fr 1fr; background: rgba(255,255,255,.8); }
+.rd-staple .dt-btn.on { background: color-mix(in srgb, var(--leaf) 85%, #2A3A30); color: #fff; }
+
+/* Repas libres : réglage « Ajuster » des calories réservées (v186) */
+.free-kcal[hidden] { display: none; }
+.fk-adj { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding: 6px; border-radius: 16px; background: var(--sunken); }
+.fk-adj button { display: grid; place-items: center; text-align: center; width: 38px; height: 38px; border-radius: 12px; background: var(--surface, #fff); font-size: 20px; font-weight: 600; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.fk-adj b { font-size: 17px; font-weight: 700; color: var(--text); }
+.fk-adj b small { font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 3px; }
+.fk-note { display: block; text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+
+/* Sauvegarde des données (v193) */
+.bk-card { background: var(--surface, #fff); border-radius: 22px; padding: 16px; box-shadow: 0 1px 3px rgba(42,58,48,.06); }
+.bk-card p, .bk-confirm p { font-size: 13.5px; color: var(--text-2); line-height: 1.45; margin: 0 0 12px; }
+.bk-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bk-btns .hb-btn { margin: 0; padding: 12px 0; font-size: 15px; }
+.bk-sec { background: var(--sunken) !important; color: var(--text) !important; box-shadow: none !important; }
+.bk-last { display: block; text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
