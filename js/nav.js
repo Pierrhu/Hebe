@@ -4,6 +4,7 @@ const ITEMS = [
   { id: 'week',     label: 'Semaine'  },
   { id: 'cook',     label: 'Cuisiner' },
   { id: 'shopping', label: 'Courses'  },
+  { id: 'recipes',  label: 'Recettes' },
 ];
 
 const SVGS = {
@@ -19,7 +20,7 @@ export function renderNav() {
   const nav = document.createElement('nav');
   nav.id = 'nav';
   nav.innerHTML = ITEMS.map(it => `
-    <button class="nav-btn ${(state.currentView === it.id || (it.id === 'week' && ['recipes','settings'].includes(state.currentView))) ? 'active' : ''}" data-view="${it.id}">
+    <button class="nav-btn ${(state.currentView === it.id || (it.id === 'week' && state.currentView === 'settings')) ? 'active' : ''}" data-view="${it.id}">
       <svg viewBox="0 0 24 24">${SVGS[it.id]}</svg>
       <span>${it.label}</span>
     </button>`).join('');

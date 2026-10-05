@@ -5,7 +5,7 @@
 import { getEntry } from '../data/log.js';
 import { getById }          from '../data/recipes.js';
 import { toast, el }               from './utils.js';
-import { getActivePlan } from './weekgen.js';
+import { getActivePlan, planMembers } from './weekgen.js';
 import { INGREDIENTS, ingCost, NATURAL_UNITS } from '../data/ingredients.js';
 import { itemQuantities } from './optimizer.js';
 
@@ -84,7 +84,6 @@ const CANON = [
   { rx: /\+/i, name: 'Épices & aromates (placard)' },
   // Viandes / poisson
   { rx: /poulet/i,                          name: 'Blanc de poulet' },
-  { rx: /\bdinde\b/i,                       name: 'Blanc de dinde' },
   { rx: /steak hach|boeuf|b\u0153uf/i,        name: 'Steak haché 5%' },
   { rx: /poulet hach/i,                     name: 'Poulet haché' },
   { rx: /merguez/i,                         name: 'Merguez de volaille' },
@@ -93,7 +92,7 @@ const CANON = [
   { rx: /colin|merlu|poisson blanc/i,       name: 'Poisson blanc (colin/merlu)' },
   { rx: /crevette/i,                        name: 'Crevettes décortiquées' },
   { rx: /anchois/i,                         name: 'Anchois' },
-  { rx: /^bacon/i,                          name: 'Bacon de dinde' },
+  { rx: /^bacon/i,                          name: 'Bacon' },
   // Oeufs & laitages
   { rx: /blancs? d'?oeuf/i,                 name: "Blancs d'oeuf" },
   { rx: /^oeufs?\b|oeufs? (durs?|poch)/i,    name: 'Oeufs' },
@@ -208,7 +207,7 @@ const CANON = [
 
 // Catégorie d'un produit (déjà canonisé) → rayon du magasin.
 const CAT_RULES = [
-  { name: 'Viandes & poisson',        rx: /poulet|dinde|boeuf|steak|merguez|thon|saumon|poisson|crevette|anchois|bacon/i },
+  { name: 'Viandes & poisson',        rx: /poulet|boeuf|steak|merguez|thon|saumon|poisson|crevette|anchois|bacon/i },
   { name: 'Œufs & laitages',          rx: /oeuf|fromage|ricotta|feta|parmesan|emmental|skyr|lait|yaourt|beurre$/i },
   { name: 'Féculents & légumineuses', rx: /pâtes|riz|orzo|nouilles|boulghour|quinoa|flocons|lentilles|pois chiches|haricots (rouges|blancs)|maïs|tortillas|pain|crackers|chapelure/i },
   { name: 'Légumes & fruits',         rx: /haricots verts|épinards|courgettes|chou|brocoli|champignons|carottes|concombre|tomates?|poivron|patate|pommes de terre|betterave|salade|avocat|oignon|citron|banane|mangue|pommes|fruits rouges|framboises|passion|dattes|gingembre|ail$|olives|câpres|cornichons|piment|coriandre|persil|menthe|basilic|ciboulette|thym/i },
@@ -233,9 +232,10 @@ function categorize(name) {
 // Les anciennes recettes sans clé passent par l'ancien regroupement par nom (canonical()).
 function buildList(dates) {
   const map = {};
-  dates.forEach(date => {
-    const entry = getEntry(date);
-    ['starter','lunch','dinner','sides','sweet'].forEach(slot => {
+  // toutes les personnes du foyer : une seule liste de courses
+  const entries = planMembers(getActivePlan()).flatMap(mid => dates.map(date => getEntry(date, mid)));
+  entries.forEach(entry => {
+    ['breakfast','starter','lunch','dinner','sides','sweet'].forEach(slot => {
       (entry.meals[slot] || []).forEach(item => {
         const r = getById(item.id);
         if (!r) return;
@@ -263,7 +263,7 @@ function buildList(dates) {
 function toPurchase(item) {
   const db = item.dbKey ? INGREDIENTS[item.dbKey] : null;
   const q = item.qty;
-  // en tranches / à la pièce (pain, blanc de dinde, cheddar, pains burger)
+  // en tranches / à la pièce (pain, blanc de poulet, cheddar, pains burger)
   if (db && NATURAL_UNITS[db.key]) {
     const nu = NATURAL_UNITS[db.key];
     const n = Math.max(1, Math.ceil(q / nu.g - 0.05));
@@ -279,11 +279,19 @@ function toPurchase(item) {
     return { qty: n, unit: 'pièces' };
   }
   if (db && db.snap) {
-    // viandes / poissons : le total tombe pile sur des barquettes (voir weekgen.snapToPacks)
-    const n = Math.max(1, Math.round(q / db.pack));
+    // viandes et poissons : le total tombe sur des barquettes entières (voir weekgen.snapToPacks),
+    // éventuellement en combinant les formats vendus (ex. 500 g + 250 g)
+    const sizes = db.packs || [db.pack];
+    const unit = Math.min(...sizes);
+    let left = Math.max(unit, Math.ceil(q / unit - 0.02) * unit);
+    const total = left;
+    const parts = [];
+    sizes.forEach(sz => { const k = Math.floor(left / sz + 1e-6); if (k > 0) { parts.push([k, sz]); left -= k * sz; } });
     const word = ['saumon'].includes(db.key) ? 'paquet' : ['poisson_blanc', 'crevettes'].includes(db.key) ? 'sachet' : db.key === 'tofu' ? 'bloc' : 'barquette';
-    const total = n * db.pack >= 1000 ? `${String(n * db.pack / 1000).replace('.', ',')} kg` : `${n * db.pack} g`;
-    return { qty: total, unit: `· ${n} ${word}${n > 1 ? 's' : ''} de ${db.pack} g` };
+    const fmt = total >= 1000 ? `${String(total / 1000).replace('.', ',')} kg` : `${total} g`;
+    const txt = parts.map(([k, sz], i) => i === 0 ? `${k} ${word}${k > 1 ? 's' : ''} de ${sz} g` : `${k} de ${sz} g`).join(' et ');
+    const rest = Math.round((total - q) / 10) * 10;
+    return { qty: fmt, unit: `· ${txt}${rest >= 50 ? `, il restera ${rest} g à congeler` : ''}` };
   }
   if (db && db.pack) {
     const n = Math.max(1, Math.ceil(q / db.pack - 0.05));
@@ -331,11 +339,18 @@ export function renderShopping() {
     view.innerHTML = `
       <div class="shop-head">
         <div class="hb-page-title">Courses</div>
-        <div class="shop-meta">Semaine du ${start}</div>
-        <div class="shop-progress">
-          <div class="tm-bar"><i style="width:${items.length ? done / items.length * 100 : 0}%"></i></div>
-          <span>${done} / ${items.length}</span>
-          ${done > 0 ? '<button class="link-btn clear-btn">Tout décocher</button>' : ''}
+        <div class="shop-card ${items.length && done === items.length ? 'all-done' : ''}">
+          <div class="shop-card-top">
+            <div>
+              <div class="shop-meta">Semaine du ${start}</div>
+              <div class="shop-count"><b>${done}</b><span>/ ${items.length} produits</span></div>
+            </div>
+            ${done > 0 ? '<button class="clear-btn">Tout décocher</button>' : ''}
+          </div>
+          <div class="shop-bar"><i style="width:${items.length ? done / items.length * 100 : 0}%"></i></div>
+          ${items.length && done === items.length
+            ? '<div class="shop-tip done">Tout est dans ton panier. Courses terminées !</div>'
+            : done === 0 ? `<div class="shop-tip"><span class="shop-tip-check" aria-hidden="true"></span>Coche chaque produit au fur et à mesure que tu le mets dans ton panier.</div>` : ''}
         </div>
       </div>
       <div class="shopping-list">

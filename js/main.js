@@ -1,3 +1,4 @@
+import { applyDiet } from './diet.js';
 import { state, setState } from './state.js';
 import { renderNav }       from './nav.js';
 import { renderWeek }      from './week.js';
@@ -5,6 +6,9 @@ import { renderCook }      from './cook.js';
 import { renderRecipes }   from './recipes.js';
 import { renderShopping }  from './shopping.js';
 import { renderSettings }  from './settings.js';
+import { renderWelcome }   from './welcome.js';
+import { isOnboarded }     from '../data/household.js';
+import { applyEquipment }  from './adapt.js';
 
 const VIEWS = {
   week:     renderWeek,
@@ -14,15 +18,31 @@ const VIEWS = {
   settings: renderSettings,
 };
 
-function navigate(view) { setState({ currentView: view }); render(); }
+// changer d'onglet ou de page ramène toujours en haut
+function navigate(view) { setState({ currentView: view }); render(); window.scrollTo(0, 0); }
 
 function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
+  applyEquipment(); // recettes adaptées à l'équipement du foyer
+  applyDiet();      // puis au régime (lactose)
+  // premier lancement : on fait connaissance avant tout le reste
+  if (!isOnboarded()) { renderWelcome(() => { setState({ currentView: 'week' }); render(); window.scrollTo(0, 0); }); return; }
   (VIEWS[state.currentView] || renderWeek)();
   renderNav();
 }
 
 window._nav = navigate;
 document.addEventListener('DOMContentLoaded', render);
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+// Mise à jour automatique : on vérifie s'il existe une nouvelle version à chaque ouverture,
+// et la page se recharge toute seule (une fois) dès qu'elle est installée. Les données restent intactes.
+if ('serviceWorker' in navigator) {
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloaded) return; // première installation : rien à recharger
+    reloaded = true;
+    window.location.reload();
+  });
+  navigator.serviceWorker.register('./sw.js').then(reg => reg.update()).catch(() => {});
+}

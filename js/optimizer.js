@@ -16,9 +16,9 @@ const MACROS = ['kcal', 'protein', 'carbs', 'fat'];
 // Réglages du moteur (modifiables pour tester)
 export const OPT = {
   priceWeight: 0.15,      // poids du prix dans le calibrage des portions
-  plateProteinShare: 0.9, // part des protéines portée par les assiettes (le reste : collation / whey)
+  plateProteinShare: 1.1, // part des protéines portée par les assiettes (le reste : collation / whey)
   autoSides: true,        // ajouter un accompagnement à l'assiette si ça aide…
-  autoSideIds: ['SA01', 'SA11'], // …mais seulement les frites (zéro effort à l'air fryer)
+  autoSideIds: [], // plus d'accompagnement : les plats sont complets
 };
 
 // Compat : classification par nom (utilisée par d'anciens modules)
@@ -62,6 +62,34 @@ export function itemQuantities(item) {
   return r.ingredients.map((ing, i) => (ov[i] != null ? ov[i] : ing.qty * s));
 }
 
+// ── Repères de qualité (Santé publique France) ──
+// Charcuterie : 150 g par semaine au plus. Viande rouge : 500 g cuits par semaine au plus (voir weekgen.js).
+export const CHARC_KEYS = ['jambon_blanc', 'poulet_tranches'];
+export const CHARC_MAX = 160; // v191 : 4 tranches de 40 g par semaine, soit une barquette entière
+export const RED_MEAT_KEYS = ['boeuf', 'boeuf_emince'];
+// Fruits et oléagineux : les compléments qui en contiennent sont préférés à macros équivalentes
+export const FRUIT_KEYS = ['banane', 'pomme', 'fruits_rouges', 'fruit_saison', 'mangue', 'dattes'];
+export const NUT_KEYS = ['amandes', 'beurre_cacahuete', 'cacahuetes', 'pistaches', 'chia', 'sesame', 'tahini'];
+export const FRUIT_NUT_KEYS = [...FRUIT_KEYS, ...NUT_KEYS];
+// score multiplié (plus bas = meilleur) : les oléagineux, plus caloriques, ont besoin d'un coup de pouce plus fort
+const FRUIT_BONUS = 0.85, NUT_BONUS = 0.6;
+export const hasFruitOrNut = r => !!r && r.ingredients.some(i => FRUIT_NUT_KEYS.includes(i.key));
+// Calcium d'une recette, en mg pour 100 kcal (table micros.js)
+export function calciumPer100kcal(r) {
+  if (typeof MICROS === 'undefined' || !r?.macros?.kcal) return 0;
+  const ca = r.ingredients.reduce((a, i) => { const row = MICROS[i.key]; return row ? a + row[3] * (INGREDIENTS[i.key]?.unit === 'pièce' ? i.qty : i.qty / 100) : a; }, 0);
+  return ca / r.macros.kcal * 100;
+}
+const qualityBonus = r => (r.ingredients.some(i => NUT_KEYS.includes(i.key)) ? NUT_BONUS : r.ingredients.some(i => FRUIT_KEYS.includes(i.key)) ? FRUIT_BONUS : 1);
+export function charcGrams(item) {
+  const r = getById(item.id);
+  if (!r || !r.ingredients.some(i => CHARC_KEYS.includes(i.key))) return 0;
+  const qs = itemQuantities(item);
+  return r.ingredients.reduce((a, ing, i) => a + (CHARC_KEYS.includes(ing.key) ? qs[i] : 0), 0);
+}
+export const charcOfEntry = e => ['breakfast', 'starter', 'lunch', 'dinner', 'sides', 'sweet']
+  .reduce((a, s) => a + (e?.meals?.[s] || []).reduce((b, it) => b + charcGrams(it), 0), 0);
+
 export function computeMealMacros(item) {
   const r = getById(item.id);
   if (!r) return { kcal: 0, protein: 0, carbs: 0, fat: 0 };
@@ -93,8 +121,38 @@ function score(t, T) {
 // ── Optimise UNE recette pour une cible de repas ──
 // mode : 'P' (plat) ou 'S' (collation) → choisit quels ingrédients servent de leviers.
 // Renvoie { overrides: {idx: qty}, macros }
-export function optimizeRecipe(recipe, target, mode = 'P') {
+// Les minimums « plat » (féculent principal, protéine) sont pensés pour une assiette d'environ
+// 1 140 kcal. Pour de plus petits besoins, ils diminuent en proportion (jusqu'à 60 %).
+export const PLATE_REF_KCAL = 1140;
+export const portionScale = plateKcal => Math.min(1, Math.max(0.5, plateKcal / PLATE_REF_KCAL));
+// Plancher d'une assiette : ses calories quand tous les leviers sont au minimum
+const floorCache = {};
+export function plateFloor(recipe, scale = 1) {
+  const k = recipe.id + '@' + scale.toFixed(2);
+  if (floorCache[k] == null) floorCache[k] = optimizeRecipe(recipe, { kcal: 0, protein: 0, carbs: 0, fat: 0 }, 'P', scale).macros.kcal;
+  return floorCache[k];
+}
+function scaledMin(key, value, scale) {
+  if (scale >= 1) return value;
+  const nu = NATURAL_UNITS[key];
+  // pains, wraps, pitas : on garde des unités entières (arrondi au-dessus)
+  return nu ? Math.max(nu.g, Math.ceil(value * scale / nu.g - 1e-9) * nu.g) : Math.ceil(value * scale / (value >= 200 ? 25 : 10) - 1e-9) * (value >= 200 ? 25 : 10);
+}
+
+// Protéine principale d'une recette : l'ingrédient protéique qui apporte le plus de protéines
+export function mainProteinIdx(recipe) {
+  let best = -1, p = 0;
+  recipe.ingredients.forEach((ing, idx) => {
+    const db = INGREDIENTS[ing.key];
+    if (!ing.extra && db && db.role === 'protein' && ing.protein > p) { p = ing.protein; best = idx; }
+  });
+  return best;
+}
+
+// fixed = { index: quantité } : ingrédients imposés (viande calée sur les barquettes achetées)
+export function optimizeRecipe(recipe, target, mode = 'P', scale = 1, fixed = null) {
   const qty = recipe.ingredients.map(i => i.qty);
+  if (fixed) Object.entries(fixed).forEach(([i, q]) => { qty[i] = q; });
   const pu = recipe.ingredients.map(perUnit);
   const levers = [];
   // Protéine principale = l'ingrédient protéique qui apporte le plus de protéines.
@@ -106,7 +164,7 @@ export function optimizeRecipe(recipe, target, mode = 'P') {
   });
   // Féculent principal : c'est lui qui reçoit le minimum « plat » (minP).
   // Riz en priorité, sinon le féculent qui pèse le plus en calories dans la recette.
-  let mainStarch = recipe.ingredients.findIndex(i => !i.extra && i.key === 'riz');
+  let mainStarch = recipe.ingredients.findIndex(i => !i.extra && (i.key === 'riz' || i.key === 'riz_blanc'));
   if (mainStarch < 0) {
     let bestK = 0;
     recipe.ingredients.forEach((ing, idx) => {
@@ -116,11 +174,14 @@ export function optimizeRecipe(recipe, target, mode = 'P') {
   if (!isCantine(recipe)) {
     recipe.ingredients.forEach((ing, idx) => {
       const db = INGREDIENTS[ing.key];
-      if (ing.extra || !db || !db.lv.includes(mode)) return; // tes ajouts gardent leur quantité
+      // mode 'B' (petit-déjeuner) : tous les leviers de l'ingrédient, plat comme collation
+      if (ing.extra || !db || !(mode === 'B' ? !!db.lv : db.lv.includes(mode))) return; // tes ajouts gardent leur quantité
+      if (fixed && fixed[idx] != null) return;
       if (mode === 'P' && db.role === 'protein' && idx !== mainProt) return;
       const countable = isCountableUnit(ing.unit);
       // minP : minimum imposé dans les plats (ex. jamais moins de 90 g de riz cru)
-      const min = mode === 'P' && db.minP && idx === mainStarch ? db.minP : Math.min(db.min ?? ing.qty, ing.qty);
+      const rawMin = mode === 'P' && db.minP && idx === mainStarch ? db.minP : Math.min(db.min ?? ing.qty, ing.qty);
+      const min = !countable ? scaledMin(ing.key, rawMin, scale) : rawMin;
       // maxS : plafond propre aux collations (ex. riz au lait : 60 g de riz au plus)
       const max = mode === 'S' && db.maxS ? Math.max(db.maxS, Math.min(ing.qty, db.maxS)) : Math.max(db.max ?? ing.qty, ing.qty, min);
       const span = max - min;
@@ -165,7 +226,7 @@ export function optimizeRecipe(recipe, target, mode = 'P') {
   const overrides = {};
   recipe.ingredients.forEach((ing, i) => {
     const isLever = levers.some(l => l.idx === i);
-    overrides[i] = isLever ? snapQty(qty[i], isCountableUnit(ing.unit), ing.key) : ing.qty;
+    overrides[i] = fixed && fixed[i] != null ? fixed[i] : isLever ? snapQty(qty[i], isCountableUnit(ing.unit), ing.key) : ing.qty;
   });
   // macros finales (après arrondi)
   const macros = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
@@ -176,38 +237,49 @@ export function optimizeRecipe(recipe, target, mode = 'P') {
 // ── Répartition d'une journée ──
 // Une assiette vise ~34 % des kcal du jour, mais jamais plus que ce qu'on peut raisonnablement
 // manger (800 kcal, 900 si objectif > 3000). Le reste part en collation(s).
-export function plateTarget(T) {
-  // Les plats portent l'essentiel de la journée (40 % chacun) : grosses portions de féculents,
+// share : part des calories du jour portée par chaque plat (jeûne 40 %, classique 32 %)
+export const PLATE_SHARE = { jeune: 0.40, classique: 0.32 };
+export const BREAKFAST_SHARE = 0.20;
+// boost : part de protéines en plus dans les plats, pour qui n'a plus de compléments protéinés (régime)
+export function plateTarget(T, share = 0.40, boost = 1) {
+  // Les plats portent l'essentiel de la journée : grosses portions de féculents,
   // donc moins de collations à côté.
   const cap = T.kcal > 3000 ? 1350 : 1250;
-  const kcal = Math.max(450, Math.min(cap, T.kcal * 0.40));
+  const kcal = Math.max(400, Math.min(cap, T.kcal * share));
   const f = kcal / T.kcal;
   return {
     kcal: Math.round(kcal),
-    protein: Math.round(T.protein * Math.min(f * OPT.plateProteinShare, 0.45)),
+    protein: Math.round(T.protein * Math.min(f * OPT.plateProteinShare * boost, 0.45 * boost)),
     carbs: Math.round(T.carbs * f),
     // les à-côtés (tartines au carré frais 0 %, collations whey) sont maigres : les plats portent un peu plus de lipides
     fat: Math.round(T.fat * Math.min(f * 1.2, 0.5)),
   };
 }
 
+// Cible du petit-déjeuner (formule classique) : 20 % des calories, une part un peu plus grande des protéines
+export function breakfastTarget(T) {
+  const f = BREAKFAST_SHARE;
+  return { kcal: Math.round(T.kcal * f), protein: Math.round(T.protein * 0.24), carbs: Math.round(T.carbs * f), fat: Math.round(T.fat * f) };
+}
+
 // Calibre une ASSIETTE : le plat seul, ou le plat + un de ses accompagnements air fryer.
 // On garde l'option la plus proche de la cible ; l'accompagnement n'est ajouté que s'il aide.
 // Renvoie { main: {overrides, macros}, side: {id, overrides, macros} | null, macros }
 export function calibratePlate(recipe, target) {
-  const alone = optimizeRecipe(recipe, target, 'P');
+  const scale = portionScale(target.kcal);
+  const alone = optimizeRecipe(recipe, target, 'P', scale);
   let best = { main: alone, side: null, macros: alone.macros, score: alone.score };
   if (!OPT.autoSides) return best;
   // jamais d'accompagnement qui répète un féculent déjà dans le plat (burger + ses frites de patate douce, etc.)
   const mainCarbs = new Set(recipe.ingredients.filter(i => ['carb', 'legume'].includes(INGREDIENTS[i.key]?.role)).map(i => i.key));
   (recipe.pairs || []).filter(sid => OPT.autoSideIds.includes(sid)).forEach(sid => {
     const side = getById(sid);
-    if (!side) return;
+    if (!side || side.unavailable) return; // accompagnement impossible avec l'équipement du foyer
     if (side.ingredients.some(i => mainCarbs.has(i.key))) return;
     const sm = side.macros;
     const rest = {};
     MACROS.forEach(m => rest[m] = Math.max(0, target[m] - sm[m]));
-    const main = optimizeRecipe(recipe, rest, 'P');
+    const main = optimizeRecipe(recipe, rest, 'P', scale);
     const tot = {};
     MACROS.forEach(m => tot[m] = main.macros[m] + sm[m]);
     const sc = score(tot, target) + 0.02; // légère préférence pour l'assiette simple
@@ -229,24 +301,37 @@ export function subtractMacros(T, used) {
 // Remplit le « reste » d'une journée, dans cet ordre (on s'arrête dès que c'est bouclé) :
 //   1. la collation du jour : la mieux adaptée parmi les 2 proposées par la rotation (≤ ~650 kcal)
 //   2-4. jusqu'à trois compléments sans préparation : d'abord les tartines carré frais
-//        (miel-thym, dinde), puis banane-cacahuète, amandes, fromage blanc, fruit, skyr
+//        (miel-thym, blanc de poulet), puis banane-cacahuète, amandes, fromage blanc, fruit, skyr
 //   4. une 2e collation seulement si l'écart reste vraiment important Renvoie [{ slot, item }]
-export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07', 'S08', 'S05', 'S16']) {
+// Produits laitiers « en bol » : un seul par jour (pas deux fromages blancs le même jour)
+const DAIRY_BASES = ['fromage_blanc', 'yaourt_grec', 'yaourt_sl'];
+// Variété (v187) : les tartines ont un vrai plafond par semaine ; pour le reste, chaque jour déjà servi
+// rend la collation ou le complément moins attractif (sans l'interdire si la journée en a besoin)
+export const WEEK_CAPS = { S12: 3, S11: 3 };
+export const weekCap = id => WEEK_CAPS[id] ?? Infinity;
+const VARIETY_PENALTY = 0.6; // score × (1 + 0,6 × jours déjà servis)
+export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07', 'S08', 'S05', 'S16'], scale = 1, dayKeys = new Set(), charcLeft = Infinity, weekUse = {}) {
   const out = [];
   let rem = { ...remaining };
   const used = new Set();
+  const usedBases = new Set(DAIRY_BASES.filter(k => dayKeys.has(k)));
+  const basesOf = r => r.ingredients.map(i => i.key).filter(k => DAIRY_BASES.includes(k));
   const plan = [
-    // la 1re tartine passe en premier : elle est là tous les jours (tes compléments prioritaires)
-    // (le moteur prend la tartine qui convient le mieux : dinde si la journée manque de protéines, miel sinon)
-    { pool: fillers.slice(0, 2),  cap: 300, minRem: 100 },
-    // collation : choisie parmi 2 options qui changent chaque jour
-    { pool: rotation.slice(0, 2), cap: 650, minRem: 120 },
-    // puis la 2e tartine, puis le meilleur de 2 autres compléments
-    { pool: fillers.slice(0, 2),  cap: 350, minRem: 150 },
+    // v187 : la collation passe en premier, choisie parmi 2 options qui changent chaque jour
+    // (seulement s'il reste au moins 200 kcal : sinon un petit complément convient mieux aux petits gabarits)
+    { pool: rotation.slice(0, 2), cap: 650, minRem: 200 },
+    // puis le meilleur complément (tartines, fruit, amandes, fromage blanc-cacahuète…), chacun plafonné sur la semaine
+    { pool: fillers,              cap: 350, minRem: 120 },
     // si la journée manque de lipides, les compléments gras (amandes, beurre de cacahuète) entrent en lice
-    { pool: fillers.slice(2, 4),  cap: 300, minRem: 120, fatty: true },
+    { pool: fillers.filter(id => ['S07', 'S08'].includes(id)), cap: 300, minRem: 120, fatty: true },
     // 2e collation seulement si l'écart reste vraiment important
-    { pool: rotation.slice(2, 3), cap: 500, minRem: 350 },
+    { pool: rotation.slice(2, 3), cap: 650, minRem: 120 },
+    // petits besoins : un fruit pour combler un petit écart
+    { pool: fillers.filter(id => ['S05', 'S16'].includes(id)), cap: 200, minRem: 70, small: true },
+    // rattrapage : s'il manque encore beaucoup, n'importe quelle collation ou complément encore permis ce jour-là
+    { pool: [...rotation, ...fillers], cap: 400, minRem: 100 },
+    // 2e passe de rattrapage : les très gros profils (3 000 kcal et plus) ont besoin de plus de compléments
+    { pool: [...rotation, ...fillers], cap: 400, minRem: 150 },
   ];
   for (const stepCfg of plan) {
     if (rem.kcal < stepCfg.minRem) continue;
@@ -256,14 +341,25 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
     let best = null;
     let pool = stepCfg.pool;
     if (stepCfg.fatty && rem.fat * 9 > rem.kcal * 0.3) pool = [...new Set([...pool, ...fillers.filter(id => ['S07', 'S09', 'S08'].includes(id))])];
-    pool.filter(id => !used.has(id)).forEach(id => {
+    pool.filter(id => !used.has(id) && (weekUse[id] || 0) < weekCap(id)).forEach(id => { // plafond de la semaine
       const r = getById(id);
       if (!r) return;
-      const res = optimizeRecipe(r, tgt, 'S');
-      if (!best || res.score < best.res.score) best = { id, r, res };
+      if (usedBases.size && basesOf(r).length) return; // déjà un fromage blanc ou un yaourt ce jour-là
+      const res = optimizeRecipe(r, tgt, 'S', scale);
+      // charcuterie : jamais au-delà de ce qu'il reste du plafond de la semaine
+      const charc = charcGrams({ id, servings: 1, overrides: res.overrides });
+      if (charc > charcLeft) return;
+      // pas de pénalité de variété pour une collation préparée le dimanche : elle est faite pour plusieurs jours
+      const score = res.score * qualityBonus(r) * (r.batch ? 1 : 1 + VARIETY_PENALTY * (weekUse[id] || 0));
+      if (!best || score < best.score) best = { id, r, res, score, charc };
     });
     if (!best) continue;
+    // au-delà de la tartine obligatoire, on n'ajoute rien qui creuserait l'écart au lieu de le réduire
+    if (stepCfg !== plan[0] && best.res.macros.kcal > rem.kcal * 1.8) continue;
+    if (stepCfg.small && scale >= 1) continue;
     used.add(best.id);
+    charcLeft -= best.charc;
+    basesOf(best.r).forEach(k => usedBases.add(k));
     const slot = best.r.category === 'side' ? 'sides' : 'sweet';
     out.push({ slot, item: { id: best.id, servings: 1, overrides: best.res.overrides } });
     rem = subtractMacros(rem, best.res.macros);

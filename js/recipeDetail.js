@@ -1,3 +1,4 @@
+import { artFor } from '../data/photos.js';
 import { proteinFamily, getExtras, setExtras } from '../data/recipes.js';
 import { rebalanceAfterRecipeChange } from './weekgen.js';
 import { humanQty, INGREDIENTS, NATURAL_UNITS, ingMacros } from '../data/ingredients.js';
@@ -7,6 +8,30 @@ import { photoUrl, rateClass, ICON_HEART, ICON_NOPE } from '../data/photos.js';
 // Le sélecteur de portions recalcule ingrédients ET macros en direct.
 
 import { el, scaledMacros, openSheet, closeSheet, toast } from './utils.js';
+import { getStaples, setDishStaple } from '../data/household.js';
+import { stapleKind, isWhole } from './staples.js';
+import { applyDiet } from './diet.js';
+import { applyEquipment, getEquipment } from './adapt.js';
+
+// Choix complet / classique sur la fiche, en mode « plat par plat » (Mon programme → Riz et pâtes)
+function stapleBlock(recipe) {
+  const kind = stapleKind(recipe);
+  if (getStaples() !== 'plat' || !kind) return '';
+  const whole = isWhole(recipe.id);
+  const cooker = getEquipment()?.autocuiseur !== false;
+  const R = kind === 'riz'
+    ? { title: 'Riz de ce plat', a: 'Complet', b: 'Blanc',
+        note: (cooker ? 'Le riz complet cuit 20 minutes sous pression, le blanc 5 minutes.' : 'Le riz complet cuit 35 minutes, le blanc 12 minutes.') + ' Les quantités et la liste de courses suivent ton choix.' }
+    : { title: 'Pâtes de ce plat', a: 'Complètes', b: 'Classiques', note: 'Les quantités et la liste de courses suivent ton choix.' };
+  return `<div class="rd-staple">
+    <div class="dt-top"><b>${R.title}</b><span>Plat par plat</span></div>
+    <div class="dt-seg" role="radiogroup" aria-label="${R.title}">
+      <button class="dt-btn ${whole ? 'on' : ''}" data-staple="complet" role="radio" aria-checked="${whole}">${R.a}</button>
+      <button class="dt-btn ${whole ? '' : 'on'}" data-staple="classique" role="radio" aria-checked="${!whole}">${R.b}</button>
+    </div>
+    <p class="dt-note">${R.note}</p>
+  </div>`;
+}
 
 function rateHint(v) {
   if (v > 0) return '<span class="rate-chip like"><span class="rate-emoji">❤️</span>Tu aimes ce plat, il reviendra plus souvent</span>';
@@ -20,6 +45,7 @@ const CUISINES = {
   'indien': 'Indien', 'grec': 'Grec', 'turc': 'Turc', 'libanais': 'Libanais', 'marocain': 'Marocain',
   'mexicain': 'Mexicain', 'américain': 'Américain', 'péruvien': 'Péruvien', 'brésilien': 'Brésilien',
   'éthiopien': 'Éthiopien', 'mozambicain': 'Mozambicain', 'italien': 'Italien', 'moyen-orient': 'Moyen-Orient',
+  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français',
 };
 const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
@@ -38,12 +64,12 @@ export function renderRecipeDetail(recipe, fromView = 'recipes') {
     const m = scaledMacros(recipe, 1);
     const kcalM = m.protein * 4 + m.carbs * 4 + m.fat * 9 || 1;
     const bar = v => Math.round(v / kcalM * 100);
-    const photo = photoUrl(recipe.id);
+    const photo = photoUrl(recipe.photo || recipe.id);
 
     view.innerHTML = `
       <div class="rd-hero ${photo ? '' : 'no-photo'} ${rateClass(recipe.id)}">
-        ${photo ? `<img class="rd-photo" src="${photo}" alt="">` : `<div class="rd-emoji">${recipe.emoji}</div>`}
-        <button class="rd-round rd-back" aria-label="Retour">${ICON_BACK}</button>
+        ${photo ? `<img class="rd-photo" src="${photo}" alt="">` : artFor(recipe.id) ? `<div class="rd-art">${artFor(recipe.id)}</div>` : `<div class="rd-emoji">${recipe.emoji}</div>`}
+        <button class="rd-round rd-back round-back" aria-label="Retour">${ICON_BACK}</button>
         <div class="rd-rate">
           <button class="rd-round fab like" data-v="1" aria-label="J'aime">${ICON_HEART}</button>
           <button class="rd-round fab nope" data-v="-1" aria-label="Pas pour moi">${ICON_NOPE}</button>
@@ -67,6 +93,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes') {
             <div class="rd-m f"><b>${m.fat} g</b><span>Lipides</span><i style="--w:${bar(m.fat * 9)}%"></i></div>
           </div>
         </div>
+        ${stapleBlock(recipe)}
 
         <section class="rd-sec">
           <div class="rd-sec-hd"><h2>Ingrédients</h2><span class="rd-raw">poids crus · 1 portion</span></div>
@@ -93,6 +120,10 @@ export function renderRecipeDetail(recipe, fromView = 'recipes') {
     `;
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
+    view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {
+      setDishStaple(recipe.id, b.dataset.staple); applyEquipment(); applyDiet();
+      const y = window.scrollY; render(); window.scrollTo(0, y);
+    }));
     view.querySelectorAll('.fab').forEach(btn => btn.addEventListener('click', () => {
       const v = setRating(recipe.id, +btn.dataset.v);
       const hero = view.querySelector('.rd-hero');
@@ -116,7 +147,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes') {
 }
 
 // ── Ajouter un ingrédient à une recette ──
-const QUICK = ['oeuf', 'emmental', 'feta', 'parmesan', 'avocat', 'carre_frais', 'yaourt_grec', 'jambon_dinde',
+const QUICK = ['oeuf', 'emmental', 'feta', 'parmesan', 'avocat', 'carre_frais', 'yaourt_grec', 'poulet_tranches',
   'thon', 'pois_chiches', 'riz', 'pain', 'houmous', 'cacahuetes'];
 const HIDDEN = new Set(['repas_ext', 'feculents_cuits', 'epices', 'herbes', 'bouillon', 'levure', 'fecule']);
 function qtyRule(key) {

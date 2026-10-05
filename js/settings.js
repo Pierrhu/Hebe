@@ -1,69 +1,17 @@
-import { openBodyfatGuide, torso } from './bodyfat.js';
-import { toast, openSheet, closeSheet } from './utils.js';
-// settings.js — Profil + choix de programme (Zero to Hero) + objectifs
-import { getTargets, saveTargets } from '../data/user.js';
+// settings.js — « Mon programme » : fiche de la personne, activité, programme et objectifs
+import { applyDiet } from './diet.js';
+import { openBodyfatGuide } from './bodyfat.js';
+import { toast, openSheet, closeSheet, el } from './utils.js';
+import { getTargets, saveTargets, hasManualTargets } from '../data/user.js';
 import {
-  PROTOCOLS, computeBase, computeTargets, computeAllPhases,
+  computeBase, computeTargets, computeDetails, computeAllPhases, protocolFor, kgPerWeek,
   getProfile, saveProfile, getSelectedProtocol, saveSelectedProtocol,
   getSelectedPhase, saveSelectedPhase,
 } from '../data/calculator.js';
-import { el } from './utils.js';
+import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples } from '../data/household.js';
+import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto } from './profileUi.js';
+import { applyEquipment } from './adapt.js';
 
-
-// ── Fiche détaillée d'un programme ──
-const kgWeek = off => off * 7 / 7700; // ~7 700 kcal par kg
-function paceShort(p) {
-  if (p.id === 'P2') return '≈ stable';
-  const v = p.phases.map(x => x.offset).filter(Boolean).map(o => Math.abs(kgWeek(o)).toFixed(1).replace('.', ','));
-  const sign = p.phases.some(x => x.offset > 0) ? '+' : '−';
-  return v.length > 1 ? `${sign}${v[0]} à ${v[v.length - 1]} kg` : `${sign}${v[0]} kg`;
-}
-function paceText(p) {
-  if (p.id === 'P2') return 'poids à peu près stable';
-  const v = p.phases.map(x => x.offset).filter(Boolean).map(o => Math.abs(kgWeek(o)).toFixed(1).replace('.', ','));
-  const dir = p.phases.some(x => x.offset > 0) ? 'de prise' : 'de perte';
-  return v.length > 1 ? `${v[0]} à ${v[v.length - 1]} kg ${dir} par semaine` : `${v[0]} kg ${dir} par semaine`;
-}
-
-// Graphique 1 : calories de chaque étape par rapport à la maintenance (escalier)
-function kcalChart(ph, maint) {
-  const W = 330, H = 160, padL = 8, padR = 8, top = 26, bottom = 30;
-  const vals = ph.map(x => x.targets.kcal);
-  const lo = Math.min(maint, ...vals) - 120, hi = Math.max(maint, ...vals) + 120;
-  const y = v => top + (hi - v) / (hi - lo) * (H - top - bottom);
-  const n = ph.length, segW = (W - padL - padR) / n;
-  const yM = y(maint);
-  const segs = ph.map((x, i) => {
-    const x0 = padL + i * segW + 6, x1 = padL + (i + 1) * segW - 6, yv = y(x.targets.kcal);
-    const area = `<rect x="${x0}" y="${Math.min(yv, yM)}" width="${x1 - x0}" height="${Math.max(2, Math.abs(yM - yv))}" class="kc-area"/>`;
-    return `${area}<line x1="${x0}" y1="${yv}" x2="${x1}" y2="${yv}" class="kc-line"/>
-      <text x="${(x0 + x1) / 2}" y="${yv - 8}" class="kc-val">${x.targets.kcal}</text>
-      <text x="${(x0 + x1) / 2}" y="${H - 10}" class="kc-lbl">${i === 0 ? 'Départ' : 'Étape ' + i}</text>`;
-  }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" class="pf-chart" role="img" aria-label="Calories par étape">
-    ${segs}
-    <line x1="0" y1="${yM}" x2="${W}" y2="${yM}" class="kc-maint"/>
-    <text x="${W - 4}" y="${vals.some(v => v > maint) ? yM + 14 : yM - 6}" class="kc-maint-lbl">Maintenance ${maint}</text>
-  </svg>`;
-}
-
-// Graphique 2 : répartition protéines / lipides / glucides (en kcal) pour chaque étape
-function macroChart(ph) {
-  const max = Math.max(...ph.map(x => x.targets.kcal));
-  return `<div class="mc">
-    ${ph.map((x, i) => {
-      const t = x.targets, P = t.protein * 4, F = t.fat * 9, C = t.carbs * 4;
-      const w = v => (v / max * 100).toFixed(1);
-      return `<div class="mc-row">
-        <span class="mc-lbl">${i === 0 ? 'Départ' : 'Étape ' + i}</span>
-        <span class="mc-bar">
-          <i class="p" style="width:${w(P)}%">${t.protein} g</i><i class="f" style="width:${w(F)}%">${t.fat} g</i><i class="c" style="width:${w(C)}%">${t.carbs} g</i>
-        </span>
-      </div>`;
-    }).join('')}
-    <div class="mc-legend"><span class="p">Protéines</span><span class="f">Lipides</span><span class="c">Glucides</span></div>
-  </div>`;
-}
 
 export function renderSettings() {
   const app = document.getElementById('app');
@@ -79,58 +27,58 @@ export function renderSettings() {
   const applyComputed = () => saveTargets(computeTargets(profile, protocolId, phaseIdx));
   let manualOpen = false; // la section « à la main » reste ouverte entre deux rendus
 
+  let firstRender = true;
   function render() {
+    const keepY = firstRender ? 0 : window.scrollY; // une modification ne fait pas remonter la page
+    const member   = getActiveMember();
     const base     = computeBase(profile);
     const phases   = computeAllPhases(profile, protocolId);
-    const protocol = PROTOCOLS.find(p => p.id === protocolId);
+    const protocol = protocolFor(profile, protocolId);
     phaseIdx = Math.min(phaseIdx, protocol.phases.length - 1);
     const active   = phases[phaseIdx];
+    const details  = computeDetails(profile, protocolId, phaseIdx);
     const current  = getTargets();
-    const isComputed = !localStorage.getItem('diet_targets') ||
-      JSON.stringify(current) === JSON.stringify(computeTargets(profile, protocolId, phaseIdx));
+    const isComputed = !hasManualTargets();
 
     view.innerHTML = `
-      <div class="hb-subhead"><button class="hb-back">‹ Semaine</button><div class="hb-page-title">Mon programme</div></div>
-      <div class="set-hero">
-        <div class="set-hero-label">Ce que tu dépenses par jour</div>
-        <div class="set-hero-kcal">${Math.round(base.maintenance)}<span>kcal</span></div>
-        <div class="set-hero-meta">C'est ton point d'équilibre : en mangeant ça, ton poids ne bouge pas. Calculé avec ta masse maigre de ${base.leanMass.toFixed(1).replace('.', ',')} kg.</div>
+      <div class="page-head">
+        <button class="hb-back round-back" aria-label="Retour à ma semaine"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="hb-page-title">Mon programme</div>
+      </div>
+      ${whoSwitch()}
+      <p class="pg-hello"><b>Bienvenue dans ton programme${member.name ? ` ${esc(member.name)}` : ''} !</b><span>C'est ici que tu retrouveras ta fiche, tes repas et ton objectif. Touche une information pour la modifier : tes besoins se recalculent tout seuls.</span></p>
+      <!-- FICHE D'IDENTITÉ -->
+      <div class="idf">
+        <div class="idf-band"><span>Fiche Hébé</span><span>N° ${String(getMembers().findIndex(x => x.id === member.id) + 1).padStart(3, '0')}</span></div>
+        <div class="idf-body">
+          <div class="idf-photo">${idPhoto(member.sex)}</div>
+          <div class="idf-fields">
+            <button class="idf-f idf-full" data-edit="name"><span>Prénom</span><b class="idf-name">${esc(member.name || 'Sans prénom')}</b></button>
+            <button class="idf-f" data-edit="age"><span>Âge</span><b>${profile.age} ans</b></button>
+            <button class="idf-f" data-edit="height"><span>Taille</span><b>${String(profile.height).replace('.', ',')} m</b></button>
+            <button class="idf-f" data-edit="weight"><span>Poids</span><b>${String(profile.weight).replace('.', ',')} kg</b></button>
+            <button class="idf-f" data-edit="bodyfat"><span>Masse grasse</span><b>${String(profile.bodyfat).replace('.', ',')} %</b></button>
+            <button class="idf-f idf-full" data-edit="activity"><span>Quotidien</span><b>${(ACTIVITY.find(a => a.level === profile.activity) || ACTIVITY[1]).label}</b></button>
+          </div>
+        </div>
+        <button class="idf-stamp pc-${protocolId}" data-edit="protocol">
+          <div><span>Programme</span><b>${protocol.name}</b></div>
+          <div class="idf-goal"><span>Objectif</span><b>${current.kcal} kcal</b></div>
+        </button>
       </div>
 
-      <!-- PROFIL -->
+
+      <!-- REPAS ET RÉGIME -->
       <div class="set-section">
-        <div class="set-section-head">Tes informations</div>
-        <div class="profile-grid">
-          ${pcell('age',     'Âge',          profile.age,     'ans', 1)}
-          ${pcell('height',  'Taille',       profile.height,  'm',   0.01)}
-          ${pcell('weight',  'Poids',        profile.weight,  'kg',  0.5)}
-          ${pcell('bodyfat', 'Masse grasse', profile.bodyfat, '%',   1)}
-        </div>
-        <button class="bf-guide-btn">
-          <span class="bf-guide-ic">${torso(20)}</span>
-          <span><b>Estimer ta masse grasse en images</b><span>Compare-toi à des silhouettes de 8 à 40 %</span></span>
-          <span class="hb-chev">›</span>
-        </button>
+        <div class="set-section-head">Tes repas</div>
+        ${mealsBlock(member)}
+        ${staplesCard()}
       </div>
 
       <!-- PROTOCOLE -->
       <div class="set-section">
         <div class="set-section-head">Ton objectif</div>
-        <div class="protocol-grid">
-          ${PROTOCOLS.map(p => {
-            const range = phaseRange(profile, p.id);
-            return `
-            <button class="proto-card pc-${p.id} ${p.id === protocolId ? 'active' : ''}" data-pid="${p.id}">
-              <div class="proto-head">
-                <div class="proto-name">${p.name}</div>
-                <span class="proto-info" data-sheet="${p.id}" role="button" tabindex="0" aria-label="En savoir plus sur ${p.name}">i</span>
-              </div>
-              <div class="proto-tagline">${p.tagline}</div>
-              <div class="proto-range">${range}</div>
-              <div class="proto-check">✓</div>
-            </button>`;
-          }).join('')}
-        </div>
+        ${protocolCards(profile, protocolId)}
       </div>
 
       <!-- PHASES -->
@@ -153,17 +101,38 @@ export function renderSettings() {
             <div class="tcm carbs"><div class="tcm-bar"></div><strong>${active.targets.carbs}g</strong><span>Glucides</span></div>
             <div class="tcm fat"><div class="tcm-bar"></div><strong>${active.targets.fat}g</strong><span>Lipides</span></div>
           </div>
+          ${details.floored ? `<p class="tc-note">Le programme visait ${details.wanted} kcal. Hébé remonte ton objectif à ${details.targets.kcal} kcal pour ne pas descendre sous ce dont ton corps a besoin au repos.</p>` : ''}
+          ${details.fatRaised ? `<p class="tc-note">Tes lipides sont relevés à ${details.targets.fat} g pour rester au-dessus de ${profile.sex === 'female' ? '25' : '20'} % de tes calories, un minimum important pour l'équilibre hormonal.</p>` : ''}
         </div>
 
-        <div class="phase-guide">
-          <div class="pg-row"><div><div class="pg-title">Cette phase</div><div class="pg-text">${protocol.phases[phaseIdx].advice}</div></div></div>
-          <div class="pg-row"><div><div class="pg-title">Quand passer à la suite</div><div class="pg-text">${protocol.phases[phaseIdx].advance}</div></div></div>
-        </div>
+        ${(() => {
+          const cur = protocol.phases[phaseIdx], nxt = phases[phaseIdx + 1];
+          const label = i => i === 0 ? 'Départ' : 'Étape ' + i;
+          const isLast = !nxt;
+          return `<div class="phase-guide pc-${protocol.id}">
+            <div class="pg-now">
+              <div class="pg-kicker">Cette phase · ${label(phaseIdx)}</div>
+              <div class="pg-big">${cur.short || ''}</div>
+              <p>${cur.advice}</p>
+            </div>
+            <div class="pg-next ${isLast ? 'last' : ''}">
+              ${isLast
+                ? `<div class="pg-kicker">Dernier palier</div><p>${cur.advance}</p>`
+                : `<div class="pg-kicker">Quand passer à la suite</div>
+                   <div class="pg-steps">
+                     <span class="pg-chip on">${label(phaseIdx)}<b>${phases[phaseIdx].targets.kcal} kcal</b></span>
+                     <span class="pg-arrow" aria-hidden="true"></span>
+                     <span class="pg-chip">${label(phaseIdx + 1)}<b>${nxt.targets.kcal} kcal</b></span>
+                   </div>
+                   <p>${(cur.when || cur.advance).replace(/^./, c => c.toUpperCase())}.</p>`}
+            </div>
+          </div>`;
+        })()}
 
       </div>
 
       <!-- MANUEL -->
-      <details class="set-manual" ${manualOpen ? 'open' : ''}>
+      <details class="set-manual pc-${protocolId}" ${manualOpen ? 'open' : ''}>
         <summary>Régler mes calories à la main</summary>
         <div class="manual-body">
           ${isComputed ? '' : '<button class="back-to-plan">Revenir aux calories du programme</button>'}
@@ -175,110 +144,182 @@ export function renderSettings() {
         </div>
       </details>
 
+      <!-- FOYER -->
+      <div class="set-section">
+        <div class="set-section-head">Ton foyer</div>
+        ${getMembers().length < 2
+          ? `<button class="hh-row" data-count="2"><span class="hh-plus" aria-hidden="true">+</span><span class="hh-row-txt"><b>Ajouter une personne</b><span>Mêmes plats, portions calculées pour chacun</span></span><span class="hb-chev">›</span></button>`
+          : `<div class="hh-members">${getMembers().map(m => `<div class="hh-mem"><b>${esc(m.name || 'Sans prénom')}</b><span>${m.sex === 'female' ? 'Femme' : 'Homme'}, ${m.age} ans</span></div>`).join('')}</div>
+             <button class="hh-row hh-remove" data-count="1"><span class="hh-row-txt"><b>Retirer ${esc(getMembers()[1].name || 'la deuxième personne')} du foyer</b><span>Sa fiche et ses repas prévus seront effacés</span></span><span class="hb-chev">›</span></button>`}
+        <div class="budget-row">
+          <div><b>Budget des courses</b><span>Par semaine, pour tout le foyer</span></div>
+          <div class="field-control">
+            <button class="mrow-btn bud-btn" data-delta="-5" aria-label="Budget : moins">−</button>
+            <span class="bud-val">${weekBudget()} €</span>
+            <button class="mrow-btn bud-btn" data-delta="5" aria-label="Budget : plus">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉQUIPEMENT -->
+      <div class="set-section">
+        <div class="set-section-head">Ta cuisine</div>
+        ${equipmentBlock(getHousehold().equipment)}
+      </div>
+
+      <!-- SAUVEGARDE (v193) -->
+      <div class="set-section">
+        <div class="set-section-head">Tes données</div>
+        <div class="bk-card">
+          <p>Tout est enregistré sur ce téléphone. Garde une copie dans tes fichiers (iCloud, Drive…) pour ne rien perdre.</p>
+          <div class="bk-btns"><button class="hb-btn hb-btn-primary" data-backup>Sauvegarder</button><button class="hb-btn bk-sec" data-restore>Restaurer</button></div>
+          <span class="bk-last">Dernière sauvegarde : ${lastBackupText()}</span>
+          <input type="file" accept=".json,application/json" data-restore-file hidden>
+        </div>
+      </div>
+
       <button class="hb-btn set-back-bottom">Retour à ma semaine</button>
     `;
     bind();
+    if (!firstRender) window.scrollTo(0, keepY);
+    firstRender = false;
   }
 
-  function openProtocolSheet(pid) {
-    const p = PROTOCOLS.find(x => x.id === pid);
-    const ph = computeAllPhases(profile, pid);
-    const maint = Math.round(computeBase(profile).maintenance);
-    const isCurrent = pid === protocolId;
-    const stepName = (x, i) => i === 0 ? x.label : `${x.label} <em>facultative</em>`;
-    const last = ph.length - 1;
-    openSheet(`
-      <div class="sheet-handle"></div>
-      <div class="hb-sheet-pad pf pc-${p.id}">
-        <div class="pf-hero">
-          <div class="hb-h2">${p.name}</div>
-          <p class="pf-tag">${p.tagline}</p>
-          <div class="pf-stats">
-            <div><b>${paceShort(p)}</b><span>par semaine</span></div>
-            <div><b>${ph.length}</b><span>${ph.length > 1 ? 'étapes' : 'étape'}</span></div>
-            <div><b>${p.duration.replace(', puis bilan', '')}</b><span>durée</span></div>
-          </div>
-        </div>
-
-        <div class="pf-block">
-          <div class="pf-h">À quoi sert ce programme</div>
-          <p class="pf-purpose">${p.purpose}</p>
-          <div class="pf-who">
-            <div class="pf-who-h">C'est pour toi si…</div>
-            ${p.forWho.map(t => `<div class="pf-who-i">${t}</div>`).join('')}
-          </div>
-        </div>
-
-        <div class="pf-block">
-          <div class="pf-h">Tes calories</div>
-          ${kcalChart(ph, maint)}
-        </div>
-
-        <div class="pf-block">
-          <div class="pf-h">Ton assiette</div>
-          ${macroChart(ph)}
-          <p class="pf-note">Seuls les glucides changent d'une étape à l'autre.</p>
-        </div>
-
-        <div class="pf-block">
-          <div class="pf-h">Les étapes</div>
-          <p class="pf-intro">${ph.length > 1
-            ? `Tu commences à ${ph[0].targets.kcal} kcal par jour. Les étapes suivantes sont facultatives : tu ne passes à la suivante que si tes résultats stagnent.`
-            : `Tu restes à ${ph[0].targets.kcal} kcal par jour pendant toute la durée du programme.`}</p>
-          <div class="tl">
-            ${ph.map((x, i) => {
-              const w = p.phases[i].when || '';
-              const final = /^Dernier palier/.test(w) || ph.length === 1;
-              return `<div class="tl-item">
-                <span class="tl-dot">${i + 1}</span>
-                <div class="tl-body">
-                  <div class="tl-top"><b>${i === 0 ? 'Départ' : 'Étape ' + i}${i > 0 ? '<em>facultative</em>' : ''}</b><span>${x.targets.kcal} kcal</span></div>
-                  <div class="tl-short">${p.phases[i].short || ''}</div>
-                  ${w ? `<div class="tl-when ${final ? 'final' : ''}"><span>${final ? (ph.length === 1 ? 'À faire' : 'Dernier palier') : 'Étape suivante si'}</span>${(t => t.charAt(0).toUpperCase() + t.slice(1))(w.replace(/^Dernier palier : /, ''))}</div>` : ''}
-                </div>
-              </div>`;
-            }).join('')}
-          </div>
-        </div>
-
-        <button class="hb-btn ${isCurrent ? '' : 'hb-btn-primary'} pf-choose">${isCurrent ? 'Programme actuel' : 'Choisir ce programme'}</button>
-      </div>`);
-    const sheet = document.getElementById('sheet');
-    sheet.querySelector('.pf-choose').addEventListener('click', () => {
-      if (!isCurrent) {
-        protocolId = pid; phaseIdx = 0;
-        saveSelectedProtocol(protocolId); saveSelectedPhase(0); applyComputed();
-        toast(`Programme : ${p.name}`);
-      }
-      closeSheet(); render();
+  // Modifier une valeur de la fiche : un panneau s'ouvre en bas de l'écran
+  const EDIT = {
+    age:     { title: 'Ton âge',          unit: 'ans', step: 1,    min: 18,  max: 99 },
+    height:  { title: 'Ta taille',        unit: 'm',   step: 0.01, min: 1.3, max: 2.3 },
+    weight:  { title: 'Ton poids',        unit: 'kg',  step: 0.5,  min: 35,  max: 250 },
+    bodyfat: { title: 'Ta masse grasse',  unit: '%',   step: 1,    min: 5,   max: 60 },
+  };
+  const fmt = v => String(Math.round(v * 100) / 100).replace('.', ',');
+  function openEdit(k) {
+    if (k === 'name') {
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton prénom</div>
+        <input class="edit-name" value="${esc(getActiveMember().name || '')}" maxlength="30" autocomplete="off">
+        <button class="hb-btn hb-btn-primary edit-save">Enregistrer</button></div>`);
+      const sh = document.getElementById('sheet'), inp = sh.querySelector('.edit-name');
+      setTimeout(() => inp.focus(), 50);
+      sh.querySelector('.edit-save').addEventListener('click', () => { const v = inp.value.trim(); if (v) updateActiveMember({ name: v }); closeSheet(); render(); });
+      return;
+    }
+    if (k === 'protocol') {
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton programme</div>${protocolCards(profile, protocolId)}</div>`);
+      document.getElementById('sheet').querySelectorAll('.proto-card').forEach(b => b.addEventListener('click', () => {
+        const pid = b.dataset.pid; closeSheet();
+        if (pid === protocolId) return;
+        protocolId = pid; phaseIdx = 0; saveSelectedProtocol(pid); saveSelectedPhase(0); applyComputed();
+        toast(`Programme : ${protocolFor(profile, pid).name}`); render();
+      }));
+      return;
+    }
+    if (k === 'activity') {
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton quotidien</div>${activityList(profile.activity)}</div>`);
+      document.getElementById('sheet').querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+        profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); closeSheet(); render();
+      }));
+      return;
+    }
+    const E = EDIT[k]; let v = profile[k];
+    openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">${E.title}</div>
+      <div class="edit-step"><button class="edit-btn" data-d="-1" aria-label="Moins">−</button>
+        <label class="edit-val"><input class="edit-input" inputmode="decimal" value="${fmt(v)}"><span>${E.unit}</span></label>
+        <button class="edit-btn" data-d="1" aria-label="Plus">+</button></div>
+      ${k === 'bodyfat' ? bodyfatButton(profile.sex) : ''}
+      <button class="hb-btn hb-btn-primary edit-save">Enregistrer</button></div>`);
+    const sh = document.getElementById('sheet'), inp = sh.querySelector('.edit-input');
+    const read = () => { let x = parseFloat(inp.value.replace(',', '.')); if (k === 'height' && x > 3) x = x / 100; return x; };
+    sh.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', () => {
+      const x = isNaN(read()) ? v : read();
+      inp.value = fmt(Math.min(E.max, Math.max(E.min, Math.round((x + E.step * +b.dataset.d) * 100) / 100)));
+    }));
+    sh.querySelector('.bf-guide-btn')?.addEventListener('click', () => { closeSheet(); openBodyfatGuide(profile.bodyfat, b => { profile.bodyfat = b; saveProfile(profile); applyComputed(); render(); toast(`Masse grasse : ${b} %`); }, profile.sex); });
+    sh.querySelector('.edit-save').addEventListener('click', () => {
+      const x = read();
+      if (isNaN(x) || x < E.min || x > E.max) { toast(`Indique une valeur entre ${fmt(E.min)} et ${fmt(E.max)} ${E.unit}`, 'warn'); return; }
+      profile[k] = Math.round(x * 100) / 100; saveProfile(profile); applyComputed(); closeSheet(); render();
     });
   }
 
-  function phaseRange(prof, pid) {
-    const ph = computeAllPhases(prof, pid);
-    if (ph.length === 1) return `${ph[0].targets.kcal} kcal`;
-    const kcals = ph.map(p => p.targets.kcal);
-    return `${kcals[0]} → ${kcals[kcals.length - 1]} kcal`; // dans l'ordre des phases
-  }
-
   function bind() {
+    view.querySelector('[data-backup]')?.addEventListener('click', async () => {
+      await exportBackup();
+      const last = view.querySelector('.bk-last'); if (last) last.textContent = `Dernière sauvegarde : ${lastBackupText()}`;
+    });
+    const fileIn = view.querySelector('[data-restore-file]');
+    view.querySelector('[data-restore]')?.addEventListener('click', () => fileIn?.click());
+    fileIn?.addEventListener('change', async () => { const f = fileIn.files?.[0]; fileIn.value = ''; if (f) askRestore(await f.text()); });
+    view.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEdit(b.dataset.edit)));
     view.querySelector('.hb-back')?.addEventListener('click', () => window._nav?.('week'));
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () => openBodyfatGuide(profile.bodyfat, v => {
       profile.bodyfat = v; saveProfile(profile); applyComputed(); render();
       toast(`Masse grasse : ${v} %`);
+    }, profile.sex));
+    bindMeasures(view, k => profile[k], (k, v) => { profile[k] = v; saveProfile(profile); applyComputed(); render(); });
+    const nameInp = view.querySelector('.id-name');
+    nameInp?.addEventListener('change', () => {
+      const name = nameInp.value.trim();
+      if (!name) { nameInp.value = getActiveMember().name; return; }
+      updateActiveMember({ name }); render();
+    });
+    view.querySelectorAll('[data-sex]').forEach(b => b.addEventListener('click', () => {
+      if (profile.sex === b.dataset.sex) return;
+      profile.sex = b.dataset.sex; saveProfile(profile); applyComputed(); render();
+      toast(gx('Calculs adaptés à un profil [masculin|féminin]', profile.sex));
     }));
-    view.querySelectorAll('.pcell-btn').forEach(b => b.addEventListener('click', () => {
-      const k = b.dataset.key, d = parseFloat(b.dataset.delta);
-      profile[k] = Math.max(0, Math.round((profile[k] + d) * 100) / 100);
-      saveProfile(profile); applyComputed(); render();
+    bindWho(view, () => { profile = getProfile(); protocolId = getSelectedProtocol(); phaseIdx = getSelectedPhase(); render(); });
+    view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => {
+      if (getActiveMember().formula === b.dataset.formula) return;
+      updateActiveMember({ formula: b.dataset.formula }); render();
+      toast(b.dataset.formula === 'classique' ? 'Les petits-déjeuners arriveront avec la prochaine semaine générée' : 'Formule jeûne pour la prochaine semaine générée');
     }));
-    view.querySelectorAll('.pcell-input').forEach(inp => inp.addEventListener('change', () => {
-      const v = parseFloat(inp.value.replace(',', '.'));
-      if (!isNaN(v) && v >= 0) { profile[inp.dataset.key] = v; saveProfile(profile); applyComputed(); }
-      render();
+    view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ [b.dataset.diet]: +b.dataset.level }); applyEquipment(); applyDiet(); render(); }));
+    view.querySelectorAll('[data-staples]').forEach(b => b.addEventListener('click', () => {
+      setStaples(b.dataset.staples); applyEquipment(); applyDiet();
+      const y = window.scrollY; render(); window.scrollTo(0, y);
+      toast('Préférence enregistrée');
+    }));
+    view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ breakfast: b.dataset.bk }); render(); toast('Préférence enregistrée : mets à jour ta semaine depuis l\'onglet Semaine'); }));
+    view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ whey: b.dataset.whey === '1' }); render(); toast('Préférence enregistrée : mets à jour ta semaine depuis l\'onglet Semaine'); }));
+    view.querySelectorAll('[data-tool]').forEach(b => b.addEventListener('click', () => {
+      const eq = { ...(getHousehold().equipment || {}) };
+      eq[b.dataset.tool] = !eq[b.dataset.tool];
+      if (!eq.plaque && !eq.autocuiseur) { toast('Il faut au moins des plaques de cuisson ou un autocuiseur', 'warn'); return; }
+      setEquipment(eq); applyEquipment(); applyDiet(); render();
+      toast('Recettes adaptées à ton équipement');
+    }));
+    view.querySelectorAll('.bud-btn').forEach(b => b.addEventListener('click', () => {
+      const h = getHousehold();
+      h.budget = Math.max(20, Math.min(400, weekBudget() + +b.dataset.delta));
+      saveHousehold(h);
+      view.querySelector('.bud-val').textContent = `${h.budget} €`;
+    }));
+    view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
+      const n = +b.dataset.count, ms = getMembers();
+      if (n === ms.length) return;
+      if (n === 2) { setMemberCount(2); setOnboarded(false); window._nav?.('week'); return; } // fiche de la 2e personne à remplir
+      const gone = ms[ms.length - 1];
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad">
+        <div class="hb-h2">Retirer ${esc(gone.name || 'la deuxième personne')} du foyer ?</div>
+        <p class="hb-p">Sa fiche et ses repas prévus seront effacés. La prochaine semaine générée ne comptera qu'une personne.</p>
+        <button class="hb-btn hb-btn-primary rm-yes">Retirer ${esc(gone.name || 'cette personne')}</button>
+        <button class="hb-btn rm-no">Annuler</button></div>`);
+      const sh = document.getElementById('sheet');
+      sh.querySelector('.rm-no').addEventListener('click', closeSheet);
+      sh.querySelector('.rm-yes').addEventListener('click', () => {
+        setMemberCount(1); closeSheet();
+        profile = getProfile(); protocolId = getSelectedProtocol(); phaseIdx = getSelectedPhase(); render();
+        toast(`${gone.name || 'La deuxième personne'} ne fait plus partie du foyer`);
+      });
+    }));
+    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+      profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); render();
     }));
     view.querySelectorAll('.proto-card').forEach(b => b.addEventListener('click', e => {
-      if (e.target.closest('[data-sheet]')) return openProtocolSheet(b.dataset.pid);
+      if (e.target.closest('[data-sheet]')) return openProtocolSheet(profile, b.dataset.pid, {
+        isCurrent: b.dataset.pid === protocolId,
+        onChoose: pid => { protocolId = pid; phaseIdx = 0; saveSelectedProtocol(pid); saveSelectedPhase(0); applyComputed(); toast(`Programme : ${protocolFor(profile, pid).name}`); render(); },
+      });
       if (b.dataset.pid === protocolId) return;
       protocolId = b.dataset.pid; phaseIdx = 0;
       saveSelectedProtocol(protocolId); saveSelectedPhase(0); applyComputed(); render();
@@ -326,17 +367,6 @@ export function renderSettings() {
     }));
   }
 
-  function pcell(key, label, value, unit, step) {
-    return `
-      <div class="profile-cell">
-        <div class="pc-label">${label}</div>
-        <div class="pc-control">
-          <button class="pcell-btn" data-key="${key}" data-delta="-${step}">−</button>
-          <div class="pc-value"><input class="pcell-input" type="text" inputmode="decimal" data-key="${key}" value="${value}"><span class="pc-unit">${unit}</span></div>
-          <button class="pcell-btn" data-key="${key}" data-delta="${step}">+</button>
-        </div>
-      </div>`;
-  }
   function mrow(key, label, value, unit, step) {
     return `
       <div class="settings-field">
@@ -351,4 +381,72 @@ export function renderSettings() {
   }
 
   render();
+}
+
+// Riz et pâtes (v171) : complets, classiques ou au choix sur la fiche de chaque plat. Commun au foyer.
+function staplesCard() {
+  const mode = getStaples();
+  const NOTES = {
+    complet: 'Riz complet et pâtes complètes dans tous les plats : plus de fibres, cuisson plus longue (riz : 20 min sous pression au lieu de 5).',
+    classique: 'Riz blanc et pâtes classiques dans tous les plats.',
+    plat: 'Tu choisis sur la fiche de chaque plat. Par défaut : complet.',
+  };
+  return `<div class="dt-card dt-staples" style="--c:var(--leaf);--t:var(--leaf-t)">
+    <div class="dt-top"><b>Riz et pâtes</b><span>Pour tout le foyer</span></div>
+    <div class="dt-seg" role="radiogroup" aria-label="Riz et pâtes">
+      ${[['complet', 'Complets'], ['classique', 'Classiques'], ['plat', 'Plat par plat']].map(([v, l]) =>
+        `<button class="dt-btn ${mode === v ? 'on' : ''}" data-staples="${v}" role="radio" aria-checked="${mode === v}">${l}</button>`).join('')}
+    </div>
+    <p class="dt-note">${NOTES[mode]}</p>
+  </div>`;
+}
+
+// ── Sauvegarde et restauration des données (v193) ──
+// Tout ce que l'app enregistre sur le téléphone commence par « hebe_ » ou « diet_ » (fiches, semaine, notes, placard, journal…).
+const BACKUP_PREFIXES = ['hebe_', 'diet_'];
+const isAppKey = k => BACKUP_PREFIXES.some(p => k.startsWith(p));
+const frDate = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+function lastBackupText() {
+  const d = localStorage.getItem('hebe_last_backup');
+  if (!d) return 'jamais';
+  const day = x => new Date(x).toDateString();
+  return day(d) === day(Date.now()) ? 'aujourd\'hui' : `le ${frDate(d)}`;
+}
+async function exportBackup() {
+  const date = new Date().toISOString();
+  localStorage.setItem('hebe_last_backup', date);
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (isAppKey(k)) data[k] = localStorage.getItem(k); }
+  const json = JSON.stringify({ app: 'hebe', version: 1, date, data });
+  const name = `hebe-sauvegarde-${date.slice(0, 10)}.json`;
+  const file = new File([json], name, { type: 'application/json' });
+  // sur téléphone : la fenêtre de partage (Enregistrer dans Fichiers, iCloud, Drive…) ; sinon, un téléchargement
+  try {
+    if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: 'Sauvegarde Hébé' }); toast('Sauvegarde créée'); return; }
+  } catch (e) { if (e?.name === 'AbortError') return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(file); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast('Sauvegarde créée');
+}
+function askRestore(text) {
+  let backup;
+  try { backup = JSON.parse(text); } catch { backup = null; }
+  if (!backup || backup.app !== 'hebe' || !backup.data || typeof backup.data !== 'object') { toast('Ce fichier n\'est pas une sauvegarde Hébé', 'warn'); return; }
+  openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad bk-confirm">
+      <div class="hb-h2">Restaurer cette sauvegarde ?</div>
+      <p>Sauvegarde du ${frDate(backup.date)}. Elle remplacera tout ce qui est sur ce téléphone : fiches, semaine, notes des plats, placard.</p>
+      <div class="bk-btns"><button class="hb-btn bk-sec" data-bk-cancel>Annuler</button><button class="hb-btn hb-btn-primary" data-bk-ok>Restaurer</button></div>
+    </div>`);
+  const sheet = document.getElementById('sheet');
+  sheet.querySelector('[data-bk-cancel]').addEventListener('click', () => closeSheet());
+  sheet.querySelector('[data-bk-ok]').addEventListener('click', () => {
+    const old = [];
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (isAppKey(k)) old.push(k); }
+    old.forEach(k => localStorage.removeItem(k));
+    Object.entries(backup.data).forEach(([k, v]) => { if (isAppKey(k) && typeof v === 'string') localStorage.setItem(k, v); });
+    closeSheet();
+    location.reload();
+  });
 }

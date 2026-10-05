@@ -100,7 +100,7 @@ export function scaledMacros(recipe, servings = 1) {
 
 // Total d'un jour : meals = { slot: [{id, servings, overrides?}] }
 export function computeDayMacros(entry) {
-  const slots = ['starter', 'lunch', 'dinner', 'sides', 'sweet'];
+  const slots = ['breakfast', 'starter', 'lunch', 'dinner', 'sides', 'sweet'];
   return slots.reduce((acc, slot) => {
     (entry.meals[slot] || []).forEach(item => {
       const m = itemMacros(item);
@@ -124,9 +124,14 @@ export function closeSheet() {
 }
 
 // Message bref en bas de l'écran (confirmation d'une action)
-export function toast(msg) {
+// Notification en haut de l'écran : coche sauge pour une confirmation, « ! » terracotta pour une alerte (kind = 'warn')
+const TOAST_CHECK = '<span class="toast-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="5 12.5 10 17 19 7.5"/></svg></span>';
+export function toast(msg, kind = 'ok') {
   document.querySelector('.toast')?.remove();
-  const t = el('div', 'toast', msg);
+  const t = el('div', `toast ${kind === 'warn' ? 'warn' : ''}`);
+  t.setAttribute('role', kind === 'warn' ? 'alert' : 'status');
+  t.innerHTML = (kind === 'warn' ? '<span class="toast-ic" aria-hidden="true">!</span>' : TOAST_CHECK) + '<span></span>';
+  t.lastChild.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.classList.add('out'), 2600);
   setTimeout(() => t.remove(), 3000);
