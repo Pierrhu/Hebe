@@ -26,7 +26,7 @@ async def run(p, label, equipment):
     pg.on('console', lambda m: errs.append('console:' + m.text) if m.type == 'error' else None)
     await pg.route('**/fonts.googleapis.com/**', lambda r: r.fulfill(body='', content_type='text/css'))
     await pg.goto(URL)
-    await pg.evaluate(f"localStorage.clear(); localStorage.setItem('hebe_household', {json.dumps(json.dumps(household(equipment)))})")
+    await pg.evaluate(f"localStorage.clear(); localStorage.setItem('hebe_tuto_done','1'); localStorage.setItem('hebe_household', {json.dumps(json.dumps(household(equipment)))})")
     await pg.goto(URL); await pg.wait_for_timeout(600)
     found = {}
     rice_weeks = 0
@@ -83,7 +83,7 @@ async def reglage(p):
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.on('console', lambda m: errs.append('console:' + m.text) if m.type == 'error' else None)
     await pg.goto(URL)
-    await pg.evaluate(f"localStorage.clear(); localStorage.setItem('hebe_household', {json.dumps(json.dumps(household(eq)))})")
+    await pg.evaluate(f"localStorage.clear(); localStorage.setItem('hebe_tuto_done','1'); localStorage.setItem('hebe_household', {json.dumps(json.dumps(household(eq)))})")
     await pg.goto(URL); await pg.wait_for_timeout(600)
     await pg.click('.hb-generate'); await pg.wait_for_timeout(2000)
     found = {}
