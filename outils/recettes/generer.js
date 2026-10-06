@@ -762,6 +762,8 @@ RECIPES.filter(r => ['sweet', 'breakfast'].includes(r.category) && r.ingredients
       .replace(/, la whey et /g, drop || base ? ' et ' : ', le fromage blanc et ')
       .replace(/, la whey, /g, drop || base ? ', ' : ', le fromage blanc, ')
       .replace(/ la whey et /g, drop || base ? ' ' : ' le fromage blanc et ')
+      // v195 : whey simplement retirée (cookies, barres…) : on l'enlève aussi du texte
+      .replace(/ et la whey/g, drop ? '' : ' et la whey').replace(/ avec la whey/g, drop ? '' : ' avec la whey')
       .replace(/la whey/g, 'le fromage blanc').replace(/de whey/g, 'de fromage blanc').replace(/whey/g, 'fromage blanc'));
   const name = r.name.replace(/ à la whey/g, base ? '' : ' au fromage blanc').replace(/ protéinées?s?/g, '').replace(/ protéinés?/g, '');
   const v = M(r.id + 'S', name, r.category, r.emoji, r.prepTime, r.cookTime, ings, steps, r.tip, [...(r.tags || []).filter(t => t !== 'whey'), 'sans-whey'], r.batch);
@@ -776,7 +778,7 @@ RECIPES.push(M('L01', 'Repas libre', 'extra', '🍴', 0, 0, [['repas_libre', 9]]
   "Non compté dans la cuisine ni dans les courses.", ['cantine', 'libre'], false));
 
 // ── Accompagnements retirés : les plats sont complets ──
-const RETIRED = ['W42', 'B14', 'EN01', 'EN02', 'W23', 'W24', 'W26', 'B10', 'B12', 'B13', 'K01', 'K03', 'K07', 'K09', 'K11', 'S06', 'S09', 'S16', 'SA01', 'SA02', 'SA03', 'SA04', 'SA05', 'SA06', 'SA07', 'SA08', 'SA09', 'SA10', 'SA11', 'SA12', 'S01', 'S02', 'S03', 'S04'];
+const RETIRED = ['W42', 'B14', 'EN01', 'EN02', 'W23', 'W24', 'W26', 'B10', 'B12', 'B13', 'K01', 'K03', 'K07', 'K09', 'K11', 'S06', 'S09', 'S16', 'SA01', 'SA02', 'SA03', 'SA04', 'SA05', 'SA06', 'SA07', 'SA08', 'SA09', 'SA10', 'SA11', 'SA12', 'S01', 'S02', 'S03', 'S04', 'K14'];
 RECIPES.forEach(r => { if (RETIRED.includes(r.id) || (r.wheyOf && RETIRED.includes(r.wheyOf))) r.retired = true; });
 
 // Une recette contient-elle de la whey ?
