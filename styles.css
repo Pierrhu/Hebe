@@ -869,6 +869,7 @@ img { display: block; }
 .rd-ing.got .rd-check::after { content: ''; position: absolute; left: 6px; top: 2.5px; width: 4.5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .rd-ing.got .rd-ing-name { color: var(--muted); text-decoration: line-through; }
 .rd-ing-name { flex: 1; min-width: 0; font-size: 15px; }
+.rd-ing-name .rd-spices { display: block; margin-top: 2px; font-size: 12.5px; color: var(--text-2); line-height: 1.35; }
 .rd-ing-qty { font-size: 14.5px; font-weight: 700; color: var(--text); white-space: nowrap; }
 
 .rd-steps { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
@@ -982,6 +983,8 @@ img { display: block; }
 .shop-count { display: flex; align-items: baseline; gap: 6px; margin-top: 2px; }
 .shop-count b { font-family: var(--serif); font-size: 38px; font-weight: 500; line-height: 1; }
 .shop-count span { font-size: 14px; font-weight: 600; color: var(--text-2); }
+.shop-cost { margin-top: 6px; font-size: 13.5px; font-weight: 700; color: var(--text); }
+.shop-cost small { font-weight: 500; color: var(--muted); font-size: 12px; }
 .clear-btn { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.85); font-size: 12.5px; font-weight: 600; color: var(--text-2); }
 .shop-bar { height: 10px; margin-top: 12px; border-radius: 999px; background: rgba(255,255,255,.8); overflow: hidden; }
 .shop-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #9DB8A6, var(--sage)); transition: width .3s; }
@@ -1275,7 +1278,6 @@ img { display: block; }
 .ck-meal b { display: block; font-size: 14.5px; font-weight: 600; }
 .ck-meal p { margin-top: 2px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
 
-.ck-phase-extra { --t: var(--honey-t); }
 .ck-meal { text-align: left; width: 100%; }
 .ck-meal-n { display: block; margin-top: 1px; font-size: 12px; font-weight: 600; color: var(--accent); }
 
@@ -1450,7 +1452,7 @@ img { display: block; }
 .ck-row-ok { color: var(--sage); } .ck-row-n { color: var(--muted); font-weight: 500; }
 .ck-row-ok, .ck-row-n { flex-shrink: 0; margin-left: 12px; white-space: nowrap; }
 .ck-cur { margin: 10px 0; padding: 16px; border-radius: 26px; background: var(--t, var(--honey-t)); }
-.ck-cur.ck-phase-rice, .ck-cur.ck-phase-end, .ck-cur.ck-phase-extra { background: var(--honey-t); }
+.ck-cur.ck-phase-rice, .ck-cur.ck-phase-end { background: var(--honey-t); }
 .ck-cur-step { margin-top: 12px; padding: 18px; border-radius: 20px; background: #fff; font-size: 17px; line-height: 1.5; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
 .ck-cur-k { margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--c, #C7913F); }
 .ck-cur-nav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 14px; }
@@ -1561,3 +1563,132 @@ button.idf-stamp:active { opacity: .7; }
 .bk-btns .hb-btn { margin: 0; padding: 12px 0; font-size: 15px; }
 .bk-sec { background: var(--sunken) !important; color: var(--text) !important; box-shadow: none !important; }
 .bk-last { display: block; text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+/* v195 : quand cuisiner */
+.week-note { margin-top: 10px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+.week-note b { color: var(--text); font-weight: 700; }
+.hb-seg-one .hb-seg-btn { flex: 1; cursor: default; }
+.hb-batch-when { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 4px 0 10px; font-size: 13px; color: var(--text-2); }
+.hb-batch-when span { font-weight: 700; color: var(--text); font-size: 14px; }
+.ck-when { display: inline-block; margin-bottom: 8px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.75); font-size: 12.5px; font-weight: 700; color: var(--text); }
+.free-cap.off { opacity: .32; pointer-events: none; }
+
+/* v195 : Changer un plat */
+.sw-sub { margin: 4px 0 12px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+.sw-warn { margin: 0 0 12px; padding: 10px 12px; border-radius: 14px; background: #fbeee0; color: #7a4a1c; font-size: 13px; line-height: 1.4; }
+.sw-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.sw-opt { display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 8px; border-radius: 18px; background: var(--card, #fff); box-shadow: 0 1px 0 rgba(0,0,0,.04); text-align: left; }
+.sw-opt .sw-img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex: none; }
+.sw-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.sw-txt b { font-family: var(--serif); font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--text); }
+.sw-txt small { font-size: 12.5px; color: var(--muted); }
+.sw-more { width: 100%; margin-bottom: 6px; }
+.sw-cancel { display: block; width: 100%; }
+
+/* v195 : quantités de l'étape et minuteurs */
+.ck-qty { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.ck-qty-chip { padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,.05); font-size: 12.5px; color: var(--text-2); }
+.ck-qty-chip b { color: var(--text); font-weight: 700; }
+.tm-box { margin-top: 14px; }
+.tm-start { display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; border-radius: 16px; background: var(--sage-t); color: var(--accent); font-size: 14px; font-weight: 600; text-align: left; }
+.tm-start svg, .tm-x svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.tm-start span { flex: 1; }
+.tm-start b { font-weight: 700; }
+.tm-live { display: none; align-items: center; gap: 12px; padding: 8px 8px 8px 10px; border-radius: 16px; background: var(--sage-t); }
+.tm-box.running .tm-start { display: none; }
+.tm-box.running .tm-live { display: flex; }
+.tm-txt { flex: 1; display: flex; flex-direction: column; line-height: 1.15; }
+.tm-left { font-family: var(--serif); font-size: 26px; font-weight: 500; color: var(--text); font-variant-numeric: tabular-nums; }
+.tm-txt small { font-size: 12px; color: var(--text-2); }
+.tm-ring-wrap { display: grid; place-items: center; }
+.tm-ring { display: block; }
+.tm-ring-bg { fill: none; stroke: rgba(0,0,0,.08); stroke-width: 4; }
+.tm-ring-fg { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+.tm-x { flex: none; width: 36px; height: 36px; padding: 0; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--text-2); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.tm-x svg { width: 16px; height: 16px; }
+.tm-box.over .tm-live, .tm-pill.over { background: var(--terra-t); }
+.tm-box.over .tm-ring-fg, .tm-pill.over .tm-ring-fg { stroke: var(--terra); }
+#ck-timers { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(100px + var(--safe-b, 0px)); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; }
+.tm-pill { pointer-events: auto; display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 8px; border-radius: 999px; background: rgba(255,255,255,.96); box-shadow: 0 6px 22px rgba(30,45,35,.14); font-size: 13.5px; color: var(--text); }
+.tm-pill-l { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-2); font-weight: 600; }
+.tm-pill b { font-variant-numeric: tabular-nums; font-weight: 700; min-width: 42px; }
+.tm-pill .tm-x { width: 30px; height: 30px; background: var(--sage-t); box-shadow: none; }
+.tm-pill .tm-x svg { width: 14px; height: 14px; }
+
+/* v195 : fiche Mon poids */
+.wt-link { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 16px; padding: 14px 16px; border-radius: 22px; background: rgba(255,255,255,.7); text-align: left; }
+.wt-link-ic { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--sage-t); color: var(--accent); }
+.wt-link-ic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.wt-link-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.wt-link-txt b { font-size: 16px; font-weight: 700; color: var(--text); }
+.wt-link-txt small { font-size: 13px; color: var(--text-2); }
+.wt-intro { margin: 4px 0 16px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+.wt-card { margin-bottom: 14px; padding: 18px; border-radius: 24px; background: rgba(255,255,255,.75); }
+.wt-k { font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 10px; }
+.wt-row { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 4px 0 16px; }
+.wt-val { min-width: 120px; text-align: center; font-family: var(--serif); font-size: 44px; font-weight: 500; line-height: 1; }
+.wt-val small, .wt-done small { margin-left: 4px; font-family: var(--sans, inherit); font-size: 15px; color: var(--muted); }
+.wt-weigh .hb-btn { width: 100%; }
+.wt-done { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.wt-done b { font-family: var(--serif); font-size: 38px; font-weight: 500; }
+.wt-done span { font-size: 13px; color: var(--text-2); text-align: right; }
+.wt-redo, .wt-later { display: block; width: 100%; margin-top: 10px; padding: 6px; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; }
+.wt-step { background: var(--terra-t); }
+.wt-step p { margin: 0 0 14px; font-size: 14px; line-height: 1.5; color: var(--text); }
+.wt-step .hb-btn { width: 100%; }
+.wt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.wt-stats div { display: flex; flex-direction: column; gap: 2px; }
+.wt-stats span { font-size: 12px; font-weight: 600; color: var(--muted); }
+.wt-stats b { font-family: var(--serif); font-size: 24px; font-weight: 500; color: var(--text); }
+.wt-stats small { font-size: 12px; color: var(--text-2); }
+.wt-chart { display: block; width: 100%; height: auto; }
+.wt-grid { stroke: rgba(0,0,0,.07); stroke-width: 1; }
+.wt-ax { font-size: 10.5px; fill: var(--muted); font-family: inherit; }
+.wt-line { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.wt-dot { fill: #fff; stroke: var(--accent); stroke-width: 2; }
+.wt-dot.last { fill: var(--accent); }
+.wt-empty { padding: 18px 0 6px; font-size: 13px; color: var(--muted); text-align: center; }
+.wt-hrow { display: flex; justify-content: space-between; padding: 9px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
+.wt-hrow:first-of-type { border-top: none; }
+.wt-hrow span { color: var(--text-2); }
+.wl-restore-btn { display: block; margin: 10px auto 0; padding: 6px 12px; font-size: 14px; font-weight: 600; color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
+
+/* v195 : mini-tutoriel de la première semaine */
+.tuto-sub { margin: 4px 0 14px; font-size: 14px; color: var(--text-2); }
+.tuto-steps { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.tuto-steps li { display: flex; gap: 12px; align-items: flex-start; }
+.tuto-n { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--text); color: #fff; font-weight: 700; font-size: 14px; }
+.tuto-steps li > div > b { font-family: var(--serif); font-size: 17px; font-weight: 500; }
+.tuto-steps p { margin: 3px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+.tuto .hb-btn { width: 100%; }
+
+/* v195 : programmes plus lisibles + « Manger équilibré » */
+.proto-range b { display: block; font-weight: 700; color: var(--text); }
+.proto-range span { display: block; margin-top: 1px; font-size: 12px; color: var(--muted); }
+
+.tuto-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tuto-tab { flex: none; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--sage-t); color: var(--accent); font-size: 12px; font-weight: 600; }
+.tuto-tab svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* v195 : collations à préparer, en haut avec les plats */
+
+/* v195 : une fiche par recette de la session (plats et collations), une couleur chacune */
+.dish-4 { --c: var(--terra); --t: var(--terra-t); }
+.dish-5 { --c: #9A8CC4; --t: #EEEBF7; }
+.dish-6 { --c: var(--coral); --t: var(--coral-t); }
+.ck-prep .ck-menu { margin-top: 12px; }
+.ck-card { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px 12px 10px; border-radius: 22px; background: var(--t); min-width: 0; }
+.ck-card.open { grid-column: 1 / -1; }
+.ck-card-hd { display: flex; flex-direction: column; align-items: stretch; gap: 8px; text-align: left; }
+.ck-menu-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.ck-menu-n { font-size: 12px; font-weight: 700; color: var(--c); filter: brightness(.8); white-space: nowrap; padding-top: 2px; }
+.ck-card .ck-menu-name { font-size: 14.5px; font-weight: 600; line-height: 1.25; color: var(--text); }
+.ck-card-ings { display: none; margin: 4px 0 2px; padding: 4px 12px; border-radius: 16px; background: rgba(255,255,255,.75); }
+.ck-card.open .ck-card-ings { display: block; }
+.ck-card-ings .ck-ing { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
+.ck-card-ings .ck-ing:first-child { border-top: none; }
+.ck-card-ings .ck-ing span:last-child { font-weight: 700; white-space: nowrap; }
+.ck-card-ings .ck-ing small { display: block; font-size: 12px; color: var(--text-2); }
+.ck-card .ck-menu-link { align-self: flex-start; font-size: 12.5px; font-weight: 600; color: var(--c); filter: brightness(.8); }
+.ck-later { margin: 6px -12px -4px; padding: 10px 12px; border-top: 1px dashed rgba(0,0,0,.12); }
+.ck-later-h { font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--c); filter: brightness(.8); margin-bottom: 2px; }
+.ck-later p { margin: 6px 0 2px; font-size: 13px; line-height: 1.45; color: var(--text-2); }
