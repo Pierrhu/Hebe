@@ -334,7 +334,9 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
     { pool: [...rotation, ...fillers], cap: 400, minRem: 150 },
   ];
   for (const stepCfg of plan) {
-    if (rem.kcal < stepCfg.minRem) continue;
+    // v195 : un jour réservé à une collation préparée, elle passe dès 100 kcal d'écart (sinon la portion préparée serait perdue)
+    const batchDay = stepCfg === plan[0] && getById(rotation[0])?.batch;
+    if (rem.kcal < (batchDay ? 100 : stepCfg.minRem)) continue;
     const share = Math.min(1, stepCfg.cap / rem.kcal);
     const tgt = {};
     MACROS.forEach(m => tgt[m] = rem[m] * share);
@@ -344,7 +346,7 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
     pool.filter(id => !used.has(id) && (weekUse[id] || 0) < weekCap(id)).forEach(id => { // plafond de la semaine
       const r = getById(id);
       if (!r) return;
-      if (usedBases.size && basesOf(r).length) return; // déjà un fromage blanc ou un yaourt ce jour-là
+      if (usedBases.size && basesOf(r).length && !r.batch) return; // déjà un fromage blanc ou un yaourt ce jour-là (une collation préparée n'est pas un bol)
       const res = optimizeRecipe(r, tgt, 'S', scale);
       // charcuterie : jamais au-delà de ce qu'il reste du plafond de la semaine
       const charc = charcGrams({ id, servings: 1, overrides: res.overrides });

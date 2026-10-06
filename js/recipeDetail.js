@@ -1,13 +1,15 @@
 import { artFor } from '../data/photos.js';
+import { spicesOf } from '../data/ingredients.js';
 import { proteinFamily, getExtras, setExtras } from '../data/recipes.js';
-import { rebalanceAfterRecipeChange } from './weekgen.js';
+import { rebalanceAfterRecipeChange, portionFor } from './weekgen.js';
 import { humanQty, INGREDIENTS, NATURAL_UNITS, ingMacros } from '../data/ingredients.js';
 import { getRating, setRating } from '../data/prefs.js';
 import { photoUrl, rateClass, ICON_HEART, ICON_NOPE } from '../data/photos.js';
 // recipeDetail.js — Détail recette avec ajustement des portions
 // Le sélecteur de portions recalcule ingrédients ET macros en direct.
 
-import { el, scaledMacros, openSheet, closeSheet, toast } from './utils.js';
+import { el, scaledMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
+import { itemQuantities } from './optimizer.js';
 import { getStaples, setDishStaple } from '../data/household.js';
 import { stapleKind, isWhole } from './staples.js';
 import { applyDiet } from './diet.js';
@@ -50,7 +52,8 @@ const CUISINES = {
 const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
 
-export function renderRecipeDetail(recipe, fromView = 'recipes') {
+// item (facultatif) : la portion prévue dans la semaine → quantités et calories de cette portion-là (v195)
+export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
   const app = document.getElementById('app');
   app.querySelector('.view')?.remove();
 
@@ -61,7 +64,12 @@ export function renderRecipeDetail(recipe, fromView = 'recipes') {
   window.scrollTo(0, 0);
 
   function render() {
-    const m = scaledMacros(recipe, 1);
+    // v195 : toujours ce que tu manges vraiment (portion de la semaine, sinon calculée pour toi)
+    const pf = item && item.id === recipe.id ? { item, date: null, given: true } : portionFor(recipe.id);
+    if (pf) item = pf.item;
+    const mine = !!(item && item.id === recipe.id);
+    const qs = mine ? itemQuantities(item) : null;
+    const m = mine ? (mm => ({ kcal: Math.round(mm.kcal), protein: Math.round(mm.protein), carbs: Math.round(mm.carbs), fat: Math.round(mm.fat) }))(itemMacros(item)) : scaledMacros(recipe, 1);
     const kcalM = m.protein * 4 + m.carbs * 4 + m.fat * 9 || 1;
     const bar = v => Math.round(v / kcalM * 100);
     const photo = photoUrl(recipe.photo || recipe.id);
@@ -96,12 +104,12 @@ export function renderRecipeDetail(recipe, fromView = 'recipes') {
         ${stapleBlock(recipe)}
 
         <section class="rd-sec">
-          <div class="rd-sec-hd"><h2>Ingrédients</h2><span class="rd-raw">poids crus · 1 portion</span></div>
+          <div class="rd-sec-hd"><h2>Ingrédients</h2><span class="rd-raw">${mine ? (pf?.date ? `ta portion de ${new Date(pf.date + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long' })} · poids crus` : 'ta portion · poids crus') : 'poids crus · 1 portion'}</span></div>
           <div class="rd-ings">
-            ${recipe.ingredients.map((ing, k) => `
+            ${recipe.ingredients.map((ing, k) => mine && !(qs[k] > 0) ? '' : `
               <div class="rd-ing ${ing.extra ? 'extra' : ''}">
-                <span class="rd-ing-name">${ing.name}${ing.extra ? '<em>ajouté</em>' : ''}</span>
-                <span class="rd-ing-qty">${humanQty(ing.key, ing.qty, ing.unit, { cooked: true })}</span>
+                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spicesOf(recipe.id)}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
+                <span class="rd-ing-qty">${humanQty(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
                 ${ing.extra ? `<button class="rd-rm" data-rm="${ing.key}" aria-label="Retirer ${ing.name}">×</button>` : ''}
               </div>`).join('')}
           </div>

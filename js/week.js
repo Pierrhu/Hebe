@@ -9,12 +9,13 @@ import { whoSwitch, bindWho, avatar } from './profileUi.js';
 import { getById, proteinFamily, isFreshFish } from '../data/recipes.js';
 import { INGREDIENTS, humanQty } from '../data/ingredients.js';
 import { el, computeDayMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
-import { generateWeek, getActivePlan, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras } from './weekgen.js';
+import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras } from './weekgen.js';
 import { itemQuantities, plateTarget, PLATE_SHARE } from './optimizer.js';
 import { proteinBoost } from './diet.js';
 import { dishThumb, dishThumbRated, rateClass, ICON_HEART } from '../data/photos.js';
 import { getRating, setRating } from '../data/prefs.js';
 import { renderRecipeDetail } from './recipeDetail.js';
+import { NAV_SVGS } from './nav.js';
 
 const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></svg>';
 const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
@@ -209,6 +210,7 @@ export function renderWeek() {
     <button class="hb-card hb-batch-link" data-go="cook">
       <div>
         <div class="hb-h3">Ta session de cuisine</div>
+        ${sessionDate(plan) >= getTodayDate() ? `<div class="hb-batch-when"><span>${capFirst(sessionWhen(plan))}</span>${sessionDate(plan) === getTodayDate() ? 'courses puis cuisine' : 'courses la veille ou le matin même'}</div>` : ''}
         <div class="hb-batch-thumbs">${plan.sessions.flatMap(s => s.recipes).map(r => dishThumb(getById(r.id), 'batch')).join('')}</div>
         ${plan.sessions.map(s => `<div class="hb-batch-line">${s.recipes.map(r => shortName(r.id)).join(', ')}</div>`).join('')}
       </div>
@@ -223,8 +225,8 @@ export function renderWeek() {
   view.querySelectorAll('[data-day]').forEach(b => b.addEventListener('click', () => { selectedDay = b.dataset.day; renderWeek(); }));
   view.querySelectorAll('[data-date]').forEach(b => b.addEventListener('click', () => openDaySheet(b.dataset.date)));
   bindHearts(view);
-  view.querySelectorAll('.today [data-rid]').forEach(b => b.addEventListener('click', () => renderRecipeDetail(getById(b.dataset.rid), 'week')));
-  view.querySelectorAll('.dv-mini[data-rid]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); renderRecipeDetail(getById(b.dataset.rid), 'week'); }));
+  view.querySelectorAll('.today [data-rid]').forEach(b => b.addEventListener('click', () => renderRecipeDetail(getById(b.dataset.rid), 'week', plannedItem(selectedDay, b.dataset.rid))));
+  view.querySelectorAll('.dv-mini[data-rid]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); renderRecipeDetail(getById(b.dataset.rid), 'week', plannedItem(selectedDay, b.dataset.rid)); }));
   view.querySelector('.formula-regen')?.addEventListener('click', () => view.querySelector('.hb-regen').click());
   view.querySelector('.recalc-btn')?.addEventListener('click', () => {
     if (tChanged.length) recalcPortions(Object.fromEntries(tChanged.map(m => [m.id, getTargetsFor(m)])));
@@ -285,9 +287,26 @@ function bigTile(label, items, frozen = true) {
 }
 
 // ── Générateur (carte vide ou feuille « Nouvelle semaine ») ──
+const todayIdx = () => (new Date().getDay() + 6) % 7; // 0 = lundi
+// v195 : « Cette semaine » commence demain (courses et cuisine aujourd'hui). Plus proposée à partir de vendredi.
+const thisWeekOk = () => todayIdx() <= 3;
 function defaultNextWeek(plan) {
-  if (plan) return plan.dates[0] === getNextWeekDates()[0];
-  return ((new Date().getDay() + 6) % 7) >= 3; // à partir de jeudi : semaine prochaine
+  if (!thisWeekOk()) return true;
+  if (plan) return true; // une semaine existe déjà : on prépare la suivante
+  return todayIdx() >= 3; // à partir de jeudi : semaine prochaine
+}
+const capFirst = t => t ? t[0].toUpperCase() + t.slice(1) : t;
+const SHORT_DAY = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+function weekNote(next) {
+  if (next) {
+    const sun = new Date(getNextWeekDates()[0] + 'T12:00:00'); sun.setDate(sun.getDate() - 1);
+    const d = sun.getDate();
+    return todayIdx() === 6
+      ? `Courses et cuisine <b>aujourd'hui</b>. Tes repas commencent demain, lundi ${d + 1}.`
+      : `Courses samedi, cuisine <b>dimanche ${d}</b>. Tes repas commencent lundi ${d + 1}.`;
+  }
+  const t = todayIdx();
+  return `Courses et cuisine <b>aujourd'hui</b>. Tes repas commencent demain, ${SHORT_DAY[t + 1]}, jusqu'à dimanche.`;
 }
 // Repas libres : calories réservées (v186). Affiché seulement s'il y a au moins un repas libre.
 // Léger, Normal, Copieux, ou « Ajuster » (par pas de 100 kcal, 300 à 2000), qui part de la taille d'un plat.
@@ -309,16 +328,17 @@ function generatorHTML(plan) {
   return `
     <div class="hb-field">
       <div class="hb-label">Pour quelle semaine ?</div>
-      <div class="hb-seg">
+      ${thisWeekOk() ? `<div class="hb-seg">
         <button class="hb-seg-btn ${!next ? 'on' : ''}" data-week="0">Cette semaine</button>
         <button class="hb-seg-btn ${next ? 'on' : ''}" data-week="1">Prochaine</button>
-      </div>
+      </div>` : `<div class="hb-seg hb-seg-one"><button class="hb-seg-btn on" data-week="1">Semaine prochaine</button></div>`}
+      <div class="week-note">${weekNote(next)}</div>
     </div>
     ${getMembers().map(m => `<div class="hb-field">
       <div class="hb-label">${getMembers().length > 1 ? `Repas libres de ${m.name || 'cette personne'}` : 'Repas libres'}</div>
       <div class="free-hint">Un repas que tu ne cuisines pas : restaurant, invitation, cantine.</div>
       <div class="free-caps" role="group" aria-label="Repas libres">
-        ${['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => `<div class="free-cap"><span>${d}</span><div class="free-pill">${[['lunch', 'midi', ICON_SUN], ['dinner', 'soir', ICON_MOON]].map(([meal, lbl, ic]) => { const on = (m.free || []).includes(`${i}-${meal}`); return `<button class="free-cell ${on ? 'on' : ''}" data-mid="${m.id}" data-free="${i}-${meal}" aria-pressed="${on}" aria-label="${DAY_LONG[i]} ${lbl}">${ic}</button>`; }).join('')}</div></div>`).join('')}
+        ${['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => `<div class="free-cap ${!next && i <= todayIdx() ? 'off' : ''}" data-fday="${i}"><span>${d}</span><div class="free-pill">${[['lunch', 'midi', ICON_SUN], ['dinner', 'soir', ICON_MOON]].map(([meal, lbl, ic]) => { const on = (m.free || []).includes(`${i}-${meal}`); return `<button class="free-cell ${on ? 'on' : ''}" data-mid="${m.id}" data-free="${i}-${meal}" aria-pressed="${on}" aria-label="${DAY_LONG[i]} ${lbl}">${ic}</button>`; }).join('')}</div></div>`).join('')}
       </div>
       <div class="free-leg"><span>${ICON_SUN} midi</span><span>${ICON_MOON} soir</span></div>
       ${freeKcalHTML(m)}
@@ -336,6 +356,8 @@ function bindGenerator(root, onDone) {
   root.querySelectorAll('.hb-seg-btn').forEach(b => b.addEventListener('click', () => {
     next = b.dataset.week === '1';
     root.querySelectorAll('.hb-seg-btn').forEach(x => x.classList.toggle('on', x === b));
+    const wn = root.querySelector('.week-note'); if (wn) wn.innerHTML = weekNote(next);
+    root.querySelectorAll('.free-cap[data-fday]').forEach(c => c.classList.toggle('off', !next && +c.dataset.fday <= todayIdx()));
   }));
   const redrawFk = mid => {
     const box = root.querySelector(`[data-fkbox="${mid}"]`);
@@ -376,10 +398,12 @@ function bindGenerator(root, onDone) {
     btn.textContent = 'Génération…'; btn.disabled = true;
     setTimeout(() => {
       // un seul planning pour le foyer, des portions pour chacun
+      const hadPlan = !!getActivePlan() || !!localStorage.getItem('hebe_served_mains');
       const members = getMembers().map(m => ({ id: m.id, targets: getTargetsFor(m), free: m.free || [], freeKcal: m.freeKcal || 0, formula: m.formula || 'jeune', breakfast: m.breakfast || 'mix', whey: m.whey !== false }));
-      const { entriesBy } = generateWeek({ members, nextWeek: next, proteins: selProteins });
+      const { entriesBy } = generateWeek({ members, nextWeek: next, proteins: selProteins, startFrom: next ? 0 : todayIdx() + 1 });
       Object.entries(entriesBy).forEach(([mid, entries]) => Object.values(entries).forEach(en => saveEntry(en, mid)));
       onDone();
+      showTutoOnce(hadPlan);
     }, 50);
   });
 }
@@ -486,15 +510,79 @@ function openDaySheet(date) {
     closeSheet(); renderWeek(); openDaySheet(date);
     toast('Imprévu annulé');
   }));
-  sheet.querySelectorAll('[data-swap]').forEach(b => b.addEventListener('click', () => {
-    const old = getById(b.dataset.swap);
-    const next = replaceDish(b.dataset.swap);
+  sheet.querySelectorAll('[data-swap]').forEach(b => b.addEventListener('click', () => { closeSheet(); openSwapSheet(b.dataset.swap, date); }));
+  sheet.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', () => {
+    closeSheet();
+    renderRecipeDetail(getById(b.dataset.rid), 'week', plannedItem(date, b.dataset.rid));
+  }));
+}
+
+const PROT_LBL = { poulet: 'Poulet', boeuf: 'Bœuf', poisson: 'Poisson', crevettes: 'Crevettes', tofu: 'Végé', vege: 'Végé' };
+const proteinLabel = r => PROT_LBL[proteinFamily(r)] || '';
+// v195 : « Changer » propose 3 plats au choix, et prévient si la liste de courses est déjà commencée
+function openSwapSheet(oldId, date) {
+  const old = getById(oldId);
+  const plan = getActivePlan();
+  const opts = replaceOptions(oldId, 3);
+  if (!opts.length) { toast('Aucun autre plat disponible pour le moment', 'warn'); return; }
+  const ckKey = 'diet_shopping_checked_' + (plan?.generatedAt || 'x');
+  let nChecked = 0; try { nChecked = JSON.parse(localStorage.getItem(ckKey) || '[]').length; } catch {}
+  const portions = plan.sessions.flatMap(s => s.recipes).find(r => r.id === oldId)?.portions || 0;
+  const card = r => `<button class="sw-opt" data-pick="${r.id}">
+      ${dishThumb(r, 'sw-img')}
+      <span class="sw-txt"><b>${r.name}</b><small>${[(r.tags || []).map(t => CUISINES[t]).find(Boolean), proteinLabel(r)].filter(Boolean).join(' · ')}</small></span>
+      <span class="hb-chev">›</span>
+    </button>`;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="hb-sheet-pad">
+      <div class="hb-h2">Remplacer ${shortName(oldId)}</div>
+      <p class="sw-sub">Le plat choisi remplace les ${portions} boîtes de la session. Portions et courses se recalculent.</p>
+      ${nChecked ? `<div class="sw-warn">Tu as déjà coché ${nChecked} produit${nChecked > 1 ? 's' : ''} dans ta liste de courses : la liste va changer pour ce plat, tes coches sont gardées.</div>` : ''}
+      <div class="sw-list">${opts.map(card).join('')}</div>
+      <button class="hb-btn sw-more">Autres idées</button>
+      <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
+    </div>`);
+  const sh = document.querySelector('.sheet') || document;
+  sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date); });
+  sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
+  sh.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {
+    const kept = localStorage.getItem(ckKey);
+    const next = replaceDish(oldId, b.dataset.pick);
     if (!next) { toast('Aucun autre plat disponible pour le moment', 'warn'); return; }
+    // la liste de courses garde ce qui était déjà coché
+    if (kept) localStorage.setItem('diet_shopping_checked_' + getActivePlan().generatedAt, kept);
     closeSheet(); renderWeek(); openDaySheet(date);
     toast(`${shortName(old.id)} remplacé par ${shortName(next.id)} pour toute la session`);
   }));
-  sheet.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', () => {
-    closeSheet();
-    renderRecipeDetail(getById(b.dataset.rid), 'week');
-  }));
+}
+
+// ── v195 : la première semaine, 3 étapes pour comprendre comment ça marche ──
+const TUTO_KEY = 'hebe_tuto_done';
+function showTutoOnce(hadPlan = false) {
+  try { if (localStorage.getItem(TUTO_KEY)) return; localStorage.setItem(TUTO_KEY, '1'); } catch { return; }
+  if (hadPlan) return; // déjà utilisateur : pas de tutoriel
+  const plan = getActivePlan(); if (!plan) return;
+  const when = sessionWhen(plan);
+  const today = when === "aujourd'hui";
+  // l'onglet est montré tel qu'il apparaît dans la barre du bas : son icône et son nom
+  const tab = (id, label) => `<span class="tuto-tab"><svg viewBox="0 0 24 24" aria-hidden="true">${NAV_SVGS[id]}</svg>${label}</span>`;
+  const S = [
+    ['Fais tes courses', tab('shopping', 'Courses'), `${today ? "Aujourd'hui" : 'La veille de ta session'}. Tout est calculé en paquets du magasin : coche au fur et à mesure.`],
+    ['Cuisine ta session', tab('cook', 'Cuisiner'), `${today ? "Aujourd'hui" : capFirst(when)}. Une étape à la fois, avec les quantités et des minuteurs : tu remplis toutes tes boîtes de la semaine.`],
+    ['Mange ce qui est affiché', tab('week', 'Semaine'), "Chaque jour, tu vois quoi manger. Un repas pris dehors ? Ouvre le détail du jour et choisis « Imprévu » : la journée se recalcule."],
+  ];
+  openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad tuto">
+    <div class="hb-h2">Ta semaine est prête</div>
+    <p class="tuto-sub">Voici comment ça marche, en 3 temps.</p>
+    <ol class="tuto-steps">${S.map(([t, tb, d], i) => `<li><span class="tuto-n">${i + 1}</span><div><div class="tuto-h"><b>${t}</b>${tb}</div><p>${d}</p></div></li>`).join('')}</ol>
+    <button class="hb-btn hb-btn-primary tuto-ok">C'est parti</button>
+  </div>`);
+  document.querySelector('.tuto-ok')?.addEventListener('click', () => closeSheet());
+}
+
+// v195 : la portion prévue ce jour-là (quantités exactes sur la fiche recette)
+function plannedItem(date, rid) {
+  const e = getEntry(date);
+  return Object.values(e.meals || {}).flat().find(it => it && it.id === rid) || null;
 }

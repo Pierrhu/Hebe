@@ -5,6 +5,7 @@
 
 import { getMains } from '../data/recipes.js';
 import { el, toast } from './utils.js';
+import { askRestore } from './settings.js';
 import {
   getHousehold, getMembers, getMember, getActiveMember, setActiveMember, updateMember, setOnboarded,
   setMemberCount, isComplete,
@@ -104,7 +105,8 @@ export function renderWelcome(onDone) {
           </div>
           <p class="wl-end">Plus qu'à cuisiner !</p>
         </div>
-        ${cta('Commencer')}`;
+        <div class="wl-cta wl-cta-hello"><button class="hb-btn hb-btn-primary wl-next">Commencer</button>
+          <button class="wl-restore-btn" data-wl-restore>J'ai déjà une sauvegarde Hébé</button><input type="file" accept=".json,application/json" data-wl-file hidden></div>`;
 
       case 'household': return `
         ${top()}
@@ -235,6 +237,10 @@ export function renderWelcome(onDone) {
 
   function bind() {
     view.querySelector('.wl-next')?.addEventListener('click', next);
+    // v195 : nouveau téléphone, reprendre ses données sans refaire le profil
+    const wlFile = view.querySelector('[data-wl-file]');
+    view.querySelector('[data-wl-restore]')?.addEventListener('click', () => wlFile?.click());
+    wlFile?.addEventListener('change', async () => { const f = wlFile.files?.[0]; wlFile.value = ''; if (f) askRestore(await f.text()); });
     view.querySelector('.wl-back')?.addEventListener('click', () => { error = ''; i = Math.max(0, i - 1); render(); });
     const m = member();
     // équipement

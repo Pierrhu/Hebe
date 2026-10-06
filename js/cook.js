@@ -4,10 +4,10 @@
 
 import { getEntry, getTodayDate } from '../data/log.js';
 import { getById } from '../data/recipes.js';
-import { INGREDIENTS, humanQty, NATURAL_UNITS } from '../data/ingredients.js';
+import { INGREDIENTS, humanQty, NATURAL_UNITS, spicesOf } from '../data/ingredients.js';
 const NATURAL_UNITS_KEYS = Object.keys(NATURAL_UNITS);
 import { el } from './utils.js';
-import { getActivePlan, planMembers, FRESH_ONLY } from './weekgen.js';
+import { getActivePlan, planMembers, FRESH_ONLY, sessionDate, sessionWhen } from './weekgen.js';
 import { isFreshFish } from '../data/recipes.js';
 import { getMember } from '../data/household.js';
 import { getEquipment } from './adapt.js';
@@ -167,6 +167,110 @@ function buildPhases(list) {
   return { phases: out, boxes: recipes.map(r => ({ r, steps: parts.get(r).box })), meals: recipes.map(r => ({ r, steps: parts.get(r).meal })).filter(x => x.steps.length) };
 }
 
+// ── v195 : quantités de l'étape et minuteurs ──
+// Ingrédients cités dans une étape : on affiche leur quantité totale pour la session.
+const STEP_RX = {
+  poulet: /poulet/, haut_cuisse: /poulet|cuisse/, poulet_hache: /poulet/, boeuf: /b(œ|oe)uf|steak|kefta|köfte|boulettes|viande/, boeuf_emince: /b(œ|oe)uf/,
+  tomates_conc: /tomates concassées|les tomates/, tomate: /tomates?(?! (concassées|cerise|séchées))/, tomates_cerise: /tomates cerise/,
+  lait_coco: /lait de coco/, lait: /\blait(?! de coco)/, yaourt_grec: /yaourt/, fromage_blanc: /fromage blanc/, creme: /crème/,
+  pdt: /pommes? de terre|grenailles|frites|purée/, patate_douce: /patates? douces?/, oignon: /oignon/, poivron: /poivron/, courgette: /courgette/,
+  carotte: /carotte/, aubergine: /aubergine/, champignons: /champignon/, epinards: /épinard/, concombre: /concombre/,
+  riz: /\briz\b/, riz_blanc: /\briz\b/, pates: /pâtes|penne/, pates_classiques: /pâtes|penne/, boulghour: /boulgour/, quinoa: /quinoa/, semoule: /semoule/,
+  lentilles_corail: /lentilles/, lentilles_vertes: /lentilles/, pois_chiches: /pois chiches/, haricots_rouges: /haricots rouges/, haricots_blancs: /haricots blancs/,
+  mais: /maïs/, crevettes: /crevettes/, saumon: /saumon/, poisson_blanc: /poisson|colin|merlu/, tofu: /tofu/, oeuf: /(?<!b)(œ|oe)ufs?\b/,
+  feta: /feta/, cheddar: /cheddar|fromage/, emmental: /emmental|fromage/, mozzarella: /mozzarella/, parmesan: /parmesan/, cottage: /cottage/,
+  tortilla: /tortilla|wrap|galette/, pita: /pita/, gnocchis: /gnocchi/, nouilles_oeufs: /nouilles/, nouilles_riz: /nouilles/, farine: /farine/,
+  concentre: /concentré/, gingembre: /gingembre(?! en poudre)/, citron: /citron(?! vert)/, citron_vert: /citron vert/, herbes: /persil|coriandre|basilic|herbes(?! de provence)|aneth|ciboulette|menthe|thym/,
+  chou_fleur: /chou-fleur/, petits_pois: /petits pois/, haricots_verts: /haricots verts/, olives: /olives/,
+  salade: /salade|crudités/, avocat: /avocat/, pain_burger: /pains?\b|burger/, baguette: /baguette|pain/, pain: /pain|tartine/, brocoli: /brocoli/,
+  thon: /thon/, feuille_riz: /feuilles? de riz|galette/, tomates_sechees: /tomates séchées/, cornflakes: /corn-?flakes/, houmous: /houmous/,
+  cornichons: /cornichon/, chou_chinois: /chou/, radis: /radis/, pousses_soja: /pousses/, mangue: /mangue/, fruits_rouges: /fruits rouges/,
+};
+// v195 : ingrédients qui ne servent qu'au moment du repas (œuf au plat, galettes, fromage à faire fondre…) :
+// pas cuisinés pendant la session, mais à garder pour le jour J
+function mealOnlyKeys(r) {
+  const MEAL = /^(Au moment de manger : |Le matin)/;
+  const sess = r.steps.filter(st => !MEAL.test(st)).join(' ').toLowerCase();
+  const meal = r.steps.filter(st => MEAL.test(st)).join(' ').toLowerCase();
+  if (!meal) return new Set();
+  return new Set(r.ingredients.filter(g => { const rx = STEP_RX[g.key]; return rx && !INGREDIENTS[g.key]?.pantry && !rx.test(sess) && rx.test(meal); }).map(g => g.key));
+}
+function stepQty(text, x) {
+  if (!x || !x.tot) return '';
+  const t = text.toLowerCase();
+  const seen = new Set();
+  const chips = [];
+  x.r.ingredients.forEach((g, i) => {
+    const rx = STEP_RX[g.key];
+    const db = INGREDIENTS[g.key];
+    if (!rx || !db || db.pantry || seen.has(g.key) || !(x.tot[i] > 0) || !rx.test(t)) return;
+    seen.add(g.key);
+    chips.push(`<span class="ck-qty-chip"><b>${humanQty(g.key, x.tot[i], g.unit)}</b> ${g.name.split(' (')[0].toLowerCase()}</span>`);
+  });
+  return chips.length ? `<div class="ck-qty">${chips.join('')}</div>` : '';
+}
+// Durée d'une étape (« 18 à 20 minutes » → 20). Pas de minuteur sous 3 minutes.
+function stepMinutes(text) {
+  let best = 0;
+  text.replace(/(\d+)(?:\s*à\s*(\d+))?\s*(?:minutes|min)\b/g, (_, a, b) => { best = Math.max(best, +(b || a)); return _; });
+  return best >= 3 ? best : 0;
+}
+const TIMERS_KEY = 'hebe_timers';
+const getTimers = () => { try { return JSON.parse(localStorage.getItem(TIMERS_KEY) || '[]'); } catch { return []; } };
+const saveTimers = a => { try { localStorage.setItem(TIMERS_KEY, JSON.stringify(a)); } catch {} };
+const ICON_TM_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2.5h5"/></svg>';
+const ICON_X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>';
+function startTimer(label, minutes, step) {
+  const list = getTimers().filter(t => t.end > Date.now() && t.step !== step);
+  list.push({ id: Date.now(), label, step, total: minutes * 60000, end: Date.now() + minutes * 60000 });
+  saveTimers(list);
+  try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch {}
+}
+function ringAlarm(label) {
+  try { navigator.vibrate?.([300, 150, 300, 150, 600]); } catch {}
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.35, 0.7].forEach(t0 => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = 880; o.connect(g); g.connect(ac.destination); g.gain.setValueAtTime(0.25, ac.currentTime + t0); g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + t0 + 0.3); o.start(ac.currentTime + t0); o.stop(ac.currentTime + t0 + 0.32); });
+  } catch {}
+  try { if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState !== 'visible') new Notification('Hébé', { body: `${label} : c'est prêt !`, icon: 'icon-192.png' }); } catch {}
+  toast(`${label} : c'est prêt !`);
+}
+const fmtLeft = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+// anneau de progression (le temps qui reste)
+const tmRing = (t, now, size) => {
+  const r = size / 2 - 3, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, (t.end - now) / (t.total || 1)));
+  return `<svg class="tm-ring" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" class="tm-ring-bg"/><circle cx="${size / 2}" cy="${size / 2}" r="${r}" class="tm-ring-fg" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - f)}" transform="rotate(-90 ${size / 2} ${size / 2})"/></svg>`;
+};
+// Minuteur dans l'étape en cours (data-tm-step) ; ailleurs, une petite bulle au-dessus du menu
+let timerTick = null;
+function drawTimers() {
+  const now = Date.now();
+  let list = getTimers();
+  list.filter(t => t.end <= now && !t.rang).forEach(t => { t.rang = true; ringAlarm(t.label); });
+  list = list.filter(t => t.end > now - 10000); // un minuteur fini reste affiché 10 secondes
+  saveTimers(list);
+  // dans l'étape
+  document.querySelectorAll('[data-tm-step]').forEach(box => {
+    const t = list.find(x => String(x.step) === box.dataset.tmStep);
+    box.classList.toggle('running', !!t);
+    box.classList.toggle('over', !!t && t.end <= now);
+    const live = box.querySelector('.tm-live');
+    if (t && live) { live.querySelector('.tm-ring-wrap').innerHTML = tmRing(t, now, 44); live.querySelector('.tm-left').textContent = t.end <= now ? 'Prêt !' : fmtLeft(t.end - now); }
+  });
+  const inline = new Set([...document.querySelectorAll('[data-tm-step].running')].map(b => b.dataset.tmStep));
+  const float = list.filter(t => !inline.has(String(t.step)));
+  let bar = document.getElementById('ck-timers');
+  if (!float.length) bar?.remove();
+  else {
+    if (!bar) { bar = document.createElement('div'); bar.id = 'ck-timers'; document.body.appendChild(bar); }
+    bar.innerHTML = float.map(t => `<div class="tm-pill ${t.end <= now ? 'over' : ''}">${tmRing(t, now, 28)}<span class="tm-pill-l">${t.label}</span><b>${t.end <= now ? 'Prêt !' : fmtLeft(t.end - now)}</b><button class="tm-x" data-tstop="${t.id}" aria-label="Arrêter le minuteur ${t.label}">${ICON_X}</button></div>`).join('');
+    bar.querySelectorAll('[data-tstop]').forEach(b => b.addEventListener('click', () => { saveTimers(getTimers().filter(t => t.id !== +b.dataset.tstop)); drawTimers(); }));
+  }
+  if (list.length && !timerTick) timerTick = setInterval(drawTimers, 1000);
+  if (!list.length && timerTick) { clearInterval(timerTick); timerTick = null; }
+}
+setTimeout(drawTimers, 0);
+
 export function renderCook() {
   const app = document.getElementById('app');
   app.querySelector('.view')?.remove();
@@ -221,8 +325,11 @@ export function renderCook() {
     return steps.length ? { x, text: steps.join(' ').replace(/^Le matin, /, '').replace(/^Au moment de manger : /, '') } : null;
   }).filter(Boolean);
   const fries = [...new Set(S.recipes.map(x => x.side).filter(Boolean))].map(getById).filter(Boolean);
-  const minutes = Math.round((recipes.reduce((a, r) => a + r.prepTime, 0) + Math.max(0, ...recipes.map(r => r.cookTime)) + 10) / 5) * 5;
+  const minutes = Math.round((recipes.reduce((a, r) => a + r.prepTime, 0) + extras.filter(x => x.r.batch).reduce((a, x) => a + x.r.prepTime, 0) + Math.max(0, ...recipes.map(r => r.cookTime)) + 10) / 5) * 5;
   const boxes = list.reduce((a, x) => a + x.portions, 0);
+  // v195 : collations et petits-déjeuners préparés pendant la session, montrés en haut avec les plats
+  const batchExtras = extras.filter(x => x.r.batch);
+  const kindLbl = r => (r.category === 'breakfast' ? 'Petit-déj' : 'Collation');
 
   // collations à préparer à l'avance (cookies, overnight oats…) : rattachées à la 1re session
   const prepSnacks = sessionIdx === 0 ? [...new Set(mids.flatMap(mid => plan.dates.flatMap(d => (getEntry(d, mid).meals.sweet || []).map(it => it.id))))]
@@ -259,7 +366,14 @@ export function renderCook() {
     if (fresh.length) txt += ` Pour les boîtes congelées, garde à part ${andList(fresh)} : ${fresh.length > 1 ? 'ils ne se congèlent pas' : 'cela ne se congèle pas'}, prépare-les le jour même.`;
     return txt;
   };
-  const boxSteps = plan2.boxes.map(b => ({ r: b.r, text: `${dishShort(b.r)} : ${storage(b.r)}${b.steps.length ? ` Dans les boîtes : ${b.steps.join(' ')}` : ''}`, i: n++ }));
+  // ce qui ne se cuisine pas aujourd'hui (œufs au plat, galettes…) : on le dit clairement au moment de ranger
+  const keptLine = r => {
+    const later = mealOnlyKeys(r); if (!later.size) return '';
+    const x = list.find(y => y.r === r); if (!x) return '';
+    const items = r.ingredients.map((g, i) => later.has(g.key) && x.tot[i] > 0 ? `${humanQty(g.key, x.tot[i], g.unit)} ${g.unit === 'pièce' ? g.name.toLowerCase() : de(g.name.split(' (')[0].toLowerCase())}` : '').filter(Boolean);
+    return items.length ? ` À garder pour le jour du repas, sans les cuisiner aujourd'hui : ${andList(items)} (la fiche de la recette dit quoi faire ce jour-là).` : '';
+  };
+  const boxSteps = plan2.boxes.map(b => ({ r: b.r, text: `${dishShort(b.r)} : ${storage(b.r)}${b.steps.length ? ` Dans les boîtes : ${b.steps.join(' ')}` : ''}${keptLine(b.r)}`, i: n++ }));
   const hasFrozen = list.some(x => mids.some(mid => S.dates.some(d => ['lunch', 'dinner'].some(meal => (getEntry(d, mid).meals[meal] || []).some(it => it.id === x.r.id && it.frozen)))));
   // à manger en premier : poisson et plats qui ne se congèlent pas
   const firstEat = list.filter(x => isFreshFish(x.r) || FRESH_ONLY.includes(x.r.id)).map(x => dishShort(x.r));
@@ -278,7 +392,7 @@ export function renderCook() {
   // Une étape à la fois : la phase en cours en grand, les autres repliées
   const endText = `Prépare ${andList(list.map(x => `${x.portions} ${x.portions > 1 ? 'boîtes' : 'boîte'} de ${dishShort(x.r)}`))}, et écris sur chaque boîte le jour où elle sera mangée.${hasFrozen ? " Les boîtes à congeler vont au congélateur aujourd'hui même, une fois tièdes : la veille du jour prévu, l'onglet Semaine te rappelle de les sortir et de les mettre au frigo." : ''}`;
   const allPhases = [
-    ...phases.map((ph, k) => ({ num: k + 2, title: ph.title, hint: ph.hint, r: ph.r, cls: ph.idx === -2 ? 'ck-phase-extra' : ph.r ? `dish-${ph.idx}` : 'ck-phase-rice', steps: phaseSteps[k] })),
+    ...phases.map((ph, k) => ({ num: k + 2, title: ph.title, hint: ph.hint, r: ph.r, cls: ph.idx === -2 ? `ck-phase-extra dish-${list.length + batchExtras.findIndex(x => x.r === ph.r)}` : ph.r ? `dish-${ph.idx}` : 'ck-phase-rice', steps: phaseSteps[k] })),
     { num: phases.length + 2, title: 'Mettre en boîtes', hint: 'Laisse tiédir 20 minutes au plus, ferme les boîtes et range-les au frigo', r: null, cls: 'ck-phase-end', steps: [{ text: endText, i: boxIdx }, ...boxSteps] },
   ];
   const phaseHTML = P => {
@@ -288,7 +402,13 @@ export function renderCook() {
     if (!cur) return `<div class="ck-row"><span>${P.num} · ${P.title}</span><span class="ck-row-n">${ids.length} étape${ids.length > 1 ? 's' : ''}</span></div>`;
     return `<div class="ck-cur ${P.cls}" id="ck-current">
       <div class="ck-phase-hd"><span class="ck-phase-num">${P.num}</span>${P.r ? dishThumb(P.r, 'phase') : ''}<div class="ck-phase-txt"><div class="ck-phase-title">${P.title}</div>${P.hint ? `<div class="ck-phase-hint">${P.hint}</div>` : ''}</div></div>
-      <div class="ck-cur-step"><div class="ck-cur-k">Étape ${P.steps.indexOf(cur) + 1} sur ${ids.length}</div>${cur.text}</div>
+      <div class="ck-cur-step"><div class="ck-cur-k">Étape ${P.steps.indexOf(cur) + 1} sur ${ids.length}</div>${cur.text}
+        ${P.r && !P.cls.includes('ck-phase-extra') ? stepQty(cur.text, list.find(x => x.r === P.r) || extras.find(x => x.r === P.r)) : ''}
+        ${stepMinutes(cur.text) ? `<div class="tm-box" data-tm-step="${cur.i}">
+          <button class="tm-start" data-timer="${stepMinutes(cur.text)}" data-tstep="${cur.i}" data-tlabel="${P.r ? dishShort(P.r) : 'Riz'}">${ICON_TM_CLOCK}<span>Lancer le minuteur</span><b>${stepMinutes(cur.text)} min</b></button>
+          <div class="tm-live"><span class="tm-ring-wrap"></span><div class="tm-txt"><span class="tm-left"></span><small>Minuteur · ${P.r ? dishShort(P.r) : 'Riz'}</small></div><button class="tm-x" data-tstop-step="${cur.i}" aria-label="Arrêter le minuteur">${ICON_X}</button></div>
+        </div>` : ''}
+      </div>
       <div class="ck-cur-nav"><button class="ck-prev" ${doneCount ? '' : 'disabled'}>Retour</button><button class="ck-next">${current === total - 1 ? 'Terminer' : 'Étape suivante'}</button></div>
     </div>`;
   };
@@ -299,31 +419,32 @@ export function renderCook() {
       `<button class="hb-seg-btn ${i === sessionIdx ? 'on' : ''}" data-s="${i}">${s.label}</button>`).join('')}</div>` : ''}
 
     <div class="ck-summary">
-      <div class="ck-sum-main">${recipes.map(dishShort).join(' + ')}</div>
+      ${sessionDate(plan) >= getTodayDate() ? `<div class="ck-when">Session ${sessionWhen(plan) === "aujourd'hui" || sessionWhen(plan) === 'demain' ? sessionWhen(plan) : 'du ' + sessionWhen(plan)}</div>` : ''}
       <div class="ck-sum-sub">≈ ${minutes} min · ${boxes} boîtes · pour toute la semaine</div>
       ${firstEat.length ? `<div class="ck-first">À manger en premier : ${firstEat.join(' et ')}, dans les premiers jours de la semaine.</div>` : ''}
       <div class="ck-progress"><div class="tm-bar"><i style="width:${total ? doneCount / total * 100 : 0}%"></i></div><span>${doneCount}/${total} étapes</span></div>
     </div>
 
-    <div class="ck-menu">
-      ${list.map((x, k) => `<button class="ck-menu-item dish-${k}" data-rid="${x.r.id}">
-        ${dishThumbRated(x.r, 'menu')}
-        <span class="ck-menu-txt"><span class="ck-menu-name">${dishShort(x.r)}</span><span class="ck-menu-link">Voir la recette</span></span>
-      </button>`).join('')}
-
-    </div>
-
-    <div class="ck-phase">
-      <div class="ck-phase-hd"><span class="ck-phase-num">1</span><div><div class="ck-phase-title">Sortir les ingrédients</div><div class="ck-phase-hint">Quantités totales pour toute la session</div></div></div>
+    <div class="ck-phase ck-prep">
+      <div class="ck-phase-hd"><span class="ck-phase-num">1</span><div><div class="ck-phase-title">Sortir les ingrédients</div><div class="ck-phase-hint">Touche une recette pour voir ses quantités</div></div></div>
       ${sessionIdx > 0 && list.some(x => x.r.ingredients.some(g => INGREDIENTS[g.key]?.snap)) ? `<div class="ck-note ck-note-safe">Viandes et poissons achetés en début de semaine : vérifie leur date limite. Si elle tombe avant aujourd'hui, ils auraient dû être congelés le jour des courses ; dans ce cas, fais-les décongeler la veille au frigo, jamais à température ambiante.</div>` : ''}
-      ${list.map((x, k) => {
-        const c = conservation(x.r);
-        return `<details class="ck-ings dish-${k}">
-          <summary><span class="ck-sum-name">${dishThumb(x.r, 'mini')}${x.r.name}</span><span class="ck-ings-n">${x.portions} portions</span></summary>
-          ${x.r.ingredients.map((g, i) => `<div class="ck-ing"><span>${g.name}</span><span>${humanQty(g.key, x.tot[i], g.unit)}</span></div>`).join('')}
-          <button class="ck-recipe" data-rid="${x.r.id}">Voir la fiche complète</button>
-        </details>`;
-      }).join('')}
+      <div class="ck-menu">
+        ${[...list, ...batchExtras].map((x, k) => `<div class="ck-card dish-${k}">
+          <button class="ck-card-hd" data-card aria-expanded="false">
+            <span class="ck-menu-top">${dishThumbRated(x.r, 'menu')}<span class="ck-menu-n">${x.portions} ${x.portions > 1 ? 'portions' : 'portion'}</span></span>
+            <span class="ck-menu-name">${dishShort(x.r)}</span>
+          </button>
+          ${(() => {
+            const later = mealOnlyKeys(x.r);
+            const row = (g, i) => `<div class="ck-ing"><span>${g.name}${g.key === 'epices' && spicesOf(x.r.id) ? `<small>${spicesOf(x.r.id)}</small>` : ''}</span><span>${humanQty(g.key, x.tot[i], g.unit)}</span></div>`;
+            const now = x.r.ingredients.map((g, i) => x.tot[i] > 0 && !later.has(g.key) ? row(g, i) : '').join('');
+            const kept = x.r.ingredients.map((g, i) => x.tot[i] > 0 && later.has(g.key) ? row(g, i) : '').join('');
+            const mealTxt = x.r.steps.filter(st => /^Au moment de manger : /.test(st)).map(st => cap(st.replace(/^Au moment de manger : /, ''))).join(' ');
+            return `<div class="ck-card-ings">${now}${kept ? `<div class="ck-later"><div class="ck-later-h">À garder pour le jour du repas</div>${kept}<p>${mealTxt}</p></div>` : ''}</div>`;
+          })()}
+          <button class="ck-menu-link" data-rid="${x.r.id}">Voir la recette</button>
+        </div>`).join('')}
+      </div>
     </div>
 
     ${allPhases.map(phaseHTML).join('')}
@@ -336,16 +457,9 @@ export function renderCook() {
         ${mids.filter(mid => x.per[mid]?.n).map(mid => `<div class="ck-split-row"><span>${getMember(mid)?.name || 'Sans prénom'}</span><span>${x.per[mid].n} ${x.per[mid].n > 1 ? 'boîtes' : 'boîte'} d'environ ${Math.round(x.per[mid].w / x.per[mid].n / 10) * 10} g</span></div>`).join('')}
       </div>`).join('')}</div>` : ''}
       <div class="ck-cons-list">${list.map(x => { const c = conservation(x.r); return `<div class="ck-cons-row"><span>${dishShort(x.r)}</span><span>frigo ${c.fridge}${c.freezer ? ` · congélo ${c.freezer}` : ''}</span></div>`; }).join('')}</div>
-      ${fries.length ? `<div class="ck-note">${fries.map(f => f.name).join(' et ')} : elles se font au moment du repas, elles ne se gardent pas.</div>` : ''}
     </div>
 
-    ${plan2.meals.length ? `
-      <div class="hb-section-title">Au moment de manger</div>
-      <div class="ck-meals">${plan2.meals.map(m => `<div class="ck-meal">${dishThumb(m.r, 'mini')}<div><b>${dishShort(m.r)}</b><p>${cap(m.steps.join(' '))}</p></div></div>`).join('')}</div>` : ''}
-
-    ${later.length ? `
-      <div class="hb-section-title">Petits-déjeuners et collations à faire au moment</div>
-      <div class="ck-meals">${later.map(({ x, text }) => `<button class="ck-meal" data-rid="${x.r.id}">${dishThumb(x.r, 'mini')}<div><b>${x.r.name}</b><span class="ck-meal-n">${x.portions} ${x.portions > 1 ? 'fois' : 'fois'} sur la session${x.r.batch ? ', préparé aujourd\'hui' : ''}</span><p>${cap(text)}</p></div></button>`).join('')}</div>` : ''}
+    <!-- v195 : la page ne montre que la session de cuisine ; ce qui se fait au moment du repas est dans la Semaine et sur les fiches -->
   `;
   app.insertBefore(view, app.querySelector('#nav'));
 
@@ -358,6 +472,14 @@ export function renderCook() {
   });
   view.querySelectorAll('[data-reopen]').forEach(b => b.addEventListener('click', () => { done = done.filter(i => i !== +b.dataset.reopen); save(); }));
   view.querySelector('.ck-restart')?.addEventListener('click', () => { done = []; save(); });
+  view.querySelectorAll('[data-timer]').forEach(b => b.addEventListener('click', () => { startTimer(b.dataset.tlabel, +b.dataset.timer, +b.dataset.tstep); drawTimers(); }));
+  view.querySelectorAll('[data-tstop-step]').forEach(b => b.addEventListener('click', () => { saveTimers(getTimers().filter(t => t.step !== +b.dataset.tstopStep)); drawTimers(); }));
+  drawTimers();
+  // fiche d'une recette : ouvre ou ferme sa liste d'ingrédients (pleine largeur quand elle est ouverte)
+  view.querySelectorAll('[data-card]').forEach(b => b.addEventListener('click', () => {
+    const card = b.closest('.ck-card'), open = !card.classList.contains('open');
+    card.classList.toggle('open', open); b.setAttribute('aria-expanded', open);
+  }));
   view.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', e => {
     e.preventDefault();
     renderRecipeDetail(getById(b.dataset.rid), 'cook');

@@ -2,11 +2,11 @@
 // Source : soit une plage de dates choisie depuis la vue Semaine (diet_shop_range),
 // soit les N derniers jours. Les quantités sont multipliées par les portions (servings).
 
-import { getEntry } from '../data/log.js';
+import { getEntry, getTodayDate } from '../data/log.js';
 import { getById }          from '../data/recipes.js';
 import { toast, el }               from './utils.js';
-import { getActivePlan, planMembers } from './weekgen.js';
-import { INGREDIENTS, ingCost, NATURAL_UNITS } from '../data/ingredients.js';
+import { getActivePlan, planMembers, sessionDate, sessionWhen } from './weekgen.js';
+import { INGREDIENTS, ingCost, NATURAL_UNITS, spicesOf } from '../data/ingredients.js';
 import { itemQuantities } from './optimizer.js';
 
 // Petit anneau de progression « articles cochés » pour le héro de la liste.
@@ -252,6 +252,7 @@ function buildList(dates) {
             cat: db ? (db.pantry ? 'Placard : à vérifier' : db.rayon) : categorize(name),
           };
           map[key].qty += qty;
+          if (ing.key === 'epices' && spicesOf(r.id)) { map[key].spices ||= new Set(); spicesOf(r.id).split(', ').forEach(x => map[key].spices.add(x)); }
         });
       });
     });
@@ -259,10 +260,40 @@ function buildList(dates) {
   return Object.values(map);
 }
 
+// v195 : fruits et légumes comptés comme au magasin (pièces, bouquets, barquettes) au lieu de grammes.
+// clé : [grammes (ou ml de jus) par pièce, singulier, pluriel, nom affiché, montrer le poids ≈]
+const PIECES = {
+  courgette: [250, 'courgette', 'courgettes', 'Courgettes'],
+  poivron: [180, 'poivron', 'poivrons', 'Poivrons'],
+  oignon: [120, 'oignon', 'oignons', 'Oignons', true],
+  carotte: [100, 'carotte', 'carottes', 'Carottes', true],
+  concombre: [350, 'concombre', 'concombres', 'Concombre'],
+  tomates_cerise: [250, 'barquette de 250 g', 'barquettes de 250 g', 'Tomates cerise'],
+  salade: [250, 'salade', 'salades', 'Salade verte'],
+  champignons: [250, 'barquette de 250 g', 'barquettes de 250 g', 'Champignons de Paris'],
+  avocat: [170, 'avocat', 'avocats', 'Avocats'],
+  herbes: [30, 'bouquet', 'bouquets', 'Herbes fraîches (persil, coriandre…)'],
+  citron: [35, 'citron', 'citrons', 'Citrons'],
+  citron_vert: [25, 'citron vert', 'citrons verts', 'Citrons verts'],
+  banane: [120, 'banane', 'bananes', 'Bananes', true],
+  pomme: [150, 'pomme', 'pommes', 'Pommes', true],
+  aubergine: [300, 'aubergine', 'aubergines', 'Aubergines'],
+  tomate: [120, 'tomate', 'tomates', 'Tomates', true],
+  chou_chinois: [800, 'chou chinois', 'choux chinois', 'Chou chinois'],
+  fruit_saison: [150, 'fruit', 'fruits', 'Fruits de saison', true],
+  radis: [250, 'botte', 'bottes', 'Radis'],
+};
+
 // Quantité à acheter, arrondie au format du commerce.
 function toPurchase(item) {
   const db = item.dbKey ? INGREDIENTS[item.dbKey] : null;
   const q = item.qty;
+  if (db && PIECES[db.key]) {
+    const [g, one, many, label, approx] = PIECES[db.key];
+    const n = Math.max(1, Math.ceil(q / g - 0.15));
+    const w = Math.round(q / 50) * 50;
+    return { qty: n, unit: `${n > 1 ? many : one}${approx && w >= 100 ? ` · ≈ ${w >= 1000 ? String(Math.round(w / 100) / 10).replace('.', ',') + ' kg' : w + ' g'}` : ''}`, name: label };
+  }
   // en tranches / à la pièce (pain, blanc de poulet, cheddar, pains burger)
   if (db && NATURAL_UNITS[db.key]) {
     const nu = NATURAL_UNITS[db.key];
@@ -302,8 +333,15 @@ function toPurchase(item) {
   return { qty: Math.ceil(q / 50) * 50, unit: item.unit };
 }
 
+// v195 : coût de ce qu'on achète vraiment (paquets entiers), affiché en haut de la liste
 function listCost(items) {
-  return items.reduce((a, it) => a + (it.dbKey && !INGREDIENTS[it.dbKey].pantry ? ingCost(it.dbKey, it.qty) : 0), 0);
+  return items.reduce((a, it) => {
+    const db = it.dbKey && INGREDIENTS[it.dbKey];
+    if (!db || db.pantry) return a;
+    const P = db.pack || db.buy;
+    const q = P ? Math.max(1, Math.ceil(it.qty / P - 0.05)) * P : it.qty;
+    return a + ingCost(it.dbKey, q);
+  }, 0);
 }
 
 export function renderShopping() {
@@ -342,8 +380,9 @@ export function renderShopping() {
         <div class="shop-card ${items.length && done === items.length ? 'all-done' : ''}">
           <div class="shop-card-top">
             <div>
-              <div class="shop-meta">Semaine du ${start}</div>
+              <div class="shop-meta">${sessionDate(plan) >= getTodayDate() ? `Pour ta session ${sessionWhen(plan) === "aujourd'hui" ? "d'aujourd'hui" : sessionWhen(plan) === 'demain' ? 'de demain' : 'du ' + sessionWhen(plan, { short: true })}` : `Semaine du ${start}`}</div>
               <div class="shop-count"><b>${done}</b><span>/ ${items.length} produits</span></div>
+              <div class="shop-cost">≈ ${Math.round(listCost(items))} € estimés <small>(prix Lidl moyens)</small></div>
             </div>
             ${done > 0 ? '<button class="clear-btn">Tout décocher</button>' : ''}
           </div>
@@ -374,8 +413,8 @@ export function renderShopping() {
                 return `<div class="shop-item ${isChecked ? 'done' : ''}" data-key="${key}" role="button" tabindex="0">
                   <div class="shop-check ${isChecked ? 'checked' : ''}"></div>
                   <div class="shop-info">
-                    <div class="shop-name">${item.name}</div>
-                    <div class="shop-qty">${isPantry ? 'Vérifie ton placard' : `${p.qty} ${p.unit}`}</div>
+                    <div class="shop-name">${p.name || item.name}</div>
+                    <div class="shop-qty">${isPantry ? (item.spices ? `Vérifie : ${[...item.spices].sort((a, b) => a.localeCompare(b, 'fr')).join(', ')}` : 'Vérifie ton placard') : `${p.qty} ${p.unit}`}</div>
                   </div>
                   ${isPantry ? `<button class="shop-have" data-have="${key}">J'en ai</button>` : ''}
                 </div>`;

@@ -6,6 +6,8 @@ import { dishThumb, dishThumbRated } from '../data/photos.js';
 import { getRating } from '../data/prefs.js';
 import { el }              from './utils.js';
 import { renderRecipeDetail } from './recipeDetail.js';
+import { portionFor } from './weekgen.js';
+import { itemMacros } from './utils.js';
 
 const FILTERS = [
   { key: 'all',    label: 'Tout'        },
@@ -94,7 +96,7 @@ export function renderRecipes() {
         ${dishThumbRated(r, 'rc')}
         <div class="rc-info">
           <div class="rc-name">${r.name}</div>
-          <div class="rc-meta">${r.macros.kcal} kcal · ${r.macros.protein} g prot. · ${r.prepTime + r.cookTime} min</div>
+          <div class="rc-meta">${(mm => `${Math.round(mm.kcal)} kcal · ${Math.round(mm.protein)} g prot.`)(myMacros(r))} · ${r.prepTime + r.cookTime} min</div>
         </div>
         <span class="rc-arrow">›</span>
       </div>`).join('') : '<div class="no-results">Aucune recette trouvée.</div>';
@@ -111,4 +113,12 @@ export function renderRecipes() {
   search.addEventListener('input', e => { setState({ searchQuery: e.target.value }); renderList(e.target.value); });
 
   app.insertBefore(view, app.querySelector('#nav'));
+}
+
+// v195 : calories de ta portion réelle (celle de ta semaine, sinon calculée pour toi), gardées en mémoire le temps d'une visite
+const MY_MACROS = new Map();
+function myMacros(r) {
+  const key = r.id + '|' + (localStorage.getItem('hebe_week_plan') || '').length;
+  if (!MY_MACROS.has(key)) { const pf = portionFor(r.id); MY_MACROS.set(key, pf ? itemMacros(pf.item) : r.macros); }
+  return MY_MACROS.get(key);
 }

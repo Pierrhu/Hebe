@@ -237,10 +237,16 @@ export function activityList(level = null) {
   </div>`;
 }
 
+// v195 : « Départ 2526 kcal », puis ce qui se passe ensuite, en clair
 function phaseRange(profile, pid) {
   const ph = computeAllPhases(profile, pid);
-  if (ph.length === 1) return `${ph[0].targets.kcal} kcal`;
-  return `${ph[0].targets.kcal} → ${ph[ph.length - 1].targets.kcal} kcal`;
+  const k = ph.map(x => x.targets.kcal);
+  if (ph.length === 1) return `<b>${k[0]} kcal</b><span>sans changer de palier</span>`;
+  const more = k[k.length - 1] > k[0];
+  const then = ph.length === 2
+    ? `puis ${k[1]} si ${more ? 'tu stagnes' : 'le poids stagne'}`
+    : `puis jusqu'à ${k[k.length - 1]}, en ${ph.length - 1} paliers`;
+  return `<b>Départ ${k[0]} kcal</b><span>${then}</span>`;
 }
 
 // Cartes des quatre programmes
