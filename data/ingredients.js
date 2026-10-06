@@ -268,3 +268,25 @@ export function humanQty(key, qty, unit, opts = {}) {
   if (qty >= 1000 && unit === 'ml') return `${String(Math.round(qty / 10) / 100).replace('.', ',')} L`;
   return `${Math.round(qty)} ${unit}`;
 }
+
+// v195 : les « Épices » de chaque recette, nommées (rayon épices Lidl). Affichées sur la fiche,
+// dans la session de cuisine et dans le placard de la liste de courses.
+export const SPICES = {
+  W01: 'curry en poudre', W04: 'origan', W05: 'cumin, paprika', W06: 'cumin, paprika',
+  W07: 'cumin, curcuma, gingembre en poudre, cannelle', W08: 'paprika fumé, piment', W09: 'cumin, paprika, origan',
+  W11: 'paprika fumé, piment', W12: 'curry en poudre', W13: 'piment', W14: 'curry en poudre, paprika, cumin, curcuma',
+  W15: 'cumin, paprika, origan, piment', W16: 'cumin, paprika, piment', W17: 'cumin, paprika fumé', W19: 'piment',
+  W20: 'paprika fumé, piment', W21: 'paprika fumé, piment', W25: 'cumin, paprika', W28: 'paprika',
+  W29: 'paprika, piment, cannelle', W30: 'paprika, piment', W32: 'cumin, paprika fumé, ail en poudre, piment',
+  W33: 'herbes de Provence', W35: 'paprika, ail en poudre, piment', W36: 'cumin, paprika, ail en poudre, piment',
+  W39: 'herbes de Provence', W40: 'cumin, paprika, cannelle', W41: 'herbes de Provence',
+  W43: 'paprika, cumin, ail en poudre, cannelle, piment', W44: 'curry en poudre, curcuma', W45: 'origan',
+  W46: 'paprika fumé, ail en poudre', W47: 'origan', W48: 'origan', W49: 'paprika, ail en poudre', W50: 'thym',
+  W51: 'origan', W52: 'paprika fumé, piment', W53: 'origan', W55: 'paprika', W57: 'paprika fumé, ail en poudre, origan, thym, piment',
+  W58: 'paprika, cumin, origan, ail en poudre', W60: 'paprika', W61: 'paprika', W62: 'origan, piment', W64: 'herbes de Provence',
+  W65: 'paprika', W66: 'cumin, paprika fumé', W67: 'cumin, origan', W68: 'garam masala, cumin, curcuma, piment',
+  W69: 'cumin, paprika, cannelle, gingembre en poudre', W70: 'cumin, paprika, cannelle, curcuma', W71: 'cumin, paprika fumé, piment',
+  W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
+  B02: 'cannelle', B16: 'cannelle', K12: 'piment',
+};
+export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
