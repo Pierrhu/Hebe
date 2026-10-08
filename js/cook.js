@@ -98,7 +98,8 @@ function splitSteps(r) {
   let rice = false;
   r.steps.forEach(st => {
     if (RICE_RX.test(st)) rice = true;
-    else if (BOX_RX.test(st)) box.push(st.replace(BOX_RX, ''));
+    // v199 : le frigo ou le congélateur est décidé par la session (jour par jour) : on retire de la fiche ce qui le contredirait
+    else if (BOX_RX.test(st)) { const t = st.replace(BOX_RX, '').replace(/(,? |^)(au frigo )?dès qu'(il|elle)s? (a|ont) tiédi(, au frigo ou au congélateur)?/gi, '').replace(/, au frigo\./g, '.').replace(/^\s*[.,]\s*/, '').trim(); if (t.replace(/[.\s]/g, '') && t.split(/\s+/).length > 4) box.push(cap(t)); } // « Les pâtes. » seul n'apporte rien
     else if (MEAL_RX.test(st)) meal.push(st.replace(MEAL_RX, ''));
     else core.push(st);
   });

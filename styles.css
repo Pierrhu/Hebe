@@ -1692,3 +1692,17 @@ button.idf-stamp:active { opacity: .7; }
 .ck-later { margin: 6px -12px -4px; padding: 10px 12px; border-top: 1px dashed rgba(0,0,0,.12); }
 .ck-later-h { font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--c); filter: brightness(.8); margin-bottom: 2px; }
 .ck-later p { margin: 6px 0 2px; font-size: 13px; line-height: 1.45; color: var(--text-2); }
+
+/* v199 : ajustement automatique des calories */
+.wt-adj { background: var(--sage-t); }
+.wt-adj p, .wt-auto p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--text); }
+.wt-auto p { color: var(--text-2); font-size: 13.5px; }
+.wt-auto-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wt-auto-top .wt-k { margin-bottom: 6px; }
+.wt-switch { flex: none; width: 48px; height: 28px; padding: 3px; border-radius: 999px; background: rgba(0,0,0,.15); transition: background .2s; }
+.wt-switch i { display: block; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .2s; }
+.wt-switch.on { background: var(--accent); }
+.wt-switch.on i { transform: translateX(20px); }
+.wt-switch:disabled { opacity: .4; }
+.wt-auto-row { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
+.wt-auto-row span { color: var(--text-2); }

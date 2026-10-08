@@ -83,7 +83,7 @@ const RAW = {
   mais:          ['Maïs (conserve)',            'g',     90,  3,    16,  1.5, 'veg', 4,   'E', { pack: 140 }],
   legumes_mix:   ['Poêlée de légumes (surgelée)','g',    40,  2,    6,   0.5, 'veg', 3,   'F', {}],
   avocat:        ['Avocat',                     'g',     160, 2,    2,   15,  'fat', 10,  'F', { buy: 170, lv: 'PS', min: 30, max: 100 }],
-  herbes:        ['Herbes fraîches',            'g',     30,  2,    4,   0.5, 'flavor', 15, 'F', { buy: 30 }],
+  herbes:        ['Herbes fraîches',            'g',     30,  2,    4,   0.5, 'flavor', 15, 'F', { buy: 30, max: 10 }],
   citron:        ['Citron (jus)',               'ml',    22,  0.4,  6,   0.2, 'flavor', 5,  'F', {}],
 
   // ── Fruits ──────────────────────────────────────────────────────

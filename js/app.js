@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-06T09:09:10.108Z
+// 2026-10-08T07:32:06.078Z
 
 
 // ──────────────────────────────────────────────
@@ -115,7 +115,7 @@ const RAW = {
   mais:          ['Maïs (conserve)',            'g',     90,  3,    16,  1.5, 'veg', 4,   'E', { pack: 140 }],
   legumes_mix:   ['Poêlée de légumes (surgelée)','g',    40,  2,    6,   0.5, 'veg', 3,   'F', {}],
   avocat:        ['Avocat',                     'g',     160, 2,    2,   15,  'fat', 10,  'F', { buy: 170, lv: 'PS', min: 30, max: 100 }],
-  herbes:        ['Herbes fraîches',            'g',     30,  2,    4,   0.5, 'flavor', 15, 'F', { buy: 30 }],
+  herbes:        ['Herbes fraîches',            'g',     30,  2,    4,   0.5, 'flavor', 15, 'F', { buy: 30, max: 10 }],
   citron:        ['Citron (jus)',               'ml',    22,  0.4,  6,   0.2, 'flavor', 5,  'F', {}],
 
   // ── Fruits ──────────────────────────────────────────────────────
@@ -1950,12 +1950,14 @@ function computeBase(profile) {
   const bmr2 = 21.6 * leanMass + 370;
   const bmr  = (bmr1 + bmr2) / 2;
   const coef = activityCoef(profile.activity ?? 2);
-  const maintenance = bmr * coef;
+  // v199 : correction de la dépense mesurée sur tes pesées (ajustement automatique, 0,85 à 1,15)
+  const adj = Math.min(1.15, Math.max(0.85, +profile.tdeeAdj || 1));
+  const maintenance = bmr * coef * adj;
   const protein = (weight * 1.5 + leanMass * 2) / 2;
   const fat     = 1.2 * leanMass;
   const floorKcal = Math.max(bmr, female ? 1200 : 1500);
   const fatShare  = female ? 0.25 : 0.20;
-  return { bmr1, bmr2, bmr, coef, maintenance, leanMass, protein, fat, floorKcal, fatShare };
+  return { bmr1, bmr2, bmr, coef, adj, maintenance, maintenanceFormula: bmr * coef, leanMass, protein, fat, floorKcal, fatShare };
 }
 
 // Cibles d'une étape, avec le détail des garde-fous appliqués
@@ -2015,7 +2017,7 @@ function protocolFor(profile, protocolId) {
 const protocolsFor = profile => PROTOCOLS.map(p => protocolFor(profile, p.id));
 
 // ── Profil de la personne active (stocké dans le foyer) ──
-const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity'];
+const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity', 'tdeeAdj'];
 function getProfile() {
   const m = getActiveMember();
   const p = {};
@@ -3124,7 +3126,10 @@ function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07
   for (const stepCfg of plan) {
     // v195 : un jour réservé à une collation préparée, elle passe dès 100 kcal d'écart (sinon la portion préparée serait perdue)
     const batchDay = stepCfg === plan[0] && getById(rotation[0])?.batch;
-    if (rem.kcal < (batchDay ? 100 : stepCfg.minRem)) continue;
+    // v199 : les jours sans préparée, une vraie collation rapide passe dès 140 kcal d'écart (avant 200 : on n'avait
+    // presque que fruit, amandes et tartine) ; les compléments viennent ensuite si besoin
+    const quickDay = stepCfg === plan[0] && !batchDay && getById(rotation[0])?.category === 'sweet';
+    if (rem.kcal < (batchDay ? 100 : quickDay ? 140 : stepCfg.minRem)) continue;
     const share = Math.min(1, stepCfg.cap / rem.kcal);
     const tgt = {};
     MACROS.forEach(m => tgt[m] = rem[m] * share);
@@ -3134,7 +3139,9 @@ function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07
     pool.filter(id => !used.has(id) && (weekUse[id] || 0) < weekCap(id)).forEach(id => { // plafond de la semaine
       const r = getById(id);
       if (!r) return;
-      if (usedBases.size && basesOf(r).length && !r.batch) return; // déjà un fromage blanc ou un yaourt ce jour-là (une collation préparée n'est pas un bol)
+      // v199 : pas deux fois le même laitage dans la journée (fromage blanc puis fromage blanc), mais un yaourt après un porridge
+      // au fromage blanc, oui : sinon les collations rapides (presque toutes à base de laitage) ne passaient presque jamais
+      if (!r.batch && basesOf(r).some(k => usedBases.has(k))) return;
       const res = optimizeRecipe(r, tgt, 'S', scale);
       // charcuterie : jamais au-delà de ce qu'il reste du plafond de la semaine
       const charc = charcGrams({ id, servings: 1, overrides: res.overrides });
@@ -3655,14 +3662,16 @@ function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = In
   const PACK_FRESH = ['avocat', 'salade', 'concombre', 'herbes', 'tomates_cerise', 'champignons', 'poivron', 'courgette', 'aubergine'];
   const needsPack = s => !!bought && s.ingredients.some(i => PACK_FRESH.includes(i.key) && !bought.has(i.key));
   const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s));
-  const sweet = weightedOrder(quick.filter(s => (s.tags || []).includes('sucré') || !(s.tags || []).includes('salé')), prefer);
-  const salty = weightedOrder(quick.filter(s => (s.tags || []).includes('salé')), prefer);
-  // préparée à l'avance : seulement ce qui tient toute la semaine (energy balls ; pancakes, qui se congèlent)
-  // v195 : tour de rôle des collations préparées. Celles servies les 2 dernières semaines passent leur tour
-  // (s'il en reste au moins 2 autres) ; ensuite, plus une collation attend, plus elle a de chances de sortir.
+  // v195 / v199 : tour de rôle, pour les collations préparées comme pour les rapides. Celles servies récemment passent
+  // leur tour (s'il en reste assez) ; ensuite, plus une collation attend, plus elle a de chances de sortir.
   // Le partage d'un produit avec les plats ne donne plus qu'un petit coup de pouce.
   const sv = getServedSnacks();
   const ageOf = id => (sv.last[id] == null ? 8 : Math.min(8, sv.n - sv.last[id]));
+  const byAge = list => list.map(r => ({ r, k: Math.random() ** (1 / (ageOf(baseSnackId(r.id)) ** 2 * (sharesWith(r, prefer) ? 1.3 : 1))) })).sort((a, b) => b.k - a.k).map(x => x.r);
+  const restedQ = list => { const r = list.filter(s => ageOf(baseSnackId(s.id)) >= 2); return r.length >= 2 ? r : list; };
+  const sweet = byAge(restedQ(quick.filter(s => (s.tags || []).includes('sucré') || !(s.tags || []).includes('salé'))));
+  const salty = byAge(restedQ(quick.filter(s => (s.tags || []).includes('salé'))));
+  // préparée à l'avance : seulement ce qui tient toute la semaine (energy balls ; pancakes, qui se congèlent)
   let batchPool = all.filter(s => s.batch && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')) && snackFloor(s) <= room);
   const rested = batchPool.filter(s => ageOf(baseSnackId(s.id)) >= 3);
   if (rested.length >= 2) batchPool = rested;
@@ -3912,7 +3921,7 @@ function generateWeek(opts = {}) {
   // collations préparées réellement servies cette semaine
   try {
     const sv = getServedSnacks(); sv.n += 1;
-    Object.values(cand.entriesBy || {}).forEach(E => Object.values(E).forEach(e => (e?.meals?.sweet || []).forEach(it => { if (getById(it.id)?.batch) sv.last[baseSnackId(it.id)] = sv.n; })));
+    Object.values(cand.entriesBy || {}).forEach(E => Object.values(E).forEach(e => (e?.meals?.sweet || []).forEach(it => { if (getById(it.id)?.category === 'sweet') sv.last[baseSnackId(it.id)] = sv.n; })));
     localStorage.setItem(SNK_KEY, JSON.stringify(sv));
   } catch {}
   // restes des produits qui se gardent 2 semaines (carrés frais, pains et wraps au congélateur) : reportés à la semaine suivante
@@ -5584,7 +5593,8 @@ function splitSteps(r) {
   let rice = false;
   r.steps.forEach(st => {
     if (RICE_RX.test(st)) rice = true;
-    else if (BOX_RX.test(st)) box.push(st.replace(BOX_RX, ''));
+    // v199 : le frigo ou le congélateur est décidé par la session (jour par jour) : on retire de la fiche ce qui le contredirait
+    else if (BOX_RX.test(st)) { const t = st.replace(BOX_RX, '').replace(/(,? |^)(au frigo )?dès qu'(il|elle)s? (a|ont) tiédi(, au frigo ou au congélateur)?/gi, '').replace(/, au frigo\./g, '.').replace(/^\s*[.,]\s*/, '').trim(); if (t.replace(/[.\s]/g, '') && t.split(/\s+/).length > 4) box.push(cap(t)); } // « Les pâtes. » seul n'apporte rien
     else if (MEAL_RX.test(st)) meal.push(st.replace(MEAL_RX, ''));
     else core.push(st);
   });
@@ -7599,6 +7609,40 @@ function weeklyRate(ws) {
 // pesée attendue : rien depuis 6 jours
 const weighDue = m => { const ws = getWeights(m.id); return !ws.length || wDays(ws[ws.length - 1].d, getTodayDate()) >= 6; };
 
+// ── v199 : ajustement automatique des calories ──
+// À chaque pesée : pente du poids sur les 4 dernières semaines (au moins 3 pesées sur 14 jours, hors 1re semaine,
+// où le corps perd surtout de l'eau) → dépense réelle = ce que tu manges − variation de poids × 7 700 kcal/kg.
+// Le facteur de correction (dépense réelle / calcul) est lissé (moitié ancien, moitié mesuré) et borné à ±15 %.
+const ADJ_MIN = 0.85, ADJ_MAX = 1.15;
+function computeAdjust(m) {
+  const all = getWeights(m.id);
+  if (all.length < 3) return null;
+  const last = all[all.length - 1];
+  const win = all.filter(w => wDays(w.d, last.d) <= 28 && wDays(all[0].d, w.d) >= 7);
+  if (win.length < 3 || wDays(win[0].d, last.d) < 14) return null;
+  const xs = win.map(w => wDays(win[0].d, w.d)), ys = win.map(w => w.kg);
+  const mx = xs.reduce((a, b) => a + b, 0) / xs.length, my = ys.reduce((a, b) => a + b, 0) / ys.length;
+  const slope = xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0) / (xs.reduce((a, x) => a + (x - mx) ** 2, 0) || 1); // kg par jour
+  const now = getTargetsFor(m).kcal;
+  const intake = win.slice(1).reduce((a, w) => a + (w.kcal || now), 0) / (win.length - 1);
+  const real = intake - slope * 7700;
+  const formula = computeBase({ ...m, tdeeAdj: 1 }).maintenance;
+  const old = +m.tdeeAdj || 1;
+  const next = Math.min(ADJ_MAX, Math.max(ADJ_MIN, old * 0.5 + (real / formula) * 0.5));
+  return { old, next, real: Math.round(real), formula: Math.round(formula), rate: slope * 7, last: last.d };
+}
+// appliqué après une pesée, si l'ajustement est activé et que l'écart vaut la peine (≥ 1,5 %)
+function autoAdjust(m) {
+  if (m.autoAdjust === false || m.targets) return null; // calories réglées à la main : on n'y touche pas
+  const a = computeAdjust(m);
+  if (!a || m.adjLastD === a.last || Math.abs(a.next - a.old) < 0.015) return null;
+  const fromK = getTargetsFor(m).kcal;
+  const nm = updateMember(m.id, { tdeeAdj: Math.round(a.next * 1000) / 1000, adjLastD: a.last, adjPrev: a.old });
+  const toK = getTargetsFor(nm).kcal;
+  updateMember(m.id, { adjNote: { d: a.last, fromK, toK, up: a.next > a.old } });
+  return { fromK, toK };
+}
+
 // courbe des 12 dernières pesées
 function chart(ws) {
   const pts = ws.slice(-12);
@@ -7623,7 +7667,13 @@ function renderWeight() {
   const proto = getProtocol(m.protocol || 'P4');
   const phase = +(m.phase || 0);
   const rate = weeklyRate(ws.filter(w => !m.phaseSince || w.d >= m.phaseSince));
-  const slow = WT_LOSS.includes(proto.id) && rate != null && rate > -0.2 && phase < proto.phases.length - 1 && m.stepSnooze !== last?.d;
+  // avec l'ajustement automatique, les calories se recalent déjà ; l'étape suivante n'est proposée que si la correction est au plus bas
+  const autoOn = m.autoAdjust !== false && !m.targets;
+  const slow = WT_LOSS.includes(proto.id) && rate != null && rate > -0.2 && phase < proto.phases.length - 1 && m.stepSnooze !== last?.d
+    && (!autoOn || (+m.tdeeAdj || 1) <= ADJ_MIN + 0.005);
+  const note = m.adjNote && last && m.adjNote.d === last.d ? m.adjNote : null;
+  const adjNow = +m.tdeeAdj || 1;
+  const baseNow = computeBase(m);
   const start = last?.kg || m.weight || 70;
   const first = ws[0];
   const stepName = slow ? `l'${proto.phases[phase + 1].label.toLowerCase()}` : '';
@@ -7648,6 +7698,12 @@ function renderWeight() {
       <button class="wt-redo">Corriger cette pesée</button>`}
     </div>
 
+    ${note ? `<div class="wt-card wt-adj">
+      <div class="wt-k">Calories ajustées</div>
+      <p>Ta courbe montre que tu dépenses un peu ${note.up ? 'plus' : 'moins'} que prévu. Tes calories passent de <b>${note.fromK}</b> à <b>${note.toK} kcal</b> par jour, dès ta prochaine semaine.</p>
+      <button class="wt-later" data-adj-undo>Annuler cet ajustement</button>
+    </div>` : ''}
+
     ${slow ? `<div class="wt-card wt-step">
       <div class="wt-k">Ta perte ralentit</div>
       <p>${Math.abs(rate) < 0.05 ? "Ton poids n'a presque pas bougé ces deux dernières semaines." : rate > 0 ? `Ton poids a remonté ces deux dernières semaines (+${kgFr(rate)} kg par semaine).` : `Seulement ${kgFr(-rate)} kg de moins par semaine ces deux dernières semaines.`} C'est le moment de passer à <b>${stepName}</b> : ${computeAllPhases(m, proto.id)[phase + 1].targets.kcal} kcal par jour, dès ta prochaine semaine.</p>
@@ -7662,6 +7718,17 @@ function renderWeight() {
         <div><span>Écart</span><b>${first && last && ws.length > 1 ? `${last.kg - first.kg <= 0 ? '−' : '+'}${kgFr(Math.abs(last.kg - first.kg))}` : '–'}</b><small>${rate == null ? '' : Math.abs(rate) < 0.05 ? 'stable ces 2 sem.' : `${rate <= 0 ? '−' : '+'}${kgFr(Math.abs(rate))} kg / sem.`}</small></div>
       </div>
       ${chart(ws)}
+    </div>
+
+    <div class="wt-card wt-auto">
+      <div class="wt-auto-top">
+        <div><div class="wt-k">Ajustement automatique</div></div>
+        <button class="wt-switch ${autoOn ? 'on' : ''}" role="switch" aria-checked="${autoOn}" aria-label="Ajustement automatique des calories" data-auto ${m.targets ? 'disabled' : ''}><i></i></button>
+      </div>
+      <p>${m.targets ? "Tu as réglé tes calories à la main dans Mon programme : Hébé n'y touche pas."
+        : `Chaque semaine, Hébé compare ta courbe à ce que tu manges et recale ta dépense (±15 % au plus). Il lui faut 3 pesées sur au moins 2 semaines.`}</p>
+      ${!m.targets ? `<div class="wt-auto-row"><span>Dépense estimée</span><b>${Math.round(baseNow.maintenance)} kcal</b></div>
+      ${Math.abs(adjNow - 1) >= 0.005 ? `<div class="wt-auto-row"><span>Calcul de départ</span><b>${Math.round(baseNow.maintenanceFormula)} kcal</b></div>` : ''}` : ''}
     </div>
 
     ${ws.length ? `<div class="wt-card wt-hist">
@@ -7682,13 +7749,25 @@ function renderWeight() {
   });
   view.querySelector('.wt-save')?.addEventListener('click', () => {
     const d = getTodayDate();
-    saveWeights(m.id, [...getWeights(m.id).filter(w => w.d !== d), { d, kg: +val.dataset.kg }]);
+    saveWeights(m.id, [...getWeights(m.id).filter(w => w.d !== d), { d, kg: +val.dataset.kg, kcal: getTargetsFor(m).kcal }]);
+    const adj = autoAdjust(getMembers().find(x => x.id === m.id));
     renderWeight();
-    toast(`Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg`);
+    toast(adj ? `Pesée enregistrée · calories ajustées : ${adj.toK} kcal` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg`);
   });
   view.querySelector('.wt-redo')?.addEventListener('click', () => {
     saveWeights(m.id, getWeights(m.id).filter(w => w !== last && w.d !== last.d));
     renderWeight();
+  });
+  view.querySelector('[data-adj-undo]')?.addEventListener('click', () => {
+    updateMember(m.id, { tdeeAdj: m.adjPrev ?? 1, adjNote: null });
+    renderWeight();
+    toast('Ajustement annulé');
+  });
+  view.querySelector('[data-auto]')?.addEventListener('click', () => {
+    const on = !(m.autoAdjust !== false);
+    updateMember(m.id, on ? { autoAdjust: true } : { autoAdjust: false, tdeeAdj: 1, adjNote: null });
+    renderWeight();
+    toast(on ? 'Ajustement automatique activé' : 'Ajustement automatique désactivé : retour au calcul de départ');
   });
   view.querySelector('[data-step-go]')?.addEventListener('click', () => {
     updateMember(m.id, { phase: phase + 1, phaseSince: getTodayDate(), weight: last?.kg || m.weight });

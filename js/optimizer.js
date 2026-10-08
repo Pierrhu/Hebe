@@ -336,7 +336,10 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
   for (const stepCfg of plan) {
     // v195 : un jour réservé à une collation préparée, elle passe dès 100 kcal d'écart (sinon la portion préparée serait perdue)
     const batchDay = stepCfg === plan[0] && getById(rotation[0])?.batch;
-    if (rem.kcal < (batchDay ? 100 : stepCfg.minRem)) continue;
+    // v199 : les jours sans préparée, une vraie collation rapide passe dès 140 kcal d'écart (avant 200 : on n'avait
+    // presque que fruit, amandes et tartine) ; les compléments viennent ensuite si besoin
+    const quickDay = stepCfg === plan[0] && !batchDay && getById(rotation[0])?.category === 'sweet';
+    if (rem.kcal < (batchDay ? 100 : quickDay ? 140 : stepCfg.minRem)) continue;
     const share = Math.min(1, stepCfg.cap / rem.kcal);
     const tgt = {};
     MACROS.forEach(m => tgt[m] = rem[m] * share);
@@ -346,7 +349,9 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
     pool.filter(id => !used.has(id) && (weekUse[id] || 0) < weekCap(id)).forEach(id => { // plafond de la semaine
       const r = getById(id);
       if (!r) return;
-      if (usedBases.size && basesOf(r).length && !r.batch) return; // déjà un fromage blanc ou un yaourt ce jour-là (une collation préparée n'est pas un bol)
+      // v199 : pas deux fois le même laitage dans la journée (fromage blanc puis fromage blanc), mais un yaourt après un porridge
+      // au fromage blanc, oui : sinon les collations rapides (presque toutes à base de laitage) ne passaient presque jamais
+      if (!r.batch && basesOf(r).some(k => usedBases.has(k))) return;
       const res = optimizeRecipe(r, tgt, 'S', scale);
       // charcuterie : jamais au-delà de ce qu'il reste du plafond de la semaine
       const charc = charcGrams({ id, servings: 1, overrides: res.overrides });

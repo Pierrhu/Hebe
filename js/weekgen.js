@@ -263,14 +263,16 @@ function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = In
   const PACK_FRESH = ['avocat', 'salade', 'concombre', 'herbes', 'tomates_cerise', 'champignons', 'poivron', 'courgette', 'aubergine'];
   const needsPack = s => !!bought && s.ingredients.some(i => PACK_FRESH.includes(i.key) && !bought.has(i.key));
   const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s));
-  const sweet = weightedOrder(quick.filter(s => (s.tags || []).includes('sucré') || !(s.tags || []).includes('salé')), prefer);
-  const salty = weightedOrder(quick.filter(s => (s.tags || []).includes('salé')), prefer);
-  // préparée à l'avance : seulement ce qui tient toute la semaine (energy balls ; pancakes, qui se congèlent)
-  // v195 : tour de rôle des collations préparées. Celles servies les 2 dernières semaines passent leur tour
-  // (s'il en reste au moins 2 autres) ; ensuite, plus une collation attend, plus elle a de chances de sortir.
+  // v195 / v199 : tour de rôle, pour les collations préparées comme pour les rapides. Celles servies récemment passent
+  // leur tour (s'il en reste assez) ; ensuite, plus une collation attend, plus elle a de chances de sortir.
   // Le partage d'un produit avec les plats ne donne plus qu'un petit coup de pouce.
   const sv = getServedSnacks();
   const ageOf = id => (sv.last[id] == null ? 8 : Math.min(8, sv.n - sv.last[id]));
+  const byAge = list => list.map(r => ({ r, k: Math.random() ** (1 / (ageOf(baseSnackId(r.id)) ** 2 * (sharesWith(r, prefer) ? 1.3 : 1))) })).sort((a, b) => b.k - a.k).map(x => x.r);
+  const restedQ = list => { const r = list.filter(s => ageOf(baseSnackId(s.id)) >= 2); return r.length >= 2 ? r : list; };
+  const sweet = byAge(restedQ(quick.filter(s => (s.tags || []).includes('sucré') || !(s.tags || []).includes('salé'))));
+  const salty = byAge(restedQ(quick.filter(s => (s.tags || []).includes('salé'))));
+  // préparée à l'avance : seulement ce qui tient toute la semaine (energy balls ; pancakes, qui se congèlent)
   let batchPool = all.filter(s => s.batch && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')) && snackFloor(s) <= room);
   const rested = batchPool.filter(s => ageOf(baseSnackId(s.id)) >= 3);
   if (rested.length >= 2) batchPool = rested;
@@ -520,7 +522,7 @@ export function generateWeek(opts = {}) {
   // collations préparées réellement servies cette semaine
   try {
     const sv = getServedSnacks(); sv.n += 1;
-    Object.values(cand.entriesBy || {}).forEach(E => Object.values(E).forEach(e => (e?.meals?.sweet || []).forEach(it => { if (getById(it.id)?.batch) sv.last[baseSnackId(it.id)] = sv.n; })));
+    Object.values(cand.entriesBy || {}).forEach(E => Object.values(E).forEach(e => (e?.meals?.sweet || []).forEach(it => { if (getById(it.id)?.category === 'sweet') sv.last[baseSnackId(it.id)] = sv.n; })));
     localStorage.setItem(SNK_KEY, JSON.stringify(sv));
   } catch {}
   // restes des produits qui se gardent 2 semaines (carrés frais, pains et wraps au congélateur) : reportés à la semaine suivante

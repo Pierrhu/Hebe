@@ -95,12 +95,14 @@ export function computeBase(profile) {
   const bmr2 = 21.6 * leanMass + 370;
   const bmr  = (bmr1 + bmr2) / 2;
   const coef = activityCoef(profile.activity ?? 2);
-  const maintenance = bmr * coef;
+  // v199 : correction de la dépense mesurée sur tes pesées (ajustement automatique, 0,85 à 1,15)
+  const adj = Math.min(1.15, Math.max(0.85, +profile.tdeeAdj || 1));
+  const maintenance = bmr * coef * adj;
   const protein = (weight * 1.5 + leanMass * 2) / 2;
   const fat     = 1.2 * leanMass;
   const floorKcal = Math.max(bmr, female ? 1200 : 1500);
   const fatShare  = female ? 0.25 : 0.20;
-  return { bmr1, bmr2, bmr, coef, maintenance, leanMass, protein, fat, floorKcal, fatShare };
+  return { bmr1, bmr2, bmr, coef, adj, maintenance, maintenanceFormula: bmr * coef, leanMass, protein, fat, floorKcal, fatShare };
 }
 
 // Cibles d'une étape, avec le détail des garde-fous appliqués
@@ -160,7 +162,7 @@ export function protocolFor(profile, protocolId) {
 export const protocolsFor = profile => PROTOCOLS.map(p => protocolFor(profile, p.id));
 
 // ── Profil de la personne active (stocké dans le foyer) ──
-const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity'];
+const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity', 'tdeeAdj'];
 export function getProfile() {
   const m = getActiveMember();
   const p = {};
