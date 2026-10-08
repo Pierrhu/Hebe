@@ -206,9 +206,11 @@ export function renderWeight() {
 
   const val = view.querySelector('.wt-input');
   // le poids se tape directement (virgule ou point) ou s'ajuste avec − et +
-  const setVal = (v, write = true) => { v = Math.round(Math.min(250, Math.max(20, v)) * 10) / 10; val.dataset.kg = v; if (write) val.value = kgFr(v); setNeedle(v); };
+  const fit = () => { if (!val) return; const c = fit.c || (fit.c = document.createElement('canvas').getContext('2d')); const cs = getComputedStyle(val); c.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; val.style.width = `${Math.ceil(c.measureText(val.value || '0').width) + 2}px`; }; // le champ fait exactement la largeur du chiffre
+  fit(); document.fonts?.ready.then(fit);
+  const setVal = (v, write = true) => { v = Math.round(Math.min(250, Math.max(20, v)) * 10) / 10; val.dataset.kg = v; if (write) val.value = kgFr(v); fit(); setNeedle(v); };
   val?.addEventListener('focus', () => val.select());
-  val?.addEventListener('input', () => { const v = parseFloat(val.value.replace(',', '.')); if (v >= 20 && v <= 250) setVal(v, false); });
+  val?.addEventListener('input', () => { const v = parseFloat(val.value.replace(',', '.')); fit(); if (v >= 20 && v <= 250) setVal(v, false); });
   val?.addEventListener('blur', () => setVal(+val.dataset.kg));
   val?.addEventListener('keydown', e => { if (e.key === 'Enter') val.blur(); });
   let hold = null;
