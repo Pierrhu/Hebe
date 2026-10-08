@@ -146,10 +146,10 @@ export function renderWeight() {
   const goodDir = v => (WT_LOSS.includes(proto.id) ? v < 0 : proto.id === 'P1' ? v > 0 : true);
   const nextD = last ? (() => { const d = new Date(last.d + 'T12:00:00'); d.setDate(d.getDate() + 7); return localYMD(d); })() : null;
   const kcalNow = getTargetsFor(m).kcal;
-  const prog = proto.phases[phase] ? `${proto.name} · ${proto.phases[phase].label.toLowerCase()}` : proto.name;
+  const prog = proto.phases[phase] ? `Ton programme : ${proto.name.toLowerCase()} (${proto.phases[phase].label.toLowerCase()}).` : `Ton programme : ${proto.name.toLowerCase()}.`;
   const dLong = dd => dFr(dd, { weekday: 'long', day: 'numeric', month: 'long' });
-  const sub = weighing ? (last && !due ? 'Nouvelle pesée · elle remplace celle du jour' : 'Pesée de la semaine · le matin, à jeun')
-    : `Pesé ${dLong(last.d)} · prochaine pesée ${dFr(nextD, { weekday: 'long', day: 'numeric' })}`;
+  const sub = weighing ? (last && !due ? "Cette pesée remplacera celle d'aujourd'hui." : 'Pèse-toi le matin, à jeun.')
+    : `Dernière pesée le ${dLong(last.d)}, la prochaine ${dFr(nextD, { weekday: 'long', day: 'numeric' })}.`;
   const chips = [
     total != null ? `<div class="wt-chip ${goodDir(total) ? 'good' : ''}">Depuis le ${dFr(first.d, { day: '2-digit', month: '2-digit' })}<b>${sign(total)} kg</b></div>` : '',
     rate != null ? `<div class="wt-chip">Rythme<b>${Math.abs(rate) < 0.05 ? 'stable' : `${sign(rate)} kg/sem`}</b></div>` : '',
@@ -184,7 +184,7 @@ export function renderWeight() {
 
     <div class="wt-card wt-kcal">
       <div class="wt-row">
-        <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon programme : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées'}</div></div>
+        <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon programme : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées.'}</div></div>
         <button class="wt-switch ${autoOn ? 'on' : ''}" role="switch" aria-checked="${autoOn}" aria-label="Ajustement automatique des calories" data-auto ${m.targets ? 'disabled' : ''}><i></i></button>
       </div>
       <div class="wt-kcal-v">${kcalNow}<small>kcal / jour</small></div>
@@ -221,7 +221,7 @@ export function renderWeight() {
     weighOpen = false;
     document.querySelector('.nav-btn[data-view="weight"] .nav-dot')?.remove();
     renderWeight();
-    toast(adj ? `Pesée enregistrée · calories ajustées : ${adj.toK} kcal` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg`);
+    toast(adj ? `Pesée enregistrée, tes calories passent à ${adj.toK} kcal par jour.` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg.`);
   });
   view.querySelector('[data-adj-undo]')?.addEventListener('click', () => {
     updateMember(m.id, { tdeeAdj: m.adjPrev ?? 1, adjNote: null });
