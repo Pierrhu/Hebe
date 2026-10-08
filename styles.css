@@ -1680,3 +1680,42 @@ button.idf-stamp:active { opacity: .7; }
 /* v199 : onglet Poids, pastille quand la pesée de la semaine est à faire */
 .nav-btn { position: relative; }
 .nav-dot { position: absolute; top: 4px; left: calc(50% + 8px); width: 8px; height: 8px; border-radius: 50%; background: var(--terra); box-shadow: 0 0 0 2px #fff; }
+
+/* v201 : styles rétablis (supprimés par erreur en v199) : tutoriel, fiches recettes de Cuisiner */
+.wl-restore-btn { display: block; margin: 10px auto 0; padding: 6px 12px; font-size: 14px; font-weight: 600; color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
+/* v195 : mini-tutoriel de la première semaine */
+.tuto-sub { margin: 4px 0 14px; font-size: 14px; color: var(--text-2); }
+.tuto-steps { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.tuto-steps li { display: flex; gap: 12px; align-items: flex-start; }
+.tuto-n { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--text); color: #fff; font-weight: 700; font-size: 14px; }
+.tuto-steps li > div > b { font-family: var(--serif); font-size: 17px; font-weight: 500; }
+.tuto-steps p { margin: 3px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+.tuto .hb-btn { width: 100%; }
+/* v195 : programmes plus lisibles + « Manger équilibré » */
+.proto-range b { display: block; font-weight: 700; color: var(--text); }
+.proto-range span { display: block; margin-top: 1px; font-size: 12px; color: var(--muted); }
+.tuto-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tuto-tab { flex: none; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--sage-t); color: var(--accent); font-size: 12px; font-weight: 600; }
+.tuto-tab svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* v195 : collations à préparer, en haut avec les plats */
+/* v195 : une fiche par recette de la session (plats et collations), une couleur chacune */
+.dish-4 { --c: var(--terra); --t: var(--terra-t); }
+.dish-5 { --c: #9A8CC4; --t: #EEEBF7; }
+.dish-6 { --c: var(--coral); --t: var(--coral-t); }
+.ck-prep .ck-menu { margin-top: 12px; }
+.ck-card { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px 12px 10px; border-radius: 22px; background: var(--t); min-width: 0; }
+.ck-card.open { grid-column: 1 / -1; }
+.ck-card-hd { display: flex; flex-direction: column; align-items: stretch; gap: 8px; text-align: left; }
+.ck-menu-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.ck-menu-n { font-size: 12px; font-weight: 700; color: var(--c); filter: brightness(.8); white-space: nowrap; padding-top: 2px; }
+.ck-card .ck-menu-name { font-size: 14.5px; font-weight: 600; line-height: 1.25; color: var(--text); }
+.ck-card-ings { display: none; margin: 4px 0 2px; padding: 4px 12px; border-radius: 16px; background: rgba(255,255,255,.75); }
+.ck-card.open .ck-card-ings { display: block; }
+.ck-card-ings .ck-ing { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
+.ck-card-ings .ck-ing:first-child { border-top: none; }
+.ck-card-ings .ck-ing span:last-child { font-weight: 700; white-space: nowrap; }
+.ck-card-ings .ck-ing small { display: block; font-size: 12px; color: var(--text-2); }
+.ck-card .ck-menu-link { align-self: flex-start; font-size: 12.5px; font-weight: 600; color: var(--c); filter: brightness(.8); }
+.ck-later { margin: 6px -12px -4px; padding: 10px 12px; border-top: 1px dashed rgba(0,0,0,.12); }
+.ck-later-h { font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--c); filter: brightness(.8); margin-bottom: 2px; }
+.ck-later p { margin: 6px 0 2px; font-size: 13px; line-height: 1.45; color: var(--text-2); }
