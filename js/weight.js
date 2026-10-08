@@ -99,11 +99,8 @@ export function renderWeight() {
   const stepName = slow ? `l'${proto.phases[phase + 1].label.toLowerCase()}` : '';
 
   view.innerHTML = `
-    <div class="page-head">
-      <button class="hb-back round-back" aria-label="Retour à mon programme"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <div class="hb-page-title">Mon poids</div>
-    </div>
-    <p class="wt-intro">Une pesée par semaine suffit : le matin, à jeun, toujours dans les mêmes conditions. Hébé regarde la tendance sur deux semaines et te dit quand passer à l'étape suivante.</p>
+    <div class="hb-page-title">Mon poids</div>
+    <p class="wt-intro">Une pesée par semaine suffit : le matin, à jeun, toujours dans les mêmes conditions. Hébé suit ta tendance et recale tes calories si besoin.</p>
 
     <div class="wt-card wt-weigh">
       <div class="wt-k">${due ? 'Pesée de la semaine' : `Pesée du ${dFr(last.d, { weekday: 'long', day: 'numeric', month: 'long' })}`}</div>
@@ -158,7 +155,6 @@ export function renderWeight() {
   `;
   app.insertBefore(view, app.querySelector('#nav'));
 
-  view.querySelector('.hb-back').addEventListener('click', () => window._nav?.('settings'));
   const val = view.querySelector('.wt-val');
   let hold = null;
   view.querySelectorAll('[data-wstep]').forEach(b => {
@@ -171,6 +167,7 @@ export function renderWeight() {
     const d = getTodayDate();
     saveWeights(m.id, [...getWeights(m.id).filter(w => w.d !== d), { d, kg: +val.dataset.kg, kcal: getTargetsFor(m).kcal }]);
     const adj = autoAdjust(getMembers().find(x => x.id === m.id));
+    document.querySelector('.nav-btn[data-view="weight"] .nav-dot')?.remove();
     renderWeight();
     toast(adj ? `Pesée enregistrée · calories ajustées : ${adj.toK} kcal` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg`);
   });
@@ -199,3 +196,6 @@ export function renderWeight() {
     renderWeight();
   });
 }
+
+// pastille sur l'onglet Poids quand une pesée est attendue
+window._weighDue = () => { try { return weighDue(getActiveMember()); } catch { return false; } };

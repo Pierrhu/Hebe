@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-08T07:32:06.078Z
+// 2026-10-08T07:48:27.386Z
 
 
 // ──────────────────────────────────────────────
@@ -4684,6 +4684,7 @@ const ITEMS = [
   { id: 'cook',     label: 'Cuisiner' },
   { id: 'shopping', label: 'Courses'  },
   { id: 'recipes',  label: 'Recettes' },
+  { id: 'weight',   label: 'Poids'    }, // v199 : page à part
 ];
 
 const NAV_SVGS = {
@@ -4692,6 +4693,7 @@ const NAV_SVGS = {
   planner:  '<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
   macros:   '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
   recipes:  '<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>',
+  weight:   '<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/>',
   shopping: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.93-1.46l1.38-5.54H6"/>',
 };
 
@@ -4699,9 +4701,9 @@ function renderNav() {
   const nav = document.createElement('nav');
   nav.id = 'nav';
   nav.innerHTML = ITEMS.map(it => `
-    <button class="nav-btn ${(state.currentView === it.id || (it.id === 'week' && ['settings', 'weight'].includes(state.currentView))) ? 'active' : ''}" data-view="${it.id}">
+    <button class="nav-btn ${(state.currentView === it.id || (it.id === 'week' && state.currentView === 'settings')) ? 'active' : ''}" data-view="${it.id}">
       <svg viewBox="0 0 24 24">${NAV_SVGS[it.id]}</svg>
-      <span>${it.label}</span>
+      <span>${it.label}</span>${it.id === 'weight' && window._weighDue?.() ? '<i class="nav-dot" aria-label="Pesée à faire"></i>' : ''}
     </button>`).join('');
   nav.querySelectorAll('.nav-btn').forEach(b =>
     b.addEventListener('click', () => window._nav?.(b.dataset.view))
@@ -7251,13 +7253,6 @@ function renderSettings() {
 
       </div>
 
-      <!-- v195 : fiche Mon poids -->
-      ${(() => { const ws = getWeights(member.id), l = ws[ws.length - 1]; return `<button class="wt-link" data-go-weight>
-        <span class="wt-link-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/></svg></span>
-        <span class="wt-link-txt"><b>Mon poids</b><small>${l ? `${String(l.kg).replace('.', ',')} kg le ${new Date(l.d + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}` : 'Pas encore de pesée'}${weighDue(member) ? ' · pèse-toi cette semaine' : ''}</small></span>
-        <span class="hb-chev">›</span>
-      </button>`; })()}
-
       <!-- MANUEL -->
       <details class="set-manual pc-${protocolId}" ${manualOpen ? 'open' : ''}>
         <summary>Régler mes calories à la main</summary>
@@ -7456,7 +7451,6 @@ function renderSettings() {
     }));
     view.querySelector('.back-to-plan')?.addEventListener('click', () => { applyComputed(); render(); toast('Calories du programme rétablies'); });
     view.querySelector('.set-back-bottom')?.addEventListener('click', () => window._nav?.('week'));
-    view.querySelector('[data-go-weight]')?.addEventListener('click', () => window._nav?.('weight'));
     const manual = view.querySelector('.set-manual');
     manual?.addEventListener('toggle', () => { manualOpen = manual.open; });
 
@@ -7679,11 +7673,8 @@ function renderWeight() {
   const stepName = slow ? `l'${proto.phases[phase + 1].label.toLowerCase()}` : '';
 
   view.innerHTML = `
-    <div class="page-head">
-      <button class="hb-back round-back" aria-label="Retour à mon programme"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <div class="hb-page-title">Mon poids</div>
-    </div>
-    <p class="wt-intro">Une pesée par semaine suffit : le matin, à jeun, toujours dans les mêmes conditions. Hébé regarde la tendance sur deux semaines et te dit quand passer à l'étape suivante.</p>
+    <div class="hb-page-title">Mon poids</div>
+    <p class="wt-intro">Une pesée par semaine suffit : le matin, à jeun, toujours dans les mêmes conditions. Hébé suit ta tendance et recale tes calories si besoin.</p>
 
     <div class="wt-card wt-weigh">
       <div class="wt-k">${due ? 'Pesée de la semaine' : `Pesée du ${dFr(last.d, { weekday: 'long', day: 'numeric', month: 'long' })}`}</div>
@@ -7738,7 +7729,6 @@ function renderWeight() {
   `;
   app.insertBefore(view, app.querySelector('#nav'));
 
-  view.querySelector('.hb-back').addEventListener('click', () => window._nav?.('settings'));
   const val = view.querySelector('.wt-val');
   let hold = null;
   view.querySelectorAll('[data-wstep]').forEach(b => {
@@ -7751,6 +7741,7 @@ function renderWeight() {
     const d = getTodayDate();
     saveWeights(m.id, [...getWeights(m.id).filter(w => w.d !== d), { d, kg: +val.dataset.kg, kcal: getTargetsFor(m).kcal }]);
     const adj = autoAdjust(getMembers().find(x => x.id === m.id));
+    document.querySelector('.nav-btn[data-view="weight"] .nav-dot')?.remove();
     renderWeight();
     toast(adj ? `Pesée enregistrée · calories ajustées : ${adj.toK} kcal` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg`);
   });
@@ -7779,6 +7770,9 @@ function renderWeight() {
     renderWeight();
   });
 }
+
+// pastille sur l'onglet Poids quand une pesée est attendue
+window._weighDue = () => { try { return weighDue(getActiveMember()); } catch { return false; } };
 
 
 // ──────────────────────────────────────────────

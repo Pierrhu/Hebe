@@ -11,7 +11,6 @@ import {
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples } from '../data/household.js';
 import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
-import { getWeights, weighDue } from './weight.js';
 
 
 export function renderSettings() {
@@ -131,13 +130,6 @@ export function renderSettings() {
         })()}
 
       </div>
-
-      <!-- v195 : fiche Mon poids -->
-      ${(() => { const ws = getWeights(member.id), l = ws[ws.length - 1]; return `<button class="wt-link" data-go-weight>
-        <span class="wt-link-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/></svg></span>
-        <span class="wt-link-txt"><b>Mon poids</b><small>${l ? `${String(l.kg).replace('.', ',')} kg le ${new Date(l.d + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}` : 'Pas encore de pesée'}${weighDue(member) ? ' · pèse-toi cette semaine' : ''}</small></span>
-        <span class="hb-chev">›</span>
-      </button>`; })()}
 
       <!-- MANUEL -->
       <details class="set-manual pc-${protocolId}" ${manualOpen ? 'open' : ''}>
@@ -337,7 +329,6 @@ export function renderSettings() {
     }));
     view.querySelector('.back-to-plan')?.addEventListener('click', () => { applyComputed(); render(); toast('Calories du programme rétablies'); });
     view.querySelector('.set-back-bottom')?.addEventListener('click', () => window._nav?.('week'));
-    view.querySelector('[data-go-weight]')?.addEventListener('click', () => window._nav?.('weight'));
     const manual = view.querySelector('.set-manual');
     manual?.addEventListener('toggle', () => { manualOpen = manual.open; });
 

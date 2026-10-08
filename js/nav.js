@@ -5,6 +5,7 @@ const ITEMS = [
   { id: 'cook',     label: 'Cuisiner' },
   { id: 'shopping', label: 'Courses'  },
   { id: 'recipes',  label: 'Recettes' },
+  { id: 'weight',   label: 'Poids'    }, // v199 : page à part
 ];
 
 export const NAV_SVGS = {
@@ -13,6 +14,7 @@ export const NAV_SVGS = {
   planner:  '<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
   macros:   '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
   recipes:  '<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>',
+  weight:   '<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/>',
   shopping: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.93-1.46l1.38-5.54H6"/>',
 };
 
@@ -20,9 +22,9 @@ export function renderNav() {
   const nav = document.createElement('nav');
   nav.id = 'nav';
   nav.innerHTML = ITEMS.map(it => `
-    <button class="nav-btn ${(state.currentView === it.id || (it.id === 'week' && ['settings', 'weight'].includes(state.currentView))) ? 'active' : ''}" data-view="${it.id}">
+    <button class="nav-btn ${(state.currentView === it.id || (it.id === 'week' && state.currentView === 'settings')) ? 'active' : ''}" data-view="${it.id}">
       <svg viewBox="0 0 24 24">${NAV_SVGS[it.id]}</svg>
-      <span>${it.label}</span>
+      <span>${it.label}</span>${it.id === 'weight' && window._weighDue?.() ? '<i class="nav-dot" aria-label="Pesée à faire"></i>' : ''}
     </button>`).join('');
   nav.querySelectorAll('.nav-btn').forEach(b =>
     b.addEventListener('click', () => window._nav?.(b.dataset.view))

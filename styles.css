@@ -1706,3 +1706,6 @@ button.idf-stamp:active { opacity: .7; }
 .wt-switch:disabled { opacity: .4; }
 .wt-auto-row { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
 .wt-auto-row span { color: var(--text-2); }
+/* v199 : onglet Poids, pastille quand la pesée de la semaine est à faire */
+.nav-btn { position: relative; }
+.nav-dot { position: absolute; top: 4px; left: calc(50% + 8px); width: 8px; height: 8px; border-radius: 50%; background: var(--terra); box-shadow: 0 0 0 2px #fff; }
