@@ -163,7 +163,7 @@ export function renderWeight() {
 
     ${weighing ? `<div class="wt-weigh">
       <button class="wt-step-btn" data-wstep="-0.1" aria-label="100 g de moins">−</button>
-      <b class="wt-val" data-kg="${start}">${kgFr(start)}<small>kg</small></b>
+      <label class="wt-val"><input class="wt-input" type="text" inputmode="decimal" enterkeyhint="done" value="${kgFr(start)}" data-kg="${start}" aria-label="Ton poids en kilos"><small>kg</small></label>
       <button class="wt-step-btn" data-wstep="0.1" aria-label="100 g de plus">+</button>
     </div>
     <button class="hb-btn hb-btn-primary wt-cta wt-save">Enregistrer</button>
@@ -204,10 +204,16 @@ export function renderWeight() {
   const setNeedle = kg => { needle.style.transform = `rotate(${needleDeg(kg)}deg)`; view.querySelector('.wt-dial-kg').textContent = kgFr(kg); };
   requestAnimationFrame(() => requestAnimationFrame(() => setNeedle(start)));
 
-  const val = view.querySelector('.wt-val');
+  const val = view.querySelector('.wt-input');
+  // le poids se tape directement (virgule ou point) ou s'ajuste avec − et +
+  const setVal = (v, write = true) => { v = Math.round(Math.min(250, Math.max(20, v)) * 10) / 10; val.dataset.kg = v; if (write) val.value = kgFr(v); setNeedle(v); };
+  val?.addEventListener('focus', () => val.select());
+  val?.addEventListener('input', () => { const v = parseFloat(val.value.replace(',', '.')); if (v >= 20 && v <= 250) setVal(v, false); });
+  val?.addEventListener('blur', () => setVal(+val.dataset.kg));
+  val?.addEventListener('keydown', e => { if (e.key === 'Enter') val.blur(); });
   let hold = null;
   view.querySelectorAll('[data-wstep]').forEach(b => {
-    const step = () => { const v = Math.round((+val.dataset.kg + +b.dataset.wstep) * 10) / 10; val.dataset.kg = v; val.innerHTML = `${kgFr(v)}<small>kg</small>`; setNeedle(v); };
+    const step = () => setVal(+val.dataset.kg + +b.dataset.wstep);
     b.addEventListener('click', step);
     b.addEventListener('pointerdown', () => { hold = setTimeout(() => { hold = setInterval(step, 80); }, 400); });
     ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => { clearTimeout(hold); clearInterval(hold); }));
