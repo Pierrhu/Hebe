@@ -1615,97 +1615,75 @@ button.idf-stamp:active { opacity: .7; }
 .tm-pill .tm-x { width: 30px; height: 30px; background: var(--sage-t); box-shadow: none; }
 .tm-pill .tm-x svg { width: 14px; height: 14px; }
 
-/* v195 : fiche Mon poids */
-.wt-link { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 16px; padding: 14px 16px; border-radius: 22px; background: rgba(255,255,255,.7); text-align: left; }
-.wt-link-ic { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--sage-t); color: var(--accent); }
-.wt-link-ic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.wt-link-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.wt-link-txt b { font-size: 16px; font-weight: 700; color: var(--text); }
-.wt-link-txt small { font-size: 13px; color: var(--text-2); }
-.wt-intro { margin: 4px 0 16px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
-.wt-card { margin-bottom: 14px; padding: 18px; border-radius: 24px; background: rgba(255,255,255,.75); }
-.wt-k { font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 10px; }
-.wt-row { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 4px 0 16px; }
-.wt-val { min-width: 120px; text-align: center; font-family: var(--serif); font-size: 44px; font-weight: 500; line-height: 1; }
-.wt-val small, .wt-done small { margin-left: 4px; font-family: var(--sans, inherit); font-size: 15px; color: var(--muted); }
+/* v199 : page Mon poids (refonte) */
+.wt-view { padding-bottom: 120px; }
+.wt-hero { margin-top: 4px; padding: 18px 18px 16px; border-radius: 28px; background: linear-gradient(155deg, #E3EEE5 0%, #F5F0E4 100%); }
+.wt-hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.wt-hero-k { font-size: 12.5px; font-weight: 700; letter-spacing: .02em; color: var(--text-2); }
+.wt-hero-kg { margin-top: 2px; font-family: var(--serif); font-size: 52px; font-weight: 500; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.wt-hero-kg small { margin-left: 6px; font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--muted); }
+.wt-pill { flex: none; display: flex; flex-direction: column; align-items: flex-end; padding: 8px 12px; border-radius: 16px; background: rgba(255,255,255,.75); font-size: 16px; font-weight: 800; color: var(--text); }
+.wt-pill small { font-size: 11px; font-weight: 600; color: var(--muted); }
+.wt-pill.good { color: var(--accent); }
+.wt-chart { display: block; width: calc(100% + 8px); height: auto; margin: 12px -4px 0; overflow: visible; }
+.wt-grid { stroke: rgba(30,45,35,.08); stroke-width: 1; stroke-dasharray: 3 4; }
+.wt-ax { font-size: 10px; fill: var(--muted); font-family: var(--sans); }
+.wt-line { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.wt-dot { fill: #fff; stroke: var(--accent); stroke-width: 1.8; }
+.wt-dot.last { fill: var(--accent); stroke: #fff; stroke-width: 2; }
+.wt-halo { fill: var(--accent); opacity: .16; }
+.wt-hero-rate { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px; padding-top: 10px; border-top: 1px solid rgba(30,45,35,.07); font-size: 13px; color: var(--text-2); }
+.wt-hero-rate b { font-size: 14px; color: var(--text); }
+.wt-empty { padding: 16px 0 4px; font-size: 13px; color: var(--text-2); }
+.wt-weigh { margin-top: 14px; padding: 14px; border-radius: 22px; background: rgba(255,255,255,.85); box-shadow: 0 2px 10px rgba(30,45,35,.05); }
+.wt-weigh-k { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; font-weight: 700; color: var(--text); }
+.wt-weigh-k small { font-size: 12px; font-weight: 500; color: var(--muted); }
+.wt-weigh-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 4px 14px; }
+.wt-step-btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--sage-t); color: var(--accent); font-size: 24px; font-weight: 500; line-height: 1; }
+.wt-step-btn:active { transform: scale(.94); }
+.wt-val { font-family: var(--serif); font-size: 42px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
+.wt-val small { margin-left: 4px; font-family: var(--sans); font-size: 15px; color: var(--muted); }
 .wt-weigh .hb-btn { width: 100%; }
-.wt-done { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.wt-done b { font-family: var(--serif); font-size: 38px; font-weight: 500; }
-.wt-done span { font-size: 13px; color: var(--text-2); text-align: right; }
-.wt-redo, .wt-later { display: block; width: 100%; margin-top: 10px; padding: 6px; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; }
-.wt-step { background: var(--terra-t); }
-.wt-step p { margin: 0 0 14px; font-size: 14px; line-height: 1.5; color: var(--text); }
-.wt-step .hb-btn { width: 100%; }
-.wt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-.wt-stats div { display: flex; flex-direction: column; gap: 2px; }
-.wt-stats span { font-size: 12px; font-weight: 600; color: var(--muted); }
-.wt-stats b { font-family: var(--serif); font-size: 24px; font-weight: 500; color: var(--text); }
-.wt-stats small { font-size: 12px; color: var(--text-2); }
-.wt-chart { display: block; width: 100%; height: auto; }
-.wt-grid { stroke: rgba(0,0,0,.07); stroke-width: 1; }
-.wt-ax { font-size: 10.5px; fill: var(--muted); font-family: inherit; }
-.wt-line { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
-.wt-dot { fill: #fff; stroke: var(--accent); stroke-width: 2; }
-.wt-dot.last { fill: var(--accent); }
-.wt-empty { padding: 18px 0 6px; font-size: 13px; color: var(--muted); text-align: center; }
-.wt-hrow { display: flex; justify-content: space-between; padding: 9px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
-.wt-hrow:first-of-type { border-top: none; }
-.wt-hrow span { color: var(--text-2); }
-.wl-restore-btn { display: block; margin: 10px auto 0; padding: 6px 12px; font-size: 14px; font-weight: 600; color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
-
-/* v195 : mini-tutoriel de la première semaine */
-.tuto-sub { margin: 4px 0 14px; font-size: 14px; color: var(--text-2); }
-.tuto-steps { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
-.tuto-steps li { display: flex; gap: 12px; align-items: flex-start; }
-.tuto-n { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--text); color: #fff; font-weight: 700; font-size: 14px; }
-.tuto-steps li > div > b { font-family: var(--serif); font-size: 17px; font-weight: 500; }
-.tuto-steps p { margin: 3px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
-.tuto .hb-btn { width: 100%; }
-
-/* v195 : programmes plus lisibles + « Manger équilibré » */
-.proto-range b { display: block; font-weight: 700; color: var(--text); }
-.proto-range span { display: block; margin-top: 1px; font-size: 12px; color: var(--muted); }
-
-.tuto-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.tuto-tab { flex: none; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--sage-t); color: var(--accent); font-size: 12px; font-weight: 600; }
-.tuto-tab svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* v195 : collations à préparer, en haut avec les plats */
-
-/* v195 : une fiche par recette de la session (plats et collations), une couleur chacune */
-.dish-4 { --c: var(--terra); --t: var(--terra-t); }
-.dish-5 { --c: #9A8CC4; --t: #EEEBF7; }
-.dish-6 { --c: var(--coral); --t: var(--coral-t); }
-.ck-prep .ck-menu { margin-top: 12px; }
-.ck-card { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px 12px 10px; border-radius: 22px; background: var(--t); min-width: 0; }
-.ck-card.open { grid-column: 1 / -1; }
-.ck-card-hd { display: flex; flex-direction: column; align-items: stretch; gap: 8px; text-align: left; }
-.ck-menu-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.ck-menu-n { font-size: 12px; font-weight: 700; color: var(--c); filter: brightness(.8); white-space: nowrap; padding-top: 2px; }
-.ck-card .ck-menu-name { font-size: 14.5px; font-weight: 600; line-height: 1.25; color: var(--text); }
-.ck-card-ings { display: none; margin: 4px 0 2px; padding: 4px 12px; border-radius: 16px; background: rgba(255,255,255,.75); }
-.ck-card.open .ck-card-ings { display: block; }
-.ck-card-ings .ck-ing { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
-.ck-card-ings .ck-ing:first-child { border-top: none; }
-.ck-card-ings .ck-ing span:last-child { font-weight: 700; white-space: nowrap; }
-.ck-card-ings .ck-ing small { display: block; font-size: 12px; color: var(--text-2); }
-.ck-card .ck-menu-link { align-self: flex-start; font-size: 12.5px; font-weight: 600; color: var(--c); filter: brightness(.8); }
-.ck-later { margin: 6px -12px -4px; padding: 10px 12px; border-top: 1px dashed rgba(0,0,0,.12); }
-.ck-later-h { font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--c); filter: brightness(.8); margin-bottom: 2px; }
-.ck-later p { margin: 6px 0 2px; font-size: 13px; line-height: 1.45; color: var(--text-2); }
-
-/* v199 : ajustement automatique des calories */
+.wt-next { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.7); font-size: 13.5px; color: var(--text-2); }
+.wt-redo { font-size: 13px; font-weight: 700; color: var(--accent); }
+.wt-card { margin-top: 14px; padding: 18px; border-radius: 24px; background: rgba(255,255,255,.78); }
+.wt-card-h { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--text); }
+.wt-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--accent); font-size: 15px; }
 .wt-adj { background: var(--sage-t); }
-.wt-adj p, .wt-auto p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--text); }
-.wt-auto p { color: var(--text-2); font-size: 13.5px; }
-.wt-auto-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.wt-auto-top .wt-k { margin-bottom: 6px; }
+.wt-adj-k { display: flex; align-items: baseline; gap: 10px; margin: 10px 0 6px; font-family: var(--serif); }
+.wt-adj-k s { font-size: 20px; color: var(--muted); }
+.wt-adj-k span { color: var(--accent); }
+.wt-adj-k b { font-size: 28px; font-weight: 500; color: var(--text); }
+.wt-card p { margin: 6px 0 4px; font-size: 13.5px; line-height: 1.5; color: var(--text-2); }
+.wt-later { display: block; width: 100%; margin-top: 8px; padding: 6px; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; }
+.wt-step { background: var(--terra-t); }
+.wt-step .hb-btn { width: 100%; margin-top: 8px; }
+.wt-kcal-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.wt-kcal-sub { margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+.wt-kcal-v { text-align: right; font-family: var(--serif); font-size: 30px; font-weight: 500; line-height: 1; color: var(--text); }
+.wt-kcal-v small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.wt-bars { margin: 14px 0 4px; display: flex; flex-direction: column; gap: 8px; }
+.wt-bar { display: grid; grid-template-columns: 112px 1fr auto; align-items: center; gap: 10px; font-size: 12.5px; color: var(--text-2); }
+.wt-bar i { height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--accent) var(--w), rgba(0,0,0,.06) var(--w)); }
+.wt-bar.muted i { background: linear-gradient(90deg, rgba(30,45,35,.22) var(--w), rgba(0,0,0,.06) var(--w)); }
+.wt-bar b { font-size: 13px; color: var(--text); font-variant-numeric: tabular-nums; }
+.wt-auto-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,.06); }
+.wt-auto-top b { display: block; font-size: 14px; color: var(--text); }
+.wt-auto-top small { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.4; color: var(--text-2); }
+.wt-hrow { display: grid; grid-template-columns: 1fr auto 52px; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
+.wt-hist .wt-card-h { margin-bottom: 4px; }
+.wt-hrow span { color: var(--text-2); }
+.wt-hrow b { color: var(--text); font-variant-numeric: tabular-nums; }
+.wt-hrow em { justify-self: end; font-style: normal; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; color: var(--muted); }
+.wt-hrow em.good { background: var(--sage-t); color: var(--accent); }
+.wt-hrow em.bad { background: var(--terra-t); color: #b4562f; }
+.wt-hrow em:empty { display: none; }
+/* v199 : ajustement automatique des calories */
 .wt-switch { flex: none; width: 48px; height: 28px; padding: 3px; border-radius: 999px; background: rgba(0,0,0,.15); transition: background .2s; }
 .wt-switch i { display: block; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .2s; }
 .wt-switch.on { background: var(--accent); }
 .wt-switch.on i { transform: translateX(20px); }
 .wt-switch:disabled { opacity: .4; }
-.wt-auto-row { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid rgba(0,0,0,.05); font-size: 14px; }
-.wt-auto-row span { color: var(--text-2); }
 /* v199 : onglet Poids, pastille quand la pesée de la semaine est à faire */
 .nav-btn { position: relative; }
 .nav-dot { position: absolute; top: 4px; left: calc(50% + 8px); width: 8px; height: 8px; border-radius: 50%; background: var(--terra); box-shadow: 0 0 0 2px #fff; }
