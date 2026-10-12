@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T15:29:26.858Z
+// 2026-10-12T15:31:53.543Z
 
 
 // ──────────────────────────────────────────────
@@ -7278,9 +7278,8 @@ function openScienceSheet() {
     ]),
     sec(7, 'Le jeûne 16:8, à découvrir', fastPlates(ok ? t.kcal : 2400), "Tu manges entre 12 h et 20 h. Les mêmes calories sur trois repas au lieu de quatre : chaque assiette est plus copieuse, et tu sors de table rassasié.", [
       ...(ok ? [[`Pour toi : ton déjeuner et ton dîner passent de ${nf(t.kcal * PLATE_SHARE.classique)} à ${nf(t.kcal * PLATE_SHARE.jeune)} kcal chacun, soit un quart de plus dans l'assiette.`, null]] : []),
-      ["À calories égales, c'est au moins aussi efficace qu'une journée classique, avec même un léger avantage en moyenne : environ 1,5 kg de plus perdus, surtout du gras.", ['fernandes', 'liu', 'semnani']],
-      ["Avec la musculation et assez de protéines, ta prise de muscle et ta force suivent aussi bien. Hébé garde d'ailleurs tes protéines au même niveau dans les deux formules, pour protéger ton muscle.", ['ashtary', 'tinsley19', 'lowe']],
-      ["Tes protéines restent réparties sur tes trois repas, autour de 0,4 g par kg de poids à chaque fois, ce qui aide le muscle à se construire.", ['schoenfeld']],
+      ["À calories égales, c'est au moins aussi efficace qu'une journée classique. Une méta-analyse de 2026, qui regroupe 30 essais chez des adultes en surpoids, trouve même un léger avantage en moyenne : environ 1,5 kg de plus perdus, surtout du gras.", ['fernandes', 'liu', 'semnani']],
+      ["Avec la musculation, ta prise de muscle et ta force suivent aussi bien : tes protéines restent les mêmes dans les deux formules.", ['ashtary', 'tinsley19', 'lowe']],
       ["Idéal si tu n'as pas faim le matin ou si tu préfères de vrais repas. Et si ça ne te convient pas, tu repasses à la formule classique en un geste.", null],
     ]),
     sec(8, 'Cuisiner une fois, manger sans risque', batchWeek(), "Bien refroidir, bien conserver et bien réchauffer tes boîtes suffit à garder ta cuisine du dimanche sûre toute la semaine.", [
