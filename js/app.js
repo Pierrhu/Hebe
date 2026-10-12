@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T15:35:28.466Z
+// 2026-10-12T15:39:29.292Z
 
 
 // ──────────────────────────────────────────────
@@ -7152,13 +7152,16 @@ function fastPlates(kcal) {
     ['jeûne', [['12 h', J], ['16 h', 1 - 2 * J], ['20 h', J]], 118],
   ];
   const R = sh => 7 + Math.sqrt(sh) * 30; // surface proportionnelle aux calories
-  const plate = (x, y, sh, big) => { const r = R(sh); return `<circle cx="${x}" cy="${y}" r="${r + 3}" fill="#fff" stroke="${INK}" stroke-width="1.2"/>
-    <circle cx="${x}" cy="${y}" r="${r - 2}" fill="${big ? '#9DB7A3' : '#DCE8DF'}"/>
-    <text x="${x}" y="${y + 4}" text-anchor="middle" class="sv-in dk">${nf(kcal * sh)}</text>`; };
+  // v248 : plus l'assiette est copieuse, plus son vert est soutenu (en plus de sa taille)
+  const shares = [B, C, 1 - B - 2 * C, J, 1 - 2 * J], lo = Math.min(...shares), hi = Math.max(...shares);
+  const mix = (a, b, f) => '#' + [0, 2, 4].map(i => Math.round(parseInt(a.slice(1 + i, 3 + i), 16) * (1 - f) + parseInt(b.slice(1 + i, 3 + i), 16) * f).toString(16).padStart(2, '0')).join('');
+  const plate = (x, y, sh) => { const r = R(sh), f = (sh - lo) / (hi - lo || 1); return `<circle cx="${x}" cy="${y}" r="${r + 3}" fill="#fff" stroke="${INK}" stroke-width="1.2"/>
+    <circle cx="${x}" cy="${y}" r="${r - 2}" fill="${mix('#E8F0EA', '#4F7E62', f)}"/>
+    <text x="${x}" y="${y + 4}" text-anchor="middle" class="sv-in${f < 0.55 ? ' dk' : ''}">${nf(kcal * sh)}</text>`; };
   return `<svg viewBox="0 0 320 188" class="sci-svg" aria-hidden="true">
     ${rows.map(([lbl, meals, y]) => {
       const xs = meals.length === 4 ? [92, 154, 214, 276] : [118, 197, 276];
-      return `<text x="12" y="${y + 4}" class="sv-l">${lbl}</text>` + meals.map(([h, sh], i) => plate(xs[i], y, sh, lbl === 'jeûne' && sh === J)
+      return `<text x="12" y="${y + 4}" class="sv-l">${lbl}</text>` + meals.map(([h, sh], i) => plate(xs[i], y, sh)
         + `<text x="${xs[i]}" y="${y + R(sh) + 17}" text-anchor="middle" class="sv-t">${h}</text>`).join('');
     }).join('')}
     <text x="308" y="182" text-anchor="end" class="sv-k">en kcal par repas</text>
