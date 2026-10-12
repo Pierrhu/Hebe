@@ -1858,7 +1858,11 @@ button.wl-ch:disabled { cursor: default; }
 .sci-svg .sv-k { font-family: var(--serif); font-style: italic; font-size: 13px; fill: #C8704F; }
 .sci-svg .sv-in { font-size: 11px; font-weight: 700; fill: #fff; }
 .sci-svg .sv-in.dk { fill: #2F4638; }
-.sci-card p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--text-2); }
+.sci-lede { margin: 0 0 10px; font-family: var(--serif); font-size: 15.5px; line-height: 1.4; color: #2F4638; }
+.sci-pts { list-style: none; margin: 4px 0 0; padding: 0; }
+.sci-pts li { position: relative; padding: 6px 0 6px 16px; font-size: 13.5px; line-height: 1.5; color: var(--text-2); border-top: 1px dotted #E2D5BC; }
+.sci-pts li:first-child { border-top: 0; }
+.sci-pts li::before { content: ''; position: absolute; left: 2px; top: 13px; width: 6px; height: 6px; border-radius: 50%; border: 1.3px solid #C8704F; }
 .sci-ref { display: inline-grid; place-items: center; min-width: 17px; height: 17px; margin: 0 1px 0 3px; padding: 0 4px; border: 0; border-radius: 999px; background: var(--sage-t); color: var(--accent); font: inherit; font-size: 10px; font-weight: 700; vertical-align: 2px; }
 .sci-note { margin: 2px 0 0; padding: 11px 13px; border-radius: 14px; background: var(--honey-t); font-size: 13px; line-height: 1.45; color: var(--text); }
 .sci-src summary { cursor: pointer; padding: 6px 0; font-size: 14px; font-weight: 600; color: var(--accent); }

@@ -161,13 +161,15 @@ export function openScienceSheet() {
       <p class="sl-note">${m.targets ? 'Tes calories sont réglées à la main : Hébé affiche ici ton réglage. ' : ''}Chaque ligne est expliquée et sourcée ci-dessous.</p>
     </div>` : '';
 
-  const sec = (n, title, art, text) => `<section class="sci-card">
+  // v241 : chaque planche = une phrase à retenir, puis des points courts, chacun avec ses sources
+  const nb = x => x.replace(/(\d) (\d{3})/g, '$1\u00a0$2').replace(/(\d) (kcal|g|kg|jours|%)/g, '$1\u00a0$2').replace(/ ([%:;?!])/g, '\u00a0$1');
+  const sec = (n, title, art, lede, points) => `<section class="sci-card">
       <h3><span class="sci-n">${n}</span>${title}</h3>
+      <p class="sci-lede">${nb(lede)}</p>
       ${art ? `<div class="sci-art">${art}</div>` : ''}
-      <p>${text.replace(/(\d) (\d{3})/g, '$1\u00a0$2').replace(/ ([%:;?!])/g, '\u00a0$1')}</p>
+      <ul class="sci-pts">${points.map(([x, refs]) => `<li>${nb(x)}${refs ? pills(...refs) : ''}</li>`).join('')}</ul>
     </section>`;
-  const prot = ok ? `${t.protein} g, soit ${dec(t.protein / b.leanMass)} g par kg de masse maigre et ${dec(t.protein / m.weight)} g par kg de poids. ` : '';
-
+  const yourProt = ok ? `Pour toi : ${t.protein} g par jour, soit ${dec(t.protein / b.leanMass)} g par kg de masse maigre (ton poids sans le gras) et ${dec(t.protein / m.weight)} g par kg de poids.` : '';
   openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad sci">
     <div class="sci-label">
       <div class="sci-label-in">
@@ -178,12 +180,44 @@ export function openScienceSheet() {
       </div>
     </div>
     ${ledger}
-    ${sec(1, 'Deux formules plutôt qu\'une', '', `Ta dépense au repos est la moyenne de Harris-Benedict révisée, qui part du poids, de la taille et de l'âge${pills(1)}, et de Katch-McArdle, qui part de la masse maigre${pills(2)}. Elle reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons${pills(3, 4)}. Aucune formule n'est exacte pour tout le monde${pills(5)} : c'est pour ça que Hébé se recale ensuite sur tes pesées. Le coefficient d'activité, de 1,4 à 1,8, suit les niveaux d'activité de la FAO et de l'OMS${pills(6)}.`)}
-    ${sec(2, 'Ton assiette', ok ? macroBar(t) : '', `${prot}La prise de muscle plafonne autour de 1,6 g par kg de poids${pills(7, 8)}, et les recommandations vont de 1,4 à 2,0 g${pills(9)}. Hébé part de la masse maigre, pour ne pas gonfler les besoins quand la masse grasse est élevée. En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre${pills(10)}. Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme${pills(11)}, et les glucides complètent le reste${pills(12)}.`)}
-    ${sec(3, 'Des écarts mesurés', programScale(phase.pct), `Un surplus de 5 à 10 % pour prendre du muscle${pills(13)} : au-delà, on prend surtout du gras${pills(14)}. Un déficit de 10 % pour la recomposition${pills(15)}, et de 10 à 20 % pour perdre du gras. Le rythme visé, de 0,5 à 0,7 % du poids par semaine, préserve le muscle${pills(16, 17)}, alors que les gros déficits freinent la masse maigre${pills(18)}.`)}
-    ${sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), `Un kilo de variation correspond à environ 7 700 kcal${pills(19)}, mais cette règle fixe surestime la perte sur la durée${pills(20, 21)}. Hébé ne prédit donc pas, il mesure : il compare ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau. La correction est lissée et ne dépasse jamais 15 %.`)}
-    ${sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', `Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence${pills(22)}.`)}
-    ${sec(6, 'Des aliments bien mesurés', sciFridge(), `Les valeurs nutritionnelles viennent des tables Ciqual de l'Anses${pills(23)} et de la base de l'USDA${pills(24)}. Les plats préparés se gardent 3 jours au frigo, sous les 3 à 4 jours conseillés, et le reste de la semaine passe par le congélateur${pills(25)}.`)}
+    ${sec(1, 'Deux formules plutôt qu\'une', '', "Ta dépense au repos, c'est l'énergie que ton corps brûle sans bouger. Hébé l'estime avec deux formules et garde la moyenne.", [
+      ["La première, Harris-Benedict révisée, part de ton poids, de ta taille et de ton âge.", [1]],
+      ["La seconde, Katch-McArdle, part de ta masse maigre, c'est-à-dire ton poids sans le gras.", [2]],
+      ["La moyenne limite l'erreur de chacune, surtout quand la masse grasse est estimée, et reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons.", [3, 4]],
+      ["Aucune formule n'est exacte pour tout le monde : c'est pour ça que Hébé se recale ensuite sur tes pesées.", [5]],
+      ["Pour passer à la dépense de la journée, on multiplie par un coefficient d'activité de 1,4 à 1,8, selon les niveaux de la FAO et de l'OMS.", [6]],
+    ])}
+    ${sec(2, 'Ton assiette', ok ? macroBar(t) : '', "Assez de protéines pour le muscle, assez de lipides pour les hormones, et les glucides pour l'énergie.", [
+      ...(yourProt ? [[yourProt, null]] : []),
+      ["La prise de muscle plafonne autour de 1,6 g de protéines par kg de poids.", [7, 8]],
+      ["Les recommandations vont de 1,4 à 2,0 g par kg.", [9]],
+      ["Hébé part de la masse maigre, pour ne pas gonfler les besoins quand la masse grasse est élevée.", null],
+      ["En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre, pour protéger leurs muscles.", [10]],
+      ["Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme.", [11]],
+      ["Les glucides complètent le reste.", [12]],
+    ])}
+    ${sec(3, 'Des écarts mesurés', programScale(phase.pct), "Chaque programme s'écarte un peu de ta dépense, jamais beaucoup : c'est ce qui protège le muscle.", [
+      ["Prise de muscle : un surplus de 5 à 10 %.", [13]],
+      ["Au-delà, on prend surtout du gras.", [14]],
+      ["Recomposition : un déficit de 10 %.", [15]],
+      ["Perte de gras : un déficit de 10 à 20 %, pour perdre de 0,5 à 0,7 % de ton poids par semaine, le rythme qui préserve le muscle.", [16, 17]],
+      ["Les gros déficits freinent la masse maigre.", [18]],
+    ])}
+    ${sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), "Hébé ne prédit pas ta perte, il la mesure sur tes pesées et ajuste tes calories.", [
+      ["Un kilo de variation correspond à environ 7 700 kcal.", [19]],
+      ["Mais cette règle fixe surestime la perte sur la durée : le corps s'adapte.", [20, 21]],
+      ["Hébé compare donc ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau.", null],
+      ["La correction est lissée et ne dépasse jamais 15 %.", null],
+    ])}
+    ${sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', "Quel que soit le programme, tes calories ne descendent jamais sous un minimum.", [
+      ["Jamais moins que ta dépense au repos.", null],
+      ["Jamais moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence.", [22]],
+    ])}
+    ${sec(6, 'Des aliments bien mesurés', sciFridge(), "Des valeurs nutritionnelles officielles, et des boîtes qui se gardent en toute sécurité.", [
+      ["Les valeurs nutritionnelles viennent des tables Ciqual de l'Anses.", [23]],
+      ["Elles sont complétées par la base de l'USDA.", [24]],
+      ["Les plats préparés se gardent 3 jours au frigo, sous les 3 à 4 jours conseillés. Le reste de la semaine passe par le congélateur.", [25]],
+    ])}
     <p class="sci-note">Ces calculs donnent un point de départ fiable pour un adulte en bonne santé. Ils ne remplacent pas l'avis d'un médecin ou d'un diététicien, notamment en cas de grossesse, de maladie ou de troubles alimentaires.</p>
     <details class="sci-src"><summary>Voir les ${SOURCES.length} sources</summary>
       <ol>${SOURCES.map((x, i) => `<li id="sci-s${i + 1}">${srcHtml(x)}</li>`).join('')}</ol>
