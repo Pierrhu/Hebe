@@ -16,7 +16,7 @@ import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
   measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
-  householdCards, formulaBlock, foodBlock, weekPrefsBlock, openProtocolSheet, equipmentBlock,
+  householdCards, formulaBlock, foodBlock, repeatBlock, soupsBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)
@@ -32,7 +32,7 @@ const RANGES = {
 };
 const MEMBER_STEPS = ['identity', 'measures', 'activity', 'rhythm', 'food', 'goal'];
 // Chapitres affichés en haut de l'écran
-const CHAPTER = { household: 0, tools: 0, identity: 1, measures: 1, activity: 1, rhythm: 2, food: 2, week: 2, goal: 3, summary: 3 };
+const CHAPTER = { household: 0, tools: 0, identity: 1, measures: 1, activity: 1, rhythm: 2, food: 2, goal: 3, summary: 3 };
 const CHAPTER_NAMES = ['Cuisine', 'Profil', 'Repas', 'Objectif'];
 // Écrans à choix unique : on passe au suivant dès qu'on a choisi
 const AUTO_NEXT = ['household', 'activity', 'rhythm'];
@@ -48,15 +48,15 @@ export function renderWelcome(onDone) {
 
   const h = getHousehold();
   const firstTime = !h.onboardedOnce;
-  // « Ta semaine type » (même plat, soupes) : réglage du foyer, demandé une seule fois, avec la première personne
-  const memberSteps = mid => MEMBER_STEPS.flatMap(type => (type === 'food' && firstTime && mid === getMembers()[0]?.id
-    ? [{ type, mid }, { type: 'week', mid }] : [{ type, mid }]));
+  const memberSteps = mid => MEMBER_STEPS.map(type => ({ type, mid }));
+  // Même plat et soupes : réglages du foyer, demandés une seule fois, avec la première personne
+  const houseQ = () => firstTime && cur().mid === getMembers()[0]?.id;
   const incomplete = () => getMembers().filter(m => !isComplete(m)).map(m => m.id);
 
   // Étapes qui suivent le choix du foyer
   function tail() {
     const out = [];
-    if (h.migrated && firstTime) out.push({ type: 'identity', mid: 'm1' }, { type: 'rhythm', mid: 'm1' }, { type: 'food', mid: 'm1' }, { type: 'week', mid: 'm1' });
+    if (h.migrated && firstTime) out.push({ type: 'identity', mid: 'm1' }, { type: 'rhythm', mid: 'm1' }, { type: 'food', mid: 'm1' });
     getMembers().forEach(m => { if (!isComplete(m) && !(h.migrated && firstTime && m.id === 'm1')) out.push(...memberSteps(m.id)); });
     if (out.some(s => s.type === 'goal') || getMembers().length > 1) out.push({ type: 'summary' });
     return out;
@@ -70,17 +70,15 @@ export function renderWelcome(onDone) {
   const cur = () => steps[i];
   const member = () => getMember(cur().mid) || getActiveMember();
 
-  // Progression par chapitres : un groupe de traits par chapitre, son nom en dessous
+  // Progression : le nom des chapitres, celui en cours en gras (v221 : sans barres)
   const progress = () => {
     const counted = steps.filter(st => st.type !== 'hello');
     const k = counted.indexOf(cur());
     if (k < 0 || counted.length < 2) return '';
     const chs = [...new Set(counted.map(st => CHAPTER[st.type]))];
     const curCh = CHAPTER[cur().type];
-    return `<div class="wl-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${counted.length}" aria-valuenow="${k + 1}" aria-label="Étape ${k + 1} sur ${counted.length}, ${CHAPTER_NAMES[curCh]}">
-      ${chs.map(c => `<div class="wl-ch ${c === curCh ? 'cur' : c < curCh ? 'done' : ''}"><div class="wl-ch-bar">
-        ${counted.map((st, j) => (CHAPTER[st.type] === c ? `<i class="${j <= k ? 'on' : ''}"></i>` : '')).join('')}</div>
-        <span>${CHAPTER_NAMES[c]}</span></div>`).join('')}</div>`;
+    return `<div class="wl-progress" aria-label="Étape ${k + 1} sur ${counted.length}, ${CHAPTER_NAMES[curCh]}">
+      ${chs.map(c => `<span class="wl-ch ${c === curCh ? 'cur' : c < curCh ? 'done' : ''}"${c === curCh ? ' aria-current="step"' : ''}>${CHAPTER_NAMES[c]}</span>`).join('')}</div>`;
   };
   const top = () => `<div class="wl-top">${i > 0 ? WL_BACK : '<span class="wl-spacer"></span>'}${progress()}</div>`;
   // pastille de la personne concernée (foyer de deux)
@@ -166,6 +164,7 @@ export function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le rythme de ${esc(m.name)}` : 'Ton rythme'}</h1>
         ${sub('Hébé répartit les calories de la journée sur ces repas.')}
         ${formulaBlock(m, { error })}
+        ${houseQ() ? repeatBlock() : ''}
         ${cta('Continuer')}`;
 
       case 'food': return `
@@ -173,14 +172,8 @@ export function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
         ${sub('Hébé écarte ce qui ne te convient pas.')}
         ${foodBlock(m)}
+        ${houseQ() ? soupsBlock() : ''}
         ${errBox()}
-        ${cta('Continuer')}`;
-
-      case 'week': return `
-        ${top()}${kick()}
-        <h1 class="wl-title">Ta semaine type</h1>
-        ${sub('Pour varier les menus à ton goût. Tu pourras changer ces réglages plus tard.')}
-        ${weekPrefsBlock()}
         ${cta('Continuer')}`;
 
       case 'goal': return `
@@ -274,7 +267,7 @@ export function renderWelcome(onDone) {
   // choix unique : on montre la sélection un court instant, puis on passe à l'écran suivant
   let autoT = 0;
   const autoNext = () => {
-    if (!AUTO_NEXT.includes(cur().type)) return;
+    if (!AUTO_NEXT.includes(cur().type) || (cur().type === 'rhythm' && houseQ())) return;
     const at = i; clearTimeout(autoT);
     autoT = setTimeout(() => { if (i === at) next(); }, 320);
   };

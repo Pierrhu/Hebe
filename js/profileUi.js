@@ -181,22 +181,29 @@ const REPEAT_NOTES = {
   3: 'Environ 5 plats à cuisiner le dimanche.',
   4: 'Environ 4 plats à cuisiner le dimanche.',
 };
-export function weekPrefsBlock() {
-  const rep = getMaxRepeat(), soups = getSoups();
+// v221 : deux blocs séparés pour l'accueil (même plat dans « Ton rythme », soupes dans « Ce que tu manges »)
+export function repeatBlock() {
+  const rep = getMaxRepeat();
   return `<div class="dt-card dt-repeat" style="--c:var(--bloom);--t:var(--bloom-t)">
       <div class="dt-top"><b>Même plat dans la semaine</b></div>
       <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
         ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
       </div>
       <p class="dt-note">${REPEAT_NOTES[rep]}</p>
-    </div>
-    <div class="dt-card dt-soups" style="--c:var(--mint);--t:var(--mint-t)">
+    </div>`;
+}
+export function soupsBlock() {
+  const soups = getSoups();
+  return `<div class="dt-card dt-soups" style="--c:var(--mint);--t:var(--mint-t)">
       <div class="dt-top"><b>Veux-tu des soupes ?</b></div>
       <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
         ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
       </div>
       ${soups ? '<p class="dt-note">Une soupe par semaine au plus, le soir.</p>' : ''}
     </div>`;
+}
+export function weekPrefsBlock() {
+  return repeatBlock() + soupsBlock();
 }
 
 // Repas de la journée : frise avec un point par repas (taille = part des calories)
