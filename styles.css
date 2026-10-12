@@ -1843,7 +1843,7 @@ button.wl-ch:disabled { cursor: default; }
 .sl-macros div { padding: 8px 6px; border-radius: 12px; background: #F6F1E7; text-align: center; }
 .sl-macros b { display: block; font-family: var(--serif); font-weight: 500; font-size: 18px; color: var(--text); }
 .sl-macros span { font-size: 11.5px; color: var(--text-2); }
-.sl-note { margin: 10px 0 0; font-size: 12.5px; color: var(--text-2); }
+.sl-note { margin: 10px 0 0; font-family: var(--serif); font-style: italic; font-size: 12.5px; color: #8A7655; }
 /* planches : papier millimétré, numéro cerclé, dessin à l'encre */
 .sci-card { padding: 14px 16px 16px; border-radius: 18px; border: 1px solid #EADFCB;
   background-color: #FBF8F2;
@@ -1853,9 +1853,9 @@ button.wl-ch:disabled { cursor: default; }
 .sci-n { flex-shrink: 0; width: 24px; height: 24px; display: grid; place-items: center; border: 1.3px solid #C8704F; border-radius: 50%; font-family: var(--serif); font-style: italic; font-size: 13px; color: #C8704F; }
 .sci-art { margin: 2px -4px 8px; }
 .sci-svg { display: block; width: 100%; height: auto; overflow: visible; }
-.sci-svg .sv-l { font-family: var(--serif); font-style: italic; font-size: 11.5px; fill: #8A7655; }
-.sci-svg .sv-t { font-size: 10.5px; fill: #8A7655; }
-.sci-svg .sv-k { font-family: var(--serif); font-style: italic; font-size: 12px; fill: #C8704F; }
+.sci-svg .sv-l { font-family: var(--serif); font-style: italic; font-size: 12.5px; fill: #8A7655; }
+.sci-svg .sv-t { font-size: 11px; fill: #8A7655; }
+.sci-svg .sv-k { font-family: var(--serif); font-style: italic; font-size: 13px; fill: #C8704F; }
 .sci-svg .sv-in { font-size: 11px; font-weight: 700; fill: #fff; }
 .sci-svg .sv-in.dk { fill: #2F4638; }
 .sci-card p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--text-2); }
@@ -1869,3 +1869,4 @@ button.wl-ch:disabled { cursor: default; }
 .sci-src li.hl { background: var(--sage-t); }
 .sci-au { color: var(--text); }
 @media (prefers-reduced-motion: reduce) { .sci-src li { transition: none; } }
+.sci-src li a { margin-left: 2px; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }

@@ -8,30 +8,40 @@ import { computeBase, computeDetails, getProtocol } from '../data/calculator.js'
 import { getTargetsFor } from '../data/user.js';
 import { getWeights } from './weight.js';
 
+// [référence, lien DOI ou page officielle] — vérifiées une à une (Europe PMC, Crossref, sites officiels), octobre 2026
 const SOURCES = [
-  'Roza AM, Shizgal HM. The Harris Benedict equation reevaluated: resting energy requirements and the body cell mass. Am J Clin Nutr. 1984;40(1):168-182.',
-  'McArdle WD, Katch FI, Katch VL. Exercise Physiology: Nutrition, Energy, and Human Performance. Lippincott Williams & Wilkins.',
-  'Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.',
-  'FAO, OMS, UNU. Human energy requirements. Report of a Joint FAO/WHO/UNU Expert Consultation. Rome, 2004.',
-  'Morton RW, Murphy KT, McKellar SR, et al. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults. Br J Sports Med. 2018;52(6):376-384.',
-  'Jäger R, Kerksick CM, Campbell BI, et al. International Society of Sports Nutrition Position Stand: protein and exercise. J Int Soc Sports Nutr. 2017;14:20.',
-  'Helms ER, Zinn C, Rowlands DS, Brown SR. A systematic review of dietary protein during caloric restriction in resistance trained lean athletes: a case for higher intakes. Int J Sport Nutr Exerc Metab. 2014;24(2):127-138.',
-  'EFSA. Scientific Opinion on Dietary Reference Values for fats. EFSA Journal. 2010;8(3):1461.',
-  'EFSA. Scientific Opinion on Dietary Reference Values for carbohydrates and dietary fibre. EFSA Journal. 2010;8(3):1462.',
-  'Iraki J, Fitschen P, Espinar S, Helms E. Nutrition recommendations for bodybuilders in the off-season: a narrative review. Sports. 2019;7(7):154.',
-  'Barakat C, Pearson J, Escalante G, Campbell B, De Souza EO. Body recomposition: can trained individuals build muscle and lose fat at the same time? Strength Cond J. 2020;42(5):7-21.',
-  'Helms ER, Aragon AA, Fitschen PJ. Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation. J Int Soc Sports Nutr. 2014;11:20.',
-  'Wishnofsky M. Caloric equivalents of gained or lost weight. Am J Clin Nutr. 1958;6(5):542-546.',
-  'Hall KD, Sacks G, Chandramohan D, et al. Quantification of the effect of energy imbalance on bodyweight. Lancet. 2011;378(9793):826-837.',
-  'NHLBI. Clinical Guidelines on the Identification, Evaluation, and Treatment of Overweight and Obesity in Adults. National Institutes of Health, 1998.',
-  'Anses. Table de composition nutritionnelle des aliments Ciqual.',
-  'USDA. FoodData Central.',
-  'USDA FSIS. Leftovers and Food Safety.',
+  ['Roza AM, Shizgal HM. The Harris Benedict equation reevaluated: resting energy requirements and the body cell mass. Am J Clin Nutr. 1984;40(1):168-182.', 'https://doi.org/10.1093/ajcn/40.1.168'],
+  ['McArdle WD, Katch FI, Katch VL. Exercise Physiology: Nutrition, Energy, and Human Performance. 9e éd. Wolters Kluwer. 2023.', ''],
+  ['Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.', 'https://doi.org/10.1093/ajcn/51.2.241'],
+  ['Frankenfield D, Roth-Yousey L, Compher C. Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review. J Am Diet Assoc. 2005;105(5):775-789.', 'https://doi.org/10.1016/j.jada.2005.02.005'],
+  ["O'Neill JER, Corish CA, Horner K. Accuracy of resting metabolic rate prediction equations in athletes: a systematic review with meta-analysis. Sports Med. 2023;53(12):2373-2398.", 'https://doi.org/10.1007/s40279-023-01896-z'],
+  ['FAO, OMS, UNU. Human energy requirements. Report of a Joint FAO/WHO/UNU Expert Consultation. FAO Food and Nutrition Technical Report Series 1. Rome. 2004.', 'https://www.fao.org/4/y5686e/y5686e00.htm'],
+  ['Morton RW, Murphy KT, McKellar SR, et al. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults. Br J Sports Med. 2018;52(6):376-384.', 'https://doi.org/10.1136/bjsports-2017-097608'],
+  ['Nunes EA, Colenso-Semple L, McKellar SR, et al. Systematic review and meta-analysis of protein intake to support muscle mass and function in healthy adults. J Cachexia Sarcopenia Muscle. 2022;13(2):795-810.', 'https://doi.org/10.1002/jcsm.12922'],
+  ['Jäger R, Kerksick CM, Campbell BI, et al. International Society of Sports Nutrition Position Stand: protein and exercise. J Int Soc Sports Nutr. 2017;14:20.', 'https://doi.org/10.1186/s12970-017-0177-8'],
+  ['Helms ER, Zinn C, Rowlands DS, Brown SR. A systematic review of dietary protein during caloric restriction in resistance trained lean athletes: a case for higher intakes. Int J Sport Nutr Exerc Metab. 2014;24(2):127-138.', 'https://doi.org/10.1123/ijsnem.2013-0054'],
+  ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for fats, including saturated fatty acids, polyunsaturated fatty acids, monounsaturated fatty acids, trans fatty acids, and cholesterol. EFSA J. 2010;8(3):1461.', 'https://doi.org/10.2903/j.efsa.2010.1461'],
+  ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for carbohydrates and dietary fibre. EFSA J. 2010;8(3):1462.', 'https://doi.org/10.2903/j.efsa.2010.1462'],
+  ['Iraki J, Fitschen P, Espinar S, Helms E. Nutrition recommendations for bodybuilders in the off-season: a narrative review. Sports (Basel). 2019;7(7):154.', 'https://doi.org/10.3390/sports7070154'],
+  ['Helms ER, Spence AJ, Sousa C, et al. Effect of small and large energy surpluses on strength, muscle, and skinfold thickness in resistance-trained individuals: a parallel groups design. Sports Med Open. 2023;9(1):102.', 'https://doi.org/10.1186/s40798-023-00651-y'],
+  ['Barakat C, Pearson J, Escalante G, Campbell B, De Souza EO. Body recomposition: can trained individuals build muscle and lose fat at the same time? Strength Cond J. 2020;42(5):7-21.', 'https://doi.org/10.1519/SSC.0000000000000584'],
+  ['Helms ER, Aragon AA, Fitschen PJ. Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation. J Int Soc Sports Nutr. 2014;11:20.', 'https://doi.org/10.1186/1550-2783-11-20'],
+  ['Garthe I, Raastad T, Refsnes PE, Koivisto A, Sundgot-Borgen J. Effect of two different weight-loss rates on body composition and strength and power-related performance in elite athletes. Int J Sport Nutr Exerc Metab. 2011;21(2):97-104.', 'https://doi.org/10.1123/ijsnem.21.2.97'],
+  ['Murphy C, Koehler K. Energy deficiency impairs resistance training gains in lean mass but not strength: a meta-analysis and meta-regression. Scand J Med Sci Sports. 2022;32(1):125-137.', 'https://doi.org/10.1111/sms.14075'],
+  ['Wishnofsky M. Caloric equivalents of gained or lost weight. Am J Clin Nutr. 1958;6(5):542-546.', 'https://doi.org/10.1093/ajcn/6.5.542'],
+  ['Thomas DM, Martin CK, Lettieri S, et al. Can a weight loss of one pound a week be achieved with a 3500-kcal deficit? Commentary on a commonly accepted rule. Int J Obes (Lond). 2013;37(12):1611-1613.', 'https://doi.org/10.1038/ijo.2013.51'],
+  ['Hall KD, Sacks G, Chandramohan D, et al. Quantification of the effect of energy imbalance on bodyweight. Lancet. 2011;378(9793):826-837.', 'https://doi.org/10.1016/S0140-6736(11)60812-X'],
+  ['Jensen MD, Ryan DH, Apovian CM, et al. 2013 AHA/ACC/TOS guideline for the management of overweight and obesity in adults. Circulation. 2014;129(25 Suppl 2):S102-S138.', 'https://doi.org/10.1161/01.cir.0000437739.71477.ee'],
+  ['Anses. Table de composition nutritionnelle des aliments Ciqual.', 'https://ciqual.anses.fr/'],
+  ['USDA, Agricultural Research Service. FoodData Central.', 'https://fdc.nal.usda.gov/'],
+  ['USDA FSIS. Leftovers and Food Safety.', 'https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/leftovers-and-food-safety'],
 ];
 
-const srcHtml = t => {
+const srcHtml = ([t, url]) => {
   const m = t.match(/^(.*?\. )(.*?\. )(.*)$/);
-  return m ? `<span class="sci-au">${m[1]}</span>${m[2]}<em>${m[3]}</em>` : t;
+  const body = m ? `<span class="sci-au">${m[1]}</span>${m[2]}<em>${m[3]}</em>` : t;
+  const link = url ? ` <a href="${url}" target="_blank" rel="noopener">${url.startsWith('https://doi.org/') ? 'doi' : 'lien'}</a>` : '';
+  return body + link;
 };
 const nf = v => Math.round(v).toLocaleString('fr-FR');
 const dec = (v, d = 1) => v.toFixed(d).replace('.', ',');
@@ -69,10 +79,11 @@ function programScale(pct) {
     <rect x="${X(0)}" y="30" width="${X(0.10) - X(0)}" height="10" fill="#DCE8DF"/>
     <line x1="${X(-0.20)}" y1="40" x2="${X(0.10)}" y2="40" stroke="${INK}" stroke-width="1.2"/>
     ${ticks.map(v => `<line x1="${X(v)}" y1="40" x2="${X(v)}" y2="${v === 0 ? 48 : 45}" stroke="${INK}" stroke-width="${v === 0 ? 1.4 : 1}"/><text x="${X(v)}" y="60" text-anchor="middle" class="sv-t">${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(Math.round(v * 100))} %</text>`).join('')}
-    <text x="${(X(-0.20) + X(-0.10)) / 2}" y="24" text-anchor="middle" class="sv-l">sèche</text>
-    <text x="${(X(-0.10) + X(0)) / 2}" y="24" text-anchor="middle" class="sv-l">recompo</text>
-    <text x="${(X(0) + X(0.10)) / 2}" y="24" text-anchor="middle" class="sv-l">muscle</text>
-    <path d="M${X(pct)} 28 l-6 -9 h12 z" fill="${TERRA}"/>
+    <text x="${(X(-0.20) + X(-0.10)) / 2}" y="18" text-anchor="middle" class="sv-l">sèche</text>
+    <text x="${(X(-0.10) + X(0)) / 2}" y="18" text-anchor="middle" class="sv-l">recompo</text>
+    <text x="${(X(0) + X(0.10)) / 2}" y="18" text-anchor="middle" class="sv-l">muscle</text>
+    <line x1="${X(pct)}" y1="26" x2="${X(pct)}" y2="47" stroke="${TERRA}" stroke-width="2.4"/>
+    <circle cx="${X(pct)}" cy="26" r="4.5" fill="${TERRA}"/>
     <text x="${X(pct)}" y="78" text-anchor="middle" class="sv-k">toi</text>
   </svg>`;
 }
@@ -100,7 +111,7 @@ function floorBar(kcal, floor) {
   const max = Math.max(kcal, floor) * 1.15, X = v => 20 + v / max * 280;
   return `<svg viewBox="0 0 320 70" class="sci-svg" aria-hidden="true">
     <rect x="20" y="18" width="${X(kcal) - 20}" height="18" rx="4" fill="#9DB7A3"/>
-    <text x="${X(kcal) - 6}" y="31" text-anchor="end" class="sv-in dk">${nf(kcal)} kcal</text>
+    ${X(kcal) - X(floor) > 70 ? `<text x="${X(kcal) - 6}" y="31" text-anchor="end" class="sv-in dk">${nf(kcal)} kcal</text>` : `<text x="26" y="31" class="sv-in dk">${nf(kcal)} kcal</text>`}
     <line x1="${X(floor)}" y1="8" x2="${X(floor)}" y2="46" stroke="${TERRA}" stroke-width="2"/>
     <path d="M${X(floor) - 5} 46 h10" stroke="${TERRA}" stroke-width="2"/>
     <text x="${X(floor)}" y="62" text-anchor="middle" class="sv-k">plancher ${nf(floor)}</text>
@@ -127,29 +138,33 @@ export function openScienceSheet() {
   const det = ok ? computeDetails(m, proto.id, +(m.phase || 0)) : null;
   const t = ok ? getTargetsFor(m) : null;
   const act = ACTIVITY.find(a => a.level === (m?.activity ?? 2)) || ACTIVITY[1];
-  const delta = ok ? det.targets.kcal - Math.round(b.maintenance) : 0;
+  const signed = v => `${v >= 0 ? '+' : '−'} ${nf(Math.abs(v))} kcal`;
+  const coefTxt = v => dec(v, 2).replace(/0$/, '');
 
   // ton calcul, ligne par ligne, avec des pointillés comme dans un livre de comptes
   const row = (label, val, refs = '', cls = '') => `<div class="sl-row ${cls}"><span class="sl-k">${label}${refs}</span><i></i><span class="sl-v">${val}</span></div>`;
   const ledger = ok ? `<div class="sci-ledger">
       <div class="sl-head"><span>Ton calcul</span><em>${m.name || ''}</em></div>
-      ${row('Dépense au repos', `${nf(b.bmr)} kcal`, pills(1, 2, 3))}
-      ${row(`Activité, ${act.label.toLowerCase()}`, `× ${dec(b.coef * b.adj, 2).replace(/0$/, '')}`, pills(4))}
+      ${row('Dépense au repos', `${nf(b.bmr)} kcal`)}
+      ${row(`Activité, ${act.label.toLowerCase()}`, `× ${coefTxt(b.coef)}`)}
+      ${Math.abs(b.adj - 1) > 0.004 ? row('Recalé sur tes pesées', `× ${coefTxt(b.adj)}`) : ''}
       ${row('Dépense de la journée', `${nf(b.maintenance)} kcal`, '', 'sl-sum')}
-      ${row(`${proto.name}, ${phase.label.toLowerCase()}`, `${delta >= 0 ? '+' : '−'} ${nf(Math.abs(delta))} kcal`, pills(10, 11, 12))}
+      ${m.targets ? row('Ton réglage à la main', signed(t.kcal - Math.round(b.maintenance)))
+        : row(`${proto.name}, ${phase.label.toLowerCase()}`, signed(det.wanted - Math.round(b.maintenance)))
+          + (det.floored ? row('Remonté au plancher', signed(t.kcal - det.wanted)) : '')}
       ${row('Ton objectif', `${nf(t.kcal)} kcal`, '', 'sl-total')}
       <div class="sl-macros">
         <div><b>${t.protein} g</b><span>protéines</span></div>
         <div><b>${t.carbs} g</b><span>glucides</span></div>
         <div><b>${t.fat} g</b><span>lipides</span></div>
       </div>
-      ${m.targets ? '<p class="sl-note">Tes calories sont réglées à la main : Hébé affiche ici ton réglage.</p>' : ''}
+      <p class="sl-note">${m.targets ? 'Tes calories sont réglées à la main : Hébé affiche ici ton réglage. ' : ''}Chaque ligne est expliquée et sourcée ci-dessous.</p>
     </div>` : '';
 
   const sec = (n, title, art, text) => `<section class="sci-card">
       <h3><span class="sci-n">${n}</span>${title}</h3>
       ${art ? `<div class="sci-art">${art}</div>` : ''}
-      <p>${text}</p>
+      <p>${text.replace(/(\d) (\d{3})/g, '$1\u00a0$2').replace(/ ([%:;?!])/g, '\u00a0$1')}</p>
     </section>`;
   const prot = ok ? `${t.protein} g, soit ${dec(t.protein / b.leanMass)} g par kg de masse maigre et ${dec(t.protein / m.weight)} g par kg de poids. ` : '';
 
@@ -163,12 +178,12 @@ export function openScienceSheet() {
       </div>
     </div>
     ${ledger}
-    ${sec(1, 'Deux formules plutôt qu\'une', '', `Ta dépense au repos est la moyenne de Harris-Benedict révisée, qui part du poids, de la taille et de l'âge${pills(1)}, et de Katch-McArdle, qui part de la masse maigre${pills(2)}. La moyenne limite l'erreur de chacune, en particulier sur la masse grasse estimée, et reste proche de Mifflin-St Jeor, la référence actuelle${pills(3)}. Le coefficient d'activité, de 1,35 à 1,8, suit les fourchettes de la FAO et de l'OMS${pills(4)}.`)}
-    ${sec(2, 'Ton assiette', ok ? macroBar(t) : '', `${prot}C'est la zone où la prise de muscle est maximale${pills(5, 6)}. En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre${pills(7)}. Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme${pills(8)}, les glucides complètent le reste${pills(9)}.`)}
-    ${sec(3, 'Des écarts mesurés', programScale(phase.pct), `Un surplus de 5 à 10 % pour prendre du muscle en limitant le gras${pills(10)}, un déficit de 10 % pour la recomposition${pills(11)}, et de 10 à 20 % pour perdre du gras, autour de 0,5 % du poids par semaine pour préserver le muscle${pills(12)}.`)}
-    ${sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), `Un kilo de variation correspond à environ 7 700 kcal${pills(13)}. Hébé compare ce que prévoit ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau${pills(14)}. La correction est lissée et ne dépasse jamais 15 %.`)}
-    ${sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', `Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme, les planchers habituels des régimes sans suivi médical${pills(15)}.`)}
-    ${sec(6, 'Des aliments bien mesurés', sciFridge(), `Les valeurs nutritionnelles viennent des tables Ciqual de l'Anses${pills(16)} et de la base de l'USDA${pills(17)}. Les plats préparés se gardent 3 jours au frigo, le reste passe par le congélateur${pills(18)}.`)}
+    ${sec(1, 'Deux formules plutôt qu\'une', '', `Ta dépense au repos est la moyenne de Harris-Benedict révisée, qui part du poids, de la taille et de l'âge${pills(1)}, et de Katch-McArdle, qui part de la masse maigre${pills(2)}. Elle reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons${pills(3, 4)}. Aucune formule n'est exacte pour tout le monde${pills(5)} : c'est pour ça que Hébé se recale ensuite sur tes pesées. Le coefficient d'activité, de 1,4 à 1,8, suit les niveaux d'activité de la FAO et de l'OMS${pills(6)}.`)}
+    ${sec(2, 'Ton assiette', ok ? macroBar(t) : '', `${prot}La prise de muscle plafonne autour de 1,6 g par kg de poids${pills(7, 8)}, et les recommandations vont de 1,4 à 2,0 g${pills(9)}. Hébé part de la masse maigre, pour ne pas gonfler les besoins quand la masse grasse est élevée. En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre${pills(10)}. Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme${pills(11)}, et les glucides complètent le reste${pills(12)}.`)}
+    ${sec(3, 'Des écarts mesurés', programScale(phase.pct), `Un surplus de 5 à 10 % pour prendre du muscle${pills(13)} : au-delà, on prend surtout du gras${pills(14)}. Un déficit de 10 % pour la recomposition${pills(15)}, et de 10 à 20 % pour perdre du gras. Le rythme visé, de 0,5 à 0,7 % du poids par semaine, préserve le muscle${pills(16, 17)}, alors que les gros déficits freinent la masse maigre${pills(18)}.`)}
+    ${sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), `Un kilo de variation correspond à environ 7 700 kcal${pills(19)}, mais cette règle fixe surestime la perte sur la durée${pills(20, 21)}. Hébé ne prédit donc pas, il mesure : il compare ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau. La correction est lissée et ne dépasse jamais 15 %.`)}
+    ${sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', `Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence${pills(22)}.`)}
+    ${sec(6, 'Des aliments bien mesurés', sciFridge(), `Les valeurs nutritionnelles viennent des tables Ciqual de l'Anses${pills(23)} et de la base de l'USDA${pills(24)}. Les plats préparés se gardent 3 jours au frigo, sous les 3 à 4 jours conseillés, et le reste de la semaine passe par le congélateur${pills(25)}.`)}
     <p class="sci-note">Ces calculs donnent un point de départ fiable pour un adulte en bonne santé. Ils ne remplacent pas l'avis d'un médecin ou d'un diététicien, notamment en cas de grossesse, de maladie ou de troubles alimentaires.</p>
     <details class="sci-src"><summary>Voir les ${SOURCES.length} sources</summary>
       <ol>${SOURCES.map((x, i) => `<li id="sci-s${i + 1}">${srcHtml(x)}</li>`).join('')}</ol>

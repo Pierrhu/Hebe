@@ -14,7 +14,7 @@ const KEY = 'hebe_household';
 
 // Niveaux d'activité : le niveau 2 vaut exactement l'ancien coefficient fixe (1,5).
 export const ACTIVITY = [
-  { level: 1, coef: 1.35, label: 'Plutôt calme', desc: 'Travail assis, peu ou pas de sport.' },
+  { level: 1, coef: 1.4,  label: 'Plutôt calme', desc: 'Travail assis, peu ou pas de sport.' },
   { level: 2, coef: 1.5,  label: 'Actif',        desc: 'Travail assis, sport trois à quatre fois par semaine.' },
   { level: 3, coef: 1.65, label: 'Très actif',   desc: 'Travail debout, ou sport presque tous les jours.' },
   { level: 4, coef: 1.8,  label: 'Intense',      desc: 'Travail physique et sport régulier.' },
