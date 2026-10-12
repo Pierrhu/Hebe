@@ -8,34 +8,49 @@ import { computeBase, computeDetails, getProtocol } from '../data/calculator.js'
 import { getTargetsFor } from '../data/user.js';
 import { getWeights } from './weight.js';
 
-// [référence, lien DOI ou page officielle] — vérifiées une à une (Europe PMC, Crossref, sites officiels), octobre 2026
-const SOURCES = [
-  ['Roza AM, Shizgal HM. The Harris Benedict equation reevaluated: resting energy requirements and the body cell mass. Am J Clin Nutr. 1984;40(1):168-182.', 'https://doi.org/10.1093/ajcn/40.1.168'],
-  ['McArdle WD, Katch FI, Katch VL. Exercise Physiology: Nutrition, Energy, and Human Performance. 9e éd. Wolters Kluwer. 2023.', ''],
-  ['Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.', 'https://doi.org/10.1093/ajcn/51.2.241'],
-  ['Frankenfield D, Roth-Yousey L, Compher C. Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review. J Am Diet Assoc. 2005;105(5):775-789.', 'https://doi.org/10.1016/j.jada.2005.02.005'],
-  ["O'Neill JER, Corish CA, Horner K. Accuracy of resting metabolic rate prediction equations in athletes: a systematic review with meta-analysis. Sports Med. 2023;53(12):2373-2398.", 'https://doi.org/10.1007/s40279-023-01896-z'],
-  ['FAO, OMS, UNU. Human energy requirements. Report of a Joint FAO/WHO/UNU Expert Consultation. FAO Food and Nutrition Technical Report Series 1. Rome. 2004.', 'https://www.fao.org/4/y5686e/y5686e00.htm'],
-  ['Morton RW, Murphy KT, McKellar SR, et al. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults. Br J Sports Med. 2018;52(6):376-384.', 'https://doi.org/10.1136/bjsports-2017-097608'],
-  ['Nunes EA, Colenso-Semple L, McKellar SR, et al. Systematic review and meta-analysis of protein intake to support muscle mass and function in healthy adults. J Cachexia Sarcopenia Muscle. 2022;13(2):795-810.', 'https://doi.org/10.1002/jcsm.12922'],
-  ['Jäger R, Kerksick CM, Campbell BI, et al. International Society of Sports Nutrition Position Stand: protein and exercise. J Int Soc Sports Nutr. 2017;14:20.', 'https://doi.org/10.1186/s12970-017-0177-8'],
-  ['Helms ER, Zinn C, Rowlands DS, Brown SR. A systematic review of dietary protein during caloric restriction in resistance trained lean athletes: a case for higher intakes. Int J Sport Nutr Exerc Metab. 2014;24(2):127-138.', 'https://doi.org/10.1123/ijsnem.2013-0054'],
-  ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for fats, including saturated fatty acids, polyunsaturated fatty acids, monounsaturated fatty acids, trans fatty acids, and cholesterol. EFSA J. 2010;8(3):1461.', 'https://doi.org/10.2903/j.efsa.2010.1461'],
-  ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for carbohydrates and dietary fibre. EFSA J. 2010;8(3):1462.', 'https://doi.org/10.2903/j.efsa.2010.1462'],
-  ['Iraki J, Fitschen P, Espinar S, Helms E. Nutrition recommendations for bodybuilders in the off-season: a narrative review. Sports (Basel). 2019;7(7):154.', 'https://doi.org/10.3390/sports7070154'],
-  ['Helms ER, Spence AJ, Sousa C, et al. Effect of small and large energy surpluses on strength, muscle, and skinfold thickness in resistance-trained individuals: a parallel groups design. Sports Med Open. 2023;9(1):102.', 'https://doi.org/10.1186/s40798-023-00651-y'],
-  ['Barakat C, Pearson J, Escalante G, Campbell B, De Souza EO. Body recomposition: can trained individuals build muscle and lose fat at the same time? Strength Cond J. 2020;42(5):7-21.', 'https://doi.org/10.1519/SSC.0000000000000584'],
-  ['Helms ER, Aragon AA, Fitschen PJ. Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation. J Int Soc Sports Nutr. 2014;11:20.', 'https://doi.org/10.1186/1550-2783-11-20'],
-  ['Garthe I, Raastad T, Refsnes PE, Koivisto A, Sundgot-Borgen J. Effect of two different weight-loss rates on body composition and strength and power-related performance in elite athletes. Int J Sport Nutr Exerc Metab. 2011;21(2):97-104.', 'https://doi.org/10.1123/ijsnem.21.2.97'],
-  ['Murphy C, Koehler K. Energy deficiency impairs resistance training gains in lean mass but not strength: a meta-analysis and meta-regression. Scand J Med Sci Sports. 2022;32(1):125-137.', 'https://doi.org/10.1111/sms.14075'],
-  ['Wishnofsky M. Caloric equivalents of gained or lost weight. Am J Clin Nutr. 1958;6(5):542-546.', 'https://doi.org/10.1093/ajcn/6.5.542'],
-  ['Thomas DM, Martin CK, Lettieri S, et al. Can a weight loss of one pound a week be achieved with a 3500-kcal deficit? Commentary on a commonly accepted rule. Int J Obes (Lond). 2013;37(12):1611-1613.', 'https://doi.org/10.1038/ijo.2013.51'],
-  ['Hall KD, Sacks G, Chandramohan D, et al. Quantification of the effect of energy imbalance on bodyweight. Lancet. 2011;378(9793):826-837.', 'https://doi.org/10.1016/S0140-6736(11)60812-X'],
-  ['Jensen MD, Ryan DH, Apovian CM, et al. 2013 AHA/ACC/TOS guideline for the management of overweight and obesity in adults. Circulation. 2014;129(25 Suppl 2):S102-S138.', 'https://doi.org/10.1161/01.cir.0000437739.71477.ee'],
-  ['Anses. Table de composition nutritionnelle des aliments Ciqual.', 'https://ciqual.anses.fr/'],
-  ['USDA, Agricultural Research Service. FoodData Central.', 'https://fdc.nal.usda.gov/'],
-  ['USDA FSIS. Leftovers and Food Safety.', 'https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/leftovers-and-food-safety'],
-];
+// Références vérifiées une à une (Europe PMC, Crossref, sites officiels), octobre 2026.
+// Elles sont numérotées dans l'ordre où la fiche les cite.
+const SRC = {
+  roza: ['Roza AM, Shizgal HM. The Harris Benedict equation reevaluated: resting energy requirements and the body cell mass. Am J Clin Nutr. 1984;40(1):168-182.', 'https://doi.org/10.1093/ajcn/40.1.168'],
+  mcardle: ['McArdle WD, Katch FI, Katch VL. Exercise Physiology: Nutrition, Energy, and Human Performance. 9e éd. Wolters Kluwer. 2023.', ''],
+  mifflin: ['Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.', 'https://doi.org/10.1093/ajcn/51.2.241'],
+  frankenfield: ['Frankenfield D, Roth-Yousey L, Compher C. Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review. J Am Diet Assoc. 2005;105(5):775-789.', 'https://doi.org/10.1016/j.jada.2005.02.005'],
+  oneill: ["O'Neill JER, Corish CA, Horner K. Accuracy of resting metabolic rate prediction equations in athletes: a systematic review with meta-analysis. Sports Med. 2023;53(12):2373-2398.", 'https://doi.org/10.1007/s40279-023-01896-z'],
+  fao: ['FAO, OMS, UNU. Human energy requirements. Report of a Joint FAO/WHO/UNU Expert Consultation. FAO Food and Nutrition Technical Report Series 1. Rome. 2004.', 'https://www.fao.org/4/y5686e/y5686e00.htm'],
+  morton: ['Morton RW, Murphy KT, McKellar SR, et al. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults. Br J Sports Med. 2018;52(6):376-384.', 'https://doi.org/10.1136/bjsports-2017-097608'],
+  nunes: ['Nunes EA, Colenso-Semple L, McKellar SR, et al. Systematic review and meta-analysis of protein intake to support muscle mass and function in healthy adults. J Cachexia Sarcopenia Muscle. 2022;13(2):795-810.', 'https://doi.org/10.1002/jcsm.12922'],
+  jager: ['Jäger R, Kerksick CM, Campbell BI, et al. International Society of Sports Nutrition Position Stand: protein and exercise. J Int Soc Sports Nutr. 2017;14:20.', 'https://doi.org/10.1186/s12970-017-0177-8'],
+  helms14a: ['Helms ER, Zinn C, Rowlands DS, Brown SR. A systematic review of dietary protein during caloric restriction in resistance trained lean athletes: a case for higher intakes. Int J Sport Nutr Exerc Metab. 2014;24(2):127-138.', 'https://doi.org/10.1123/ijsnem.2013-0054'],
+  efsaF: ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for fats, including saturated fatty acids, polyunsaturated fatty acids, monounsaturated fatty acids, trans fatty acids, and cholesterol. EFSA J. 2010;8(3):1461.', 'https://doi.org/10.2903/j.efsa.2010.1461'],
+  efsaC: ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for carbohydrates and dietary fibre. EFSA J. 2010;8(3):1462.', 'https://doi.org/10.2903/j.efsa.2010.1462'],
+  iraki: ['Iraki J, Fitschen P, Espinar S, Helms E. Nutrition recommendations for bodybuilders in the off-season: a narrative review. Sports (Basel). 2019;7(7):154.', 'https://doi.org/10.3390/sports7070154'],
+  helms23: ['Helms ER, Spence AJ, Sousa C, et al. Effect of small and large energy surpluses on strength, muscle, and skinfold thickness in resistance-trained individuals: a parallel groups design. Sports Med Open. 2023;9(1):102.', 'https://doi.org/10.1186/s40798-023-00651-y'],
+  barakat: ['Barakat C, Pearson J, Escalante G, Campbell B, De Souza EO. Body recomposition: can trained individuals build muscle and lose fat at the same time? Strength Cond J. 2020;42(5):7-21.', 'https://doi.org/10.1519/SSC.0000000000000584'],
+  helms14b: ['Helms ER, Aragon AA, Fitschen PJ. Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation. J Int Soc Sports Nutr. 2014;11:20.', 'https://doi.org/10.1186/1550-2783-11-20'],
+  garthe: ['Garthe I, Raastad T, Refsnes PE, Koivisto A, Sundgot-Borgen J. Effect of two different weight-loss rates on body composition and strength and power-related performance in elite athletes. Int J Sport Nutr Exerc Metab. 2011;21(2):97-104.', 'https://doi.org/10.1123/ijsnem.21.2.97'],
+  murphy: ['Murphy C, Koehler K. Energy deficiency impairs resistance training gains in lean mass but not strength: a meta-analysis and meta-regression. Scand J Med Sci Sports. 2022;32(1):125-137.', 'https://doi.org/10.1111/sms.14075'],
+  wish: ['Wishnofsky M. Caloric equivalents of gained or lost weight. Am J Clin Nutr. 1958;6(5):542-546.', 'https://doi.org/10.1093/ajcn/6.5.542'],
+  thomas: ['Thomas DM, Martin CK, Lettieri S, et al. Can a weight loss of one pound a week be achieved with a 3500-kcal deficit? Commentary on a commonly accepted rule. Int J Obes (Lond). 2013;37(12):1611-1613.', 'https://doi.org/10.1038/ijo.2013.51'],
+  hall: ['Hall KD, Sacks G, Chandramohan D, et al. Quantification of the effect of energy imbalance on bodyweight. Lancet. 2011;378(9793):826-837.', 'https://doi.org/10.1016/S0140-6736(11)60812-X'],
+  jensen: ['Jensen MD, Ryan DH, Apovian CM, et al. 2013 AHA/ACC/TOS guideline for the management of overweight and obesity in adults. Circulation. 2014;129(25 Suppl 2):S102-S138.', 'https://doi.org/10.1161/01.cir.0000437739.71477.ee'],
+  ciqual: ['Anses. Table de composition nutritionnelle des aliments Ciqual.', 'https://ciqual.anses.fr/'],
+  fdc: ['USDA, Agricultural Research Service. FoodData Central.', 'https://fdc.nal.usda.gov/'],
+  fsis: ['USDA FSIS. Leftovers and Food Safety.', 'https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/leftovers-and-food-safety'],
+  cunningham: ['Cunningham JJ. Body composition as a determinant of energy expenditure: a synthetic review and a proposed general prediction equation. Am J Clin Nutr. 1991;54(6):963-969.', 'https://doi.org/10.1093/ajcn/54.6.963'],
+  liu: ['Liu D, Huang Y, Huang C, et al. Calorie restriction with or without time-restricted eating in weight loss. N Engl J Med. 2022;386(16):1495-1504.', 'https://doi.org/10.1056/NEJMoa2114833'],
+  semnani: ['Semnani-Azad Z, Khan TA, Chiavaroli L, et al. Intermittent fasting strategies and their effects on body weight and other cardiometabolic risk factors: systematic review and network meta-analysis of randomised clinical trials. BMJ. 2025;389:e082007.', 'https://doi.org/10.1136/bmj-2024-082007'],
+  ashtary: ['Ashtary-Larky D, Bagheri R, Tinsley GM, et al. Effects of intermittent fasting combined with resistance training on body composition: a systematic review and meta-analysis. Physiol Behav. 2021;237:113453.', 'https://doi.org/10.1016/j.physbeh.2021.113453'],
+  tinsley19: ['Tinsley GM, Moore ML, Graybeal AJ, et al. Time-restricted feeding plus resistance training in active females: a randomized trial. Am J Clin Nutr. 2019;110(3):628-640.', 'https://doi.org/10.1093/ajcn/nqz126'],
+  lowe: ['Lowe DA, Wu N, Rohdin-Bibby L, et al. Effects of time-restricted eating on weight loss and other metabolic parameters in women and men with overweight and obesity: the TREAT randomized clinical trial. JAMA Intern Med. 2020;180(11):1491-1499.', 'https://doi.org/10.1001/jamainternmed.2020.4153'],
+  schoenfeld: ['Schoenfeld BJ, Aragon AA. How much protein can the body use in a single meal for muscle-building? Implications for daily protein distribution. J Int Soc Sports Nutr. 2018;15:10.', 'https://doi.org/10.1186/s12970-018-0215-1'],
+  foodsafety: ['U.S. Department of Health and Human Services. 4 Steps to Food Safety. FoodSafety.gov. 2023.', 'https://www.foodsafety.gov/keep-food-safe/4-steps-to-food-safety'],
+  ansesBc: ["Anses. Qu'est-ce que Bacillus cereus et comment s'en prémunir ? 2026.", 'https://www.anses.fr/fr/content/qu-est-ce-que-bacillus-cereus-et-comment-s-en-premunir'],
+  ansesFiche: ['Anses. Fiche de description de danger biologique transmissible par les aliments : Bacillus cereus. Mise à jour 2021.', 'https://www.anses.fr/system/files/BIORISK2016SA0075Fi.pdf'],
+  siedler: ['Siedler MR, Rodriguez C, Stratton MT, et al. Assessing the reliability and cross-sectional and longitudinal validity of fifteen bioelectrical impedance analysis devices. Br J Nutr. 2023;130(5):827-840.', 'https://doi.org/10.1017/S0007114522003749'],
+  tinsley21: ['Tinsley GM. Five-component model validation of reference, laboratory and field methods of body composition assessment. Br J Nutr. 2021;125(11):1246-1259.', 'https://doi.org/10.1017/S0007114520003578'],
+  blue: ['Blue MNM, Hirsch KR, Brewer GJ, et al. The validation of contemporary body composition methods in various races and ethnicities. Br J Nutr. 2022;128(12):2387-2397.', 'https://doi.org/10.1017/S0007114522000368'],
+  kyle: ['Kyle UG, Bosaeus I, De Lorenzo AD, et al. Bioelectrical impedance analysis, part I: review of principles and methods. Clin Nutr. 2004;23(5):1226-1243.', 'https://doi.org/10.1016/j.clnu.2004.06.004'],
+};
 
 const srcHtml = ([t, url]) => {
   const m = t.match(/^(.*?\. )(.*?\. )(.*)$/);
@@ -45,7 +60,10 @@ const srcHtml = ([t, url]) => {
 };
 const nf = v => Math.round(v).toLocaleString('fr-FR');
 const dec = (v, d = 1) => v.toFixed(d).replace('.', ',');
-const pills = (...n) => n.map(x => `<button class="sci-ref" data-ref="${x}" aria-label="Source ${x}">${x}</button>`).join('');
+// numéros attribués à la première citation ; ORDER garde l'ordre pour la liste en bas
+let ORDER = [];
+const num = k => { if (!SRC[k]) throw new Error('source inconnue ' + k); let i = ORDER.indexOf(k); if (i < 0) { ORDER.push(k); i = ORDER.length - 1; } return i + 1; };
+const pills = (...ks) => ks.map(k => { const n = num(k); return `<button class="sci-ref" data-ref="${n}" aria-label="Source ${n}">${n}</button>`; }).join('');
 
 // ── petites planches dessinées (SVG), à l'encre vert sapin et terracotta sur papier ──
 const INK = '#3E5A48', TERRA = '#C8704F', OCHRE = '#B79B5E', FAINT = '#DCCBAA';
@@ -118,14 +136,49 @@ function floorBar(kcal, floor) {
   </svg>`;
 }
 
-// conservation : trois jours au frigo, puis le congélateur
-function sciFridge() {
-  const d = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-  return `<svg viewBox="0 0 320 64" class="sci-svg" aria-hidden="true">
-    ${d.map((x, i) => { const cold = i >= 3, X = 14 + i * 42; return `<rect x="${X}" y="10" width="36" height="30" rx="7" fill="${cold ? '#E3EEF8' : '#DCE8DF'}" stroke="${cold ? '#6F9FC9' : INK}" stroke-width="1"/>
-      <text x="${X + 18}" y="30" text-anchor="middle" class="sv-l">${x}</text>`; }).join('')}
-    <text x="${14 + 1.5 * 42 + 18}" y="56" text-anchor="middle" class="sv-k">au frigo</text>
-    <text x="${14 + 4.5 * 42 + 18}" y="56" text-anchor="middle" class="sv-t">sorti du congélateur la veille</text>
+// jeûne 16:8 : une journée de 24 h, fenêtre de 12 h à 20 h, comparée à la formule classique
+function fastBar() {
+  const X = h => 16 + h / 24 * 288;
+  const dots = (hs, y, col) => hs.map(([h, r]) => `<circle cx="${X(h)}" cy="${y}" r="${r}" fill="${col}"/>`).join('');
+  return `<svg viewBox="0 0 320 104" class="sci-svg" aria-hidden="true">
+    <text x="16" y="14" class="sv-l">jeûne</text>
+    <rect x="${X(0)}" y="20" width="${X(24) - X(0)}" height="16" rx="8" fill="#EDE5D5"/>
+    <rect x="${X(12)}" y="20" width="${X(20) - X(12)}" height="16" rx="8" fill="#9DB7A3"/>
+    ${dots([[12, 5.5], [16, 4], [20, 5.5]], 28, INK)}
+    <text x="${(X(0) + X(12)) / 2}" y="32" text-anchor="middle" class="sv-t">16 h sans manger</text>
+    <text x="16" y="56" class="sv-l">classique</text>
+    <rect x="${X(0)}" y="62" width="${X(24) - X(0)}" height="10" rx="5" fill="#EDE5D5"/>
+    <rect x="${X(8)}" y="62" width="${X(20) - X(8)}" height="10" rx="5" fill="#C9D9CD"/>
+    ${dots([[8, 4], [12, 4.5], [16, 3.5], [20, 4.5]], 67, INK)}
+    ${[0, 6, 12, 18, 24].map(h => `<text x="${X(h)}" y="92" text-anchor="middle" class="sv-t">${h} h</text>`).join('')}
+  </svg>`;
+}
+
+// semaine de boîtes : frigo du dimanche au mercredi, congélateur ensuite, réchauffage à 74 °C
+function batchWeek() {
+  const d = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+  return `<svg viewBox="0 0 320 96" class="sci-svg" aria-hidden="true">
+    ${d.map((x, i) => { const cold = i >= 4, X = 8 + i * 40; return `<rect x="${X}" y="12" width="34" height="30" rx="7" fill="${cold ? '#E3EEF8' : '#DCE8DF'}" stroke="${cold ? '#6F9FC9' : INK}" stroke-width="1"/>
+      <text x="${X + 17}" y="32" text-anchor="middle" class="sv-l">${x}</text>`; }).join('')}
+    <text x="${8 + 1.5 * 40 + 17}" y="60" text-anchor="middle" class="sv-k">frigo, 4 °C max</text>
+    <text x="${8 + 5 * 40 + 17}" y="60" text-anchor="middle" class="sv-t">congélateur, −18 °C</text>
+    <text x="${8 + 5 * 40 + 17}" y="90" text-anchor="middle" class="sv-t">décongelé la veille au frigo</text>
+    <g transform="translate(14 64)"><rect x="0" y="0" width="7" height="22" rx="3.5" fill="none" stroke="${TERRA}" stroke-width="1.3"/><circle cx="3.5" cy="24" r="5" fill="${TERRA}"/><rect x="2" y="7" width="3" height="16" fill="${TERRA}"/></g>
+    <text x="30" y="84" class="sv-k">réchauffé à 74 °C</text>
+  </svg>`;
+}
+
+// entonnoir : une erreur sur la masse grasse se réduit à chaque étape
+function fatFunnel(kg) {
+  const lm = 0.05 * kg, km = lm * 21.6, avg = km / 2;
+  const tier = (y, w, txt, sub) => `<rect x="${160 - w / 2}" y="${y}" width="${w}" height="22" rx="6" fill="#F1E6D2" stroke="${OCHRE}" stroke-width="1"/>
+    <text x="160" y="${y + 15}" text-anchor="middle" class="sv-in dk">${txt}</text><text x="${160 + w / 2 + 6}" y="${y + 15}" class="sv-t">${sub}</text>`;
+  return `<svg viewBox="0 0 320 112" class="sci-svg" aria-hidden="true">
+    ${tier(4, 150, '± 5 points de gras', '')}
+    ${tier(34, 120, `± ${dec(lm)} kg`, 'masse maigre')}
+    ${tier(64, 90, `± ${Math.round(km)} kcal`, 'Katch-McArdle')}
+    <rect x="${160 - 35}" y="94" width="70" height="18" rx="6" fill="#9DB7A3"/>
+    <text x="160" y="107" text-anchor="middle" class="sv-in dk">± ${Math.round(avg)} kcal</text><text x="${160 + 41}" y="107" class="sv-k">moyenne</text>
   </svg>`;
 }
 
@@ -161,66 +214,76 @@ export function openScienceSheet() {
       <p class="sl-note">${m.targets ? 'Tes calories sont réglées à la main : Hébé affiche ici ton réglage. ' : ''}Chaque ligne est expliquée et sourcée ci-dessous.</p>
     </div>` : '';
 
-  // v241 : chaque planche = une phrase à retenir, puis des points courts, chacun avec ses sources
-  const nb = x => x.replace(/(\d) (\d{3})/g, '$1\u00a0$2').replace(/(\d) (kcal|g|kg|jours|%)/g, '$1\u00a0$2').replace(/ ([%:;?!])/g, '\u00a0$1');
+  // v241-v242 : chaque planche = une phrase à retenir, puis des points courts regroupés, chacun avec ses sources
+  const nb = x => x.replace(/(\d) (\d{3})/g, '$1\u00a0$2').replace(/(\d) (kcal|g|kg|h|jours|%|°C|points)/g, '$1\u00a0$2').replace(/ ([%:;?!])/g, '\u00a0$1');
   const sec = (n, title, art, lede, points) => `<section class="sci-card">
       <h3><span class="sci-n">${n}</span>${title}</h3>
       <p class="sci-lede">${nb(lede)}</p>
       ${art ? `<div class="sci-art">${art}</div>` : ''}
       <ul class="sci-pts">${points.map(([x, refs]) => `<li>${nb(x)}${refs ? pills(...refs) : ''}</li>`).join('')}</ul>
     </section>`;
-  const yourProt = ok ? `Pour toi : ${t.protein} g par jour, soit ${dec(t.protein / b.leanMass)} g par kg de masse maigre (ton poids sans le gras) et ${dec(t.protein / m.weight)} g par kg de poids.` : '';
+  const kg = ok ? m.weight : 95;
+  const lmErr = 0.05 * kg, kmErr = lmErr * 21.6;
+  ORDER = [];
+  const cards = [
+    sec(1, 'Deux formules plutôt qu\'une', '', "Ta dépense au repos, c'est l'énergie que ton corps brûle sans bouger. Hébé l'estime avec deux formules et garde la moyenne.", [
+      ["La première, Harris-Benedict révisée, part de ton poids, de ta taille et de ton âge ; la seconde, Katch-McArdle, part de ta masse maigre, c'est-à-dire ton poids sans le gras.", ['roza', 'mcardle', 'cunningham']],
+      ["La moyenne limite l'erreur de chacune et reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons. Aucune formule n'est exacte pour tout le monde : c'est pour ça que Hébé se recale ensuite sur tes pesées.", ['mifflin', 'frankenfield', 'oneill']],
+      ["Pour passer à la dépense de la journée, on multiplie par un coefficient d'activité de 1,4 à 1,8, selon les niveaux de la FAO et de l'OMS.", ['fao']],
+    ]),
+    sec(2, 'Ton assiette', ok ? macroBar(t) : '', "Assez de protéines pour le muscle, assez de lipides pour les hormones, et les glucides pour l'énergie.", [
+      ...(ok ? [[`Pour toi : ${t.protein} g de protéines par jour, soit ${dec(t.protein / b.leanMass)} g de protéines par kg de masse maigre et ${dec(t.protein / m.weight)} g de protéines par kg de poids.`, null]] : []),
+      ["La prise de muscle plafonne autour de 1,6 g de protéines par kg de poids, et les recommandations vont de 1,4 à 2,0 g de protéines par kg de poids. Hébé part de la masse maigre, pour ne pas gonfler les besoins quand la masse grasse est élevée.", ['morton', 'nunes', 'jager']],
+      ["En perte de gras, les profils déjà secs montent à au moins 2,3 g de protéines par kg de masse maigre, pour protéger leurs muscles.", ['helms14a']],
+      ["Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme, et les glucides complètent le reste.", ['efsaF', 'efsaC']],
+    ]),
+    sec(3, 'Des écarts mesurés', programScale(phase.pct), "Chaque programme s'écarte un peu de ta dépense, jamais beaucoup : c'est ce qui protège le muscle.", [
+      ["Prise de muscle : un surplus de 5 à 10 %. Au-delà, on prend surtout du gras.", ['iraki', 'helms23']],
+      ["Recomposition : un déficit de 10 %.", ['barakat']],
+      ["Perte de gras : un déficit de 10 à 20 %, pour perdre de 0,5 à 0,7 % de ton poids par semaine, le rythme qui préserve le muscle. Les gros déficits freinent la masse maigre.", ['helms14b', 'garthe', 'murphy']],
+    ]),
+    sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), "Hébé ne prédit pas ta perte, il la mesure sur tes pesées et ajuste tes calories.", [
+      ["Un kilo de variation correspond à environ 7 700 kcal, mais cette règle fixe surestime la perte sur la durée, car le corps s'adapte.", ['wish', 'thomas', 'hall']],
+      ["Hébé compare donc ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau. La correction est lissée et ne dépasse jamais 15 %.", null],
+    ]),
+    sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', "Quel que soit le programme, tes calories ne descendent jamais sous un minimum.", [
+      ["Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence.", ['jensen']],
+    ]),
+    sec(6, 'Ton taux de gras, sans stress', fatFunnel(kg), "Aucune méthode simple ne mesure ton taux de gras au point près : Hébé est conçue pour qu'une erreur de quelques points pèse peu.", [
+      ["Les balances et appareils d'impédance se trompent typiquement de 3 à 7,5 points selon le modèle. Les méthodes de laboratoire à plusieurs compartiments servent de référence, et la DXA s'en approche.", ['siedler', 'tinsley21', 'blue']],
+      ["Les silhouettes donnent une estimation à l'œil : un bon point de départ, pas une mesure. Ton taux sert à calculer ta masse maigre, donc ta dépense au repos et tes protéines.", ['cunningham']],
+      [`Exemple${ok ? ' pour toi' : ''} : à ${nf(kg)} kg, 5 points d'erreur décalent ta masse maigre de ${dec(lmErr)} kg et Katch-McArdle d'environ ${Math.round(kmErr)} kcal. La moyenne avec Harris-Benedict divise ce décalage par deux, à environ ${Math.round(kmErr / 2)} kcal, puis tes pesées le corrigent en deux à quatre semaines.`, null],
+    ]),
+    sec(7, 'Le jeûne 16:8', fastBar(), "Avec la formule jeûne, tu manges entre 12 h et 20 h : le moment de tes repas change, pas ce que tu manges dans la journée.", [
+      ["À calories égales, manger sur 8 heures fait perdre à peu près autant de poids et de gras que manger sur toute la journée.", ['liu', 'semnani']],
+      ["Si tu fais de la musculation, le jeûne ne semble freiner ni ta prise de muscle ni ta force, à condition de manger assez de protéines.", ['ashtary', 'tinsley19']],
+      ["Une étude sur exactement cette fenêtre de 12 h à 20 h, sans autre changement, a vu un peu plus de muscle perdu aux bras et aux jambes : c'est pour ça que Hébé garde tes protéines au même niveau dans les deux formules.", ['lowe']],
+      ["Le muscle se construit mieux quand les protéines sont réparties sur plusieurs repas, autour de 0,4 g de protéines par kg de poids à chaque repas.", ['schoenfeld']],
+    ]),
+    sec(8, 'Cuisiner une fois, manger sans risque', batchWeek(), "Bien refroidir, bien conserver et bien réchauffer tes boîtes suffit à garder ta cuisine du dimanche sûre toute la semaine.", [
+      ["Les plats vont au frigo dans les 2 heures après la cuisson, dans l'heure s'il fait plus de 32 °C. Pour le riz, Hébé est plus stricte et demande 1 heure.", ['fsis', 'foodsafety', 'ansesBc']],
+      ["Au frigo, à 4 °C ou moins, les plats se gardent 3 à 4 jours : Hébé s'arrête à 3. La suite de la semaine passe au congélateur, à −18 °C ou moins, et se décongèle la veille au frigo, la méthode la plus sûre.", ['fsis', 'foodsafety']],
+      ["Réchauffe jusqu'à 74 °C : couvre, remue à mi-temps et vérifie que c'est chaud partout, car le micro-ondes laisse des zones froides.", ['fsis', 'foodsafety']],
+      ["Le riz cuit peut contenir des spores de Bacillus cereus qui survivent à la cuisson. S'il reste tiède, elles produisent une toxine que le réchauffage ne détruit pas : d'où le refroidissement rapide.", ['ansesBc', 'ansesFiche']],
+    ]),
+    sec(9, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
+      ["Les tables Ciqual de l'Anses, complétées par la base FoodData Central de l'USDA.", ['ciqual', 'fdc']],
+    ]),
+  ].join('');
   openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad sci">
     <div class="sci-label">
       <div class="sci-label-in">
         <span class="sci-kick">Hébé, notice</span>
         <div class="sci-title">Comment Hébé calcule</div>
         <p class="sci-sub">Tous les chiffres de l'app viennent de règles publiées et reconnues. Voici les tiens, ligne par ligne.</p>
-        <span class="sci-stamp">${SOURCES.length} sources</span>
+        <span class="sci-stamp">${ORDER.length} sources</span>
       </div>
     </div>
     ${ledger}
-    ${sec(1, 'Deux formules plutôt qu\'une', '', "Ta dépense au repos, c'est l'énergie que ton corps brûle sans bouger. Hébé l'estime avec deux formules et garde la moyenne.", [
-      ["La première, Harris-Benedict révisée, part de ton poids, de ta taille et de ton âge.", [1]],
-      ["La seconde, Katch-McArdle, part de ta masse maigre, c'est-à-dire ton poids sans le gras.", [2]],
-      ["La moyenne limite l'erreur de chacune, surtout quand la masse grasse est estimée, et reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons.", [3, 4]],
-      ["Aucune formule n'est exacte pour tout le monde : c'est pour ça que Hébé se recale ensuite sur tes pesées.", [5]],
-      ["Pour passer à la dépense de la journée, on multiplie par un coefficient d'activité de 1,4 à 1,8, selon les niveaux de la FAO et de l'OMS.", [6]],
-    ])}
-    ${sec(2, 'Ton assiette', ok ? macroBar(t) : '', "Assez de protéines pour le muscle, assez de lipides pour les hormones, et les glucides pour l'énergie.", [
-      ...(yourProt ? [[yourProt, null]] : []),
-      ["La prise de muscle plafonne autour de 1,6 g de protéines par kg de poids.", [7, 8]],
-      ["Les recommandations vont de 1,4 à 2,0 g par kg.", [9]],
-      ["Hébé part de la masse maigre, pour ne pas gonfler les besoins quand la masse grasse est élevée.", null],
-      ["En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre, pour protéger leurs muscles.", [10]],
-      ["Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme.", [11]],
-      ["Les glucides complètent le reste.", [12]],
-    ])}
-    ${sec(3, 'Des écarts mesurés', programScale(phase.pct), "Chaque programme s'écarte un peu de ta dépense, jamais beaucoup : c'est ce qui protège le muscle.", [
-      ["Prise de muscle : un surplus de 5 à 10 %.", [13]],
-      ["Au-delà, on prend surtout du gras.", [14]],
-      ["Recomposition : un déficit de 10 %.", [15]],
-      ["Perte de gras : un déficit de 10 à 20 %, pour perdre de 0,5 à 0,7 % de ton poids par semaine, le rythme qui préserve le muscle.", [16, 17]],
-      ["Les gros déficits freinent la masse maigre.", [18]],
-    ])}
-    ${sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), "Hébé ne prédit pas ta perte, il la mesure sur tes pesées et ajuste tes calories.", [
-      ["Un kilo de variation correspond à environ 7 700 kcal.", [19]],
-      ["Mais cette règle fixe surestime la perte sur la durée : le corps s'adapte.", [20, 21]],
-      ["Hébé compare donc ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau.", null],
-      ["La correction est lissée et ne dépasse jamais 15 %.", null],
-    ])}
-    ${sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', "Quel que soit le programme, tes calories ne descendent jamais sous un minimum.", [
-      ["Jamais moins que ta dépense au repos.", null],
-      ["Jamais moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence.", [22]],
-    ])}
-    ${sec(6, 'Des aliments bien mesurés', sciFridge(), "Des valeurs nutritionnelles officielles, et des boîtes qui se gardent en toute sécurité.", [
-      ["Les valeurs nutritionnelles viennent des tables Ciqual de l'Anses.", [23]],
-      ["Elles sont complétées par la base de l'USDA.", [24]],
-      ["Les plats préparés se gardent 3 jours au frigo, sous les 3 à 4 jours conseillés. Le reste de la semaine passe par le congélateur.", [25]],
-    ])}
+    ${cards}
     <p class="sci-note">Ces calculs donnent un point de départ fiable pour un adulte en bonne santé. Ils ne remplacent pas l'avis d'un médecin ou d'un diététicien, notamment en cas de grossesse, de maladie ou de troubles alimentaires.</p>
-    <details class="sci-src"><summary>Voir les ${SOURCES.length} sources</summary>
-      <ol>${SOURCES.map((x, i) => `<li id="sci-s${i + 1}">${srcHtml(x)}</li>`).join('')}</ol>
+    <details class="sci-src"><summary>Voir les ${ORDER.length} sources</summary>
+      <ol>${ORDER.map((k, i) => `<li id="sci-s${i + 1}">${srcHtml(SRC[k])}</li>`).join('')}</ol>
     </details>
     <button class="hb-btn hb-btn-primary sci-close">Fermer</button>
   </div>`);
