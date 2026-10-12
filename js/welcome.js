@@ -78,7 +78,14 @@ export function renderWelcome(onDone) {
     const chs = [...new Set(counted.map(st => CHAPTER[st.type]))];
     const curCh = CHAPTER[cur().type];
     return `<div class="wl-progress" aria-label="Étape ${k + 1} sur ${counted.length}, ${CHAPTER_NAMES[curCh]}">
-      ${chs.map(c => `<span class="wl-ch ${c === curCh ? 'cur' : c < curCh ? 'done' : ''}"${c === curCh ? ' aria-current="step"' : ''}>${CHAPTER_NAMES[c]}</span>`).join('')}</div>`;
+      ${chs.map(c => { const to = chapterStart(c); const ok = to >= 0 && to <= furthest && c !== curCh;
+        return `<button class="wl-ch ${c === curCh ? 'cur' : ok ? 'done' : ''}" data-ch="${c}"${c === curCh ? ' aria-current="step"' : ''}${ok ? '' : ' disabled'}>${CHAPTER_NAMES[c]}</button>`; }).join('')}</div>`;
+  };
+  // v230 : toucher un chapitre déjà atteint y ramène (première étape du chapitre, pour la personne en cours si possible)
+  let furthest = 0;
+  const chapterStart = c => {
+    const mine = steps.findIndex(st => CHAPTER[st.type] === c && st.mid && st.mid === cur().mid);
+    return mine >= 0 ? mine : steps.findIndex(st => CHAPTER[st.type] === c);
   };
   const top = () => `<div class="wl-top">${i > 0 ? WL_BACK : '<span class="wl-spacer"></span>'}${progress()}</div>`;
   // pastille de la personne concernée (foyer de deux)
@@ -222,6 +229,7 @@ export function renderWelcome(onDone) {
     // en haut seulement quand on change d'étape ; une réponse ne fait pas remonter la page
     window.scrollTo(0, shownStep === i ? keepY : 0);
     shownStep = i;
+    furthest = Math.max(furthest, i);
   }
   const fail = (msg, focusSel) => { error = msg; render(); if (focusSel) view.querySelector(focusSel)?.focus(); };
 
@@ -278,6 +286,11 @@ export function renderWelcome(onDone) {
     view.querySelector('[data-wl-restore]')?.addEventListener('click', () => wlFile?.click());
     wlFile?.addEventListener('change', async () => { const f = wlFile.files?.[0]; wlFile.value = ''; if (f) askRestore(await f.text()); });
     view.querySelector('.wl-back')?.addEventListener('click', () => { error = ''; i = Math.max(0, i - 1); render(); });
+    view.querySelectorAll('[data-ch]:not([disabled])').forEach(b => b.addEventListener('click', () => {
+      const to = chapterStart(+b.dataset.ch);
+      if (to < 0 || to > furthest) return;
+      clearTimeout(autoT); error = ''; i = to; render();
+    }));
     const m = member();
     // équipement
     view.querySelectorAll('[data-tool]').forEach(b => b.addEventListener('click', () => {
