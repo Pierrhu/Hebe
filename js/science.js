@@ -3,22 +3,23 @@
 
 import { openSheet, closeSheet } from './utils.js';
 
+// [titre, chiffre clé, légende du chiffre, texte]
 const SECTIONS = [
-  ['Ta dépense au repos',
+  ['Ta dépense au repos', '2', 'formules moyennées',
     "Hébé fait la moyenne de deux formules reconnues : Harris-Benedict révisée, qui part du poids, de la taille et de l'âge [1], et Katch-McArdle, qui part de la masse maigre [2]. La moyenne limite l'erreur de chacune, en particulier sur la masse grasse estimée. Le résultat reste proche de Mifflin-St Jeor, la formule de référence actuelle [3]."],
-  ['Ta dépense de la journée',
-    "Ta dépense au repos est multipliée par un coefficient d'activité de 1,35 à 1,8, dans les fourchettes de niveau d'activité de la FAO et de l'OMS [4]."],
-  ['Tes protéines',
-    "Environ 2 g par kg de masse maigre, soit 1,4 à 1,6 g par kg de poids : c'est la zone où la prise de muscle est maximale [5][6]. En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre, pour protéger leurs muscles [7]."],
-  ['Lipides et glucides',
-    "Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme, ce qui reste dans les repères européens de 20 à 35 % [8]. Les glucides complètent le reste et tombent le plus souvent entre 40 et 60 %, autour des repères de 45 à 60 % [9]."],
-  ['Les programmes',
-    "Un surplus de 5 à 10 % pour prendre du muscle en limitant le gras [10], un déficit de 10 % pour la recomposition [11], et de 10 à 20 % pour perdre du gras. Le rythme visé, environ 0,5 % du poids par semaine, reste dans la zone qui préserve le muscle [12]."],
-  ['L\'ajustement automatique',
-    "Un kilo de variation de poids correspond à environ 7 700 kcal [13]. Hébé compare ce que prévoit ton plan à l'évolution réelle de ton poids sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau [14]. La correction est lissée et ne dépasse jamais 15 %."],
-  ['Les garde-fous',
-    "Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme, les planchers habituels des régimes hypocaloriques sans suivi médical [15]."],
-  ['Les aliments',
+  ['Ta dépense de la journée', '×1,5', "pour une semaine active",
+    "Ta dépense au repos est multipliée par un coefficient d'activité de 1,35 à 1,8 selon ton quotidien, dans les fourchettes de niveau d'activité de la FAO et de l'OMS [4]."],
+  ['Tes protéines', '2 g', 'par kg de masse maigre',
+    "Soit 1,4 à 1,6 g par kg de poids : c'est la zone où la prise de muscle est maximale [5][6]. En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre, pour protéger leurs muscles [7]."],
+  ['Lipides et glucides', '20 %', 'de lipides au minimum',
+    "Jamais moins de 20 % des calories en lipides pour un homme, 25 % pour une femme, dans les repères européens de 20 à 35 % [8]. Les glucides complètent le reste et tombent le plus souvent entre 40 et 60 %, autour des repères de 45 à 60 % [9]."],
+  ['Les programmes', '0,5 %', 'du poids par semaine',
+    "Un surplus de 5 à 10 % pour prendre du muscle en limitant le gras [10], un déficit de 10 % pour la recomposition [11], et de 10 à 20 % pour perdre du gras. Le rythme visé reste dans la zone qui préserve le muscle [12]."],
+  ["L'ajustement automatique", '7 700', 'kcal pour un kilo',
+    "Hébé compare ce que prévoit ton plan à l'évolution réelle de ton poids sur deux à quatre semaines [13], en ignorant la première, où l'on perd surtout de l'eau [14]. La correction est lissée et ne dépasse jamais 15 %."],
+  ['Les garde-fous', '1 200', 'kcal minimum pour une femme',
+    "1 500 kcal pour un homme, et jamais moins que ta dépense au repos : ce sont les planchers habituels des régimes hypocaloriques sans suivi médical [15]."],
+  ['Les aliments', '3 j', 'au frigo, le reste congelé',
     "Les valeurs nutritionnelles viennent des tables Ciqual de l'Anses [16], complétées par la base FoodData Central de l'USDA [17]. Les plats préparés se gardent 3 jours au frigo, ou au congélateur pour la suite de la semaine [18]."],
 ];
 
@@ -43,17 +44,39 @@ const SOURCES = [
   'USDA FSIS. Leftovers and Food Safety.',
 ];
 
+// une source : « Auteurs. Titre. Revue. Année. » avec la revue et l'année mises en avant
+const srcHtml = t => {
+  const m = t.match(/^(.*?\. )(.*?\. )(.*)$/);
+  return m ? `<span class="sci-au">${m[1]}</span>${m[2]}<em>${m[3]}</em>` : t;
+};
+
 export function openScienceSheet() {
-  const ref = t => t.replace(/((?:\[\d+\])+)/g, m => `<sup>${m.slice(1, -1).split('][').join(',')}</sup>`);
+  const ref = t => t.replace(/\s+(?=\[\d)/g, '').replace(/((?:\[\d+\])+)/g, m => m.slice(1, -1).split('][').map(n => `<button class="sci-ref" data-ref="${n}" aria-label="Source ${n}">${n}</button>`).join(''));
   openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad sci">
-    <div class="hb-h2">Comment Hébé calcule</div>
+    <div class="sci-head">
+      <div class="hb-h2">Comment Hébé calcule</div>
+      <span class="sci-stamp">${SOURCES.length} sources</span>
+    </div>
     <p class="sci-lead">Tous les chiffres de l'app viennent de règles publiées et reconnues. Les voici en bref, avec leurs sources.</p>
-    ${SECTIONS.map(([h, t]) => `<div class="sci-sec"><h3>${h}</h3><p>${ref(t)}</p></div>`).join('')}
+    <div class="sci-paper">
+      ${SECTIONS.map(([h, fig, cap, t], k) => `<section class="sci-sec">
+        <div class="sci-fig"><b>${fig}</b><small>${cap}</small></div>
+        <div class="sci-txt"><h3><span class="sci-n">${k + 1}</span>${h}</h3><p>${ref(t)}</p></div>
+      </section>`).join('')}
+    </div>
     <p class="sci-note">Ces calculs donnent un point de départ fiable pour un adulte en bonne santé. Ils ne remplacent pas l'avis d'un médecin ou d'un diététicien, notamment en cas de grossesse, de maladie ou de troubles alimentaires.</p>
-    <details class="sci-src"><summary>Les ${SOURCES.length} sources</summary>
-      <ol>${SOURCES.map(s => `<li>${s}</li>`).join('')}</ol>
+    <details class="sci-src"><summary>Voir les ${SOURCES.length} sources</summary>
+      <ol>${SOURCES.map((x, i) => `<li id="sci-s${i + 1}">${srcHtml(x)}</li>`).join('')}</ol>
     </details>
     <button class="hb-btn hb-btn-primary sci-close">Fermer</button>
   </div>`);
-  document.querySelector('.sci-close')?.addEventListener('click', closeSheet);
+  const sh = document.getElementById('sheet');
+  sh.querySelector('.sci-close')?.addEventListener('click', closeSheet);
+  // toucher un numéro ouvre la liste et montre la source
+  sh.querySelectorAll('[data-ref]').forEach(b => b.addEventListener('click', () => {
+    sh.querySelector('.sci-src').open = true;
+    const li = sh.querySelector(`#sci-s${b.dataset.ref}`);
+    sh.querySelectorAll('.sci-src li.hl').forEach(x => x.classList.remove('hl'));
+    li?.classList.add('hl'); li?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }));
 }
