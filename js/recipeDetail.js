@@ -47,7 +47,7 @@ const CUISINES = {
   'indien': 'Indien', 'grec': 'Grec', 'turc': 'Turc', 'libanais': 'Libanais', 'marocain': 'Marocain',
   'mexicain': 'Mexicain', 'américain': 'Américain', 'péruvien': 'Péruvien', 'brésilien': 'Brésilien',
   'éthiopien': 'Éthiopien', 'mozambicain': 'Mozambicain', 'italien': 'Italien', 'moyen-orient': 'Moyen-Orient',
-  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français',
+  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français', 'espagnol': 'Espagnol',
 };
 const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';

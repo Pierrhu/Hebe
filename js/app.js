@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T07:43:59.378Z
+// 2026-10-12T07:54:17.919Z
 
 
 // ──────────────────────────────────────────────
@@ -235,6 +235,12 @@ const RAW = {
   butternut:     ['Courge butternut',           'g',     40,  1,    8.4, 0.1, 'veg', 2,   'F', { buy: 1000 }],
   pois_casses:   ['Pois cassés (secs)',         'g',     340, 22,   50,  1.5, 'legume', 3, 'S', { cook: 2.4, pack: 500 }],
   lin:           ['Graines de lin moulues',     'g',     530, 20,   2,   42,  'fat', 8,   'E', { pantry: true }],
+  // ── v207 : plats du PDF de Pierre — valeurs Ciqual ──
+  sardines:      ['Sardines à l\'huile (égouttées)', 'g', 210, 24, 0,   13,  'protein', 14, 'E', { lv: 'P', min: 80, max: 200, pack: 100 }],
+  maquereau:     ['Maquereau au naturel (égoutté)', 'g',  195, 20,  0,   12.5, 'protein', 12, 'E', { lv: 'P', min: 80, max: 200, pack: 125 }],
+  betterave:     ['Betterave cuite',            'g',     45,  1.6,  8.4, 0.1, 'veg', 3,   'F', { pack: 500 }],
+  mache:         ['Mâche',                      'g',     21,  2,    1.5, 0.4, 'veg', 12,  'F', { buy: 125 }],
+  noix:          ['Noix (cerneaux)',            'g',     690, 15,   7,   65,  'fat', 14,  'E', { pack: 200 }],
 };
 
 const INGREDIENTS = {};
@@ -326,6 +332,7 @@ const SPICES = {
   W69: 'cumin, paprika, cannelle, gingembre en poudre', W70: 'cumin, paprika, cannelle, curcuma', W71: 'cumin, paprika fumé, piment',
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
+  W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
 const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
@@ -603,6 +610,26 @@ const RECIPES = [
     [["boeuf_emince",160],["beurre_cacahuete",25],["oignon",60],["ail",1],["gingembre",5],["concentre",15],["tomates_conc",120],["carotte",80],["patate_douce",100],["epices",2],["riz",90],["huile",5]],
     ["Coupe le bœuf en cubes de 3 cm, la carotte en rondelles épaisses et la patate douce en gros cubes. Hache l'oignon, écrase l'ail et râpe le gingembre.","Dans l'autocuiseur en mode dorer, fais dorer le bœuf 4 minutes dans l'huile, puis ajoute l'oignon 3 minutes, l'ail et le gingembre 1 minute.","Délaye le beurre de cacahuète et le concentré dans 150 ml d'eau chaude par portion. Verse-les dans la cuve avec les tomates, la carotte, la patate douce, une pincée de piment et de sel.","Ferme et laisse cuire 25 minutes sous pression, puis laisse la pression retomber seule. La viande doit être fondante et la sauce épaisse ; laisse réduire quelques minutes en mode dorer si besoin.","Riz : rince-le à l'eau froide, puis mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau (par exemple 150 ml d'eau pour 90 g de riz). Ferme, laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes avant d'ouvrir. Mets-le en boîtes dès qu'il a tiédi : le riz cuit ne doit pas rester plus d'une heure à température ambiante.","Mise en boîtes : le riz et le mafé à part ou ensemble. Il se congèle très bien.","Au moment de manger : réchauffe 3 minutes au micro-ondes avec 2 cuillères à soupe d'eau, en remuant à mi-temps, jusqu'à ce que ce soit bien chaud partout."],
     "Un beurre de cacahuète sans sucre ajouté donne le vrai goût du mafé.", ["sénégalais","autocuiseur","batch"], true),
+  M("W76", "Riz aux crevettes façon paella, petits pois et poivron", "dinner", "🥘", 15, 15,
+    [["crevettes",150],["riz",90],["poivron",80],["courgette",80],["petits_pois",50],["oignon",40],["ail",1],["bouillon",0.25],["epices",2],["huile",6],["herbes",3]],
+    ["La veille, mets les crevettes à décongeler au frigo. Égoutte-les et sèche-les bien dans un torchon.","Émince l'oignon et l'ail, coupe le poivron en lanières et la courgette en dés de 1 cm. Rince le riz à l'eau froide.","Mets l'autocuiseur en mode dorer et fais suer l'oignon et l'ail 3 minutes dans l'huile, puis ajoute le poivron et la courgette, 5 minutes.","Ajoute le riz et remue 1 minute pour bien l'enrober, puis saupoudre de curcuma et de paprika.","Ajoute le bouillon cube émietté et 1,7 fois le poids du riz en eau froide (150 ml pour 90 g de riz). Ferme, laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.","Ouvre, ajoute les crevettes et les petits pois surgelés et mélange 3 à 4 minutes en mode dorer, couvercle posé sans le fermer, jusqu'à ce que les crevettes soient bien roses. Poivre et parsème de persil.","Mise en boîtes : la paella, au frigo dès qu'elle a tiédi : le riz cuit ne doit pas rester plus d'une heure à température ambiante. Avec des crevettes, elle se garde 2 jours.","Au moment de manger : réchauffe 3 minutes au micro-ondes à puissance moyenne avec 2 cuillères à soupe d'eau, en remuant à mi-temps, jusqu'à ce que ce soit bien chaud partout."],
+    "Le curcuma donne la couleur de la paella sans safran.", ["espagnol","autocuiseur","batch"], true),
+  M("W77", "Poulet sauté au miso, légumes croquants et nouilles de riz", "dinner", "🍜", 15, 15,
+    [["poulet",160],["nouilles_riz",85],["carotte",70],["poivron",70],["champignons",80],["courgette",60],["ail",1],["miso",12],["gingembre",3],["epices",1],["huile",8],["sesame",4]],
+    ["Coupe le poulet en fines lanières, les carottes en rondelles fines, le poivron en lanières, la courgette en bâtonnets et émince les champignons. Hache l'ail et râpe le gingembre.","Délaye le miso dans 50 ml d'eau froide par portion.","Fais chauffer de l'eau dans l'autocuiseur en mode dorer, couvercle ouvert, jusqu'à ébullition. Arrête le feu, plonge les nouilles de riz 4 à 5 minutes, puis égoutte-les et rince-les à l'eau froide pour qu'elles ne collent pas.","Dans la poêle très chaude avec l'huile, fais dorer le poulet 4 à 5 minutes en remuant, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le dans une assiette.","Dans la même poêle, fais revenir l'ail, le gingembre et le curcuma 30 secondes, puis les carottes et le poivron 3 minutes, et enfin les champignons et la courgette 2 minutes : les légumes doivent rester croquants.","Remets le poulet, verse le miso délayé et laisse réduire 2 minutes à feu moyen. Arrête le feu, ajoute les nouilles et mélange 1 minute pour bien les enrober de sauce.","Mise en boîtes : le poulet et les nouilles, au frigo dès qu'ils ont tiédi.","Au moment de manger : réchauffe 3 minutes au micro-ondes avec 2 cuillères à soupe d'eau, en remuant à mi-temps : les nouilles de riz boivent la sauce en refroidissant. Parsème de graines de sésame."],
+    "Rincer les nouilles à l'eau froide les empêche de coller et de devenir pâteuses.", ["japonais","poêle","batch"], true),
+  M("W78", "Œufs cocotte à l'orientale, pois chiches et poivrons", "dinner", "🍳", 10, 25,
+    [["oeuf",3],["pois_chiches",120],["tomates_conc",200],["poivron",150],["oignon",50],["ail",1],["huile",8],["epices",3],["herbes",3],["pain",70]],
+    ["Émince l'oignon, coupe les poivrons en lanières et hache l'ail. Rince et égoutte bien les pois chiches.","Dans la poêle, fais revenir l'oignon 4 à 5 minutes dans l'huile, jusqu'à ce qu'il soit translucide, puis les poivrons 6 à 7 minutes en remuant.","Ajoute l'ail, le cumin, le paprika et la coriandre moulue, et fais griller 1 minute. Ajoute les tomates et laisse compoter 5 minutes à feu moyen, puis les pois chiches, 3 minutes. Goûte et sale légèrement.","Creuse un petit puits par œuf dans la sauce, casse un œuf dans chacun et poivre. Couvre et laisse cuire 8 à 10 minutes à feu doux, jusqu'à ce que le blanc soit pris et le jaune cuit : il tiendra mieux au réchauffage.","Mise en boîtes : la sauce et ses œufs, au frigo dès qu'ils ont tiédi. Les œufs cuits ne se congèlent pas : à manger dans les trois premiers jours. Le pain reste dans son sachet, la coriandre au frigo.","Au moment de manger : réchauffe 2 minutes au micro-ondes à puissance moyenne, couvercle posé, pour que les œufs ne durcissent pas. Parsème de coriandre et sers avec le pain."],
+    "Rincer les pois chiches en boîte réduit le sel et les rend plus digestes.", ["marocain","végé","poêle","batch"], true),
+  M("W79", "Salade de lentilles, betterave et sardines", "lunch", "🥗", 15, 10,
+    [["sardines",110],["lentilles_vertes",80],["betterave",150],["champignons",80],["mais",40],["huile",8],["vinaigre_cidre",5],["epices",2],["ail",1],["sesame",4],["herbes",3]],
+    ["Rince les lentilles, puis mets-les dans l'autocuiseur avec 3 fois leur poids d'eau froide, sans sel. Ferme, laisse cuire 8 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes. Égoutte-les et laisse-les refroidir.","Prépare la vinaigrette : l'huile d'olive, le vinaigre de cidre, le cumin, le gingembre en poudre, le paprika fumé, l'ail écrasé et du poivre.","Coupe la betterave en cubes de 2 cm. Mélange les lentilles refroidies avec la vinaigrette, puis ajoute la betterave et le maïs égoutté.","Mise en boîtes : la salade de lentilles, au frigo. Les champignons restent entiers jusqu'au repas, pour ne pas noircir, et les sardines dans leur boîte. Elle ne se congèle pas : à manger dans les trois premiers jours.","Au moment de manger : émince finement les champignons et ajoute-les à la salade. Égoutte les sardines et pose-les en filets par-dessus, sans les émietter. Parsème de graines de sésame et de persil."],
+    "Des sardines à l'eau sont moins salées que celles à l'huile.", ["français","autocuiseur","batch","poisson"], true),
+  M("W80", "Salade tiède de pommes de terre, maquereau, mâche et noix", "lunch", "🥗", 15, 8,
+    [["maquereau",150],["pdt",280],["mache",40],["champignons",60],["noix",10],["huile",6],["citron",10],["moutarde",5],["herbes",3]],
+    ["Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans l'autocuiseur avec 100 ml d'eau froide et une pincée de sel, ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance. Égoutte-les.","Prépare la vinaigrette : la moutarde, le jus de citron, l'huile d'olive, du sel et du poivre. Mélange-la aux pommes de terre encore chaudes : elles s'en imprègnent.","Mise en boîtes : les pommes de terre à la vinaigrette, au frigo dès qu'elles ont tiédi. La mâche, les champignons, les noix et le maquereau restent à part jusqu'au repas. Elle ne se congèle pas : à manger dans les trois premiers jours.","Au moment de manger : tiédis les pommes de terre 1 minute au micro-ondes. Ajoute la mâche, les champignons émincés finement, le maquereau égoutté émietté en gros morceaux, les noix concassées et le persil, et mélange délicatement."],
+    "Les pommes de terre assaisonnées chaudes boivent la vinaigrette : la salade a plus de goût.", ["français","autocuiseur","batch","poisson"], true),
 
   // ══ Accompagnements air fryer ══
   M("SA01", "Frites de patate douce au paprika fumé", "side", "🍠", 5, 18,
@@ -951,7 +978,7 @@ const SHORT_NAMES = {
   W56: 'Pâtes épicées au poulet', W57: 'Pâtes cajun', W58: 'Pâtes fajitas', W59: 'Pâtes pesto-poulet', W60: 'Paprikás de poulet',
   W61: 'Stroganoff', W62: 'Penne aux boulettes', W63: 'Poulet aux champignons', W64: 'Poulet ail et herbes', W65: 'Bowl buffalo',
   W66: 'Poêlée de bœuf', W67: 'Picadillo', W68: 'Keema aloo', W69: 'Bowl marocain', W70: 'Poulet shawarma',
-  W71: 'Bœuf-quinoa épicé', W72: 'Curry et naans', W73: 'Burritos de bœuf', W74: 'Philly cheesesteak', W75: 'Mafé', K13: 'Wrap thon', K14: 'Croque-monsieur', K15: 'Roses des sables', K16: 'Tiramisu', K17: 'Barres aux dattes', K18: 'Barres Snickers', K19: 'Bouchées coco', K20: 'Barres granola', K21: 'Cookies banane', B16: 'Porridge banane',
+  W71: 'Bœuf-quinoa épicé', W72: 'Curry et naans', W73: 'Burritos de bœuf', W74: 'Philly cheesesteak', W75: 'Mafé', W76: 'Paella aux crevettes', W77: 'Poulet sauté miso', W78: 'Œufs cocotte', W79: 'Salade lentilles-sardines', W80: 'Salade de maquereau', K13: 'Wrap thon', K14: 'Croque-monsieur', K15: 'Roses des sables', K16: 'Tiramisu', K17: 'Barres aux dattes', K18: 'Barres Snickers', K19: 'Bouchées coco', K20: 'Barres granola', K21: 'Cookies banane', B16: 'Porridge banane',
   W35: 'Tasty crousty', W36: 'Fajitas', W37: 'Riz sauté', W38: 'Bœuf aux poivrons', W39: 'Bolognaise', W40: 'Kefta et taboulé', W41: 'Gnocchis au poulet', W42: 'Nuggets maison', W43: 'Bowl kebab',
   W31: 'Raviolis croustillants', W32: 'Bol hot honey', W33: 'Pâtes crémeuses', W34: 'Boulettes laquées', K10: 'Fromage blanc cacahuète', B05: 'Fromage blanc et granola',
   B01: 'Overnight oats cacao', B02: 'Overnight oats pomme', B05: 'Fromage blanc granola', S11: 'Tartine poulet', S12: 'Tartine miel', B06: 'Muffins aux œufs', B07: 'Wrap poulet',
@@ -1689,7 +1716,7 @@ const isOutside   = (r) => !!r && (r.tags || []).includes('imprevu');
 // Ids alignés sur les chips de la vue Semaine : poulet · boeuf · crevettes · saumon (= poisson) · tofu (= végé)
 const FAMILY = {
   poulet: 'poulet', haut_cuisse: 'poulet', boeuf_emince: 'boeuf', poulet_hache: 'poulet', poulet_tranches: 'poulet', boeuf: 'boeuf',
-  saumon: 'saumon', poisson_blanc: 'saumon', thon: 'saumon', crevettes: 'crevettes',
+  saumon: 'saumon', poisson_blanc: 'saumon', thon: 'saumon', sardines: 'saumon', maquereau: 'saumon', crevettes: 'crevettes',
   tofu: 'tofu', oeuf: 'tofu',
 };
 function proteinFamily(r) {
@@ -2390,6 +2417,9 @@ const STOVE = [
   ['W39', /^Verse la sauce dans un plat et rince la cuve/, "Fais cuire les pâtes dans une grande casserole d'eau bouillante salée, le temps indiqué sur le paquet, puis égoutte-les."],
   ['W40', /^Fais cuire le boulgour à l'autocuiseur/, "Fais cuire le boulgour dans une casserole avec 2 fois son volume d'eau et une pincée de sel : porte à ébullition, couvre et laisse cuire 12 minutes à feu doux, puis 5 minutes hors du feu. Laisse-le refroidir."],
   ['W45', /^Fais cuire les pâtes à l'autocuiseur/, "Fais cuire les pâtes dans une grande casserole d'eau bouillante salée, le temps indiqué sur le paquet, puis égoutte-les et mélange-les à la sauce."],
+  ['W76', /^Ajoute le bouillon cube émietté et 1,7 fois/, "Ajoute le bouillon cube émietté et 2,2 fois le poids du riz en eau. Porte à ébullition, couvre et laisse cuire 35 minutes à feu très doux, puis laisse reposer 10 minutes hors du feu sans ouvrir."],
+  ['W79', /^Rince les lentilles, puis mets-les dans l'autocuiseur/, "Rince les lentilles, puis mets-les dans une casserole avec 3 fois leur poids d'eau froide, sans sel. Porte à ébullition et laisse cuire 25 minutes à feu doux, jusqu'à ce qu'elles soient tendres mais encore entières. Égoutte-les et laisse-les refroidir."],
+  ['W80', /^Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans l'autocuiseur/, "Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans une casserole d'eau froide salée, porte à ébullition et laisse cuire 12 minutes, jusqu'à ce qu'une lame s'enfonce sans résistance. Égoutte-les."],
   ['K11', /^Mets dans l'autocuiseur le riz, le lait/, 'Mets dans une casserole le riz, le lait et le lait de coco.'],
   ['K11', /laisse cuire 12 minutes sous pression/, "Porte à frémissement, puis laisse cuire 30 minutes à feu très doux, sans couvrir, en remuant souvent pour que le lait n'attache pas."],
   ['S01', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 1,7 fois son poids d'eau (par exemple 135 ml d'eau pour 80 g de riz)."],
@@ -2521,6 +2551,9 @@ const TEXTS = [
    "et 1,5 fois le poids du riz en eau, ferme et laisse cuire 5 minutes sous pression,"],
   ["et 2,5 fois le poids du riz en eau, couvre et laisse cuire 35 minutes à feu doux, puis 10 minutes hors du feu.",
    "et 1,7 fois le poids du riz en eau, couvre et laisse cuire 15 minutes à feu doux, puis 5 minutes hors du feu."],
+  // W76 paella aux crevettes, autocuiseur (la casserole reprend le texte de W30)
+  ["et 1,7 fois le poids du riz en eau froide (150 ml pour 90 g de riz). Ferme, laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+   "et 1,5 fois le poids du riz en eau froide (135 ml pour 90 g de riz). Ferme, laisse cuire 5 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes."],
   // W33 pâtes à l'autocuiseur
   ["(5 minutes pour des pâtes complètes à 10 ou 11 minutes)", "(4 minutes pour des pâtes à 9 ou 10 minutes)"],
 ];
@@ -3502,7 +3535,7 @@ function itemCost(item) {
 // Lundi, mardi et mercredi : boîtes au frigo (1 à 3 jours). Au-delà : boîtes congelées, décongelées la veille au frigo.
 // Poisson et fruits de mer : mangés lundi ou mardi. Plats qui ne se congèlent pas bien (frites, panures
 // croustillantes, crudités et sauces au yaourt dans la boîte) : mangés dans les 3 premiers jours.
-const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74'];
+const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80'];
 const FRIDGE_DAYS = 3;
 const isFreshOnly = r => FRESH_ONLY.includes(r.id);
 const deadlineOf = r => (isFreshFish(r) ? 1 : isFreshOnly(r) ? FRIDGE_DAYS - 1 : 99);
@@ -4782,7 +4815,7 @@ const CUISINES = {
   'indien': 'Indien', 'grec': 'Grec', 'turc': 'Turc', 'libanais': 'Libanais', 'marocain': 'Marocain',
   'mexicain': 'Mexicain', 'américain': 'Américain', 'péruvien': 'Péruvien', 'brésilien': 'Brésilien',
   'éthiopien': 'Éthiopien', 'mozambicain': 'Mozambicain', 'italien': 'Italien', 'moyen-orient': 'Moyen-Orient',
-  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français',
+  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français', 'espagnol': 'Espagnol',
 };
 const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
@@ -5713,6 +5746,7 @@ const STEP_RX = {
   chou_fleur: /chou-fleur/, petits_pois: /petits pois/, haricots_verts: /haricots verts/, olives: /olives/,
   salade: /salade|crudités/, avocat: /avocat/, pain_burger: /pains?\b|burger/, baguette: /baguette|pain/, pain: /pain|tartine/, brocoli: /brocoli/,
   thon: /thon/, feuille_riz: /feuilles? de riz|galette/, tomates_sechees: /tomates séchées/, cornflakes: /corn-?flakes/, houmous: /houmous/,
+  sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
   cornichons: /cornichon/, chou_chinois: /chou/, radis: /radis/, pousses_soja: /pousses/, mangue: /mangue/, fruits_rouges: /fruits rouges/,
 };
 // v195 : ingrédients qui ne servent qu'au moment du repas (œuf au plat, galettes, fromage à faire fondre…) :

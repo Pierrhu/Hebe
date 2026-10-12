@@ -44,6 +44,9 @@ const TEXTS = [
    "et 1,5 fois le poids du riz en eau, ferme et laisse cuire 5 minutes sous pression,"],
   ["et 2,5 fois le poids du riz en eau, couvre et laisse cuire 35 minutes à feu doux, puis 10 minutes hors du feu.",
    "et 1,7 fois le poids du riz en eau, couvre et laisse cuire 15 minutes à feu doux, puis 5 minutes hors du feu."],
+  // W76 paella aux crevettes, autocuiseur (la casserole reprend le texte de W30)
+  ["et 1,7 fois le poids du riz en eau froide (150 ml pour 90 g de riz). Ferme, laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+   "et 1,5 fois le poids du riz en eau froide (135 ml pour 90 g de riz). Ferme, laisse cuire 5 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes."],
   // W33 pâtes à l'autocuiseur
   ["(5 minutes pour des pâtes complètes à 10 ou 11 minutes)", "(4 minutes pour des pâtes à 9 ou 10 minutes)"],
 ];

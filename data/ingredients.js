@@ -203,6 +203,12 @@ const RAW = {
   butternut:     ['Courge butternut',           'g',     40,  1,    8.4, 0.1, 'veg', 2,   'F', { buy: 1000 }],
   pois_casses:   ['Pois cassés (secs)',         'g',     340, 22,   50,  1.5, 'legume', 3, 'S', { cook: 2.4, pack: 500 }],
   lin:           ['Graines de lin moulues',     'g',     530, 20,   2,   42,  'fat', 8,   'E', { pantry: true }],
+  // ── v207 : plats du PDF de Pierre — valeurs Ciqual ──
+  sardines:      ['Sardines à l\'huile (égouttées)', 'g', 210, 24, 0,   13,  'protein', 14, 'E', { lv: 'P', min: 80, max: 200, pack: 100 }],
+  maquereau:     ['Maquereau au naturel (égoutté)', 'g',  195, 20,  0,   12.5, 'protein', 12, 'E', { lv: 'P', min: 80, max: 200, pack: 125 }],
+  betterave:     ['Betterave cuite',            'g',     45,  1.6,  8.4, 0.1, 'veg', 3,   'F', { pack: 500 }],
+  mache:         ['Mâche',                      'g',     21,  2,    1.5, 0.4, 'veg', 12,  'F', { buy: 125 }],
+  noix:          ['Noix (cerneaux)',            'g',     690, 15,   7,   65,  'fat', 14,  'E', { pack: 200 }],
 };
 
 export const INGREDIENTS = {};
@@ -294,6 +300,7 @@ export const SPICES = {
   W69: 'cumin, paprika, cannelle, gingembre en poudre', W70: 'cumin, paprika, cannelle, curcuma', W71: 'cumin, paprika fumé, piment',
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
+  W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
 export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
