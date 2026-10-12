@@ -276,7 +276,8 @@ export function openScienceSheet() {
     ]),
     sec(7, 'Le jeûne 16:8, à découvrir', fastPlates(ok ? t.kcal : 2400), "Tu manges entre 12 h et 20 h. Les mêmes calories sur trois repas au lieu de quatre : chaque assiette est plus copieuse, et tu sors de table rassasié.", [
       ...(ok ? [[`Pour toi : ton déjeuner et ton dîner passent de ${nf(t.kcal * PLATE_SHARE.classique)} à ${nf(t.kcal * PLATE_SHARE.jeune)} kcal chacun, soit un quart de plus dans l'assiette.`, null]] : []),
-      ["À calories égales, c'est au moins aussi efficace qu'une journée classique. Une méta-analyse de 2026, qui regroupe 30 essais chez des adultes en surpoids, trouve même un léger avantage en moyenne : environ 1,5 kg de plus perdus, surtout du gras.", ['fernandes', 'liu', 'semnani']],
+      ["À calories égales, c'est au moins aussi efficace. Dans le plus grand essai, 139 adultes en surpoids ont mangé les mêmes calories pendant un an : ceux qui mangeaient sur 8 heures ont perdu 8,0 kg, les autres 6,3 kg, un écart trop petit pour être certain.", ['liu']],
+      ["Une méta-analyse de 2026, qui regroupe 30 essais, va dans le même sens : à calories égales, la fenêtre de repas fait perdre en moyenne 1,5 kg de plus, surtout du gras.", ['fernandes']],
       ["Avec la musculation, ta prise de muscle et ta force suivent aussi bien : tes protéines restent les mêmes dans les deux formules.", ['ashtary', 'tinsley19', 'lowe']],
       ["Idéal si tu n'as pas faim le matin ou si tu préfères de vrais repas. Et si ça ne te convient pas, tu repasses à la formule classique en un geste.", null],
     ]),
