@@ -16,7 +16,7 @@ import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
   measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
-  householdCards, formulaBlock, foodBlock, repeatBlock, soupsBlock, openProtocolSheet, equipmentBlock,
+  householdCards, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)
@@ -172,7 +172,6 @@ export function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
         ${sub('Hébé écarte ce qui ne te convient pas.')}
         ${foodBlock(m)}
-        ${houseQ() ? soupsBlock() : ''}
         ${errBox()}
         ${cta('Continuer')}`;
 

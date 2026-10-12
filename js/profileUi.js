@@ -177,16 +177,16 @@ export function equipmentBlock(eq) {
 
 // v208 : ta semaine — combien de fois le même plat, et soupes ou non (communs au foyer)
 const REPEAT_NOTES = {
-  2: 'Le plus varié, avec environ 7 plats à cuisiner le dimanche.',
-  3: 'Un bon équilibre, avec environ 5 plats à cuisiner le dimanche.',
-  4: 'Le plus simple, avec environ 4 plats à cuisiner le dimanche.',
+  2: 'Plus de variété, environ 7 plats à cuisiner le dimanche.',
+  3: 'Environ 5 plats à cuisiner le dimanche.',
+  4: 'Moins de cuisine, environ 4 plats à cuisiner le dimanche.',
 };
 // v221 : deux blocs séparés pour l'accueil (même plat dans « Ton rythme », soupes dans « Ce que tu manges »)
 export function repeatBlock() {
   const rep = getMaxRepeat();
   return `<div class="dt-card dt-plain dt-repeat">
-      <div class="dt-top"><b>Combien de fois manger le même plat ?</b></div>
-      <p class="dt-desc">Chaque plat cuisiné le dimanche donne plusieurs repas dans la semaine.</p>
+      <div class="dt-top"><b>Le même plat dans ta semaine</b></div>
+      <p class="dt-desc">Un plat cuisiné le dimanche se mange en plusieurs repas. Au maximum, combien de fois veux-tu manger le même plat ?</p>
       <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
         ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
       </div>
