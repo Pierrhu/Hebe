@@ -49,6 +49,8 @@ const SRC = {
   siedler: ['Siedler MR, Rodriguez C, Stratton MT, et al. Assessing the reliability and cross-sectional and longitudinal validity of fifteen bioelectrical impedance analysis devices. Br J Nutr. 2023;130(5):827-840.', 'https://doi.org/10.1017/S0007114522003749'],
   tinsley21: ['Tinsley GM. Five-component model validation of reference, laboratory and field methods of body composition assessment. Br J Nutr. 2021;125(11):1246-1259.', 'https://doi.org/10.1017/S0007114520003578'],
   blue: ['Blue MNM, Hirsch KR, Brewer GJ, et al. The validation of contemporary body composition methods in various races and ethnicities. Br J Nutr. 2022;128(12):2387-2397.', 'https://doi.org/10.1017/S0007114522000368'],
+  fernandes: ['Fernandes-Alves D, Teixeira GP, Guimarães KC, Crispim CA. Systematic review and meta-analysis of randomized clinical trials comparing time-restricted eating with and without caloric restriction for weight loss. Nutr Rev. 2026;84(3):463-486.', 'https://doi.org/10.1093/nutrit/nuaf053'],
+  kim: ['Kim KK, Kang JH, Kim EM. Updated meta-analysis of studies from 2011 to 2021 comparing the effectiveness of intermittent energy restriction and continuous energy restriction. J Obes Metab Syndr. 2022;31(3):230-244.', 'https://doi.org/10.7570/jomes22050'],
   kyle: ['Kyle UG, Bosaeus I, De Lorenzo AD, et al. Bioelectrical impedance analysis, part I: review of principles and methods. Clin Nutr. 2004;23(5):1226-1243.', 'https://doi.org/10.1016/j.clnu.2004.06.004'],
 };
 
@@ -136,49 +138,55 @@ function floorBar(kcal, floor) {
   </svg>`;
 }
 
-// jeûne 16:8 : une journée de 24 h, fenêtre de 12 h à 20 h, comparée à la formule classique
+// v243 : les trois dernières planches reprennent le style des premières (axe à l'encre, bandes pâles,
+// repères terracotta, légendes en italique)
+
+// jeûne 16:8 : deux journées de 24 h, la fenêtre où l'on mange en bande verte, les repas en repères terracotta
 function fastBar() {
-  const X = h => 16 + h / 24 * 288;
-  const dots = (hs, y, col) => hs.map(([h, r]) => `<circle cx="${X(h)}" cy="${y}" r="${r}" fill="${col}"/>`).join('');
-  return `<svg viewBox="0 0 320 104" class="sci-svg" aria-hidden="true">
-    <text x="16" y="14" class="sv-l">jeûne</text>
-    <rect x="${X(0)}" y="20" width="${X(24) - X(0)}" height="16" rx="8" fill="#EDE5D5"/>
-    <rect x="${X(12)}" y="20" width="${X(20) - X(12)}" height="16" rx="8" fill="#9DB7A3"/>
-    ${dots([[12, 5.5], [16, 4], [20, 5.5]], 28, INK)}
-    <text x="${(X(0) + X(12)) / 2}" y="32" text-anchor="middle" class="sv-t">16 h sans manger</text>
-    <text x="16" y="56" class="sv-l">classique</text>
-    <rect x="${X(0)}" y="62" width="${X(24) - X(0)}" height="10" rx="5" fill="#EDE5D5"/>
-    <rect x="${X(8)}" y="62" width="${X(20) - X(8)}" height="10" rx="5" fill="#C9D9CD"/>
-    ${dots([[8, 4], [12, 4.5], [16, 3.5], [20, 4.5]], 67, INK)}
-    ${[0, 6, 12, 18, 24].map(h => `<text x="${X(h)}" y="92" text-anchor="middle" class="sv-t">${h} h</text>`).join('')}
+  const X = h => 20 + h / 24 * 280;
+  const day = (y, label, from, to, meals, note) => `
+    <text x="20" y="${y - 8}" class="sv-l">${label}</text>
+    <rect x="${X(0)}" y="${y}" width="${X(24) - X(0)}" height="10" fill="#EAD9CF"/>
+    <rect x="${X(from)}" y="${y}" width="${X(to) - X(from)}" height="10" fill="#DCE8DF"/>
+    <line x1="${X(0)}" y1="${y + 10}" x2="${X(24)}" y2="${y + 10}" stroke="${INK}" stroke-width="1.2"/>
+    ${meals.map(h => `<line x1="${X(h)}" y1="${y - 2}" x2="${X(h)}" y2="${y + 14}" stroke="${TERRA}" stroke-width="2"/><circle cx="${X(h)}" cy="${y - 2}" r="3.5" fill="${TERRA}"/>`).join('')}
+    ${note ? `<text x="${(X(0) + X(from)) / 2}" y="${y - 8}" text-anchor="middle" class="sv-k">${note}</text>` : ''}`;
+  return `<svg viewBox="0 0 320 100" class="sci-svg" aria-hidden="true">
+    ${day(22, 'jeûne, 16 h sans manger', 12, 20, [12, 16, 20], '')}
+    ${day(64, 'classique', 8, 20, [8, 12, 16, 20], '')}
+    ${[0, 6, 12, 18, 24].map(h => `<line x1="${X(h)}" y1="74" x2="${X(h)}" y2="${h % 12 ? 78 : 80}" stroke="${INK}" stroke-width="1"/><text x="${X(h)}" y="94" text-anchor="middle" class="sv-t">${h} h</text>`).join('')}
+    <circle cx="${X(24) - 42}" cy="10" r="3.5" fill="${TERRA}"/><text x="${X(24)}" y="14" text-anchor="end" class="sv-k">repas</text>
   </svg>`;
 }
 
-// semaine de boîtes : frigo du dimanche au mercredi, congélateur ensuite, réchauffage à 74 °C
+// semaine de boîtes : bande frigo du dimanche au mercredi, bande congélateur ensuite
 function batchWeek() {
-  const d = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-  return `<svg viewBox="0 0 320 96" class="sci-svg" aria-hidden="true">
-    ${d.map((x, i) => { const cold = i >= 4, X = 8 + i * 40; return `<rect x="${X}" y="12" width="34" height="30" rx="7" fill="${cold ? '#E3EEF8' : '#DCE8DF'}" stroke="${cold ? '#6F9FC9' : INK}" stroke-width="1"/>
-      <text x="${X + 17}" y="32" text-anchor="middle" class="sv-l">${x}</text>`; }).join('')}
-    <text x="${8 + 1.5 * 40 + 17}" y="60" text-anchor="middle" class="sv-k">frigo, 4 °C max</text>
-    <text x="${8 + 5 * 40 + 17}" y="60" text-anchor="middle" class="sv-t">congélateur, −18 °C</text>
-    <text x="${8 + 5 * 40 + 17}" y="90" text-anchor="middle" class="sv-t">décongelé la veille au frigo</text>
-    <g transform="translate(14 64)"><rect x="0" y="0" width="7" height="22" rx="3.5" fill="none" stroke="${TERRA}" stroke-width="1.3"/><circle cx="3.5" cy="24" r="5" fill="${TERRA}"/><rect x="2" y="7" width="3" height="16" fill="${TERRA}"/></g>
-    <text x="30" y="84" class="sv-k">réchauffé à 74 °C</text>
+  const d = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
+  const X = i => 20 + i * 280 / 7, C = i => X(i) + 20;
+  return `<svg viewBox="0 0 320 100" class="sci-svg" aria-hidden="true">
+    <text x="${(X(0) + X(4)) / 2}" y="18" text-anchor="middle" class="sv-l">frigo, 4 °C au plus</text>
+    <text x="${(X(4) + X(7)) / 2}" y="18" text-anchor="middle" class="sv-l">congélateur, −18 °C</text>
+    <rect x="${X(0)}" y="26" width="${X(4) - X(0)}" height="10" fill="#DCE8DF"/>
+    <rect x="${X(4)}" y="26" width="${X(7) - X(4)}" height="10" fill="#E3EEF8"/>
+    <line x1="${X(0)}" y1="36" x2="${X(7)}" y2="36" stroke="${INK}" stroke-width="1.2"/>
+    ${d.map((x, i) => `<line x1="${C(i)}" y1="36" x2="${C(i)}" y2="41" stroke="${INK}" stroke-width="1"/><text x="${C(i)}" y="55" text-anchor="middle" class="sv-t">${x}</text>`).join('')}
+    <line x1="${X(4)}" y1="22" x2="${X(4)}" y2="44" stroke="${TERRA}" stroke-width="2"/><circle cx="${X(4)}" cy="22" r="3.5" fill="${TERRA}"/>
+    <text x="${(X(0) + X(4)) / 2}" y="72" text-anchor="middle" class="sv-k">3 jours au plus au frigo</text>
+    <text x="${(X(4) + X(7)) / 2 + 10}" y="92" text-anchor="middle" class="sv-t">décongelé la veille au frigo</text>
+    <text x="20" y="92" class="sv-k">réchauffé à 74 °C</text>
   </svg>`;
 }
 
-// entonnoir : une erreur sur la masse grasse se réduit à chaque étape
+// erreur sur la masse grasse : chaque étape la réduit (barres de plus en plus courtes)
 function fatFunnel(kg) {
   const lm = 0.05 * kg, km = lm * 21.6, avg = km / 2;
-  const tier = (y, w, txt, sub) => `<rect x="${160 - w / 2}" y="${y}" width="${w}" height="22" rx="6" fill="#F1E6D2" stroke="${OCHRE}" stroke-width="1"/>
-    <text x="160" y="${y + 15}" text-anchor="middle" class="sv-in dk">${txt}</text><text x="${160 + w / 2 + 6}" y="${y + 15}" class="sv-t">${sub}</text>`;
-  return `<svg viewBox="0 0 320 112" class="sci-svg" aria-hidden="true">
-    ${tier(4, 150, '± 5 points de gras', '')}
-    ${tier(34, 120, `± ${dec(lm)} kg`, 'masse maigre')}
-    ${tier(64, 90, `± ${Math.round(km)} kcal`, 'Katch-McArdle')}
-    <rect x="${160 - 35}" y="94" width="70" height="18" rx="6" fill="#9DB7A3"/>
-    <text x="160" y="107" text-anchor="middle" class="sv-in dk">± ${Math.round(avg)} kcal</text><text x="${160 + 41}" y="107" class="sv-k">moyenne</text>
+  const bar = (y, w, txt, lbl, fill, dark) => `<rect x="20" y="${y}" width="${w}" height="18" rx="4" fill="${fill}"/>
+    <text x="28" y="${y + 13}" class="sv-in${dark ? ' dk' : ''}">${txt}</text><text x="${20 + w + 8}" y="${y + 13}" class="sv-l">${lbl}</text>`;
+  return `<svg viewBox="0 0 320 104" class="sci-svg" aria-hidden="true">
+    ${bar(4, 190, '± 5 points', 'ton taux de gras', OCHRE)}
+    ${bar(30, 150, `± ${dec(lm)} kg`, 'ta masse maigre', '#C9B07A')}
+    ${bar(56, 110, `± ${Math.round(km)} kcal`, 'une formule', INK)}
+    ${bar(82, 64, `± ${Math.round(avg)} kcal`, 'la moyenne des deux', '#9DB7A3', true)}
   </svg>`;
 }
 
@@ -223,6 +231,7 @@ export function openScienceSheet() {
       <ul class="sci-pts">${points.map(([x, refs]) => `<li>${nb(x)}${refs ? pills(...refs) : ''}</li>`).join('')}</ul>
     </section>`;
   const kg = ok ? m.weight : 95;
+  const lossPct = f => (ok ? b.maintenance * f * 7 / 7700 / m.weight * 100 : 0);
   const lmErr = 0.05 * kg, kmErr = lmErr * 21.6;
   ORDER = [];
   const cards = [
@@ -231,16 +240,16 @@ export function openScienceSheet() {
       ["La moyenne limite l'erreur de chacune et reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons. Aucune formule n'est exacte pour tout le monde : c'est pour ça que Hébé se recale ensuite sur tes pesées.", ['mifflin', 'frankenfield', 'oneill']],
       ["Pour passer à la dépense de la journée, on multiplie par un coefficient d'activité de 1,4 à 1,8, selon les niveaux de la FAO et de l'OMS.", ['fao']],
     ]),
-    sec(2, 'Ton assiette', ok ? macroBar(t) : '', "Assez de protéines pour le muscle, assez de lipides pour les hormones, et les glucides pour l'énergie.", [
-      ...(ok ? [[`Pour toi : ${t.protein} g de protéines par jour, soit ${dec(t.protein / b.leanMass)} g de protéines par kg de masse maigre et ${dec(t.protein / m.weight)} g de protéines par kg de poids.`, null]] : []),
-      ["La prise de muscle plafonne autour de 1,6 g de protéines par kg de poids, et les recommandations vont de 1,4 à 2,0 g de protéines par kg de poids. Hébé part de la masse maigre, pour ne pas gonfler les besoins quand la masse grasse est élevée.", ['morton', 'nunes', 'jager']],
-      ["En perte de gras, les profils déjà secs montent à au moins 2,3 g de protéines par kg de masse maigre, pour protéger leurs muscles.", ['helms14a']],
+    sec(2, 'Ton assiette', ok ? macroBar(t) : '', "Assez de protéines pour le muscle, assez de lipides pour les hormones, et des glucides pour l'énergie. Les trois premières lignes parlent des protéines : leurs grammes sont des grammes de protéines.", [
+      ...(ok ? [[`Pour toi : ${t.protein} g par jour, soit ${dec(t.protein / b.leanMass)} g par kg de masse maigre et ${dec(t.protein / m.weight)} g par kg de poids.`, null]] : []),
+      ["La prise de muscle plafonne autour de 1,6 g par kg de poids, et les recommandations vont de 1,4 à 2,0 g par kg de poids. Ces repères sont donnés sur le poids total : Hébé part de la masse maigre, un choix pratique pour ne pas gonfler les besoins quand la masse grasse est élevée.", ['morton', 'nunes', 'jager']],
+      ["En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre, pour protéger leurs muscles.", ['helms14a']],
       ["Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme, et les glucides complètent le reste.", ['efsaF', 'efsaC']],
     ]),
     sec(3, 'Des écarts mesurés', programScale(phase.pct), "Chaque programme s'écarte un peu de ta dépense, jamais beaucoup : c'est ce qui protège le muscle.", [
-      ["Prise de muscle : un surplus de 5 à 10 %. Au-delà, on prend surtout du gras.", ['iraki', 'helms23']],
-      ["Recomposition : un déficit de 10 %.", ['barakat']],
-      ["Perte de gras : un déficit de 10 à 20 %, pour perdre de 0,5 à 0,7 % de ton poids par semaine, le rythme qui préserve le muscle. Les gros déficits freinent la masse maigre.", ['helms14b', 'garthe', 'murphy']],
+      ["Prise de muscle : un surplus de 5 à 10 %, le réglage prudent conseillé aux pratiquants avancés, quand les débutants peuvent monter jusqu'à 20 %. Une étude chez des pratiquants entraînés suggère que prendre du poids plus vite fait surtout gagner du gras.", ['iraki', 'helms23']],
+      ["Recomposition : un léger déficit, réglé à 10 % par Hébé. Prendre du muscle et perdre du gras en même temps est possible, même entraîné, avec une musculation progressive et beaucoup de protéines.", ['barakat']],
+      [`Perte de gras : un déficit de 10 à 20 %${ok ? `, soit pour toi environ ${dec(lossPct(0.10))} à ${dec(lossPct(0.20))} % de ton poids par semaine` : ''}, sous le plafond de 1 % par semaine conseillé pour garder le muscle. Chez des athlètes, une perte plus lente a même fait gagner de la masse maigre. Au-delà d'environ 500 kcal de déficit par jour, la masse maigre progresse moins : c'est pour ça que l'étape à 20 % reste courte.`, ['helms14b', 'garthe', 'murphy']],
     ]),
     sec(4, 'Le corps a toujours raison', trendCurve(ok ? getWeights(m.id) : []), "Hébé ne prédit pas ta perte, il la mesure sur tes pesées et ajuste tes calories.", [
       ["Un kilo de variation correspond à environ 7 700 kcal, mais cette règle fixe surestime la perte sur la durée, car le corps s'adapte.", ['wish', 'thomas', 'hall']],
@@ -255,7 +264,8 @@ export function openScienceSheet() {
       [`Exemple${ok ? ' pour toi' : ''} : à ${nf(kg)} kg, 5 points d'erreur décalent ta masse maigre de ${dec(lmErr)} kg et Katch-McArdle d'environ ${Math.round(kmErr)} kcal. La moyenne avec Harris-Benedict divise ce décalage par deux, à environ ${Math.round(kmErr / 2)} kcal, puis tes pesées le corrigent en deux à quatre semaines.`, null],
     ]),
     sec(7, 'Le jeûne 16:8', fastBar(), "Avec la formule jeûne, tu manges entre 12 h et 20 h : le moment de tes repas change, pas ce que tu manges dans la journée.", [
-      ["À calories égales, manger sur 8 heures fait perdre à peu près autant de poids et de gras que manger sur toute la journée.", ['liu', 'semnani']],
+      ["À calories égales, l'avantage est petit : la méta-analyse la plus récente trouve en moyenne 1,5 kg de plus perdus, surtout du gras, mais aussi 0,4 kg de masse maigre. Un grand essai d'un an n'a trouvé aucune différence.", ['fernandes', 'liu', 'semnani']],
+      ["Il n'est pas plus facile à tenir en moyenne : les abandons sont comparables à ceux d'une restriction classique. Choisis la formule qui colle le mieux à tes journées.", ['kim']],
       ["Si tu fais de la musculation, le jeûne ne semble freiner ni ta prise de muscle ni ta force, à condition de manger assez de protéines.", ['ashtary', 'tinsley19']],
       ["Une étude sur exactement cette fenêtre de 12 h à 20 h, sans autre changement, a vu un peu plus de muscle perdu aux bras et aux jambes : c'est pour ça que Hébé garde tes protéines au même niveau dans les deux formules.", ['lowe']],
       ["Le muscle se construit mieux quand les protéines sont réparties sur plusieurs repas, autour de 0,4 g de protéines par kg de poids à chaque repas.", ['schoenfeld']],
