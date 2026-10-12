@@ -1803,3 +1803,7 @@ button.wl-ch:disabled { cursor: default; }
 .dish-10 { --c: #C7869A; --t: #F8E8ED; }
 .dish-11 { --c: #8FA86A; --t: #EDF3E3; }
 .hb-batch-snk { margin-top: 2px; }
+
+/* v233 : vignettes de la session de cuisine sur plusieurs lignes quand il y en a beaucoup */
+.hb-batch-link > div { min-width: 0; }
+.hb-batch-thumbs { flex-wrap: wrap; overflow: visible; }
