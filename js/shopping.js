@@ -376,7 +376,8 @@ export function renderShopping() {
 
     view.innerHTML = `
       <div class="shop-head">
-        <div class="hb-page-title">Courses</div>
+        <div class="shop-title-row"><div class="hb-page-title">Courses</div>
+          ${items.length ? `<button class="shop-share" data-share-list><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3.5"/><polyline points="7.5 8 12 3.5 16.5 8"/><path d="M5 12.5V19a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-6.5"/></svg>Envoyer</button>` : ''}</div>
         <div class="shop-card ${items.length && done === items.length ? 'all-done' : ''}">
           <div class="shop-card-top">
             <div>
@@ -429,6 +430,25 @@ export function renderShopping() {
         }).join('')}
       </div>`;
     view.querySelector('.clear-btn')?.addEventListener('click', () => { checked = []; saveChecked(plan, checked); render(); });
+    // v229 : envoyer la liste en texte (WhatsApp, Notes, SMS…), rayon par rayon, sans ce qui est déjà coché
+    view.querySelector('[data-share-list]')?.addEventListener('click', async () => {
+      const lines = [`Courses de la semaine du ${start}`];
+      CATEGORIES.forEach(c => {
+        const list = (grouped[c.name] || []).filter(it => !checked.includes(it.name.toLowerCase()));
+        if (!list.length) return;
+        lines.push('', c.name);
+        list.forEach(it => {
+          const p = toPurchase(it);
+          lines.push(c.name === PANTRY_CAT ? `- ${p.name || it.name} (vérifie ton placard)` : `- ${p.name || it.name} : ${`${p.qty} ${p.unit}`.replace(/ · /g, ', ')}`);
+        });
+      });
+      const text = lines.join('\n');
+      try {
+        if (navigator.share) { await navigator.share({ title: 'Liste de courses', text }); return; }
+      } catch (e) { if (e?.name === 'AbortError') return; }
+      try { await navigator.clipboard.writeText(text); toast('Liste copiée : colle-la où tu veux'); }
+      catch { toast("La liste n'a pas pu être copiée.", 'warn'); }
+    });
     view.querySelectorAll('[data-have]').forEach(btn => btn.addEventListener('click', e => {
       e.stopPropagation();
       savePantry([...new Set([...getPantry(), btn.dataset.have])]);

@@ -9,6 +9,7 @@ import {
   getSelectedPhase, saveSelectedPhase,
 } from '../data/calculator.js';
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups } from '../data/household.js';
+import { exportPhotos, importPhotos } from './body.js';
 import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
@@ -171,7 +172,7 @@ export function renderSettings() {
       <div class="set-section">
         <div class="set-section-head">Tes données</div>
         <div class="bk-card">
-          <p>Tout est enregistré sur ce téléphone. Garde une copie dans tes fichiers (iCloud, Drive…) pour ne rien perdre.</p>
+          <p>Tout est enregistré sur ce téléphone, photos comprises. Garde une copie dans tes fichiers (iCloud, Drive…) pour ne rien perdre.</p>
           <div class="bk-btns"><button class="hb-btn hb-btn-primary" data-backup>Sauvegarder</button><button class="hb-btn bk-sec" data-restore>Restaurer</button></div>
           <span class="bk-last">Dernière sauvegarde : ${lastBackupText()}</span>
           <input type="file" accept=".json,application/json" data-restore-file hidden>
@@ -425,7 +426,8 @@ async function exportBackup() {
   localStorage.setItem('hebe_last_backup', date);
   const data = {};
   for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (isAppKey(k)) data[k] = localStorage.getItem(k); }
-  const json = JSON.stringify({ app: 'hebe', version: 1, date, data });
+  const photos = await exportPhotos(); // v229 : les photos du mois voyagent avec la sauvegarde
+  const json = JSON.stringify({ app: 'hebe', version: 1, date, data, ...(photos.length ? { photos } : {}) });
   const name = `hebe-sauvegarde-${date.slice(0, 10)}.json`;
   const file = new File([json], name, { type: 'application/json' });
   // sur téléphone : la fenêtre de partage (Enregistrer dans Fichiers, iCloud, Drive…) ; sinon, un téléchargement
@@ -444,16 +446,17 @@ export function askRestore(text) {
   if (!backup || backup.app !== 'hebe' || !backup.data || typeof backup.data !== 'object') { toast('Ce fichier n\'est pas une sauvegarde Hébé', 'warn'); return; }
   openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad bk-confirm">
       <div class="hb-h2">Restaurer cette sauvegarde ?</div>
-      <p>Sauvegarde du ${frDate(backup.date)}. Elle remplacera tout ce qui est sur ce téléphone : fiches, semaine, notes des plats, placard.</p>
+      <p>Sauvegarde du ${frDate(backup.date)}. Elle remplacera tout ce qui est sur ce téléphone : fiches, semaine, notes des plats, placard${Array.isArray(backup.photos) ? ', photos' : ''}.</p>
       <div class="bk-btns"><button class="hb-btn bk-sec" data-bk-cancel>Annuler</button><button class="hb-btn hb-btn-primary" data-bk-ok>Restaurer</button></div>
     </div>`);
   const sheet = document.getElementById('sheet');
   sheet.querySelector('[data-bk-cancel]').addEventListener('click', () => closeSheet());
-  sheet.querySelector('[data-bk-ok]').addEventListener('click', () => {
+  sheet.querySelector('[data-bk-ok]').addEventListener('click', async () => {
     const old = [];
     for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (isAppKey(k)) old.push(k); }
     old.forEach(k => localStorage.removeItem(k));
     Object.entries(backup.data).forEach(([k, v]) => { if (isAppKey(k) && typeof v === 'string') localStorage.setItem(k, v); });
+    if (Array.isArray(backup.photos)) { try { await importPhotos(backup.photos); } catch {} }
     closeSheet();
     location.reload();
   });

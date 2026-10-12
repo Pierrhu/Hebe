@@ -13,7 +13,7 @@ function strip(code){
     if(inImport){ if(/from\s+['"].*['"];?\s*$/.test(t)||t.endsWith(';')) inImport=false; continue; }
     out.push(line);
   }
-  return out.join('\n').replace(/^export default /gm,'').replace(/^export function /gm,'function ').replace(/^export const /gm,'const ').replace(/^export \{[^}]*\};?\s*$/gm,'');
+  return out.join('\n').replace(/^export default /gm,'').replace(/^export async function /gm,'async function ').replace(/^export function /gm,'function ').replace(/^export let /gm,'let ').replace(/^export class /gm,'class ').replace(/^export const /gm,'const ').replace(/^export \{[^}]*\};?\s*$/gm,'');
 }
 let b=`// DIET — bundled app (généré par build.js)\n// ${new Date().toISOString()}\n\n`;
 FILES.forEach(s=>{b+=`\n// ${'─'.repeat(46)}\n// ${s}\n// ${'─'.repeat(46)}\n`+strip(fs.readFileSync(path.join(BASE,s),'utf8'))+'\n';});

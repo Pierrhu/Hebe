@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T13:14:40.545Z
+// 2026-10-12T13:20:20.830Z
 
 
 // ──────────────────────────────────────────────
@@ -6743,7 +6743,8 @@ function renderShopping() {
 
     view.innerHTML = `
       <div class="shop-head">
-        <div class="hb-page-title">Courses</div>
+        <div class="shop-title-row"><div class="hb-page-title">Courses</div>
+          ${items.length ? `<button class="shop-share" data-share-list><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3.5"/><polyline points="7.5 8 12 3.5 16.5 8"/><path d="M5 12.5V19a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-6.5"/></svg>Envoyer</button>` : ''}</div>
         <div class="shop-card ${items.length && done === items.length ? 'all-done' : ''}">
           <div class="shop-card-top">
             <div>
@@ -6796,6 +6797,25 @@ function renderShopping() {
         }).join('')}
       </div>`;
     view.querySelector('.clear-btn')?.addEventListener('click', () => { checked = []; saveChecked(plan, checked); render(); });
+    // v229 : envoyer la liste en texte (WhatsApp, Notes, SMS…), rayon par rayon, sans ce qui est déjà coché
+    view.querySelector('[data-share-list]')?.addEventListener('click', async () => {
+      const lines = [`Courses de la semaine du ${start}`];
+      CATEGORIES.forEach(c => {
+        const list = (grouped[c.name] || []).filter(it => !checked.includes(it.name.toLowerCase()));
+        if (!list.length) return;
+        lines.push('', c.name);
+        list.forEach(it => {
+          const p = toPurchase(it);
+          lines.push(c.name === PANTRY_CAT ? `- ${p.name || it.name} (vérifie ton placard)` : `- ${p.name || it.name} : ${`${p.qty} ${p.unit}`.replace(/ · /g, ', ')}`);
+        });
+      });
+      const text = lines.join('\n');
+      try {
+        if (navigator.share) { await navigator.share({ title: 'Liste de courses', text }); return; }
+      } catch (e) { if (e?.name === 'AbortError') return; }
+      try { await navigator.clipboard.writeText(text); toast('Liste copiée : colle-la où tu veux'); }
+      catch { toast("La liste n'a pas pu être copiée.", 'warn'); }
+    });
     view.querySelectorAll('[data-have]').forEach(btn => btn.addEventListener('click', e => {
       e.stopPropagation();
       savePantry([...new Set([...getPantry(), btn.dataset.have])]);
@@ -7588,7 +7608,7 @@ function renderSettings() {
       <div class="set-section">
         <div class="set-section-head">Tes données</div>
         <div class="bk-card">
-          <p>Tout est enregistré sur ce téléphone. Garde une copie dans tes fichiers (iCloud, Drive…) pour ne rien perdre.</p>
+          <p>Tout est enregistré sur ce téléphone, photos comprises. Garde une copie dans tes fichiers (iCloud, Drive…) pour ne rien perdre.</p>
           <div class="bk-btns"><button class="hb-btn hb-btn-primary" data-backup>Sauvegarder</button><button class="hb-btn bk-sec" data-restore>Restaurer</button></div>
           <span class="bk-last">Dernière sauvegarde : ${lastBackupText()}</span>
           <input type="file" accept=".json,application/json" data-restore-file hidden>
@@ -7842,7 +7862,8 @@ async function exportBackup() {
   localStorage.setItem('hebe_last_backup', date);
   const data = {};
   for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (isAppKey(k)) data[k] = localStorage.getItem(k); }
-  const json = JSON.stringify({ app: 'hebe', version: 1, date, data });
+  const photos = await exportPhotos(); // v229 : les photos du mois voyagent avec la sauvegarde
+  const json = JSON.stringify({ app: 'hebe', version: 1, date, data, ...(photos.length ? { photos } : {}) });
   const name = `hebe-sauvegarde-${date.slice(0, 10)}.json`;
   const file = new File([json], name, { type: 'application/json' });
   // sur téléphone : la fenêtre de partage (Enregistrer dans Fichiers, iCloud, Drive…) ; sinon, un téléchargement
@@ -7861,16 +7882,17 @@ function askRestore(text) {
   if (!backup || backup.app !== 'hebe' || !backup.data || typeof backup.data !== 'object') { toast('Ce fichier n\'est pas une sauvegarde Hébé', 'warn'); return; }
   openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad bk-confirm">
       <div class="hb-h2">Restaurer cette sauvegarde ?</div>
-      <p>Sauvegarde du ${frDate(backup.date)}. Elle remplacera tout ce qui est sur ce téléphone : fiches, semaine, notes des plats, placard.</p>
+      <p>Sauvegarde du ${frDate(backup.date)}. Elle remplacera tout ce qui est sur ce téléphone : fiches, semaine, notes des plats, placard${Array.isArray(backup.photos) ? ', photos' : ''}.</p>
       <div class="bk-btns"><button class="hb-btn bk-sec" data-bk-cancel>Annuler</button><button class="hb-btn hb-btn-primary" data-bk-ok>Restaurer</button></div>
     </div>`);
   const sheet = document.getElementById('sheet');
   sheet.querySelector('[data-bk-cancel]').addEventListener('click', () => closeSheet());
-  sheet.querySelector('[data-bk-ok]').addEventListener('click', () => {
+  sheet.querySelector('[data-bk-ok]').addEventListener('click', async () => {
     const old = [];
     for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (isAppKey(k)) old.push(k); }
     old.forEach(k => localStorage.removeItem(k));
     Object.entries(backup.data).forEach(([k, v]) => { if (isAppKey(k) && typeof v === 'string') localStorage.setItem(k, v); });
+    if (Array.isArray(backup.photos)) { try { await importPhotos(backup.photos); } catch {} }
     closeSheet();
     location.reload();
   });
@@ -7883,7 +7905,7 @@ function askRestore(text) {
 // body.js — v227 : « Mon poids » va au-delà de la balance.
 // Tour de taille : hebe_waist = { id: [{ d: 'AAAA-MM-JJ', cm }] } (localStorage, donc dans la sauvegarde).
 // Photos : une par mois et par personne, dans IndexedDB (base « hebe », magasin « photos », clé « id|AAAA-MM »),
-// réduites à 900 px en JPEG. Elles ne quittent jamais le téléphone et ne sont pas dans la sauvegarde.
+// réduites à 900 px en JPEG. Elles ne quittent le téléphone que dans la sauvegarde (v229).
 
 
 // ── Tour de taille ──
@@ -8018,6 +8040,17 @@ async function fillPhotos(view, m) {
     + (hasCur ? '' : `<button class="bd-p bd-add" data-photo-add aria-label="Ajouter la photo de ${capOf(cur)}"><span class="bd-img"><img src="img/art/photo-${m.sex === 'female' ? 'femme' : 'homme'}.webp" alt=""><i class="bd-plus" aria-hidden="true">+</i></span><span class="bd-cap">${capOf(cur).replace(/^./, c => c.toUpperCase())}</span></button>`);
   view.querySelector('[data-cmp]').hidden = ps.length < 2;
   box._photos = ps;
+}
+
+// v229 : photos dans la sauvegarde (toutes les personnes), et restauration
+async function exportPhotos() {
+  try { const s = await store('readonly'); const [keys, vals] = await Promise.all([req(s.getAllKeys()), req(s.getAll())]); return keys.map((k, i) => ({ k, ...vals[i] })); }
+  catch { return []; }
+}
+async function importPhotos(list) {
+  const s = await store('readwrite');
+  await req(s.clear());
+  for (const p of list) { if (p && p.k && p.mid && p.m && typeof p.data === 'string') await req(s.put({ mid: p.mid, m: p.m, d: p.d, data: p.data }, p.k)); }
 }
 
 // poids de la pesée la plus proche d'un mois donné (pour la comparaison)

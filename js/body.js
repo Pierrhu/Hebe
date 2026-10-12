@@ -1,7 +1,7 @@
 // body.js — v227 : « Mon poids » va au-delà de la balance.
 // Tour de taille : hebe_waist = { id: [{ d: 'AAAA-MM-JJ', cm }] } (localStorage, donc dans la sauvegarde).
 // Photos : une par mois et par personne, dans IndexedDB (base « hebe », magasin « photos », clé « id|AAAA-MM »),
-// réduites à 900 px en JPEG. Elles ne quittent jamais le téléphone et ne sont pas dans la sauvegarde.
+// réduites à 900 px en JPEG. Elles ne quittent le téléphone que dans la sauvegarde (v229).
 
 import { getTodayDate } from '../data/log.js';
 import { openSheet, closeSheet, toast } from './utils.js';
@@ -138,6 +138,17 @@ async function fillPhotos(view, m) {
     + (hasCur ? '' : `<button class="bd-p bd-add" data-photo-add aria-label="Ajouter la photo de ${capOf(cur)}"><span class="bd-img"><img src="img/art/photo-${m.sex === 'female' ? 'femme' : 'homme'}.webp" alt=""><i class="bd-plus" aria-hidden="true">+</i></span><span class="bd-cap">${capOf(cur).replace(/^./, c => c.toUpperCase())}</span></button>`);
   view.querySelector('[data-cmp]').hidden = ps.length < 2;
   box._photos = ps;
+}
+
+// v229 : photos dans la sauvegarde (toutes les personnes), et restauration
+export async function exportPhotos() {
+  try { const s = await store('readonly'); const [keys, vals] = await Promise.all([req(s.getAllKeys()), req(s.getAll())]); return keys.map((k, i) => ({ k, ...vals[i] })); }
+  catch { return []; }
+}
+export async function importPhotos(list) {
+  const s = await store('readwrite');
+  await req(s.clear());
+  for (const p of list) { if (p && p.k && p.mid && p.m && typeof p.data === 'string') await req(s.put({ mid: p.mid, m: p.m, d: p.d, data: p.data }, p.k)); }
 }
 
 // poids de la pesée la plus proche d'un mois donné (pour la comparaison)
