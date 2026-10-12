@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T15:10:30.833Z
+// 2026-10-12T15:22:04.088Z
 
 
 // ──────────────────────────────────────────────
@@ -7144,52 +7144,56 @@ function floorBar(kcal, floor) {
 // v243 : les trois dernières planches reprennent le style des premières (axe à l'encre, bandes pâles,
 // repères terracotta, légendes en italique)
 
-// jeûne 16:8 : deux journées de 24 h, la fenêtre où l'on mange en bande verte, les repas en repères terracotta
-function fastBar() {
-  const X = h => 20 + h / 24 * 280;
-  const day = (y, label, from, to, meals, note) => `
-    <text x="20" y="${y - 8}" class="sv-l">${label}</text>
-    <rect x="${X(0)}" y="${y}" width="${X(24) - X(0)}" height="10" fill="#EAD9CF"/>
-    <rect x="${X(from)}" y="${y}" width="${X(to) - X(from)}" height="10" fill="#DCE8DF"/>
-    <line x1="${X(0)}" y1="${y + 10}" x2="${X(24)}" y2="${y + 10}" stroke="${INK}" stroke-width="1.2"/>
-    ${meals.map(h => `<line x1="${X(h)}" y1="${y - 2}" x2="${X(h)}" y2="${y + 14}" stroke="${TERRA}" stroke-width="2"/><circle cx="${X(h)}" cy="${y - 2}" r="3.5" fill="${TERRA}"/>`).join('')}
-    ${note ? `<text x="${(X(0) + X(from)) / 2}" y="${y - 8}" text-anchor="middle" class="sv-k">${note}</text>` : ''}`;
-  return `<svg viewBox="0 0 320 100" class="sci-svg" aria-hidden="true">
-    ${day(22, 'jeûne, 16 h sans manger', 12, 20, [12, 16, 20], '')}
-    ${day(64, 'classique', 8, 20, [8, 12, 16, 20], '')}
-    ${[0, 6, 12, 18, 24].map(h => `<line x1="${X(h)}" y1="74" x2="${X(h)}" y2="${h % 12 ? 78 : 80}" stroke="${INK}" stroke-width="1"/><text x="${X(h)}" y="94" text-anchor="middle" class="sv-t">${h} h</text>`).join('')}
-    <circle cx="${X(24) - 42}" cy="10" r="3.5" fill="${TERRA}"/><text x="${X(24)}" y="14" text-anchor="end" class="sv-k">repas</text>
+// jeûne 16:8 : les assiettes de la journée, dessinées à la taille de leurs calories
+function fastPlates(kcal) {
+  const J = PLATE_SHARE.jeune, C = PLATE_SHARE.classique, B = BREAKFAST_SHARE;
+  const rows = [
+    ['classique', [['8 h', B], ['12 h', C], ['16 h', 1 - B - 2 * C], ['20 h', C]], 34],
+    ['jeûne', [['12 h', J], ['16 h', 1 - 2 * J], ['20 h', J]], 118],
+  ];
+  const R = sh => 7 + Math.sqrt(sh) * 30; // surface proportionnelle aux calories
+  const plate = (x, y, sh, big) => { const r = R(sh); return `<circle cx="${x}" cy="${y}" r="${r + 3}" fill="#fff" stroke="${INK}" stroke-width="1.2"/>
+    <circle cx="${x}" cy="${y}" r="${r - 2}" fill="${big ? '#9DB7A3' : '#DCE8DF'}"/>
+    <text x="${x}" y="${y + 4}" text-anchor="middle" class="sv-in dk">${nf(kcal * sh)}</text>`; };
+  return `<svg viewBox="0 0 320 188" class="sci-svg" aria-hidden="true">
+    ${rows.map(([lbl, meals, y]) => {
+      const xs = meals.length === 4 ? [92, 154, 214, 276] : [118, 197, 276];
+      return `<text x="12" y="${y + 4}" class="sv-l">${lbl}</text>` + meals.map(([h, sh], i) => plate(xs[i], y, sh, lbl === 'jeûne' && sh === J)
+        + `<text x="${xs[i]}" y="${y + R(sh) + 17}" text-anchor="middle" class="sv-t">${h}</text>`).join('');
+    }).join('')}
+    <text x="308" y="182" text-anchor="end" class="sv-k">en kcal par repas</text>
   </svg>`;
 }
 
-// semaine de boîtes : bande frigo du dimanche au mercredi, bande congélateur ensuite
+// semaine de boîtes : sept boîtes repas, couvercle vert au frigo, bleu au congélateur
 function batchWeek() {
   const d = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
-  const X = i => 20 + i * 280 / 7, C = i => X(i) + 20;
-  return `<svg viewBox="0 0 320 100" class="sci-svg" aria-hidden="true">
-    <text x="${(X(0) + X(4)) / 2}" y="18" text-anchor="middle" class="sv-l">frigo, 4 °C au plus</text>
-    <text x="${(X(4) + X(7)) / 2}" y="18" text-anchor="middle" class="sv-l">congélateur, −18 °C</text>
-    <rect x="${X(0)}" y="26" width="${X(4) - X(0)}" height="10" fill="#DCE8DF"/>
-    <rect x="${X(4)}" y="26" width="${X(7) - X(4)}" height="10" fill="#E3EEF8"/>
-    <line x1="${X(0)}" y1="36" x2="${X(7)}" y2="36" stroke="${INK}" stroke-width="1.2"/>
-    ${d.map((x, i) => `<line x1="${C(i)}" y1="36" x2="${C(i)}" y2="41" stroke="${INK}" stroke-width="1"/><text x="${C(i)}" y="55" text-anchor="middle" class="sv-t">${x}</text>`).join('')}
-    <line x1="${X(4)}" y1="22" x2="${X(4)}" y2="44" stroke="${TERRA}" stroke-width="2"/><circle cx="${X(4)}" cy="22" r="3.5" fill="${TERRA}"/>
-    <text x="${(X(0) + X(4)) / 2}" y="72" text-anchor="middle" class="sv-k">3 jours au plus au frigo</text>
-    <text x="${(X(4) + X(7)) / 2 + 10}" y="92" text-anchor="middle" class="sv-t">décongelé la veille au frigo</text>
-    <text x="20" y="92" class="sv-k">réchauffé à 74 °C</text>
+  const box = (x, cold) => `<g transform="translate(${x} 22)">
+    <rect x="0" y="6" width="34" height="22" rx="5" fill="#fff" stroke="${INK}" stroke-width="1.1"/>
+    <rect x="-2" y="0" width="38" height="8" rx="3" fill="${cold ? '#9BBCD8' : '#9DB7A3'}" stroke="${INK}" stroke-width="1.1"/>
+    <rect x="5" y="13" width="10" height="9" rx="2" fill="#E8C97E"/><rect x="18" y="12" width="11" height="10" rx="2" fill="${cold ? '#C9DCEC' : '#C8DCCB'}"/>
+    ${cold ? `<path d="M17 -9 v10 M12 -6.5 l10 5 M12 -1.5 l10 -5" stroke="#6F9FC9" stroke-width="1.2"/>` : ''}
+  </g>`;
+  return `<svg viewBox="0 0 320 126" class="sci-svg" aria-hidden="true">
+    ${d.map((x, i) => box(10 + i * 44, i >= 4) + `<text x="${27 + i * 44}" y="66" text-anchor="middle" class="sv-t">${x}</text>`).join('')}
+    <path d="M10 76 h168" stroke="#9DB7A3" stroke-width="2"/><text x="94" y="92" text-anchor="middle" class="sv-k">frigo, 4 °C au plus</text>
+    <path d="M186 76 h122" stroke="#9BBCD8" stroke-width="2"/><text x="247" y="92" text-anchor="middle" class="sv-l">congélateur, −18 °C</text>
+    <text x="247" y="106" text-anchor="middle" class="sv-t">décongelé la veille au frigo</text>
+    <g transform="translate(14 114)"><rect x="0" y="-12" width="6" height="14" rx="3" fill="none" stroke="${TERRA}" stroke-width="1.2"/><circle cx="3" cy="4" r="4" fill="${TERRA}"/><rect x="1.8" y="-6" width="2.4" height="8" fill="${TERRA}"/></g>
+    <text x="28" y="122" class="sv-k">réchauffé à 74 °C</text>
   </svg>`;
 }
 
-// erreur sur la masse grasse : chaque étape la réduit (barres de plus en plus courtes)
+// erreur sur la masse grasse : des cercles qui rétrécissent d'une étape à l'autre
 function fatFunnel(kg) {
   const lm = 0.05 * kg, km = lm * 21.6, avg = km / 2;
-  const bar = (y, w, txt, lbl, fill, dark) => `<rect x="20" y="${y}" width="${w}" height="18" rx="4" fill="${fill}"/>
-    <text x="28" y="${y + 13}" class="sv-in${dark ? ' dk' : ''}">${txt}</text><text x="${20 + w + 8}" y="${y + 13}" class="sv-l">${lbl}</text>`;
-  return `<svg viewBox="0 0 320 104" class="sci-svg" aria-hidden="true">
-    ${bar(4, 190, '± 5 points', 'ton taux de gras', OCHRE)}
-    ${bar(30, 150, `± ${dec(lm)} kg`, 'ta masse maigre', '#C9B07A')}
-    ${bar(56, 110, `± ${Math.round(km)} kcal`, 'une formule', INK)}
-    ${bar(82, 64, `± ${Math.round(avg)} kcal`, 'la moyenne des deux', '#9DB7A3', true)}
+  const steps = [['± 5 points', 'taux de gras', 30, OCHRE], [`± ${dec(lm)} kg`, 'masse maigre', 25, '#C9B07A'], [`± ${Math.round(km)} kcal`, 'une formule', 20, INK], [`± ${Math.round(avg)} kcal`, 'la moyenne', 14, '#9DB7A3']];
+  const xs = [42, 120, 196, 266];
+  return `<svg viewBox="0 0 320 112" class="sci-svg" aria-hidden="true">
+    ${steps.map(([v, l, r, c], i) => `<circle cx="${xs[i]}" cy="46" r="${r}" fill="${c}" opacity="${i === 2 ? 0.9 : 1}"/>
+      <text x="${xs[i]}" y="${46 - r - 8}" text-anchor="middle" class="sv-in dk" style="font-size:11px">${v}</text>
+      <text x="${xs[i]}" y="${46 + 30 + 18}" text-anchor="middle" class="sv-l">${l}</text>`).join('')}
+    ${[0, 1, 2].map(i => `<path d="M${xs[i] + steps[i][2] + 4} 46 L${xs[i + 1] - steps[i + 1][2] - 6} 46" stroke="${TERRA}" stroke-width="1.4"/><path d="M${xs[i + 1] - steps[i + 1][2] - 6} 46 l-5 -3.5 v7 z" fill="${TERRA}"/>`).join('')}
   </svg>`;
 }
 
@@ -7266,12 +7270,12 @@ function openScienceSheet() {
       ["Les silhouettes donnent une estimation à l'œil : un bon point de départ, pas une mesure. Ton taux sert à calculer ta masse maigre, donc ta dépense au repos et tes protéines.", ['cunningham']],
       [`Exemple${ok ? ' pour toi' : ''} : à ${nf(kg)} kg, 5 points d'erreur décalent ta masse maigre de ${dec(lmErr)} kg et Katch-McArdle d'environ ${Math.round(kmErr)} kcal. La moyenne avec Harris-Benedict divise ce décalage par deux, à environ ${Math.round(kmErr / 2)} kcal, puis tes pesées le corrigent en deux à quatre semaines.`, null],
     ]),
-    sec(7, 'Le jeûne 16:8', fastBar(), "Avec la formule jeûne, tu manges entre 12 h et 20 h : le moment de tes repas change, pas ce que tu manges dans la journée.", [
-      ["À calories égales, l'avantage est petit : la méta-analyse la plus récente trouve en moyenne 1,5 kg de plus perdus, surtout du gras, mais aussi 0,4 kg de masse maigre. Un grand essai d'un an n'a trouvé aucune différence.", ['fernandes', 'liu', 'semnani']],
-      ["Il n'est pas plus facile à tenir en moyenne : les abandons sont comparables à ceux d'une restriction classique. Choisis la formule qui colle le mieux à tes journées.", ['kim']],
-      ["Si tu fais de la musculation, le jeûne ne semble freiner ni ta prise de muscle ni ta force, à condition de manger assez de protéines.", ['ashtary', 'tinsley19']],
-      ["Une étude sur exactement cette fenêtre de 12 h à 20 h, sans autre changement, a vu un peu plus de muscle perdu aux bras et aux jambes : c'est pour ça que Hébé garde tes protéines au même niveau dans les deux formules.", ['lowe']],
-      ["Le muscle se construit mieux quand les protéines sont réparties sur plusieurs repas, autour de 0,4 g de protéines par kg de poids à chaque repas.", ['schoenfeld']],
+    sec(7, 'Le jeûne 16:8, à découvrir', fastPlates(ok ? t.kcal : 2400), "Tu manges entre 12 h et 20 h. Les mêmes calories sur trois repas au lieu de quatre : chaque assiette est plus copieuse, et tu sors de table rassasié.", [
+      ...(ok ? [[`Pour toi : ton déjeuner et ton dîner passent de ${nf(t.kcal * PLATE_SHARE.classique)} à ${nf(t.kcal * PLATE_SHARE.jeune)} kcal chacun, soit un quart de plus dans l'assiette.`, null]] : []),
+      ["À calories égales, c'est au moins aussi efficace qu'une journée classique, avec même un léger avantage en moyenne : environ 1,5 kg de plus perdus, surtout du gras.", ['fernandes', 'liu', 'semnani']],
+      ["Avec la musculation et assez de protéines, ta prise de muscle et ta force suivent aussi bien. Hébé garde d'ailleurs tes protéines au même niveau dans les deux formules, pour protéger ton muscle.", ['ashtary', 'tinsley19', 'lowe']],
+      ["Tes protéines restent réparties sur tes trois repas, autour de 0,4 g par kg de poids à chaque fois, ce qui aide le muscle à se construire.", ['schoenfeld']],
+      ["Idéal si tu n'as pas faim le matin ou si tu préfères de vrais repas. Et si ça ne te convient pas, tu repasses à la formule classique en un geste.", null],
     ]),
     sec(8, 'Cuisiner une fois, manger sans risque', batchWeek(), "Bien refroidir, bien conserver et bien réchauffer tes boîtes suffit à garder ta cuisine du dimanche sûre toute la semaine.", [
       ["Les plats vont au frigo dans les 2 heures après la cuisson, dans l'heure s'il fait plus de 32 °C. Pour le riz, Hébé est plus stricte et demande 1 heure.", ['fsis', 'foodsafety', 'ansesBc']],
