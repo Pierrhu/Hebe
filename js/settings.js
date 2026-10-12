@@ -73,7 +73,6 @@ export function renderSettings() {
         <div class="set-section-head">Tes repas</div>
         ${mealsBlock(member)}
         ${staplesCard()}
-        ${weekPrefsBlock()}
       </div>
 
       <!-- PROTOCOLE -->

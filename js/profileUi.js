@@ -183,14 +183,14 @@ const REPEAT_NOTES = {
 };
 export function weekPrefsBlock() {
   const rep = getMaxRepeat(), soups = getSoups();
-  return `<div class="dt-card dt-repeat" style="--c:var(--terra);--t:var(--terra-t)">
+  return `<div class="dt-card dt-repeat" style="--c:var(--bloom);--t:var(--bloom-t)">
       <div class="dt-top"><b>Même plat dans la semaine</b><span>Pour tout le foyer</span></div>
       <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
         ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
       </div>
       <p class="dt-note">${REPEAT_NOTES[rep]}</p>
     </div>
-    <div class="dt-card dt-soups" style="--c:var(--sky);--t:var(--sky-t)">
+    <div class="dt-card dt-soups" style="--c:var(--mint);--t:var(--mint-t)">
       <div class="dt-top"><b>Soupes</b><span>Pour tout le foyer</span></div>
       <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
         ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
@@ -217,7 +217,7 @@ const DIETS = [
   { key: 'lactose', label: 'Lactose', hint: 'Lait, yaourt, fromage frais', tint: '--terra-t', levels: ['Aucun souci', 'Intolérance', 'Strict'] },
   { key: 'gluten', label: 'Gluten', hint: 'Pâtes, pain, sauce soja', tint: '--terra-t', levels: ['Aucun souci', 'Sensibilité', 'Strict'] },
 ];
-export function mealsBlock(member, { error = '' } = {}) {
+export function mealsBlock(member, { error = '', week = true } = {}) {
   return `<div class="fm-list" role="radiogroup" aria-label="Formule de repas">
       ${FORMULAS.map(f => `<button class="fm-card ${member.formula === f.id ? 'on' : ''}" data-formula="${f.id}" role="radio" aria-checked="${member.formula === f.id}" style="--c:var(${f.tint.slice(0, -2)});--t:var(${f.tint})">
         <b>${f.title}</b><span class="fm-desc">${f.desc}</span>${timeline(f)}<span class="sel-check" aria-hidden="true"></span>
@@ -246,7 +246,8 @@ export function mealsBlock(member, { error = '' } = {}) {
           ${d.levels.map((l, i) => `<button class="dt-btn ${(member[d.key] || 0) === i ? 'on' : ''}" data-diet="${d.key}" data-level="${i}" role="radio" aria-checked="${(member[d.key] || 0) === i}">${l}</button>`).join('')}
         </div>
       </div>`).join('')}
-    </div>`;
+    </div>
+    ${week ? weekPrefsBlock() : ''}`;
 }
 
 // Niveau d'activité : quatre choix décrits par une phrase

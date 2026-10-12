@@ -15,7 +15,7 @@ import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
   measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
-  householdCards, mealsBlock, openProtocolSheet, equipmentBlock, weekPrefsBlock,
+  householdCards, mealsBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)
@@ -54,7 +54,7 @@ export function renderWelcome(onDone) {
     return out;
   }
   let steps;
-  if (firstTime) steps = [...(h.migrated ? [] : [{ type: 'hello' }]), { type: 'household' }, { type: 'tools' }, { type: 'week' }, ...tail()];
+  if (firstTime) steps = [...(h.migrated ? [] : [{ type: 'hello' }]), { type: 'household' }, { type: 'tools' }, ...tail()];
   else steps = [...incomplete().flatMap(memberSteps), { type: 'summary' }];
   let i = 0;
   let error = '';
@@ -79,7 +79,7 @@ export function renderWelcome(onDone) {
     return `<div class="wl-who"><span class="wl-who-n">${k + 1}</span>${m.name ? esc(m.name) : `${ORD[k]} personne`}${m.name ? '' : ' sur deux'}</div>`;
   };
   // étiquette colorée de l'étape
-  const KICK = { week: 'Ta semaine', tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
+  const KICK = { tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
   const kick = () => ''; // pas d'étiquette au-dessus des titres
   const errBox = () => (error ? `<p class="wl-error" role="alert">${error}</p>` : '');
   const cta = label => `<div class="wl-cta"><button class="hb-btn hb-btn-primary wl-next">${label}</button></div>`;
@@ -123,13 +123,6 @@ export function renderWelcome(onDone) {
         ${errBox()}
         ${cta('Continuer')}`;
 
-      case 'week': return `
-        ${top()}${kick()}
-        <h1 class="wl-title">Ta semaine</h1>
-        <p class="wl-lead">Tu pourras changer ces choix dans Mon programme.</p>
-        <div class="wl-weekprefs">${weekPrefsBlock()}</div>
-        ${cta('Continuer')}`;
-
       case 'identity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">Faisons connaissance</h1>
@@ -154,7 +147,7 @@ export function renderWelcome(onDone) {
       case 'meals': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les repas de ${esc(m.name)}` : 'Tes repas'}</h1>
-        ${mealsBlock(m, { error })}
+        ${mealsBlock(m, { error, week: getMembers()[0]?.id === m.id })}
         ${cta('Continuer')}`;
 
       case 'goal': return `
@@ -209,7 +202,7 @@ export function renderWelcome(onDone) {
     const m = member();
     if (s.type === 'household') {
       if (!h.countChosen && getMembers().length < 2) return fail('Choisis pour combien de personnes Hébé prépare les repas.');
-      steps = [...steps.slice(0, i + 1), { type: 'tools' }, { type: 'week' }, ...tail()];
+      steps = [...steps.slice(0, i + 1), { type: 'tools' }, ...tail()];
     }
     if (s.type === 'tools') {
       const eq = getHousehold().equipment || {};
