@@ -3,7 +3,6 @@
 // Profil repris d'une ancienne version : foyer, prénom et profil, repas, puis les autres personnes éventuelles.
 // Personne ajoutée depuis Mon programme : seulement les étapes de cette personne.
 
-import { getMains } from '../data/recipes.js';
 import { el, toast } from './utils.js';
 import { askRestore } from './settings.js';
 import {
@@ -98,7 +97,7 @@ export function renderWelcome(onDone) {
           <div class="brand-word">Héb<span class="brand-accent">é</span></div>
           <div class="brand-tag">Bien manger sans y penser</div>
           <div class="wl-points">
-            <div><i style="background:var(--honey)"></i>${getMains().filter(r => r.batch && !(r.tags || []).includes('cantine')).length} plats du monde</div>
+            <div><i style="background:var(--honey)"></i>Plus de 100 recettes</div>
             <div><i style="background:var(--sky)"></i>Des portions calculées pour toi</div>
             <div><i style="background:var(--terra)"></i>Une seule session de cuisine par semaine</div>
             <div><i style="background:var(--sage)"></i>La liste de courses toute prête</div>

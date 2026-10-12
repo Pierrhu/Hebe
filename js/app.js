@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T11:39:23.801Z
+// 2026-10-12T11:57:46.336Z
 
 
 // ──────────────────────────────────────────────
@@ -8174,7 +8174,7 @@ function renderWelcome(onDone) {
           <div class="brand-word">Héb<span class="brand-accent">é</span></div>
           <div class="brand-tag">Bien manger sans y penser</div>
           <div class="wl-points">
-            <div><i style="background:var(--honey)"></i>${getMains().filter(r => r.batch && !(r.tags || []).includes('cantine')).length} plats du monde</div>
+            <div><i style="background:var(--honey)"></i>Plus de 100 recettes</div>
             <div><i style="background:var(--sky)"></i>Des portions calculées pour toi</div>
             <div><i style="background:var(--terra)"></i>Une seule session de cuisine par semaine</div>
             <div><i style="background:var(--sage)"></i>La liste de courses toute prête</div>
