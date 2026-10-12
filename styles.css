@@ -1812,9 +1812,8 @@ button.wl-ch:disabled { cursor: default; }
 .pf-warn { margin: 10px 0 0; padding: 10px 12px; border-radius: 14px; background: var(--honey-t); color: var(--text); font-size: 13.5px; line-height: 1.45; }
 
 /* v236 : fiche « Comment Hébé calcule » */
-.sci-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: 13.5px; font-weight: 600; }
-.sci-link span { font-size: 17px; line-height: 1; }
-.sci-link-c { align-self: center; margin: 10px auto 0; display: flex; }
+.sci-link { display: inline-block; margin-top: 12px; padding: 6px 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: 13.5px; font-weight: 600; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.sci-link-c { align-self: center; margin: 10px auto 0; display: block; }
 .sci { display: flex; flex-direction: column; }
 .sci-lead { margin: 6px 0 4px; font-size: 14.5px; line-height: 1.5; color: var(--text-2); }
 .sci-sec { padding: 12px 0; border-top: 1px solid var(--line); }

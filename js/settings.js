@@ -105,7 +105,7 @@ export function renderSettings() {
           </div>
           ${details.floored ? `<p class="tc-note">Le programme visait ${details.wanted} kcal. Hébé remonte ton objectif à ${details.targets.kcal} kcal pour ne pas descendre sous ce dont ton corps a besoin au repos.</p>` : ''}
           ${details.fatRaised ? `<p class="tc-note">Tes lipides sont relevés à ${details.targets.fat} g pour rester au-dessus de ${profile.sex === 'female' ? '25' : '20'} % de tes calories, un minimum important pour l'équilibre hormonal.</p>` : ''}
-          <button class="sci-link" data-science>Comment Hébé calcule tes besoins<span aria-hidden="true">›</span></button>
+          <button class="sci-link" data-science>Comment Hébé calcule tes besoins</button>
         </div>
 
         ${(() => {

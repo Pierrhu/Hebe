@@ -446,7 +446,7 @@ export function openProtocolSheet(profile, pid, { isCurrent = false, onChoose = 
       </div>
 
       <button class="hb-btn ${isCurrent ? '' : 'hb-btn-primary'} pf-choose">${isCurrent ? 'Programme actuel' : 'Choisir ce programme'}</button>
-      <button class="sci-link sci-link-c" data-science>D'où viennent ces chiffres ?<span aria-hidden="true">›</span></button>
+      <button class="sci-link sci-link-c" data-science>D'où viennent ces chiffres ?</button>
     </div>`);
   const sheet = document.getElementById('sheet');
   sheet.querySelector('[data-science]')?.addEventListener('click', () => { closeSheet(); openScienceSheet(); });

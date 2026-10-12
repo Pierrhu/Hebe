@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T14:05:10.655Z
+// 2026-10-12T14:06:02.897Z
 
 
 // ──────────────────────────────────────────────
@@ -7511,7 +7511,7 @@ function openProtocolSheet(profile, pid, { isCurrent = false, onChoose = null } 
       </div>
 
       <button class="hb-btn ${isCurrent ? '' : 'hb-btn-primary'} pf-choose">${isCurrent ? 'Programme actuel' : 'Choisir ce programme'}</button>
-      <button class="sci-link sci-link-c" data-science>D'où viennent ces chiffres ?<span aria-hidden="true">›</span></button>
+      <button class="sci-link sci-link-c" data-science>D'où viennent ces chiffres ?</button>
     </div>`);
   const sheet = document.getElementById('sheet');
   sheet.querySelector('[data-science]')?.addEventListener('click', () => { closeSheet(); openScienceSheet(); });
@@ -7618,7 +7618,7 @@ function renderSettings() {
           </div>
           ${details.floored ? `<p class="tc-note">Le programme visait ${details.wanted} kcal. Hébé remonte ton objectif à ${details.targets.kcal} kcal pour ne pas descendre sous ce dont ton corps a besoin au repos.</p>` : ''}
           ${details.fatRaised ? `<p class="tc-note">Tes lipides sont relevés à ${details.targets.fat} g pour rester au-dessus de ${profile.sex === 'female' ? '25' : '20'} % de tes calories, un minimum important pour l'équilibre hormonal.</p>` : ''}
-          <button class="sci-link" data-science>Comment Hébé calcule tes besoins<span aria-hidden="true">›</span></button>
+          <button class="sci-link" data-science>Comment Hébé calcule tes besoins</button>
         </div>
 
         ${(() => {
