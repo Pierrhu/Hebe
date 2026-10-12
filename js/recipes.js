@@ -77,7 +77,7 @@ export function renderRecipes() {
     const noWhey = getActiveMember().whey === false;
     const filtered = RECIPES.filter(r => {
       // ni accompagnements retirés, ni repas libres ou cantine, et une seule version de chaque recette (avec ou sans whey)
-      if (r.retired || r.category === 'extra' || (r.tags || []).includes('cantine')) return false;
+      if (r.retired || r.category === 'extra' || r.category === 'soup' || (r.tags || []).includes('cantine')) return false;
       if (noWhey ? hasWhey(r) : (r.tags || []).includes('sans-whey')) return false;
       if (!dietOk(r, getActiveMember().lactose || 0, getActiveMember().gluten || 0)) return false;
       const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));

@@ -197,6 +197,12 @@ const RAW = {
 
   // ── Cantine (estimation, pas acheté) ───────────────────────────
   feculents_cuits:['Féculents cuits (cantine)', 'g',     140, 5,    28,  1,   'carb', 0,   'E', {}],
+
+  // ── v205 : soupes (option « Soupe », pas encore proposée par le moteur) — valeurs Ciqual ──
+  poireau:       ['Poireaux',                   'g',     30,  1.5,  4.5, 0.3, 'veg', 2.5, 'F', { buy: 200 }],
+  butternut:     ['Courge butternut',           'g',     40,  1,    8.4, 0.1, 'veg', 2,   'F', { buy: 1000 }],
+  pois_casses:   ['Pois cassés (secs)',         'g',     340, 22,   50,  1.5, 'legume', 3, 'S', { cook: 2.4, pack: 500 }],
+  lin:           ['Graines de lin moulues',     'g',     530, 20,   2,   42,  'fat', 8,   'E', { pantry: true }],
 };
 
 export const INGREDIENTS = {};
@@ -288,5 +294,7 @@ export const SPICES = {
   W69: 'cumin, paprika, cannelle, gingembre en poudre', W70: 'cumin, paprika, cannelle, curcuma', W71: 'cumin, paprika fumé, piment',
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
+  SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
+  SO05: 'curcuma, cannelle, poivre',
 };
 export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
