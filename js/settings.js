@@ -400,7 +400,7 @@ function staplesCard() {
     plat: 'Tu choisis sur la fiche de chaque plat. Par défaut : complet.',
   };
   return `<div class="dt-card dt-staples" style="--c:var(--leaf);--t:var(--leaf-t)">
-    <div class="dt-top"><b>Riz et pâtes</b><span>Pour tout le foyer</span></div>
+    <div class="dt-top"><b>Riz et pâtes</b></div>
     <div class="dt-seg" role="radiogroup" aria-label="Riz et pâtes">
       ${[['complet', 'Complets'], ['classique', 'Classiques'], ['plat', 'Plat par plat']].map(([v, l]) =>
         `<button class="dt-btn ${mode === v ? 'on' : ''}" data-staples="${v}" role="radio" aria-checked="${mode === v}">${l}</button>`).join('')}

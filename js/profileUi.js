@@ -177,25 +177,25 @@ export function equipmentBlock(eq) {
 
 // v208 : ta semaine — combien de fois le même plat, et soupes ou non (communs au foyer)
 const REPEAT_NOTES = {
-  2: 'Chaque plat revient 2 fois au plus : plus de variété, environ 7 plats à cuisiner le dimanche.',
-  3: 'Chaque plat revient 3 fois au plus : environ 5 plats à cuisiner le dimanche.',
-  4: 'Chaque plat revient 4 fois au plus : environ 4 plats à cuisiner le dimanche.',
+  2: 'Environ 7 plats à cuisiner le dimanche.',
+  3: 'Environ 5 plats à cuisiner le dimanche.',
+  4: 'Environ 4 plats à cuisiner le dimanche.',
 };
 export function weekPrefsBlock() {
   const rep = getMaxRepeat(), soups = getSoups();
   return `<div class="dt-card dt-repeat" style="--c:var(--bloom);--t:var(--bloom-t)">
-      <div class="dt-top"><b>Même plat dans la semaine</b><span>Pour tout le foyer</span></div>
+      <div class="dt-top"><b>Même plat dans la semaine</b></div>
       <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
         ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
       </div>
       <p class="dt-note">${REPEAT_NOTES[rep]}</p>
     </div>
     <div class="dt-card dt-soups" style="--c:var(--mint);--t:var(--mint-t)">
-      <div class="dt-top"><b>Soupes</b><span>Pour tout le foyer</span></div>
+      <div class="dt-top"><b>Soupes</b></div>
       <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
         ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
       </div>
-      <p class="dt-note">${soups ? 'Une soupe-repas peut remplacer un plat, le soir : soupe thaï, bouillons au miso, pois cassés, velouté.' : 'Pas de soupe dans tes semaines.'}</p>
+      ${soups ? '<p class="dt-note">Une soupe par semaine au plus, le soir.</p>' : ''}
     </div>`;
 }
 
