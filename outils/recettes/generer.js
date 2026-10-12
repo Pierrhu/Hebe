@@ -94,7 +94,7 @@ const tail=`];
 // Noms courts, pour les listes (semaine, sessions de cuisine)
 const SHORT_NAMES = {
   SO01: 'Soupe thaï', SO02: 'Bouillon de poulet miso', SO03: 'Bouillon miso tofu', SO04: 'Soupe de pois cassés',
-  SO05: 'Velouté de patate douce', SO06: 'Velouté butternut',
+  SO06: 'Velouté butternut',
   W01: 'Curry vert', W02: 'Bún gà', W03: 'Gyudon', W04: 'Souvlaki', W05: 'Köfte',
   W06: 'Mujaddara', W07: 'Tajine de poulet', W08: 'Tinga de poulet', W09: 'Döner', W10: 'Smash burger',
   W11: 'Korean chicken', W12: 'Katsu curry', W13: 'Bánh mì', W14: 'Butter chicken', W15: 'Pollo a la brasa',

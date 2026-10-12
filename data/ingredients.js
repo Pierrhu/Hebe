@@ -295,6 +295,5 @@ export const SPICES = {
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
-  SO05: 'curcuma, cannelle, poivre',
 };
 export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
