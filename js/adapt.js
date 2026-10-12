@@ -93,10 +93,6 @@ const STOVE = [
   ['W101', /^Œufs mollets : pose les œufs sur le panier vapeur/, "Œufs mollets : plonge les œufs dans une casserole d'eau frémissante pendant 6 minutes, puis dans de l'eau froide 5 minutes, et écale-les délicatement."],
   ['K11', /^Mets dans l'autocuiseur le riz, le lait/, 'Mets dans une casserole le riz, le lait et le lait de coco.'],
   ['K11', /laisse cuire 12 minutes sous pression/, "Porte à frémissement, puis laisse cuire 30 minutes à feu très doux, sans couvrir, en remuant souvent pour que le lait n'attache pas."],
-  ['S01', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 1,7 fois son poids d'eau (par exemple 135 ml d'eau pour 80 g de riz)."],
-  ['S01', /sous pression/, "Porte à ébullition, couvre, baisse à feu très doux et laisse cuire 12 minutes, puis laisse reposer 5 minutes hors du feu sans ouvrir."],
-  ['S04', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 2 fois son volume d'eau."],
-  ['S04', /sous pression/, 'Porte à ébullition, couvre et laisse cuire 12 minutes à feu doux, puis laisse reposer 5 minutes hors du feu.'],
 ];
 const stoveFor = (r, st) => {
   const id = r.wheyOf || r.id;

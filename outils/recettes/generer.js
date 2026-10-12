@@ -86,11 +86,14 @@ const K=require(path.join(ICI,'collations.js'));
 K.snacks.push(...require(path.join(ICI,'automne.js')).snacks); // collations d'automne (v214)
 const B=require(path.join(ICI,'petits_dejeuners.js'));
 const kept=out.filter(o=>(!['dinner','lunch','sweet'].includes(o.cat))||o.id==='C01');
-let body='  // ══ 30 plats du monde (plaques · autocuiseur · air fryer) ══\n'+W.mains.map(line).join('\n')
- +'\n\n  // ══ Accompagnements air fryer ══\n'+W.sides.map(line).join('\n')
- +'\n\n  // ══ Cantine, collations, compléments, entrées ══\n'+kept.map(line).join('\n')
- +'\n\n  // ══ Soupes (option « Soupe », pas encore proposées) ══\n'+SO.soups.map(line).join('\n')+'\n\n  // ══ Petits-déjeuners (formule classique) ══\n'+B.breakfasts.map(line).join('\n')
- +'\n\n  // ══ Collations (whey) ══\n'+K.snacks.map(line).join('\n')+'\n'+NEW.sides.map(line).join('\n')+'\n\n  // ══ Imprévu ══\n'+NEW.special.map(line).join('\n')+'\n';
+// v218 : recettes supprimées complètement (jamais utilisées, sans photo). Elles n'existent plus dans data/recipes.js.
+const DELETED=new Set(['SA02','SA03','SA04','SA05','SA06','SA07','SA08','SA09','SA10','SA12','W42','S01','S03','S04','EN01','EN02','B10','B12','B13','B14','S06']);
+const keep=list=>list.filter(o=>!DELETED.has(o.id)).map(o=>(o.pairs?Object.assign(o,{pairs:o.pairs.filter(p=>!DELETED.has(p))}):o));
+let body='  // ══ 30 plats du monde (plaques · autocuiseur · air fryer) ══\n'+keep(W.mains).map(line).join('\n')
+ +'\n\n  // ══ Accompagnements air fryer ══\n'+keep(W.sides).map(line).join('\n')
+ +'\n\n  // ══ Cantine, collations, compléments, entrées ══\n'+keep(kept).map(line).join('\n')
+ +'\n\n  // ══ Soupes (option « Soupe », pas encore proposées) ══\n'+keep(SO.soups).map(line).join('\n')+'\n\n  // ══ Petits-déjeuners (formule classique) ══\n'+keep(B.breakfasts).map(line).join('\n')
+ +'\n\n  // ══ Collations (whey) ══\n'+keep(K.snacks).map(line).join('\n')+'\n'+keep(NEW.sides).map(line).join('\n')+'\n\n  // ══ Imprévu ══\n'+keep(NEW.special).map(line).join('\n')+'\n';
 const tail=`];
 
 // Noms courts, pour les listes (semaine, sessions de cuisine)
@@ -112,10 +115,10 @@ const SHORT_NAMES = {
   W61: 'Stroganoff', W62: 'Penne aux boulettes', W63: 'Poulet aux champignons', W64: 'Poulet ail et herbes', W65: 'Bowl buffalo',
   W66: 'Poêlée de bœuf', W67: 'Picadillo', W68: 'Keema aloo', W69: 'Bowl marocain', W70: 'Poulet shawarma',
   W71: 'Bœuf-quinoa épicé', W72: 'Curry et naans', W73: 'Burritos de bœuf', W74: 'Philly cheesesteak', W75: 'Mafé', W76: 'Paella aux crevettes', W77: 'Poulet sauté miso', W78: 'Œufs cocotte', W79: 'Salade lentilles-sardines', W80: 'Salade de maquereau', W81: 'Marry me chicken', W93: 'Risotto butternut', W94: 'Risotto poireaux-saumon', W95: "Poulet vallée d'Auge", W97: 'Pâtes butternut-sauge', W98: 'Bœuf au poivre', W101: 'Polenta champignons', W82: "Poulet soupe à l'oignon", W83: 'Pâtes turques', W84: 'Bourguignon', W85: 'Poulet châtaignes', W89: 'Chili au chocolat', W90: 'Curry crevettes-courge', SO07: 'Marry me soup', SO10: 'Bortsch', SO11: 'Goulash', SO15: 'Mercimek', K22: 'Granola érable', K23: "Pommes à l'érable", K24: 'Overnight oats pumpkin', SO08: 'Velouté de châtaignes', SO09: "Soupe à l'oignon", K13: 'Wrap thon', K14: 'Croque-monsieur', K15: 'Roses des sables', K16: 'Tiramisu', K17: 'Barres aux dattes', K18: 'Barres Snickers', K19: 'Bouchées coco', K20: 'Barres granola', K21: 'Cookies banane', B16: 'Porridge banane',
-  W35: 'Tasty crousty', W36: 'Fajitas', W37: 'Riz sauté', W38: 'Bœuf aux poivrons', W39: 'Bolognaise', W40: 'Kefta et taboulé', W41: 'Gnocchis au poulet', W42: 'Nuggets maison', W43: 'Bowl kebab',
+  W35: 'Tasty crousty', W36: 'Fajitas', W37: 'Riz sauté', W38: 'Bœuf aux poivrons', W39: 'Bolognaise', W40: 'Kefta et taboulé', W41: 'Gnocchis au poulet', W43: 'Bowl kebab',
   W31: 'Raviolis croustillants', W32: 'Bol hot honey', W33: 'Pâtes crémeuses', W34: 'Boulettes laquées', K10: 'Fromage blanc cacahuète', B05: 'Fromage blanc et granola',
   B01: 'Overnight oats cacao', B02: 'Overnight oats pomme', B05: 'Fromage blanc granola', S11: 'Tartine poulet', S12: 'Tartine miel', B06: 'Muffins aux œufs', B07: 'Wrap poulet',
-  B10: 'Tartines houmous', B11: 'Overnight oats cacao', B12: 'Tartines cacahuète', B13: 'Fromage blanc et flocons', B14: 'Tartines poulet', B15: 'Œufs brouillés',
+  B11: 'Overnight oats cacao', B15: 'Œufs brouillés',
 };
 RECIPES.forEach(r => { r.short = SHORT_NAMES[r.id] || r.name.split(/ : | – |, | & /)[0]; });
 
@@ -138,10 +141,10 @@ const TIPS = {
   W28: "À manger dans les 2 jours.",
   W30: "Crevettes cuites : 2 jours au frigo maximum.",
   SA01: "Sèche-les avec un torchon avant cuisson : elles seront plus croustillantes.",
-  SA10: "Ils se congèlent crus.",
-  SA12: "Sans cuisson, se garde 2 jours.",
+  
+  
   C01: "Estimation moyenne d'un plateau cantine équilibré. Non compté dans les courses.",
-  EN01: "Se congèle très bien.",
+  
   K01: "Avec de la mangue surgelée, pas besoin de glaçons.",
   K05: "Prépare 3 bocaux d'un coup : 4 jours au frigo.",
   K06: "Ils se congèlent : 1 minute à l'air fryer pour les réchauffer.",
@@ -783,7 +786,7 @@ RECIPES.push(M('L01', 'Repas libre', 'extra', '🍴', 0, 0, [['repas_libre', 9]]
   "Non compté dans la cuisine ni dans les courses.", ['cantine', 'libre'], false));
 
 // ── Accompagnements retirés : les plats sont complets ──
-const RETIRED = ['W42', 'B14', 'EN01', 'EN02', 'W23', 'W24', 'W26', 'B10', 'B12', 'B13', 'K01', 'K03', 'K07', 'K09', 'K11', 'S06', 'S09', 'S16', 'SA01', 'SA02', 'SA03', 'SA04', 'SA05', 'SA06', 'SA07', 'SA08', 'SA09', 'SA10', 'SA11', 'SA12', 'S01', 'S02', 'S03', 'S04', 'K14'];
+const RETIRED = ['W23', 'W24', 'W26', 'K01', 'K03', 'K07', 'K09', 'K11', 'S09', 'S16', 'SA01', 'SA11', 'S02', 'K14'];
 RECIPES.forEach(r => { if (RETIRED.includes(r.id) || (r.wheyOf && RETIRED.includes(r.wheyOf))) r.retired = true; });
 
 // Une recette contient-elle de la whey ?

@@ -7,6 +7,7 @@
 // Migration : les anciennes entrées stockaient des strings ('D01') → converties à la volée.
 
 import { getActiveMember, logKey } from './household.js';
+import { getById } from './recipes.js';
 
 const EMPTY_MEALS = () => ({ breakfast: [], starter: [], lunch: [], dinner: [], sides: [], sweet: [] });
 
@@ -24,7 +25,7 @@ function normalizeItem(item) {
 function normalizeEntry(entry) {
   const meals = EMPTY_MEALS();
   ['breakfast', 'starter', 'lunch', 'dinner', 'sides', 'sweet'].forEach(slot => {
-    meals[slot] = (entry.meals?.[slot] || []).map(normalizeItem);
+    meals[slot] = (entry.meals?.[slot] || []).map(normalizeItem).filter(it => getById(it.id)); // recette supprimée : on l'ignore
   });
   const out = { date: entry.date, meals };
   // imprévu : plat d'origine conservé pour pouvoir annuler
