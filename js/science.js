@@ -182,16 +182,22 @@ function batchWeek() {
   </svg>`;
 }
 
-// erreur sur la masse grasse : des cercles qui rétrécissent d'une étape à l'autre
-function fatFunnel(kg) {
-  const lm = 0.05 * kg, km = lm * 21.6, avg = km / 2;
-  const steps = [['± 5 points', 'taux de gras', 30, OCHRE], [`± ${dec(lm)} kg`, 'masse maigre', 25, '#C9B07A'], [`± ${Math.round(km)} kcal`, 'une formule', 20, INK], [`± ${Math.round(avg)} kcal`, 'la moyenne', 14, '#9DB7A3']];
-  const xs = [42, 120, 196, 266];
-  return `<svg viewBox="0 0 320 112" class="sci-svg" aria-hidden="true">
-    ${steps.map(([v, l, r, c], i) => `<circle cx="${xs[i]}" cy="46" r="${r}" fill="${c}" opacity="${i === 2 ? 0.9 : 1}"/>
-      <text x="${xs[i]}" y="${46 - r - 8}" text-anchor="middle" class="sv-in dk" style="font-size:11px">${v}</text>
-      <text x="${xs[i]}" y="${46 + 30 + 18}" text-anchor="middle" class="sv-l">${l}</text>`).join('')}
-    ${[0, 1, 2].map(i => `<path d="M${xs[i] + steps[i][2] + 4} 46 L${xs[i + 1] - steps[i + 1][2] - 6} 46" stroke="${TERRA}" stroke-width="1.4"/><path d="M${xs[i + 1] - steps[i + 1][2] - 6} 46 l-5 -3.5 v7 z" fill="${TERRA}"/>`).join('')}
+// erreur sur la masse grasse : ce qu'elle change sur ta dépense au repos, avec une formule seule puis avec la moyenne
+function fatFunnel(kg, rmr) {
+  const km = 0.05 * kg * 21.6, avg = km / 2, span = 250;
+  const X = v => 160 + v / span * 130; // axe centré sur ta dépense, de −250 à +250 kcal
+  const row = (y, lbl, e, col, strong) => `
+    <text x="20" y="${y - 9}" class="sv-l">${lbl}</text>
+    <rect x="${X(-e)}" y="${y - 5}" width="${X(e) - X(-e)}" height="10" rx="5" fill="${col}" opacity="${strong ? 1 : 0.55}"/>
+    <line x1="${X(-e)}" y1="${y - 8}" x2="${X(-e)}" y2="${y + 8}" stroke="${col}" stroke-width="2"/><line x1="${X(e)}" y1="${y - 8}" x2="${X(e)}" y2="${y + 8}" stroke="${col}" stroke-width="2"/>
+    <text x="${X(e) + 8}" y="${y + 4}" class="${strong ? 'sv-k' : 'sv-t'}">± ${Math.round(e)} kcal</text>`;
+  return `<svg viewBox="0 0 320 128" class="sci-svg" aria-hidden="true">
+    <text x="160" y="12" text-anchor="middle" class="sv-t">si ton taux de gras est faux de 5 points</text>
+    <line x1="${X(0)}" y1="20" x2="${X(0)}" y2="96" stroke="${INK}" stroke-width="1" stroke-dasharray="3 3"/>
+    ${row(44, 'une seule formule', km, OCHRE, false)}
+    ${row(80, 'la moyenne des deux', avg, TERRA, true)}
+    <line x1="${X(-span)}" y1="104" x2="${X(span)}" y2="104" stroke="${INK}" stroke-width="1.2"/>
+    ${[-200, -100, 0, 100, 200].map(v => `<line x1="${X(v)}" y1="104" x2="${X(v)}" y2="108" stroke="${INK}" stroke-width="1"/><text x="${X(v)}" y="120" text-anchor="middle" class="sv-t">${v === 0 ? `${nf(rmr)} kcal` : (v > 0 ? '+' : '−') + Math.abs(v)}</text>`).join('')}
   </svg>`;
 }
 
@@ -263,7 +269,7 @@ export function openScienceSheet() {
     sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', "Quel que soit le programme, tes calories ne descendent jamais sous un minimum.", [
       ["Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence.", ['jensen']],
     ]),
-    sec(6, 'Ton taux de gras, sans stress', fatFunnel(kg), "Aucune méthode simple ne mesure ton taux de gras au point près : Hébé est conçue pour qu'une erreur de quelques points pèse peu.", [
+    sec(6, 'Ton taux de gras, sans stress', fatFunnel(kg, ok ? b.bmr : 1980), "Aucune méthode simple ne mesure ton taux de gras au point près : Hébé est conçue pour qu'une erreur de quelques points pèse peu sur ta dépense au repos.", [
       ["Les balances et appareils d'impédance se trompent typiquement de 3 à 7,5 points selon le modèle. Les méthodes de laboratoire à plusieurs compartiments servent de référence, et la DXA s'en approche.", ['siedler', 'tinsley21', 'blue']],
       ["Les silhouettes donnent une estimation à l'œil : un bon point de départ, pas une mesure. Ton taux sert à calculer ta masse maigre, donc ta dépense au repos et tes protéines.", ['cunningham']],
       [`Exemple${ok ? ' pour toi' : ''} : à ${nf(kg)} kg, 5 points d'erreur décalent ta masse maigre de ${dec(lmErr)} kg et Katch-McArdle d'environ ${Math.round(kmErr)} kcal. La moyenne avec Harris-Benedict divise ce décalage par deux, à environ ${Math.round(kmErr / 2)} kcal, puis tes pesées le corrigent en deux à quatre semaines.`, null],
