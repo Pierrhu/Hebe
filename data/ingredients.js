@@ -214,7 +214,6 @@ const RAW = {
   sirop_erable:  ['Sirop d\'érable',            'g',     260, 0,    67,  0.1, 'flavor', 15, 'E', { pantry: true }],
   chou:          ['Chou blanc',                 'g',     27,  1.3,  4,   0.2, 'veg', 1.5,  'F', { buy: 1000 }],
   chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
-  reblochon:     ['Reblochon',                  'g',     330, 20,   0,   27,  'dairy', 14,  'L', { pack: 240 }],
   beurre:        ['Beurre',                     'g',     740, 0.7,  0.6, 82,  'fat', 9,    'L', { pantry: true }],
   noix:          ['Noix (cerneaux)',            'g',     690, 15,   7,   65,  'fat', 14,  'E', { pack: 200 }],
 };

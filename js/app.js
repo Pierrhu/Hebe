@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T13:44:39.829Z
+// 2026-10-12T13:47:38.838Z
 
 
 // ──────────────────────────────────────────────
@@ -246,7 +246,6 @@ const RAW = {
   sirop_erable:  ['Sirop d\'érable',            'g',     260, 0,    67,  0.1, 'flavor', 15, 'E', { pantry: true }],
   chou:          ['Chou blanc',                 'g',     27,  1.3,  4,   0.2, 'veg', 1.5,  'F', { buy: 1000 }],
   chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
-  reblochon:     ['Reblochon',                  'g',     330, 20,   0,   27,  'dairy', 14,  'L', { pack: 240 }],
   beurre:        ['Beurre',                     'g',     740, 0.7,  0.6, 82,  'fat', 9,    'L', { pantry: true }],
   noix:          ['Noix (cerneaux)',            'g',     690, 15,   7,   65,  'fat', 14,  'E', { pack: 200 }],
 };
@@ -2699,7 +2698,7 @@ function applyStaples() {
 
 const LACTOSE_OUT = ['fromage_blanc', 'fromage_frais', 'carre_frais', 'whey', 'cottage'];
 const SUB1 = { yaourt_grec: 'yaourt_sl', lait: 'boisson_avoine', creme: 'creme_coco', beurre: 'huile' };
-const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental', reblochon: 'emmental' };
+const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental' };
 
 // Gluten : « Sensibilité » (1) ou « Strict » (2)
 const GLUTEN_OUT1 = ['chapelure', 'gnocchis', 'boudoirs'];                // écartées dans les deux niveaux
@@ -5950,7 +5949,7 @@ const STEP_RX = {
   chou_fleur: /chou-fleur/, petits_pois: /petits pois/, haricots_verts: /haricots verts/, olives: /olives/,
   salade: /salade|crudités/, avocat: /avocat/, pain_burger: /pains?\b|burger/, baguette: /baguette|pain/, pain: /pain|tartine/, brocoli: /brocoli/,
   thon: /thon/, feuille_riz: /feuilles? de riz|galette/, tomates_sechees: /tomates séchées/, cornflakes: /corn-?flakes/, houmous: /houmous/,
-  riz_risotto: /\briz\b/, polenta: /polenta/, chataignes: /châtaigne/, chou: /\bchou\b(?!-)/, sirop_erable: /érable/, reblochon: /reblochon/, beurre: /beurre(?! de cacahuète)/, sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
+  riz_risotto: /\briz\b/, polenta: /polenta/, chataignes: /châtaigne/, chou: /\bchou\b(?!-)/, sirop_erable: /érable/, beurre: /beurre(?! de cacahuète)/, sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
   cornichons: /cornichon/, chou_chinois: /chou/, radis: /radis/, pousses_soja: /pousses/, mangue: /mangue/, fruits_rouges: /fruits rouges/,
 };
 // v195 : ingrédients qui ne servent qu'au moment du repas (œuf au plat, galettes, fromage à faire fondre…) :
