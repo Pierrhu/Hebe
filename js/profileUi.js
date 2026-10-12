@@ -217,15 +217,18 @@ const DIETS = [
   { key: 'lactose', label: 'Lactose', hint: 'Lait, yaourt, fromage frais', tint: '--terra-t', levels: ['Aucun souci', 'Intolérance', 'Strict'] },
   { key: 'gluten', label: 'Gluten', hint: 'Pâtes, pain, sauce soja', tint: '--terra-t', levels: ['Aucun souci', 'Sensibilité', 'Strict'] },
 ];
-export function mealsBlock(member, { error = '', week = true } = {}) {
+// v220 : le bloc repas est découpé pour l'accueil (une question par écran) ; Réglages garde le bloc complet.
+export function formulaBlock(member, { error = '' } = {}) {
   return `<div class="fm-list" role="radiogroup" aria-label="Formule de repas">
       ${FORMULAS.map(f => `<button class="fm-card ${member.formula === f.id ? 'on' : ''}" data-formula="${f.id}" role="radio" aria-checked="${member.formula === f.id}" style="--c:var(${f.tint.slice(0, -2)});--t:var(${f.tint})">
         <b>${f.title}</b><span class="fm-desc">${f.desc}</span>${timeline(f)}<span class="sel-check" aria-hidden="true"></span>
       </button>`).join('')}
     </div>
     <div class="fm-legend" aria-hidden="true"><span><i style="background:${MEAL_COLORS.breakfast}"></i>Petit-déjeuner</span><span><i style="background:${MEAL_COLORS.lunch}"></i>Déjeuner</span><span><i style="background:${MEAL_COLORS.snack}"></i>Collation</span><span><i style="background:${MEAL_COLORS.dinner}"></i>Dîner</span></div>
-    ${error ? `<p class="wl-error" role="alert">${error}</p>` : ''}
-    ${member.formula === 'classique' ? `<div class="dt-card dt-bk" style="--c:var(--honey);--t:var(--honey-t)">
+    ${error ? `<p class="wl-error" role="alert">${error}</p>` : ''}`;
+}
+export function foodBlock(member) {
+  return `    ${member.formula === 'classique' ? `<div class="dt-card dt-bk" style="--c:var(--honey);--t:var(--honey-t)">
       <div class="dt-top"><b>Au petit-déjeuner</b></div>
       <div class="dt-seg" role="radiogroup" aria-label="Petit-déjeuner">
         ${[['sucre', 'Sucré'], ['sale', 'Salé'], ['mix', 'Les deux']].map(([v, l]) => `<button class="dt-btn ${(member.breakfast || 'mix') === v ? 'on' : ''}" data-bk="${v}" role="radio" aria-checked="${(member.breakfast || 'mix') === v}">${l}</button>`).join('')}
@@ -246,8 +249,10 @@ export function mealsBlock(member, { error = '', week = true } = {}) {
           ${d.levels.map((l, i) => `<button class="dt-btn ${(member[d.key] || 0) === i ? 'on' : ''}" data-diet="${d.key}" data-level="${i}" role="radio" aria-checked="${(member[d.key] || 0) === i}">${l}</button>`).join('')}
         </div>
       </div>`).join('')}
-    </div>
-    ${week ? weekPrefsBlock() : ''}`;
+    </div>`;
+}
+export function mealsBlock(member, { error = '', week = true } = {}) {
+  return formulaBlock(member, { error }) + foodBlock(member) + (week ? weekPrefsBlock() : '');
 }
 
 // Niveau d'activité : quatre choix décrits par une phrase
@@ -275,7 +280,7 @@ function phaseRange(profile, pid) {
 }
 
 // Cartes des quatre programmes
-export function protocolCards(profile, selectedId, { info = true } = {}) {
+export function protocolCards(profile, selectedId, { info = true, range = true } = {}) {
   return `<div class="protocol-grid">
     ${protocolsFor(profile).map(p => `
       <button class="proto-card pc-${p.id} ${p.id === selectedId ? 'active' : ''}" data-pid="${p.id}">
@@ -284,7 +289,7 @@ export function protocolCards(profile, selectedId, { info = true } = {}) {
           ${info ? `<span class="proto-info" data-sheet="${p.id}" role="button" tabindex="0" aria-label="En savoir plus sur ${p.name}">i</span>` : ''}
         </div>
         <div class="proto-tagline">${p.tagline}</div>
-        <div class="proto-range">${phaseRange(profile, p.id)}</div>
+        ${range ? `<div class="proto-range">${phaseRange(profile, p.id)}</div>` : ''}
         <div class="proto-check">✓</div>
       </button>`).join('')}
   </div>`;

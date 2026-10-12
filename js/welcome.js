@@ -1,5 +1,7 @@
 // welcome.js — Accueil : faire connaissance.
-// Première ouverture : bienvenue → foyer → pour chaque personne (profil, mesures, quotidien, repas, objectif) → résumé.
+// Première ouverture : bienvenue → foyer → cuisine → pour chaque personne (profil, mesures, quotidien, rythme, alimentation, objectif) → résumé.
+// v220 : une question par écran, quatre chapitres visibles en haut (Cuisine, Profil, Repas, Objectif), une phrase qui dit
+// pourquoi on demande, passage automatique à l'écran suivant sur les choix uniques, glissement entre les écrans.
 // Profil repris d'une ancienne version : foyer, prénom et profil, repas, puis les autres personnes éventuelles.
 // Personne ajoutée depuis Mon programme : seulement les étapes de cette personne.
 
@@ -7,14 +9,14 @@ import { el, toast } from './utils.js';
 import { askRestore } from './settings.js';
 import {
   getHousehold, getMembers, getMember, getActiveMember, setActiveMember, updateMember, setOnboarded,
-  setMemberCount, isComplete, setMaxRepeat, setSoups,
+  setMemberCount, isComplete, setMaxRepeat, setSoups, setEquipment,
 } from '../data/household.js';
 import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } from '../data/calculator.js';
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
   measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
-  householdCards, mealsBlock, openProtocolSheet, equipmentBlock,
+  householdCards, formulaBlock, foodBlock, weekPrefsBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)
@@ -28,7 +30,12 @@ const RANGES = {
   weight:  { min: 35, max: 250, msg: 'Indique un poids entre 35 et 250 kg.' },
   bodyfat: { min: 5,  max: 60,  msg: 'Indique une masse grasse entre 5 et 60 %. Si tu ne la connais pas, estime-la avec les silhouettes.' },
 };
-const MEMBER_STEPS = ['identity', 'measures', 'activity', 'meals', 'goal'];
+const MEMBER_STEPS = ['identity', 'measures', 'activity', 'rhythm', 'food', 'goal'];
+// Chapitres affichés en haut de l'écran
+const CHAPTER = { household: 0, tools: 0, identity: 1, measures: 1, activity: 1, rhythm: 2, food: 2, week: 2, goal: 3, summary: 3 };
+const CHAPTER_NAMES = ['Cuisine', 'Profil', 'Repas', 'Objectif'];
+// Écrans à choix unique : on passe au suivant dès qu'on a choisi
+const AUTO_NEXT = ['household', 'activity', 'rhythm'];
 const ORD = ['Première', 'Deuxième'];
 
 const WL_BACK = '<button class="round-back wl-back" aria-label="Étape précédente"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>';
@@ -41,13 +48,15 @@ export function renderWelcome(onDone) {
 
   const h = getHousehold();
   const firstTime = !h.onboardedOnce;
-  const memberSteps = mid => MEMBER_STEPS.map(type => ({ type, mid }));
+  // « Ta semaine type » (même plat, soupes) : réglage du foyer, demandé une seule fois, avec la première personne
+  const memberSteps = mid => MEMBER_STEPS.flatMap(type => (type === 'food' && firstTime && mid === getMembers()[0]?.id
+    ? [{ type, mid }, { type: 'week', mid }] : [{ type, mid }]));
   const incomplete = () => getMembers().filter(m => !isComplete(m)).map(m => m.id);
 
   // Étapes qui suivent le choix du foyer
   function tail() {
     const out = [];
-    if (h.migrated && firstTime) out.push({ type: 'identity', mid: 'm1' }, { type: 'meals', mid: 'm1' });
+    if (h.migrated && firstTime) out.push({ type: 'identity', mid: 'm1' }, { type: 'rhythm', mid: 'm1' }, { type: 'food', mid: 'm1' }, { type: 'week', mid: 'm1' });
     getMembers().forEach(m => { if (!isComplete(m) && !(h.migrated && firstTime && m.id === 'm1')) out.push(...memberSteps(m.id)); });
     if (out.some(s => s.type === 'goal') || getMembers().length > 1) out.push({ type: 'summary' });
     return out;
@@ -61,12 +70,17 @@ export function renderWelcome(onDone) {
   const cur = () => steps[i];
   const member = () => getMember(cur().mid) || getActiveMember();
 
+  // Progression par chapitres : un groupe de traits par chapitre, son nom en dessous
   const progress = () => {
-    const counted = steps.filter(s => s.type !== 'hello');
+    const counted = steps.filter(st => st.type !== 'hello');
     const k = counted.indexOf(cur());
     if (k < 0 || counted.length < 2) return '';
-    return `<div class="wl-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${counted.length}" aria-valuenow="${k + 1}" aria-label="Étape ${k + 1} sur ${counted.length}">
-      ${counted.map((_, j) => `<i class="${j <= k ? 'on' : ''}"></i>`).join('')}</div>`;
+    const chs = [...new Set(counted.map(st => CHAPTER[st.type]))];
+    const curCh = CHAPTER[cur().type];
+    return `<div class="wl-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${counted.length}" aria-valuenow="${k + 1}" aria-label="Étape ${k + 1} sur ${counted.length}, ${CHAPTER_NAMES[curCh]}">
+      ${chs.map(c => `<div class="wl-ch ${c === curCh ? 'cur' : c < curCh ? 'done' : ''}"><div class="wl-ch-bar">
+        ${counted.map((st, j) => (CHAPTER[st.type] === c ? `<i class="${j <= k ? 'on' : ''}"></i>` : '')).join('')}</div>
+        <span>${CHAPTER_NAMES[c]}</span></div>`).join('')}</div>`;
   };
   const top = () => `<div class="wl-top">${i > 0 ? WL_BACK : '<span class="wl-spacer"></span>'}${progress()}</div>`;
   // pastille de la personne concernée (foyer de deux)
@@ -77,10 +91,9 @@ export function renderWelcome(onDone) {
     const m = member();
     return `<div class="wl-who"><span class="wl-who-n">${k + 1}</span>${m.name ? esc(m.name) : `${ORD[k]} personne`}${m.name ? '' : ' sur deux'}</div>`;
   };
-  // étiquette colorée de l'étape
-  const KICK = { tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
   const kick = () => ''; // pas d'étiquette au-dessus des titres
   const errBox = () => (error ? `<p class="wl-error" role="alert">${error}</p>` : '');
+  const sub = t => `<p class="wl-sub">${t}</p>`;
   const cta = label => `<div class="wl-cta"><button class="hb-btn hb-btn-primary wl-next">${label}</button></div>`;
 
   function screen() {
@@ -111,6 +124,7 @@ export function renderWelcome(onDone) {
         ${top()}
         ${kick()}
         <h1 class="wl-title">Pour combien de personnes ?</h1>
+        ${sub('Hébé calcule les portions de chacun et prépare une seule session de cuisine.')}
         ${householdCards(getMembers().length >= 2 ? 2 : (h.countChosen ? 1 : 0))}
         ${errBox()}
         ${cta('Continuer')}`;
@@ -118,6 +132,7 @@ export function renderWelcome(onDone) {
       case 'tools': return `
         ${top()}${kick()}
         <h1 class="wl-title">Qu'as-tu dans ta cuisine ?</h1>
+        ${sub('Les recettes s\'adaptent à ton matériel. Coche tout ce que tu as.')}
         ${equipmentBlock(getHousehold().equipment)}
         ${errBox()}
         ${cta('Continuer')}`;
@@ -125,12 +140,14 @@ export function renderWelcome(onDone) {
       case 'identity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">Faisons connaissance</h1>
+        ${sub(getMembers().length > 1 && cur().mid !== getMembers()[0].id ? 'Son prénom et son profil, pour calculer ses besoins.' : 'Ton prénom et ton profil, pour calculer tes besoins.')}
         ${identityBlock(m, { error })}
         ${cta('Continuer')}`;
 
       case 'measures': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les mesures de ${esc(m.name)}` : 'Tes mesures'}</h1>
+        ${sub('Elles servent à calculer les portions au gramme près. Tu pourras les changer à tout moment.')}
         ${measuresGrid(p)}
         ${bodyfatButton(m.sex)}
         ${errBox()}
@@ -139,28 +156,47 @@ export function renderWelcome(onDone) {
       case 'activity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le quotidien de ${esc(m.name)}` : 'Ton quotidien'}</h1>
+        ${sub('Pense à une semaine habituelle, travail et sport compris.')}
         ${activityList(p.activity)}
         ${errBox()}
         ${cta('Continuer')}`;
 
-      case 'meals': return `
+      case 'rhythm': return `
         ${top()}${who()}${kick()}
-        <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les repas de ${esc(m.name)}` : 'Tes repas'}</h1>
-        ${mealsBlock(m, { error, week: getMembers()[0]?.id === m.id })}
+        <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le rythme de ${esc(m.name)}` : 'Ton rythme'}</h1>
+        ${sub('Hébé répartit les calories de la journée sur ces repas.')}
+        ${formulaBlock(m, { error })}
+        ${cta('Continuer')}`;
+
+      case 'food': return `
+        ${top()}${who()}${kick()}
+        <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
+        ${sub('Hébé écarte ce qui ne te convient pas.')}
+        ${foodBlock(m)}
+        ${errBox()}
+        ${cta('Continuer')}`;
+
+      case 'week': return `
+        ${top()}${kick()}
+        <h1 class="wl-title">Ta semaine type</h1>
+        ${sub('Pour varier les menus à ton goût. Tu pourras changer ces réglages plus tard.')}
+        ${weekPrefsBlock()}
         ${cta('Continuer')}`;
 
       case 'goal': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `L'objectif de ${esc(m.name)}` : 'Ton objectif'}</h1>
-        ${protocolCards(p, m.protocol)}
+        ${sub('Choisis un programme. Touche le i pour voir le détail.')}
+        ${protocolCards(p, m.protocol, { range: false })}
         ${errBox()}
-        ${cta('Voir les besoins')}`;
+        ${cta('Voir mon programme')}`;
 
       case 'summary': {
         const ms = getMembers();
         return `
         ${top()}${kick()}
         <h1 class="wl-title">Tout est prêt${ms.length === 1 ? `, ${esc(ms[0].name)}` : ''}</h1>
+        ${sub(ms.length === 1 ? 'Voici ce que Hébé visera chaque jour dans tes repas.' : 'Voici ce que Hébé visera chaque jour pour chacun.')}
         <div class="sm-list">
           ${ms.map((x, k) => {
             const t = getTargetsFor(x);
@@ -187,7 +223,8 @@ export function renderWelcome(onDone) {
   function render() {
     if (cur().mid) setActiveMember(cur().mid);
     const keepY = window.scrollY;
-    view.className = `view welcome-view wl-${cur().type}`;
+    const anim = shownStep < 0 || shownStep === i ? '' : (i > shownStep ? ' wl-in-f' : ' wl-in-b');
+    view.className = `view welcome-view wl-${cur().type}${anim}`;
     view.innerHTML = screen();
     bind();
     // en haut seulement quand on change d'étape ; une réponse ne fait pas remonter la page
@@ -221,8 +258,8 @@ export function renderWelcome(onDone) {
       if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures pour continuer.' : RANGES[bad].msg, `.pcell-input[data-key="${bad}"]`);
     }
     if (s.type === 'activity' && !getMember(m.id).activity) return fail('Choisis le quotidien qui ressemble le plus à une semaine habituelle.');
-    if (s.type === 'meals' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
-    if (s.type === 'meals' && getMember(m.id).whey == null) return fail('Indique si tu as de la protéine en poudre (whey).');
+    if (s.type === 'rhythm' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
+    if (s.type === 'food' && getMember(m.id).whey == null) return fail('Indique si tu as de la protéine en poudre (whey).');
     if (s.type === 'goal' && !getMember(m.id).protocol) return fail('Choisis un programme pour continuer.');
     error = '';
     if (i < steps.length - 1) { i++; render(); return; }
@@ -234,8 +271,16 @@ export function renderWelcome(onDone) {
     onDone();
   }
 
+  // choix unique : on montre la sélection un court instant, puis on passe à l'écran suivant
+  let autoT = 0;
+  const autoNext = () => {
+    if (!AUTO_NEXT.includes(cur().type)) return;
+    const at = i; clearTimeout(autoT);
+    autoT = setTimeout(() => { if (i === at) next(); }, 320);
+  };
+
   function bind() {
-    view.querySelector('.wl-next')?.addEventListener('click', next);
+    view.querySelector('.wl-next')?.addEventListener('click', () => { clearTimeout(autoT); next(); });
     // v195 : nouveau téléphone, reprendre ses données sans refaire le profil
     const wlFile = view.querySelector('[data-wl-file]');
     view.querySelector('[data-wl-restore]')?.addEventListener('click', () => wlFile?.click());
@@ -253,7 +298,7 @@ export function renderWelcome(onDone) {
     view.querySelectorAll('[data-soups]').forEach(b => b.addEventListener('click', () => { setSoups(b.dataset.soups === '1'); render(); }));
     // foyer
     view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
-      setMemberCount(+b.dataset.count); h.countChosen = true; getHousehold().countChosen = true; error = ''; render();
+      setMemberCount(+b.dataset.count); h.countChosen = true; getHousehold().countChosen = true; error = ''; render(); autoNext();
     }));
     // prénom et profil
     const nameInp = view.querySelector('.id-name');
@@ -273,9 +318,9 @@ export function renderWelcome(onDone) {
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
       openBodyfatGuide(getProfile().bodyfat ?? start().bodyfat, v => { saveProfile({ bodyfat: v }); error = ''; render(); }, getMember(m.id).sex));
     // quotidien
-    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => { saveProfile({ activity: parseInt(b.dataset.act) }); error = ''; render(); }));
+    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => { saveProfile({ activity: parseInt(b.dataset.act) }); error = ''; render(); autoNext(); }));
     // repas et régime
-    view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { formula: b.dataset.formula }); error = ''; render(); }));
+    view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { formula: b.dataset.formula }); error = ''; render(); autoNext(); }));
     view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { [b.dataset.diet]: +b.dataset.level }); render(); }));
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { breakfast: b.dataset.bk }); render(); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { whey: b.dataset.whey === '1' }); error = ''; render(); }));

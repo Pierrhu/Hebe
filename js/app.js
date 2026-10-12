@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T11:57:46.336Z
+// 2026-10-12T12:07:06.980Z
 
 
 // ──────────────────────────────────────────────
@@ -7145,15 +7145,18 @@ const DIETS = [
   { key: 'lactose', label: 'Lactose', hint: 'Lait, yaourt, fromage frais', tint: '--terra-t', levels: ['Aucun souci', 'Intolérance', 'Strict'] },
   { key: 'gluten', label: 'Gluten', hint: 'Pâtes, pain, sauce soja', tint: '--terra-t', levels: ['Aucun souci', 'Sensibilité', 'Strict'] },
 ];
-function mealsBlock(member, { error = '', week = true } = {}) {
+// v220 : le bloc repas est découpé pour l'accueil (une question par écran) ; Réglages garde le bloc complet.
+function formulaBlock(member, { error = '' } = {}) {
   return `<div class="fm-list" role="radiogroup" aria-label="Formule de repas">
       ${FORMULAS.map(f => `<button class="fm-card ${member.formula === f.id ? 'on' : ''}" data-formula="${f.id}" role="radio" aria-checked="${member.formula === f.id}" style="--c:var(${f.tint.slice(0, -2)});--t:var(${f.tint})">
         <b>${f.title}</b><span class="fm-desc">${f.desc}</span>${timeline(f)}<span class="sel-check" aria-hidden="true"></span>
       </button>`).join('')}
     </div>
     <div class="fm-legend" aria-hidden="true"><span><i style="background:${MEAL_COLORS.breakfast}"></i>Petit-déjeuner</span><span><i style="background:${MEAL_COLORS.lunch}"></i>Déjeuner</span><span><i style="background:${MEAL_COLORS.snack}"></i>Collation</span><span><i style="background:${MEAL_COLORS.dinner}"></i>Dîner</span></div>
-    ${error ? `<p class="wl-error" role="alert">${error}</p>` : ''}
-    ${member.formula === 'classique' ? `<div class="dt-card dt-bk" style="--c:var(--honey);--t:var(--honey-t)">
+    ${error ? `<p class="wl-error" role="alert">${error}</p>` : ''}`;
+}
+function foodBlock(member) {
+  return `    ${member.formula === 'classique' ? `<div class="dt-card dt-bk" style="--c:var(--honey);--t:var(--honey-t)">
       <div class="dt-top"><b>Au petit-déjeuner</b></div>
       <div class="dt-seg" role="radiogroup" aria-label="Petit-déjeuner">
         ${[['sucre', 'Sucré'], ['sale', 'Salé'], ['mix', 'Les deux']].map(([v, l]) => `<button class="dt-btn ${(member.breakfast || 'mix') === v ? 'on' : ''}" data-bk="${v}" role="radio" aria-checked="${(member.breakfast || 'mix') === v}">${l}</button>`).join('')}
@@ -7174,8 +7177,10 @@ function mealsBlock(member, { error = '', week = true } = {}) {
           ${d.levels.map((l, i) => `<button class="dt-btn ${(member[d.key] || 0) === i ? 'on' : ''}" data-diet="${d.key}" data-level="${i}" role="radio" aria-checked="${(member[d.key] || 0) === i}">${l}</button>`).join('')}
         </div>
       </div>`).join('')}
-    </div>
-    ${week ? weekPrefsBlock() : ''}`;
+    </div>`;
+}
+function mealsBlock(member, { error = '', week = true } = {}) {
+  return formulaBlock(member, { error }) + foodBlock(member) + (week ? weekPrefsBlock() : '');
 }
 
 // Niveau d'activité : quatre choix décrits par une phrase
@@ -7203,7 +7208,7 @@ function phaseRange(profile, pid) {
 }
 
 // Cartes des quatre programmes
-function protocolCards(profile, selectedId, { info = true } = {}) {
+function protocolCards(profile, selectedId, { info = true, range = true } = {}) {
   return `<div class="protocol-grid">
     ${protocolsFor(profile).map(p => `
       <button class="proto-card pc-${p.id} ${p.id === selectedId ? 'active' : ''}" data-pid="${p.id}">
@@ -7212,7 +7217,7 @@ function protocolCards(profile, selectedId, { info = true } = {}) {
           ${info ? `<span class="proto-info" data-sheet="${p.id}" role="button" tabindex="0" aria-label="En savoir plus sur ${p.name}">i</span>` : ''}
         </div>
         <div class="proto-tagline">${p.tagline}</div>
-        <div class="proto-range">${phaseRange(profile, p.id)}</div>
+        ${range ? `<div class="proto-range">${phaseRange(profile, p.id)}</div>` : ''}
         <div class="proto-check">✓</div>
       </button>`).join('')}
   </div>`;
@@ -8089,7 +8094,9 @@ window._weighDue = () => { try { return weighDue(getActiveMember()); } catch { r
 // js/welcome.js
 // ──────────────────────────────────────────────
 // welcome.js — Accueil : faire connaissance.
-// Première ouverture : bienvenue → foyer → pour chaque personne (profil, mesures, quotidien, repas, objectif) → résumé.
+// Première ouverture : bienvenue → foyer → cuisine → pour chaque personne (profil, mesures, quotidien, rythme, alimentation, objectif) → résumé.
+// v220 : une question par écran, quatre chapitres visibles en haut (Cuisine, Profil, Repas, Objectif), une phrase qui dit
+// pourquoi on demande, passage automatique à l'écran suivant sur les choix uniques, glissement entre les écrans.
 // Profil repris d'une ancienne version : foyer, prénom et profil, repas, puis les autres personnes éventuelles.
 // Personne ajoutée depuis Mon programme : seulement les étapes de cette personne.
 
@@ -8105,7 +8112,12 @@ const RANGES = {
   weight:  { min: 35, max: 250, msg: 'Indique un poids entre 35 et 250 kg.' },
   bodyfat: { min: 5,  max: 60,  msg: 'Indique une masse grasse entre 5 et 60 %. Si tu ne la connais pas, estime-la avec les silhouettes.' },
 };
-const MEMBER_STEPS = ['identity', 'measures', 'activity', 'meals', 'goal'];
+const MEMBER_STEPS = ['identity', 'measures', 'activity', 'rhythm', 'food', 'goal'];
+// Chapitres affichés en haut de l'écran
+const CHAPTER = { household: 0, tools: 0, identity: 1, measures: 1, activity: 1, rhythm: 2, food: 2, week: 2, goal: 3, summary: 3 };
+const CHAPTER_NAMES = ['Cuisine', 'Profil', 'Repas', 'Objectif'];
+// Écrans à choix unique : on passe au suivant dès qu'on a choisi
+const AUTO_NEXT = ['household', 'activity', 'rhythm'];
 const ORD = ['Première', 'Deuxième'];
 
 const WL_BACK = '<button class="round-back wl-back" aria-label="Étape précédente"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>';
@@ -8118,13 +8130,15 @@ function renderWelcome(onDone) {
 
   const h = getHousehold();
   const firstTime = !h.onboardedOnce;
-  const memberSteps = mid => MEMBER_STEPS.map(type => ({ type, mid }));
+  // « Ta semaine type » (même plat, soupes) : réglage du foyer, demandé une seule fois, avec la première personne
+  const memberSteps = mid => MEMBER_STEPS.flatMap(type => (type === 'food' && firstTime && mid === getMembers()[0]?.id
+    ? [{ type, mid }, { type: 'week', mid }] : [{ type, mid }]));
   const incomplete = () => getMembers().filter(m => !isComplete(m)).map(m => m.id);
 
   // Étapes qui suivent le choix du foyer
   function tail() {
     const out = [];
-    if (h.migrated && firstTime) out.push({ type: 'identity', mid: 'm1' }, { type: 'meals', mid: 'm1' });
+    if (h.migrated && firstTime) out.push({ type: 'identity', mid: 'm1' }, { type: 'rhythm', mid: 'm1' }, { type: 'food', mid: 'm1' }, { type: 'week', mid: 'm1' });
     getMembers().forEach(m => { if (!isComplete(m) && !(h.migrated && firstTime && m.id === 'm1')) out.push(...memberSteps(m.id)); });
     if (out.some(s => s.type === 'goal') || getMembers().length > 1) out.push({ type: 'summary' });
     return out;
@@ -8138,12 +8152,17 @@ function renderWelcome(onDone) {
   const cur = () => steps[i];
   const member = () => getMember(cur().mid) || getActiveMember();
 
+  // Progression par chapitres : un groupe de traits par chapitre, son nom en dessous
   const progress = () => {
-    const counted = steps.filter(s => s.type !== 'hello');
+    const counted = steps.filter(st => st.type !== 'hello');
     const k = counted.indexOf(cur());
     if (k < 0 || counted.length < 2) return '';
-    return `<div class="wl-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${counted.length}" aria-valuenow="${k + 1}" aria-label="Étape ${k + 1} sur ${counted.length}">
-      ${counted.map((_, j) => `<i class="${j <= k ? 'on' : ''}"></i>`).join('')}</div>`;
+    const chs = [...new Set(counted.map(st => CHAPTER[st.type]))];
+    const curCh = CHAPTER[cur().type];
+    return `<div class="wl-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${counted.length}" aria-valuenow="${k + 1}" aria-label="Étape ${k + 1} sur ${counted.length}, ${CHAPTER_NAMES[curCh]}">
+      ${chs.map(c => `<div class="wl-ch ${c === curCh ? 'cur' : c < curCh ? 'done' : ''}"><div class="wl-ch-bar">
+        ${counted.map((st, j) => (CHAPTER[st.type] === c ? `<i class="${j <= k ? 'on' : ''}"></i>` : '')).join('')}</div>
+        <span>${CHAPTER_NAMES[c]}</span></div>`).join('')}</div>`;
   };
   const top = () => `<div class="wl-top">${i > 0 ? WL_BACK : '<span class="wl-spacer"></span>'}${progress()}</div>`;
   // pastille de la personne concernée (foyer de deux)
@@ -8154,10 +8173,9 @@ function renderWelcome(onDone) {
     const m = member();
     return `<div class="wl-who"><span class="wl-who-n">${k + 1}</span>${m.name ? esc(m.name) : `${ORD[k]} personne`}${m.name ? '' : ' sur deux'}</div>`;
   };
-  // étiquette colorée de l'étape
-  const KICK = { tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
   const kick = () => ''; // pas d'étiquette au-dessus des titres
   const errBox = () => (error ? `<p class="wl-error" role="alert">${error}</p>` : '');
+  const sub = t => `<p class="wl-sub">${t}</p>`;
   const cta = label => `<div class="wl-cta"><button class="hb-btn hb-btn-primary wl-next">${label}</button></div>`;
 
   function screen() {
@@ -8188,6 +8206,7 @@ function renderWelcome(onDone) {
         ${top()}
         ${kick()}
         <h1 class="wl-title">Pour combien de personnes ?</h1>
+        ${sub('Hébé calcule les portions de chacun et prépare une seule session de cuisine.')}
         ${householdCards(getMembers().length >= 2 ? 2 : (h.countChosen ? 1 : 0))}
         ${errBox()}
         ${cta('Continuer')}`;
@@ -8195,6 +8214,7 @@ function renderWelcome(onDone) {
       case 'tools': return `
         ${top()}${kick()}
         <h1 class="wl-title">Qu'as-tu dans ta cuisine ?</h1>
+        ${sub('Les recettes s\'adaptent à ton matériel. Coche tout ce que tu as.')}
         ${equipmentBlock(getHousehold().equipment)}
         ${errBox()}
         ${cta('Continuer')}`;
@@ -8202,12 +8222,14 @@ function renderWelcome(onDone) {
       case 'identity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">Faisons connaissance</h1>
+        ${sub(getMembers().length > 1 && cur().mid !== getMembers()[0].id ? 'Son prénom et son profil, pour calculer ses besoins.' : 'Ton prénom et ton profil, pour calculer tes besoins.')}
         ${identityBlock(m, { error })}
         ${cta('Continuer')}`;
 
       case 'measures': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les mesures de ${esc(m.name)}` : 'Tes mesures'}</h1>
+        ${sub('Elles servent à calculer les portions au gramme près. Tu pourras les changer à tout moment.')}
         ${measuresGrid(p)}
         ${bodyfatButton(m.sex)}
         ${errBox()}
@@ -8216,28 +8238,47 @@ function renderWelcome(onDone) {
       case 'activity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le quotidien de ${esc(m.name)}` : 'Ton quotidien'}</h1>
+        ${sub('Pense à une semaine habituelle, travail et sport compris.')}
         ${activityList(p.activity)}
         ${errBox()}
         ${cta('Continuer')}`;
 
-      case 'meals': return `
+      case 'rhythm': return `
         ${top()}${who()}${kick()}
-        <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les repas de ${esc(m.name)}` : 'Tes repas'}</h1>
-        ${mealsBlock(m, { error, week: getMembers()[0]?.id === m.id })}
+        <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le rythme de ${esc(m.name)}` : 'Ton rythme'}</h1>
+        ${sub('Hébé répartit les calories de la journée sur ces repas.')}
+        ${formulaBlock(m, { error })}
+        ${cta('Continuer')}`;
+
+      case 'food': return `
+        ${top()}${who()}${kick()}
+        <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
+        ${sub('Hébé écarte ce qui ne te convient pas.')}
+        ${foodBlock(m)}
+        ${errBox()}
+        ${cta('Continuer')}`;
+
+      case 'week': return `
+        ${top()}${kick()}
+        <h1 class="wl-title">Ta semaine type</h1>
+        ${sub('Pour varier les menus à ton goût. Tu pourras changer ces réglages plus tard.')}
+        ${weekPrefsBlock()}
         ${cta('Continuer')}`;
 
       case 'goal': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `L'objectif de ${esc(m.name)}` : 'Ton objectif'}</h1>
-        ${protocolCards(p, m.protocol)}
+        ${sub('Choisis un programme. Touche le i pour voir le détail.')}
+        ${protocolCards(p, m.protocol, { range: false })}
         ${errBox()}
-        ${cta('Voir les besoins')}`;
+        ${cta('Voir mon programme')}`;
 
       case 'summary': {
         const ms = getMembers();
         return `
         ${top()}${kick()}
         <h1 class="wl-title">Tout est prêt${ms.length === 1 ? `, ${esc(ms[0].name)}` : ''}</h1>
+        ${sub(ms.length === 1 ? 'Voici ce que Hébé visera chaque jour dans tes repas.' : 'Voici ce que Hébé visera chaque jour pour chacun.')}
         <div class="sm-list">
           ${ms.map((x, k) => {
             const t = getTargetsFor(x);
@@ -8264,7 +8305,8 @@ function renderWelcome(onDone) {
   function render() {
     if (cur().mid) setActiveMember(cur().mid);
     const keepY = window.scrollY;
-    view.className = `view welcome-view wl-${cur().type}`;
+    const anim = shownStep < 0 || shownStep === i ? '' : (i > shownStep ? ' wl-in-f' : ' wl-in-b');
+    view.className = `view welcome-view wl-${cur().type}${anim}`;
     view.innerHTML = screen();
     bind();
     // en haut seulement quand on change d'étape ; une réponse ne fait pas remonter la page
@@ -8298,8 +8340,8 @@ function renderWelcome(onDone) {
       if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures pour continuer.' : RANGES[bad].msg, `.pcell-input[data-key="${bad}"]`);
     }
     if (s.type === 'activity' && !getMember(m.id).activity) return fail('Choisis le quotidien qui ressemble le plus à une semaine habituelle.');
-    if (s.type === 'meals' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
-    if (s.type === 'meals' && getMember(m.id).whey == null) return fail('Indique si tu as de la protéine en poudre (whey).');
+    if (s.type === 'rhythm' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
+    if (s.type === 'food' && getMember(m.id).whey == null) return fail('Indique si tu as de la protéine en poudre (whey).');
     if (s.type === 'goal' && !getMember(m.id).protocol) return fail('Choisis un programme pour continuer.');
     error = '';
     if (i < steps.length - 1) { i++; render(); return; }
@@ -8311,8 +8353,16 @@ function renderWelcome(onDone) {
     onDone();
   }
 
+  // choix unique : on montre la sélection un court instant, puis on passe à l'écran suivant
+  let autoT = 0;
+  const autoNext = () => {
+    if (!AUTO_NEXT.includes(cur().type)) return;
+    const at = i; clearTimeout(autoT);
+    autoT = setTimeout(() => { if (i === at) next(); }, 320);
+  };
+
   function bind() {
-    view.querySelector('.wl-next')?.addEventListener('click', next);
+    view.querySelector('.wl-next')?.addEventListener('click', () => { clearTimeout(autoT); next(); });
     // v195 : nouveau téléphone, reprendre ses données sans refaire le profil
     const wlFile = view.querySelector('[data-wl-file]');
     view.querySelector('[data-wl-restore]')?.addEventListener('click', () => wlFile?.click());
@@ -8330,7 +8380,7 @@ function renderWelcome(onDone) {
     view.querySelectorAll('[data-soups]').forEach(b => b.addEventListener('click', () => { setSoups(b.dataset.soups === '1'); render(); }));
     // foyer
     view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
-      setMemberCount(+b.dataset.count); h.countChosen = true; getHousehold().countChosen = true; error = ''; render();
+      setMemberCount(+b.dataset.count); h.countChosen = true; getHousehold().countChosen = true; error = ''; render(); autoNext();
     }));
     // prénom et profil
     const nameInp = view.querySelector('.id-name');
@@ -8350,9 +8400,9 @@ function renderWelcome(onDone) {
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
       openBodyfatGuide(getProfile().bodyfat ?? start().bodyfat, v => { saveProfile({ bodyfat: v }); error = ''; render(); }, getMember(m.id).sex));
     // quotidien
-    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => { saveProfile({ activity: parseInt(b.dataset.act) }); error = ''; render(); }));
+    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => { saveProfile({ activity: parseInt(b.dataset.act) }); error = ''; render(); autoNext(); }));
     // repas et régime
-    view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { formula: b.dataset.formula }); error = ''; render(); }));
+    view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { formula: b.dataset.formula }); error = ''; render(); autoNext(); }));
     view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { [b.dataset.diet]: +b.dataset.level }); render(); }));
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { breakfast: b.dataset.bk }); render(); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { whey: b.dataset.whey === '1' }); error = ''; render(); }));
