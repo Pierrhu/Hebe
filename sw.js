@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v227';
+const CACHE = 'hebe-v228';
 const ASSETS = [
   './',
   './index.html',
@@ -170,6 +170,8 @@ const ASSETS = [
   './img/art/tablier.webp',
   './img/art/joker.webp',
   './img/art/balance.webp',
+  './img/art/photo-homme.webp',
+  './img/art/photo-femme.webp',
   './img/art/prot-poulet.webp',
   './img/art/prot-boeuf.webp',
   './img/art/prot-crevettes.webp',

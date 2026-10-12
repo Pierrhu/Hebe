@@ -135,7 +135,7 @@ async function fillPhotos(view, m) {
   const hasCur = ps.some(p => p.m === cur);
   const shown = ps.slice(hasCur ? -3 : -2);
   box.innerHTML = shown.map(polaroid).join('')
-    + (hasCur ? '' : `<button class="bd-p bd-add" data-photo-add><span class="bd-img">+</span><span class="bd-cap">${capOf(cur).replace(/^./, c => c.toUpperCase())}</span></button>`);
+    + (hasCur ? '' : `<button class="bd-p bd-add" data-photo-add aria-label="Ajouter la photo de ${capOf(cur)}"><span class="bd-img"><img src="img/art/photo-${m.sex === 'female' ? 'femme' : 'homme'}.webp" alt=""><i class="bd-plus" aria-hidden="true">+</i></span><span class="bd-cap">${capOf(cur).replace(/^./, c => c.toUpperCase())}</span></button>`);
   view.querySelector('[data-cmp]').hidden = ps.length < 2;
   box._photos = ps;
 }

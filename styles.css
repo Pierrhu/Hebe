@@ -1770,8 +1770,10 @@ button.idf-stamp:active { opacity: .7; }
 .bd-img { display: block; aspect-ratio: 3/4; overflow: hidden; border-radius: 1px; background: linear-gradient(160deg, #E6E1D3, #CFC8B6); }
 .bd-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .bd-cap { display: block; font-family: var(--serif); font-style: italic; font-size: 14px; color: #6B5E45; text-align: center; padding: 6px 0 8px; }
-.bd-add { background: transparent; box-shadow: none; border: 1.5px dashed #C9BFA6; }
-.bd-add .bd-img { background: transparent; display: grid; place-items: center; color: var(--sage); font-size: 30px; font-weight: 300; }
+/* v228 : la case du mois en cours montre nos personnages avec l'appareil photo, et un + */
+.bd-add .bd-img { position: relative; background: #EFE9DC; }
+.bd-add .bd-img img { object-fit: cover; object-position: 50% 0; }
+.bd-plus { position: absolute; right: 6px; bottom: 6px; width: 26px; height: 26px; border-radius: 50%; background: var(--sage); color: #fff; display: grid; place-items: center; font-style: normal; font-size: 19px; font-weight: 500; line-height: 1; box-shadow: 0 2px 6px rgba(40,60,45,.25); }
 .bd-add .bd-cap { font-style: normal; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--accent); }
 .bd-cmp { display: block; text-align: center; margin-top: 16px; width: 100%; height: 48px; border: 0; border-radius: 999px; background: var(--sage-t); color: var(--accent); font: inherit; font-size: 15px; font-weight: 600; }
 .bd-cmp[hidden] { display: none; }
