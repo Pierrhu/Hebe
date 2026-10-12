@@ -185,7 +185,7 @@ const STEP_RX = {
   chou_fleur: /chou-fleur/, petits_pois: /petits pois/, haricots_verts: /haricots verts/, olives: /olives/,
   salade: /salade|crudités/, avocat: /avocat/, pain_burger: /pains?\b|burger/, baguette: /baguette|pain/, pain: /pain|tartine/, brocoli: /brocoli/,
   thon: /thon/, feuille_riz: /feuilles? de riz|galette/, tomates_sechees: /tomates séchées/, cornflakes: /corn-?flakes/, houmous: /houmous/,
-  chataignes: /châtaigne/, chou: /\bchou\b(?!-)/, sirop_erable: /érable/, reblochon: /reblochon/, beurre: /beurre(?! de cacahuète)/, sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
+  riz_risotto: /\briz\b/, polenta: /polenta/, chataignes: /châtaigne/, chou: /\bchou\b(?!-)/, sirop_erable: /érable/, reblochon: /reblochon/, beurre: /beurre(?! de cacahuète)/, sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
   cornichons: /cornichon/, chou_chinois: /chou/, radis: /radis/, pousses_soja: /pousses/, mangue: /mangue/, fruits_rouges: /fruits rouges/,
 };
 // v195 : ingrédients qui ne servent qu'au moment du repas (œuf au plat, galettes, fromage à faire fondre…) :

@@ -209,6 +209,8 @@ const RAW = {
   betterave:     ['Betterave cuite',            'g',     45,  1.6,  8.4, 0.1, 'veg', 3,   'F', { pack: 500 }],
   mache:         ['Mâche',                      'g',     21,  2,    1.5, 0.4, 'veg', 12,  'F', { buy: 125 }],
   // ── v213 : recettes d'automne — valeurs Ciqual ──
+  riz_risotto:   ['Riz à risotto (arborio)',    'g',     350, 7,    78,  0.6, 'carb', 3,    'S', { cook: 2.5, lv: 'P', min: 60, max: 180, minP: 85, pack: 1000 }],
+  polenta:       ['Polenta (précuite)',         'g',     360, 8,    76,  1.2, 'carb', 2.5,  'S', { cook: 4, lv: 'P', min: 50, max: 150, minP: 70, pack: 500 }],
   sirop_erable:  ['Sirop d\'érable',            'g',     260, 0,    67,  0.1, 'flavor', 15, 'E', { pantry: true }],
   chou:          ['Chou blanc',                 'g',     27,  1.3,  4,   0.2, 'veg', 1.5,  'F', { buy: 1000 }],
   chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
@@ -307,6 +309,7 @@ export const SPICES = {
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
+  W95: 'thym', W96: 'cumin, paprika, cannelle', W97: 'muscade', W98: 'paprika, poivre concassé', W99: 'thym, piment', W100: 'curry en poudre', W101: 'thym',
   W81: 'origan, paprika', W82: 'thym', W83: 'cumin, paprika, piment', W84: 'thym, laurier', W85: 'thym', W86: 'thym',
   W87: 'paprika fumé, ail en poudre', W88: 'muscade', W89: 'cumin, paprika fumé, piment', W92: 'cumin, paprika',
   SO07: 'origan, piment', SO10: 'laurier', SO11: 'paprika doux, cumin', SO13: 'paprika, coriandre moulue, piment', SO14: 'laurier, poivre en grains', SO15: 'cumin, paprika, menthe séchée', SO16: 'origan', K22: 'cannelle', K23: 'cannelle', K24: 'cannelle, muscade', SO08: 'thym', SO09: 'thym, laurier',

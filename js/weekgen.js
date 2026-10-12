@@ -72,7 +72,7 @@ export function itemCost(item) {
 // Lundi, mardi et mercredi : boîtes au frigo (1 à 3 jours). Au-delà : boîtes congelées, décongelées la veille au frigo.
 // Poisson et fruits de mer : mangés lundi ou mardi. Plats qui ne se congèlent pas bien (frites, panures
 // croustillantes, crudités et sauces au yaourt dans la boîte) : mangés dans les 3 premiers jours.
-export const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80', 'SO06'];
+export const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80', 'SO06', 'W101'];
 export const FRIDGE_DAYS = 3;
 const isFreshOnly = r => FRESH_ONLY.includes(r.id);
 const deadlineOf = r => (isFreshFish(r) ? 1 : isFreshOnly(r) ? FRIDGE_DAYS - 1 : 99);
@@ -88,11 +88,11 @@ const RED_MEAT_DISHES = 1, RED_MEAT_MEALS = 4, RED_MEAT_PER_DISH = 4; // v184 : 
 const MIN_PORTIONS = 2, MAX_SPREAD = 2;
 // Variété des glucides : familles de féculents ; 2 plats au plus de la même famille par semaine
 const STARCH_FAMILY = {
-  riz: 'riz', riz_blanc: 'riz', nouilles_riz: 'riz',
+  riz: 'riz', riz_blanc: 'riz', nouilles_riz: 'riz', riz_risotto: 'riz',
   pates: 'pates', pates_classiques: 'pates', nouilles_oeufs: 'pates', orzo: 'pates', pates_sg: 'pates',
   pain: 'pain', farine: 'pain', pita: 'pain', baguette: 'pain', tortilla: 'pain', pain_burger: 'pain', pain_sg: 'pain', wrap_sg: 'pain',
   pdt: 'pdt', patate_douce: 'pdt', gnocchis: 'pdt',
-  boulghour: 'cereale', semoule: 'cereale', quinoa: 'cereale',
+  boulghour: 'cereale', semoule: 'cereale', quinoa: 'cereale', polenta: 'cereale',
 };
 const starchFamily = r => STARCH_FAMILY[mainStarch(r)] || mainStarch(r) || 'autre';
 const STARCH_MAX = 3;
