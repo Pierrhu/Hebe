@@ -1904,3 +1904,17 @@ button.wl-ch:disabled { cursor: default; }
 
 .bfm-res .bfm-sil { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .bfm-sil svg { width: 54px; height: auto; }
+
+/* v250 : mesure simplifiée (2 étapes, la silhouette de l'app avec le ruban) */
+.bfm-fig { margin: 4px auto 6px; width: 150px; }
+.bfm-fig svg { display: block; width: 100%; height: auto; }
+.bfm-tips { margin: 6px 0 4px; padding: 0; list-style: none; }
+.bfm-tips li { position: relative; padding: 4px 0 4px 18px; font-size: 14.5px; color: var(--text); }
+.bfm-tips li::before { content: ''; position: absolute; left: 3px; top: 12px; width: 7px; height: 7px; border-radius: 50%; background: #C8704F; }
+.bfm-big { text-align: center; margin: 6px 0 4px; }
+.bfm-big b { display: block; font-family: var(--serif); font-weight: 500; font-size: 56px; line-height: 1; color: #2F4638; }
+.bfm-big span { font-size: 14px; color: var(--text-2); }
+.bf-sheet .bfm-sil { display: flex; flex-direction: column; align-items: center; margin: 8px auto; }
+.bf-sheet .bfm-sil svg { width: 90px; height: auto; }
+.bf-sheet .bfm-sil span { font-size: 13px; color: var(--text-2); }
+.bfm-small { margin: 4px 0 14px; text-align: center; font-size: 13px; color: var(--text-2); }
