@@ -2,6 +2,7 @@
 // Les silhouettes sont dessinées en SVG : la taille s'épaissit et les abdos s'estompent avec le %.
 
 import { openSheet, closeSheet } from './utils.js';
+import { getActiveMember } from '../data/household.js';
 
 const LEVELS_M = [
   { bf: 8,  desc: 'Abdos très marqués' },
@@ -120,13 +121,25 @@ function torsoF(bf) {
   </svg>`;
 }
 
+// v249 : « Aller plus loin » : mesurer plutôt qu'estimer, avec la masse grasse relative (RFM) de Woolcott et Bergman,
+// validée contre le scanner DXA : homme 64 − 20 × taille / tour de taille, femme 76 − 20 × taille / tour de taille.
+// Le tour de taille se prend au niveau du haut de l'os de la hanche, comme dans l'étude de validation.
+export const rfm = (sex, heightCm, waistCm) => (sex === 'female' ? 76 : 64) - 20 * heightCm / waistCm;
+
 export function openBodyfatGuide(current, onPick, sex = 'male') {
   const LEVELS = bodyfatLevels(sex);
   const closest = LEVELS.reduce((a, l) => Math.abs(l.bf - current) < Math.abs(a.bf - current) ? l : a, LEVELS[0]).bf;
-  openSheet(`
-    <div class="sheet-handle"></div>
-    <div class="hb-sheet-pad">
-      <div class="hb-h2">Estimer ta masse grasse</div>
+  const m = getActiveMember() || {};
+  const near = v => LEVELS.reduce((a, l) => Math.abs(l.bf - v) < Math.abs(a.bf - v) ? l : a, LEVELS[0]);
+  let step = 0, waist = m.sex === 'female' ? 80 : 92, height = m.height ? Math.round(m.height * 100) : null;
+  const cm = v => String(Math.round(v * 2) / 2).replace('.', ',');
+  const stepper = (key, v, lbl) => `<div class="bfm-field"><span>${lbl}</span><div class="bfm-ctl">
+      <button class="bfm-b" data-k="${key}" data-d="-0.5" aria-label="moins">−</button>
+      <input class="bfm-in" data-in="${key}" type="text" inputmode="decimal" value="${cm(v)}" aria-label="${lbl} en cm"><small>cm</small>
+      <button class="bfm-b" data-k="${key}" data-d="0.5" aria-label="plus">+</button></div></div>`;
+  const dots = () => `<div class="bfm-dots" aria-hidden="true">${[1, 2, 3].map(i => `<i class="${i <= step ? 'on' : ''}"></i>`).join('')}</div>`;
+  const screens = {
+    0: () => `<div class="hb-h2">Estimer ta masse grasse</div>
       <p class="hb-p">Touche la silhouette qui te ressemble le plus.</p>
       <div class="bf-grid">
         ${LEVELS.map(l => `
@@ -137,12 +150,64 @@ export function openBodyfatGuide(current, onPick, sex = 'male') {
           </button>`).join('')}
       </div>
       <p class="bf-note">${sex === 'female' ? 'Entre 21 et 31 %, c\'est la moyenne chez une femme. ' : ''}Une estimation à ± 3 % suffit.</p>
-      <button class="hb-btn bf-close">Fermer</button>
-    </div>`);
-  const sheet = document.getElementById('sheet');
-  sheet.querySelector('.bf-close').addEventListener('click', closeSheet);
-  sheet.querySelectorAll('[data-bf]').forEach(b => b.addEventListener('click', () => {
-    closeSheet();
-    onPick(+b.dataset.bf);
-  }));
+      <button class="bf-more" data-go="1"><b>Aller plus loin</b><span>Mesure ta masse grasse avec un mètre ruban, en deux minutes.</span></button>
+      <button class="hb-btn bf-close">Fermer</button>`,
+    1: () => `${dots()}<div class="hb-h2">Prends un mètre ruban</div>
+      <ol class="bfm-steps">
+        <li>Un mètre ruban souple, comme en couture.</li>
+        <li>Debout, détendu, le ventre ni rentré ni gonflé, sans vêtement épais.</li>
+        <li>Ta masse grasse sera calculée avec une formule validée contre un scanner de référence, à partir de ta taille et de ton tour de taille.</li>
+      </ol>
+      <button class="hb-btn hb-btn-primary" data-go="2">J'ai mon mètre</button>
+      <button class="bf-back" data-go="0">Revenir aux silhouettes</button>`,
+    2: () => `${dots()}<div class="hb-h2">Mesure ton tour de taille</div>
+      <div class="bfm-fig" aria-hidden="true">${hipFig()}</div>
+      <p class="hb-p">Repère le haut de l'os de ta hanche, sur le côté. Passe le ruban bien horizontal à ce niveau et lis la mesure à la fin d'une expiration normale, sans serrer.</p>
+      ${stepper('waist', waist, 'Tour de taille')}
+      ${height ? '' : stepper('height', 175, 'Ta taille')}
+      <button class="hb-btn hb-btn-primary" data-go="3">Calculer</button>
+      <button class="bf-back" data-go="1">Retour</button>`,
+    3: () => {
+      const v = rfm(sex, height, waist), r = Math.round(v);
+      return `${dots()}<div class="hb-h2">Environ ${r} % de masse grasse</div>
+      <div class="bfm-res">
+        <div><b>${r} %</b><span>mesuré</span></div>
+        <div class="bfm-sil">${torso(near(r).bf, sex)}<span>proche de « ${near(r).desc.toLowerCase()} »</span></div>
+      </div>
+      <p class="hb-p">Calculé avec ta taille, ${height} cm, et ton tour de taille, ${cm(waist)} cm. Cette mesure donne un ordre de grandeur plus fiable que l'œil : chez la moitié des gens, l'écart avec le scanner reste de quelques points, mais il peut être plus grand si tu es très sec, très musclé ou plus âgé.</p>
+      <button class="hb-btn hb-btn-primary" data-pick="${r}">Utiliser ${r} %</button>
+      <button class="bf-back" data-go="2">Refaire la mesure</button>`;
+    },
+  };
+  openSheet('<div class="sheet-handle"></div><div class="hb-sheet-pad bf-sheet"></div>');
+  const pad = document.querySelector('#sheet .bf-sheet');
+  const render = () => {
+    if (step === 3 && (!height || height < 120 || height > 230 || waist < 50 || waist > 200)) step = 2;
+    pad.innerHTML = screens[step]();
+    pad.querySelector('.bf-close')?.addEventListener('click', closeSheet);
+    pad.querySelectorAll('[data-bf]').forEach(b => b.addEventListener('click', () => { closeSheet(); onPick(+b.dataset.bf); }));
+    pad.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => { closeSheet(); onPick(+b.dataset.pick); }));
+    pad.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { step = +b.dataset.go; render(); document.getElementById('sheet')?.scrollTo(0, 0); }));
+    const set = (k, v) => { v = Math.round(v * 2) / 2; if (k === 'waist') waist = v; else height = v; };
+    pad.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => {
+      const k = b.dataset.k; set(k, (k === 'waist' ? waist : (height || 175)) + +b.dataset.d);
+      pad.querySelector(`[data-in="${k}"]`).value = cm(k === 'waist' ? waist : height);
+    }));
+    pad.querySelectorAll('[data-in]').forEach(i => i.addEventListener('change', () => { const v = parseFloat(i.value.replace(',', '.')); if (v > 0) set(i.dataset.in, v); i.value = cm(i.dataset.in === 'waist' ? waist : height); }));
+  };
+  render();
+}
+
+// petit dessin : un bassin vu de face, le ruban posé au niveau du haut de l'os de la hanche
+function hipFig() {
+  return `<svg viewBox="0 0 220 120" class="bfm-svg">
+    <path d="M70 6 C66 40 60 58 56 74 C52 92 58 112 64 118 M150 6 C154 40 160 58 164 74 C168 92 162 112 156 118" fill="none" stroke="#3E5A48" stroke-width="2" stroke-linecap="round"/>
+    <path d="M66 70 C78 60 92 58 98 66 M154 70 C142 60 128 58 122 66" fill="none" stroke="#B79B5E" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="64" cy="70" r="4" fill="#C8704F"/><circle cx="156" cy="70" r="4" fill="#C8704F"/>
+    <path d="M52 70 Q110 80 168 70" fill="none" stroke="#E8C97E" stroke-width="7" stroke-linecap="round"/>
+    <path d="M52 70 Q110 80 168 70" fill="none" stroke="#B79B5E" stroke-width="1" stroke-dasharray="2 4"/>
+    <text x="172" y="60" font-family="Georgia, serif" font-style="italic" font-size="12" fill="#C8704F">haut de</text>
+    <text x="172" y="74" font-family="Georgia, serif" font-style="italic" font-size="12" fill="#C8704F">la hanche</text>
+    <circle cx="110" cy="52" r="3" fill="none" stroke="#3E5A48" stroke-width="1.5"/><text x="110" y="40" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="11" fill="#8A7655">nombril</text>
+  </svg>`;
 }

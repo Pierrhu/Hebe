@@ -1874,3 +1874,33 @@ button.wl-ch:disabled { cursor: default; }
 .sci-au { color: var(--text); }
 @media (prefers-reduced-motion: reduce) { .sci-src li { transition: none; } }
 .sci-src li a { margin-left: 2px; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+/* v249 : « Aller plus loin » dans le guide de masse grasse (mesure avec un mètre ruban) */
+.bf-more { display: block; width: 100%; margin: 14px 0 10px; padding: 14px 16px; border: 1px solid #EADFCB; border-radius: 18px; text-align: left; font: inherit;
+  background-color: #FBF8F2; background-image: linear-gradient(#F3ECDF .5px, transparent .5px), linear-gradient(90deg, #F3ECDF .5px, transparent .5px); background-size: 8px 8px; }
+.bf-more b { display: block; font-family: var(--serif); font-weight: 500; font-size: 17px; color: #2F4638; }
+.bf-more span { display: block; margin-top: 2px; font-size: 13px; color: var(--text-2); }
+.bf-sheet .hb-btn { width: 100%; }
+.bf-back { display: block; margin: 10px auto 0; padding: 6px; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 600; color: var(--accent); }
+.bfm-dots { display: flex; gap: 6px; margin-bottom: 10px; }
+.bfm-dots i { width: 22px; height: 4px; border-radius: 2px; background: var(--line); }
+.bfm-dots i.on { background: #C8704F; }
+.bfm-steps { margin: 10px 0 18px; padding-left: 22px; }
+.bfm-steps li { margin-bottom: 10px; font-size: 14.5px; line-height: 1.5; color: var(--text-2); }
+.bfm-steps li::marker { font-family: var(--serif); color: #C8704F; }
+.bfm-fig { margin: 6px auto 4px; max-width: 260px; }
+.bfm-svg { display: block; width: 100%; height: auto; }
+.bfm-field { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 12px 0; padding: 10px 12px; border-radius: 16px; background: #fff; border: 1px solid #EADFCB; }
+.bfm-field > span { font-size: 14px; font-weight: 600; color: var(--text); }
+.bfm-ctl { display: grid; grid-template-columns: 34px 60px auto 34px; align-items: center; gap: 6px; }
+.bf-sheet .bfm-b { width: 34px; height: 34px; min-width: 0; padding: 0; display: grid; place-items: center; border-radius: 50%; border: 0; background: var(--sage-t); color: var(--accent); font-size: 18px; font-weight: 600; line-height: 1; }
+.bfm-in { width: 100%; padding: 0; border: 0; background: none; text-align: right; font-family: var(--serif); font-size: 22px; color: var(--text); }
+.bfm-ctl small { font-size: 13px; color: var(--text-2); }
+.bfm-res { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.bfm-res div { padding: 12px; border-radius: 16px; background: #F6F1E7; text-align: center; }
+.bfm-res div:first-child { background: var(--sage-t); }
+.bfm-res b { display: block; font-family: var(--serif); font-weight: 500; font-size: 26px; color: #2F4638; }
+.bfm-res span { font-size: 12px; color: var(--text-2); }
+
+.bfm-res .bfm-sil { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.bfm-sil svg { width: 54px; height: auto; }

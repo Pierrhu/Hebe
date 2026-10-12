@@ -52,6 +52,8 @@ const SRC = {
   blue: ['Blue MNM, Hirsch KR, Brewer GJ, et al. The validation of contemporary body composition methods in various races and ethnicities. Br J Nutr. 2022;128(12):2387-2397.', 'https://doi.org/10.1017/S0007114522000368'],
   fernandes: ['Fernandes-Alves D, Teixeira GP, Guimarães KC, Crispim CA. Systematic review and meta-analysis of randomized clinical trials comparing time-restricted eating with and without caloric restriction for weight loss. Nutr Rev. 2026;84(3):463-486.', 'https://doi.org/10.1093/nutrit/nuaf053'],
   kim: ['Kim KK, Kang JH, Kim EM. Updated meta-analysis of studies from 2011 to 2021 comparing the effectiveness of intermittent energy restriction and continuous energy restriction. J Obes Metab Syndr. 2022;31(3):230-244.', 'https://doi.org/10.7570/jomes22050'],
+  woolcott: ['Woolcott OO, Bergman RN. Relative fat mass (RFM) as a new estimator of whole-body fat percentage: a cross-sectional study in American adult individuals. Sci Rep. 2018;8(1):10980.', 'https://doi.org/10.1038/s41598-018-29362-1'],
+  palumbo: ['Palumbo AM, et al. Validity of non-traditional measures of obesity compared to total body fat across the life course: a systematic review and meta-analysis. Obes Rev. 2025;26(6):e13894.', 'https://doi.org/10.1111/obr.13894'],
   kyle: ['Kyle UG, Bosaeus I, De Lorenzo AD, et al. Bioelectrical impedance analysis, part I: review of principles and methods. Clin Nutr. 2004;23(5):1226-1243.', 'https://doi.org/10.1016/j.clnu.2004.06.004'],
 };
 
@@ -275,6 +277,7 @@ export function openScienceSheet() {
     sec(6, 'Ton taux de gras, sans stress', fatFunnel(kg, ok ? b.bmr : 1980), "Aucune méthode simple ne mesure ton taux de gras au point près : Hébé est conçue pour qu'une erreur de quelques points pèse peu sur ta dépense au repos.", [
       ["Les balances et appareils d'impédance se trompent typiquement de 3 à 7,5 points selon le modèle. Les méthodes de laboratoire à plusieurs compartiments servent de référence, et la DXA s'en approche.", ['siedler', 'tinsley21', 'blue']],
       ["Les silhouettes donnent une estimation à l'œil : un bon point de départ, pas une mesure. Ton taux sert à calculer ta masse maigre, donc ta dépense au repos et tes protéines.", ['cunningham']],
+      ["Pour aller plus loin, Hébé calcule ta masse grasse avec ta taille et ton tour de taille, pris au haut de la hanche. Cette formule a été validée contre le scanner sur plus de 3 000 adultes, et une méta-analyse de 2025 confirme qu'elle tombe juste en moyenne, même si l'écart peut être plus grand chez les personnes très sèches ou âgées.", ['woolcott', 'palumbo']],
       [`Exemple${ok ? ' pour toi' : ''} : à ${nf(kg)} kg, 5 points d'erreur décalent ta masse maigre de ${dec(lmErr)} kg et Katch-McArdle d'environ ${Math.round(kmErr)} kcal. La moyenne avec Harris-Benedict divise ce décalage par deux, à environ ${Math.round(kmErr / 2)} kcal, puis tes pesées le corrigent en deux à quatre semaines.`, null],
     ]),
     sec(7, 'Le jeûne 16:8, à découvrir', fastPlates(ok ? t.kcal : 2400), "Tu manges entre 12 h et 20 h. Les mêmes calories sur trois repas au lieu de quatre : chaque assiette est plus copieuse, et tu sors de table rassasié.", [
