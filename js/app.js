@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T08:24:41.650Z
+// 2026-10-12T08:34:26.701Z
 
 
 // ──────────────────────────────────────────────
@@ -241,6 +241,8 @@ const RAW = {
   betterave:     ['Betterave cuite',            'g',     45,  1.6,  8.4, 0.1, 'veg', 3,   'F', { pack: 500 }],
   mache:         ['Mâche',                      'g',     21,  2,    1.5, 0.4, 'veg', 12,  'F', { buy: 125 }],
   // ── v213 : recettes d'automne — valeurs Ciqual ──
+  sirop_erable:  ['Sirop d\'érable',            'g',     260, 0,    67,  0.1, 'flavor', 15, 'E', { pantry: true }],
+  chou:          ['Chou blanc',                 'g',     27,  1.3,  4,   0.2, 'veg', 1.5,  'F', { buy: 1000 }],
   chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
   reblochon:     ['Reblochon',                  'g',     330, 20,   0,   27,  'dairy', 14,  'L', { pack: 240 }],
   beurre:        ['Beurre',                     'g',     740, 0.7,  0.6, 82,  'fat', 9,    'L', { pantry: true }],
@@ -339,7 +341,7 @@ const SPICES = {
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
   W81: 'origan, paprika', W82: 'thym', W83: 'cumin, paprika, piment', W84: 'thym, laurier', W85: 'thym', W86: 'thym',
   W87: 'paprika fumé, ail en poudre', W88: 'muscade', W89: 'cumin, paprika fumé, piment', W92: 'cumin, paprika',
-  SO07: 'origan, piment', SO08: 'thym', SO09: 'thym, laurier',
+  SO07: 'origan, piment', SO10: 'laurier', SO11: 'paprika doux, cumin', SO13: 'paprika, coriandre moulue, piment', SO14: 'laurier, poivre en grains', SO15: 'cumin, paprika, menthe séchée', SO16: 'origan', K22: 'cannelle', K23: 'cannelle', K24: 'cannelle, muscade', SO08: 'thym', SO09: 'thym, laurier',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
 const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
@@ -697,6 +699,34 @@ const RECIPES = [
     [["boeuf_emince",150],["oignon",250],["bouillon",1],["fecule",5],["pain",70],["emmental",30],["epices",1],["huile",8]],
     ["Émince finement les oignons. Coupe le bœuf en 2 ou 3 gros morceaux.","Mets l'autocuiseur en mode dorer et fais confire les oignons 20 minutes dans l'huile avec une pincée de sel, en remuant souvent, jusqu'à ce qu'ils soient bien bruns. Ajoute une cuillère d'eau s'ils accrochent.","Ajoute le bœuf, le thym, le laurier, les bouillons cubes émiettés et 350 ml d'eau froide par portion. Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.","Sors le bœuf et effiloche-le à la fourchette. Délaye la fécule dans un peu d'eau froide, verse-la dans la soupe et laisse épaissir 2 minutes en mode dorer. Remets le bœuf.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Le pain dans son sachet, l'emmental au frigo.","Au moment de manger : réchauffe la soupe 3 minutes au micro-ondes. Pose le pain dessus, couvre-le d'emmental et fais gratiner 4 minutes à l'air fryer à 200 °C (ou laisse fondre 1 minute au micro-ondes)."],
     "Le bœuf effiloché transforme la soupe à l'oignon en vrai repas.", ["soupe","français","gourmand","autocuiseur","batch"], true),
+  M("SO10", "Bortsch ukrainien au bœuf, crème et aneth", "dinner", "🥣", 20, 40,
+    [["boeuf_emince",150],["betterave",150],["chou",100],["carotte",60],["pdt",150],["oignon",40],["ail",1],["concentre",15],["vinaigre_cidre",5],["bouillon",0.5],["creme",20],["herbes",3],["huile",5]],
+    ["Coupe le bœuf en cubes de 2 cm. Émince l'oignon et le chou, râpe les carottes, coupe la betterave et les pommes de terre en dés de 1,5 cm.","Mets l'autocuiseur en mode dorer et fais dorer le bœuf 4 minutes dans l'huile, puis l'oignon et les carottes, 3 minutes. Ajoute le concentré et l'ail, 1 minute.","Ajoute le bouillon cube émietté et 350 ml d'eau froide par portion. Ferme et laisse cuire 25 minutes sous pression, puis fais tomber la pression.","Ajoute le chou, les pommes de terre, la betterave et le vinaigre de cidre. Referme et laisse cuire 5 minutes sous pression, puis fais tomber la pression : le chou et les pommes de terre doivent être tendres. Goûte et sale.","Mise en boîtes : le bortsch au frigo dès qu'il a tiédi, ou au congélateur. La crème et l'aneth restent à part, au frigo.","Au moment de manger : réchauffe 3 minutes au micro-ondes en remuant à mi-temps. Ajoute une cuillère de crème froide et l'aneth ciselé."],
+    "Le vinaigre ajouté avec la betterave garde au bortsch sa belle couleur rubis.", ["soupe","ukrainien","gourmand","autocuiseur","batch"], true),
+  M("SO11", "Goulash hongrois en soupe, bœuf, paprika et pommes de terre", "dinner", "🌶️", 15, 35,
+    [["boeuf_emince",160],["pdt",250],["poivron",100],["oignon",80],["ail",1],["concentre",15],["epices",6],["bouillon",0.5],["huile",6]],
+    ["Coupe le bœuf en cubes de 2 cm, les pommes de terre en cubes de 2 cm, le poivron en dés et émince les oignons.","Mets l'autocuiseur en mode dorer et fais fondre les oignons 6 minutes dans l'huile, jusqu'à ce qu'ils soient dorés. Ajoute le bœuf et fais-le dorer 4 minutes.","Arrête le feu, ajoute le paprika doux, le cumin et l'ail, et remue 30 secondes : le paprika ne doit pas brûler, il deviendrait amer. Ajoute le concentré.","Ajoute le poivron, le bouillon cube émietté et 300 ml d'eau froide par portion. Ferme et laisse cuire 25 minutes sous pression, puis fais tomber la pression.","Ajoute les pommes de terre, referme et laisse cuire 5 minutes sous pression, puis fais tomber la pression : elles doivent être tendres et épaissir un peu la soupe.","Mise en boîtes : le goulash au frigo dès qu'il a tiédi, ou au congélateur.","Au moment de manger : réchauffe 3 minutes au micro-ondes avec 2 cuillères à soupe d'eau, en remuant à mi-temps, jusqu'à ce que ce soit bien chaud partout."],
+    "Le paprika s'ajoute hors du feu, 30 secondes : c'est ce qui donne au goulash son goût rond et sa couleur.", ["soupe","hongrois","gourmand","autocuiseur","batch"], true),
+  M("SO12", "Ciorbă rădăuțeană : soupe roumaine au poulet, crème et citron", "dinner", "🍋", 15, 25,
+    [["haut_cuisse",170],["carotte",80],["poivron",80],["oignon",50],["ail",2],["creme",30],["oeuf",1],["citron",15],["bouillon",0.5],["herbes",3],["pain",60]],
+    ["Coupe les carottes en rondelles, le poivron en dés et émince l'oignon.","Mets les hauts de cuisse dans l'autocuiseur avec l'oignon, les carottes, le poivron, le bouillon cube émietté et 350 ml d'eau froide par portion. Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.","Sors le poulet, effiloche-le à la fourchette et remets-le dans la soupe.","Dans un bol, fouette la crème avec le jaune d'œuf, l'ail écrasé et le jus de citron. Verse-y une louche de soupe chaude en fouettant, puis reverse le tout dans la cuve, hors du feu, en remuant : la soupe devient crémeuse et acidulée. Ne la fais plus bouillir. Goûte et sale.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Le persil et le pain à part.","Au moment de manger : réchauffe 3 minutes au micro-ondes à puissance moyenne, sans faire bouillir, en remuant à mi-temps. Parsème de persil et sers avec le pain."],
+    "Le mélange crème, jaune d'œuf et citron est le secret des ciorbe roumaines : crémeuses et acidulées.", ["soupe","roumain","gourmand","autocuiseur","batch"], true),
+  M("SO13", "Kharcho géorgien : bœuf, riz, tomate, noix et coriandre", "dinner", "🥘", 15, 35,
+    [["boeuf_emince",150],["riz",50],["tomates_conc",150],["oignon",60],["noix",15],["ail",2],["epices",3],["bouillon",0.5],["herbes",4],["huile",5]],
+    ["Coupe le bœuf en cubes de 2 cm, émince les oignons, écrase l'ail. Hache les noix très finement, presque en poudre. Rince le riz.","Mets l'autocuiseur en mode dorer et fais dorer le bœuf 4 minutes dans l'huile, puis les oignons, 4 minutes.","Ajoute les tomates, le paprika, la coriandre moulue, le piment, le bouillon cube émietté, le riz et 350 ml d'eau froide par portion. Ferme et laisse cuire 25 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.","Ajoute les noix hachées et l'ail, et laisse frémir 3 minutes en mode dorer : les noix épaississent la soupe et lui donnent son goût. Goûte et sale.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. La coriandre à part.","Au moment de manger : réchauffe 3 minutes au micro-ondes avec 3 cuillères à soupe d'eau, en remuant à mi-temps : le riz épaissit la soupe en refroidissant. Parsème de coriandre."],
+    "Les noix et l'ail ajoutés à la fin font toute la différence : c'est la signature du kharcho.", ["soupe","géorgien","gourmand","autocuiseur","batch"], true),
+  M("SO14", "Ukha : soupe russe au saumon, pommes de terre et aneth", "dinner", "🐟", 15, 15,
+    [["saumon",150],["pdt",250],["carotte",70],["oignon",40],["bouillon",0.25],["epices",1],["citron",10],["herbes",4]],
+    ["Coupe les pommes de terre en cubes de 2 cm, les carottes en rondelles et l'oignon en quartiers. Retire la peau du saumon et coupe-le en gros cubes de 4 cm.","Mets les pommes de terre, les carottes, l'oignon, la feuille de laurier, quelques grains de poivre, le bouillon cube émietté et 400 ml d'eau froide par portion dans l'autocuiseur. Ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression.","Remets en mode dorer jusqu'à frémissement, ajoute le saumon et laisse pocher 5 minutes à petit frémissement, sans remuer, pour qu'il reste en morceaux. Retire le laurier et ajoute le jus de citron.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi. Avec du saumon, elle se garde 2 jours. L'aneth à part.","Au moment de manger : réchauffe 3 minutes au micro-ondes à puissance moyenne, sans faire bouillir. Parsème d'aneth ciselé."],
+    "Le saumon poché doucement reste moelleux : surtout ne pas faire bouillir.", ["soupe","russe","autocuiseur","batch","poisson"], true),
+  M("SO15", "Mercimek : soupe turque aux lentilles corail, citron et beurre au paprika", "dinner", "🥣", 10, 15,
+    [["lentilles_corail",100],["oignon",50],["carotte",60],["concentre",10],["beurre",8],["epices",3],["bouillon",0.5],["citron",15],["pain",60]],
+    ["Rince les lentilles. Émince l'oignon et coupe la carotte en rondelles.","Mets l'autocuiseur en mode dorer et fais fondre l'oignon et la carotte 4 minutes avec la moitié du beurre, puis ajoute le concentré et le cumin, 1 minute.","Ajoute les lentilles, le bouillon cube émietté et 350 ml d'eau froide par portion. Ferme et laisse cuire 8 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.","Mixe au mixeur plongeant jusqu'à ce que ce soit bien lisse. Goûte et sale.","Fais fondre le reste du beurre 1 minute avec le paprika et la menthe séchée, sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Le beurre au paprika, le citron et le pain à part.","Au moment de manger : réchauffe la soupe 3 minutes au micro-ondes avec un peu d'eau si elle a épaissi. Réchauffe le beurre au paprika 15 secondes, verse-le en filet sur la soupe, presse le citron et sers avec le pain."],
+    "Le jus de citron pressé au dernier moment réveille toute la soupe.", ["soupe","turc","végé","autocuiseur","batch"], true),
+  M("SO16", "Sopa de lima : soupe mexicaine au poulet, citron vert et tortillas croustillantes", "dinner", "🍋", 15, 20,
+    [["poulet",150],["tomate",100],["oignon",50],["poivron",60],["ail",1],["citron_vert",25],["bouillon",0.5],["epices",1],["herbes",4],["tortilla",90],["huile",4]],
+    ["Coupe les tomates, le poivron et l'oignon en dés, écrase l'ail.","Mets le poulet entier dans l'autocuiseur avec l'oignon, l'ail, l'origan, le bouillon cube émietté et 350 ml d'eau froide par portion. Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : le poulet ne doit plus être rose au centre.","Sors le poulet et effiloche-le. Ajoute les tomates et le poivron, et laisse frémir 5 minutes en mode dorer. Remets le poulet et ajoute le jus de citron vert. Goûte et sale.","Coupe les tortillas en fines lanières, mélange-les avec l'huile et fais-les dorer 5 à 6 minutes à l'air fryer à 180 °C, en secouant le panier, jusqu'à ce qu'elles soient croustillantes.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Les lanières de tortilla dans une boîte fermée, la coriandre au frigo.","Au moment de manger : réchauffe la soupe 3 minutes au micro-ondes. Ajoute les lanières croustillantes et la coriandre juste avant de manger."],
+    "Les tortillas croustillantes ajoutées au dernier moment font tout le charme de la sopa de lima.", ["soupe","mexicain","autocuiseur","air fryer","batch"], true),
 
   // ══ Accompagnements air fryer ══
   M("SA01", "Frites de patate douce au paprika fumé", "side", "🍠", 5, 18,
@@ -987,6 +1017,18 @@ const RECIPES = [
     [["banane",50],["flocons",30],["whey",15],["chocolat",10]],
     ["Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine et la whey.","Ajoute le chocolat noir haché en petits morceaux.","Forme 3 cookies par portion, aplatis-les à 1 cm et pose-les sur du papier cuisson dans le panier de l'air fryer.","Fais-les cuire 8 minutes à 170 °C : ils doivent être dorés sur les bords et encore moelleux au centre. Laisse-les refroidir 10 minutes, ils se raffermissent.","Mise en boîtes : les cookies dans une boîte, 3 jours au frigo, ou au congélateur pour la semaine. Réchauffe-les 2 minutes à l'air fryer à 160 °C."],
     "La banane bien mûre remplace le beurre et le sucre.", ["américain","sucré","air fryer","semaine","whey"], true),
+  M("K22", "Granola maison érable-noix et yaourt grec", "sweet", "🍁", 10, 15,
+    [["flocons",30],["noix",10],["sirop_erable",10],["huile",3],["epices",1],["yaourt_grec",150]],
+    ["Pendant la session de cuisine, concasse grossièrement les noix et mélange-les avec les flocons d'avoine, la cannelle, le sirop d'érable et l'huile, jusqu'à ce que tout soit enrobé.","Étale le granola sur une feuille de papier cuisson dans le panier et fais-le cuire 12 à 15 minutes à l'air fryer à 150 °C, en remuant toutes les 5 minutes, jusqu'à ce qu'il soit doré. Il durcit en refroidissant.","Mise en boîtes : le granola refroidi dans un bocal fermé, il se garde une semaine.","Au moment de manger : verse le yaourt grec dans un bol et parsème de granola."],
+    "Le granola maison à l'érable croustille bien plus que celui du commerce, avec moins de sucre.", ["canadien","sucré","air fryer","semaine"], true),
+  M("K23", "Pommes poêlées à l'érable et à la cannelle, fromage blanc et noix", "sweet", "🍎", 3, 5,
+    [["pomme",150],["sirop_erable",8],["fromage_blanc",150],["noix",10],["epices",1]],
+    ["Coupe la pomme en dés avec la peau.","Fais-la dorer 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elle soit tendre et caramélisée.","Verse le fromage blanc dans un bol, ajoute les pommes chaudes et les noix concassées."],
+    "Le contraste entre les pommes chaudes et le fromage blanc froid fait tout.", ["canadien","sucré","rapide"], false),
+  M("K24", "Overnight oats pumpkin spice à l'érable", "sweet", "🎃", 5, 4,
+    [["flocons",40],["lait",120],["fromage_blanc",100],["butternut",60],["whey",15],["sirop_erable",10],["epices",1]],
+    ["La veille au soir, fais cuire la courge en petits dés 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","Mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade, dans un bocal.","Une nuit au frigo : le lendemain, c'est prêt."],
+    "Le goût du « pumpkin spice latte » en version petit-déjeuner protéiné.", ["américain","sucré","whey"], false),
   M("S05", "Fruit de saison", "side", "🍐", 1, 0,
     [["fruit_saison",150]],
     ["À croquer."],
@@ -1045,7 +1087,7 @@ const SHORT_NAMES = {
   W56: 'Pâtes épicées au poulet', W57: 'Pâtes cajun', W58: 'Pâtes fajitas', W59: 'Pâtes pesto-poulet', W60: 'Paprikás de poulet',
   W61: 'Stroganoff', W62: 'Penne aux boulettes', W63: 'Poulet aux champignons', W64: 'Poulet ail et herbes', W65: 'Bowl buffalo',
   W66: 'Poêlée de bœuf', W67: 'Picadillo', W68: 'Keema aloo', W69: 'Bowl marocain', W70: 'Poulet shawarma',
-  W71: 'Bœuf-quinoa épicé', W72: 'Curry et naans', W73: 'Burritos de bœuf', W74: 'Philly cheesesteak', W75: 'Mafé', W76: 'Paella aux crevettes', W77: 'Poulet sauté miso', W78: 'Œufs cocotte', W79: 'Salade lentilles-sardines', W80: 'Salade de maquereau', W81: 'Marry me chicken', W82: "Poulet soupe à l'oignon", W83: 'Pâtes turques', W84: 'Bourguignon', W85: 'Poulet châtaignes', W86: 'Tartiflette au poulet', W87: 'Mac and cheese butternut', W88: 'Gratin de gnocchis', W89: 'Chili au chocolat', W90: 'Curry crevettes-courge', W91: 'Saumon moutarde-miel', W92: 'Gratin patate douce-feta', SO07: 'Marry me soup', SO08: 'Velouté de châtaignes', SO09: "Soupe à l'oignon", K13: 'Wrap thon', K14: 'Croque-monsieur', K15: 'Roses des sables', K16: 'Tiramisu', K17: 'Barres aux dattes', K18: 'Barres Snickers', K19: 'Bouchées coco', K20: 'Barres granola', K21: 'Cookies banane', B16: 'Porridge banane',
+  W71: 'Bœuf-quinoa épicé', W72: 'Curry et naans', W73: 'Burritos de bœuf', W74: 'Philly cheesesteak', W75: 'Mafé', W76: 'Paella aux crevettes', W77: 'Poulet sauté miso', W78: 'Œufs cocotte', W79: 'Salade lentilles-sardines', W80: 'Salade de maquereau', W81: 'Marry me chicken', W82: "Poulet soupe à l'oignon", W83: 'Pâtes turques', W84: 'Bourguignon', W85: 'Poulet châtaignes', W86: 'Tartiflette au poulet', W87: 'Mac and cheese butternut', W88: 'Gratin de gnocchis', W89: 'Chili au chocolat', W90: 'Curry crevettes-courge', W91: 'Saumon moutarde-miel', W92: 'Gratin patate douce-feta', SO07: 'Marry me soup', SO10: 'Bortsch', SO11: 'Goulash', SO12: 'Ciorbă de poulet', SO13: 'Kharcho', SO14: 'Ukha au saumon', SO15: 'Mercimek', SO16: 'Sopa de lima', K22: 'Granola érable', K23: "Pommes à l'érable", K24: 'Overnight oats pumpkin', SO08: 'Velouté de châtaignes', SO09: "Soupe à l'oignon", K13: 'Wrap thon', K14: 'Croque-monsieur', K15: 'Roses des sables', K16: 'Tiramisu', K17: 'Barres aux dattes', K18: 'Barres Snickers', K19: 'Bouchées coco', K20: 'Barres granola', K21: 'Cookies banane', B16: 'Porridge banane',
   W35: 'Tasty crousty', W36: 'Fajitas', W37: 'Riz sauté', W38: 'Bœuf aux poivrons', W39: 'Bolognaise', W40: 'Kefta et taboulé', W41: 'Gnocchis au poulet', W42: 'Nuggets maison', W43: 'Bowl kebab',
   W31: 'Raviolis croustillants', W32: 'Bol hot honey', W33: 'Pâtes crémeuses', W34: 'Boulettes laquées', K10: 'Fromage blanc cacahuète', B05: 'Fromage blanc et granola',
   B01: 'Overnight oats cacao', B02: 'Overnight oats pomme', B05: 'Fromage blanc granola', S11: 'Tartine poulet', S12: 'Tartine miel', B06: 'Muffins aux œufs', B07: 'Wrap poulet',
@@ -2516,6 +2558,10 @@ const STOVE = [
   ['SO07', /laisse cuire 5 minutes sous pression/, "Ajoute les tomates concassées, le bouillon cube émietté et 300 ml d'eau froide par portion. Couvre et laisse mijoter 15 minutes à feu doux."],
   ['SO07', /^Fais cuire les pâtes à l'autocuiseur/, "Fais cuire les pâtes dans une grande casserole d'eau bouillante salée, 2 minutes de moins que le temps indiqué sur le paquet : elles finiront de cuire dans la soupe. Égoutte-les."],
   ['SO08', /laisse cuire 8 minutes sous pression/, "Ajoute les châtaignes, le thym, le bouillon cube émietté, 350 ml d'eau froide par portion et le poulet entier. Couvre et laisse mijoter 20 minutes à feu doux : le poulet ne doit plus être rose au centre."],
+  ['SO12', /laisse cuire 15 minutes sous pression/, "Mets les hauts de cuisse dans une cocotte avec l'oignon, les carottes, le poivron, le bouillon cube émietté et 400 ml d'eau froide par portion. Couvre et laisse mijoter 35 minutes à feu doux, jusqu'à ce que la viande se détache facilement."],
+  ['SO14', /laisse cuire 4 minutes sous pression/, "Mets les pommes de terre, les carottes, l'oignon, la feuille de laurier, quelques grains de poivre, le bouillon cube émietté et 450 ml d'eau froide par portion dans une cocotte. Couvre et laisse cuire 15 minutes à feu doux : les pommes de terre doivent être tendres."],
+  ['SO15', /laisse cuire 8 minutes sous pression/, "Ajoute les lentilles, le bouillon cube émietté et 400 ml d'eau froide par portion. Couvre et laisse cuire 20 minutes à feu doux, en remuant de temps en temps, jusqu'à ce que les lentilles se défassent."],
+  ['SO16', /laisse cuire 8 minutes sous pression/, "Mets le poulet entier dans une cocotte avec l'oignon, l'ail, l'origan, le bouillon cube émietté et 400 ml d'eau froide par portion. Couvre et laisse mijoter 20 minutes à feu doux : le poulet ne doit plus être rose au centre."],
   ['K11', /^Mets dans l'autocuiseur le riz, le lait/, 'Mets dans une casserole le riz, le lait et le lait de coco.'],
   ['K11', /laisse cuire 12 minutes sous pression/, "Porte à frémissement, puis laisse cuire 30 minutes à feu très doux, sans couvrir, en remuant souvent pour que le lait n'attache pas."],
   ['S01', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 1,7 fois son poids d'eau (par exemple 135 ml d'eau pour 80 g de riz)."],
@@ -2557,7 +2603,7 @@ function adaptStep(st, eq = eqOr(), r = null) {
     s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${ovenTime(+a)} minutes au four préchauffé à 200 °C`);
     s = s.replace(/(?:posée |posés? )?dans le panier de l'air fryer/g, 'sur une plaque du four');
     s = s.replace(/ dans le panier(?! vapeur)/g, ' sur une plaque couverte de papier cuisson');
-    s = s.replace(/en secouant le panier (?:toutes les \d+ minutes|deux fois|à mi-cuisson)?/g, 'en les retournant à mi-cuisson');
+    s = s.replace(/en secouant le panier(?: toutes les \d+ minutes| deux fois| à mi-cuisson)?/g, 'en les retournant à mi-cuisson');
     s = s.replace(/secoue le panier/g, 'retourne-les');
     s = s.replace(/à l'air fryer(?! à)/g, 'au four');
     s = s.replace(/l'air fryer/g, 'le four').replace(/air fryer/g, 'four');
@@ -3843,7 +3889,7 @@ function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = In
   const all = snackPool(whey, lac, glu);
   // v196 : une collation rapide qui demande un produit frais vendu à la pièce ou en sachet (avocat, salade, concombre…)
   // n'est proposée que si ce produit est déjà acheté pour les plats : sinon on achèterait un avocat entier pour 30 g
-  const PACK_FRESH = ['avocat', 'salade', 'concombre', 'herbes', 'tomates_cerise', 'champignons', 'poivron', 'courgette', 'aubergine'];
+  const PACK_FRESH = ['avocat', 'salade', 'concombre', 'herbes', 'tomates_cerise', 'champignons', 'poivron', 'courgette', 'aubergine', 'butternut'];
   const needsPack = s => !!bought && s.ingredients.some(i => PACK_FRESH.includes(i.key) && !bought.has(i.key));
   const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s));
   // v195 / v199 : tour de rôle, pour les collations préparées comme pour les rapides. Celles servies récemment passent
@@ -4989,7 +5035,7 @@ const CUISINES = {
   'indien': 'Indien', 'grec': 'Grec', 'turc': 'Turc', 'libanais': 'Libanais', 'marocain': 'Marocain',
   'mexicain': 'Mexicain', 'américain': 'Américain', 'péruvien': 'Péruvien', 'brésilien': 'Brésilien',
   'éthiopien': 'Éthiopien', 'mozambicain': 'Mozambicain', 'italien': 'Italien', 'moyen-orient': 'Moyen-Orient',
-  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français', 'espagnol': 'Espagnol',
+  'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français', 'espagnol': 'Espagnol', 'ukrainien': 'Ukrainien', 'roumain': 'Roumain', 'géorgien': 'Géorgien', 'canadien': 'Canadien',
 };
 const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
@@ -5955,7 +6001,7 @@ const STEP_RX = {
   chou_fleur: /chou-fleur/, petits_pois: /petits pois/, haricots_verts: /haricots verts/, olives: /olives/,
   salade: /salade|crudités/, avocat: /avocat/, pain_burger: /pains?\b|burger/, baguette: /baguette|pain/, pain: /pain|tartine/, brocoli: /brocoli/,
   thon: /thon/, feuille_riz: /feuilles? de riz|galette/, tomates_sechees: /tomates séchées/, cornflakes: /corn-?flakes/, houmous: /houmous/,
-  chataignes: /châtaigne/, reblochon: /reblochon/, beurre: /beurre(?! de cacahuète)/, sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
+  chataignes: /châtaigne/, chou: /\bchou\b(?!-)/, sirop_erable: /érable/, reblochon: /reblochon/, beurre: /beurre(?! de cacahuète)/, sardines: /sardine/, maquereau: /maquereau/, betterave: /betterave/, mache: /mâche/, noix: /\bnoix\b/, poireau: /poireau/, butternut: /butternut|courge/, pois_casses: /pois cassés/,
   cornichons: /cornichon/, chou_chinois: /chou/, radis: /radis/, pousses_soja: /pousses/, mangue: /mangue/, fruits_rouges: /fruits rouges/,
 };
 // v195 : ingrédients qui ne servent qu'au moment du repas (œuf au plat, galettes, fromage à faire fondre…) :

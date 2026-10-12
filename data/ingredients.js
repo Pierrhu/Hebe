@@ -209,6 +209,8 @@ const RAW = {
   betterave:     ['Betterave cuite',            'g',     45,  1.6,  8.4, 0.1, 'veg', 3,   'F', { pack: 500 }],
   mache:         ['Mâche',                      'g',     21,  2,    1.5, 0.4, 'veg', 12,  'F', { buy: 125 }],
   // ── v213 : recettes d'automne — valeurs Ciqual ──
+  sirop_erable:  ['Sirop d\'érable',            'g',     260, 0,    67,  0.1, 'flavor', 15, 'E', { pantry: true }],
+  chou:          ['Chou blanc',                 'g',     27,  1.3,  4,   0.2, 'veg', 1.5,  'F', { buy: 1000 }],
   chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
   reblochon:     ['Reblochon',                  'g',     330, 20,   0,   27,  'dairy', 14,  'L', { pack: 240 }],
   beurre:        ['Beurre',                     'g',     740, 0.7,  0.6, 82,  'fat', 9,    'L', { pantry: true }],
@@ -307,7 +309,7 @@ export const SPICES = {
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
   W81: 'origan, paprika', W82: 'thym', W83: 'cumin, paprika, piment', W84: 'thym, laurier', W85: 'thym', W86: 'thym',
   W87: 'paprika fumé, ail en poudre', W88: 'muscade', W89: 'cumin, paprika fumé, piment', W92: 'cumin, paprika',
-  SO07: 'origan, piment', SO08: 'thym', SO09: 'thym, laurier',
+  SO07: 'origan, piment', SO10: 'laurier', SO11: 'paprika doux, cumin', SO13: 'paprika, coriandre moulue, piment', SO14: 'laurier, poivre en grains', SO15: 'cumin, paprika, menthe séchée', SO16: 'origan', K22: 'cannelle', K23: 'cannelle', K24: 'cannelle, muscade', SO08: 'thym', SO09: 'thym, laurier',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
 export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';

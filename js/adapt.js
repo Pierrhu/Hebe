@@ -89,6 +89,10 @@ const STOVE = [
   ['SO07', /laisse cuire 5 minutes sous pression/, "Ajoute les tomates concassées, le bouillon cube émietté et 300 ml d'eau froide par portion. Couvre et laisse mijoter 15 minutes à feu doux."],
   ['SO07', /^Fais cuire les pâtes à l'autocuiseur/, "Fais cuire les pâtes dans une grande casserole d'eau bouillante salée, 2 minutes de moins que le temps indiqué sur le paquet : elles finiront de cuire dans la soupe. Égoutte-les."],
   ['SO08', /laisse cuire 8 minutes sous pression/, "Ajoute les châtaignes, le thym, le bouillon cube émietté, 350 ml d'eau froide par portion et le poulet entier. Couvre et laisse mijoter 20 minutes à feu doux : le poulet ne doit plus être rose au centre."],
+  ['SO12', /laisse cuire 15 minutes sous pression/, "Mets les hauts de cuisse dans une cocotte avec l'oignon, les carottes, le poivron, le bouillon cube émietté et 400 ml d'eau froide par portion. Couvre et laisse mijoter 35 minutes à feu doux, jusqu'à ce que la viande se détache facilement."],
+  ['SO14', /laisse cuire 4 minutes sous pression/, "Mets les pommes de terre, les carottes, l'oignon, la feuille de laurier, quelques grains de poivre, le bouillon cube émietté et 450 ml d'eau froide par portion dans une cocotte. Couvre et laisse cuire 15 minutes à feu doux : les pommes de terre doivent être tendres."],
+  ['SO15', /laisse cuire 8 minutes sous pression/, "Ajoute les lentilles, le bouillon cube émietté et 400 ml d'eau froide par portion. Couvre et laisse cuire 20 minutes à feu doux, en remuant de temps en temps, jusqu'à ce que les lentilles se défassent."],
+  ['SO16', /laisse cuire 8 minutes sous pression/, "Mets le poulet entier dans une cocotte avec l'oignon, l'ail, l'origan, le bouillon cube émietté et 400 ml d'eau froide par portion. Couvre et laisse mijoter 20 minutes à feu doux : le poulet ne doit plus être rose au centre."],
   ['K11', /^Mets dans l'autocuiseur le riz, le lait/, 'Mets dans une casserole le riz, le lait et le lait de coco.'],
   ['K11', /laisse cuire 12 minutes sous pression/, "Porte à frémissement, puis laisse cuire 30 minutes à feu très doux, sans couvrir, en remuant souvent pour que le lait n'attache pas."],
   ['S01', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 1,7 fois son poids d'eau (par exemple 135 ml d'eau pour 80 g de riz)."],
@@ -130,7 +134,7 @@ export function adaptStep(st, eq = eqOr(), r = null) {
     s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${ovenTime(+a)} minutes au four préchauffé à 200 °C`);
     s = s.replace(/(?:posée |posés? )?dans le panier de l'air fryer/g, 'sur une plaque du four');
     s = s.replace(/ dans le panier(?! vapeur)/g, ' sur une plaque couverte de papier cuisson');
-    s = s.replace(/en secouant le panier (?:toutes les \d+ minutes|deux fois|à mi-cuisson)?/g, 'en les retournant à mi-cuisson');
+    s = s.replace(/en secouant le panier(?: toutes les \d+ minutes| deux fois| à mi-cuisson)?/g, 'en les retournant à mi-cuisson');
     s = s.replace(/secoue le panier/g, 'retourne-les');
     s = s.replace(/à l'air fryer(?! à)/g, 'au four');
     s = s.replace(/l'air fryer/g, 'le four').replace(/air fryer/g, 'four');
