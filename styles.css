@@ -1811,30 +1811,57 @@ button.wl-ch:disabled { cursor: default; }
 /* v235 : remarque dans la fiche d'un programme (prise de muscle avec beaucoup de gras) */
 .pf-warn { margin: 10px 0 0; padding: 10px 12px; border-radius: 14px; background: var(--honey-t); color: var(--text); font-size: 13.5px; line-height: 1.45; }
 
-/* v236-v238 : fiche « Comment Hébé calcule », façon carnet de labo sur papier millimétré */
+/* v236-v239 : fiche « Comment Hébé calcule » : étiquette d'apothicaire, livre de comptes, planches dessinées */
 .sci-link { display: inline-block; margin-top: 12px; padding: 6px 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: 13.5px; font-weight: 600; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
 .sci-link-c { align-self: center; margin: 10px auto 0; display: block; }
-.sci { display: flex; flex-direction: column; }
-.sci-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.sci-head .hb-h2 { font-size: 27px; line-height: 1.1; }
-.sci-stamp { flex-shrink: 0; margin-top: 4px; padding: 5px 10px; border: 1.5px solid #C8704F; border-radius: 6px; color: #C8704F; font-family: var(--serif); font-style: italic; font-size: 13px; transform: rotate(4deg); opacity: .9; }
-.sci-lead { margin: 8px 0 16px; font-size: 14.5px; line-height: 1.5; color: var(--text-2); }
-.sci-paper { border-radius: 20px; border: 1px solid #EADFCB; overflow: hidden;
+.sci { display: flex; flex-direction: column; gap: 14px; }
+/* étiquette : double filet vert sapin, coins coupés */
+.sci-label { position: relative; padding: 5px; border: 1.5px solid #3E5A48; border-radius: 4px; background: #FBF8F2; }
+.sci-label-in { position: relative; padding: 18px 16px 16px; border: .8px solid #3E5A48; text-align: center;
+  background: radial-gradient(circle at 0 0, transparent 9px, transparent 0) top left, #FBF8F2; }
+.sci-label::before, .sci-label::after { content: ''; position: absolute; width: 10px; height: 10px; border: 1.5px solid #3E5A48; border-radius: 50%; background: var(--bg); top: -6px; left: -6px; }
+.sci-label::after { left: auto; right: -6px; }
+.sci-kick { display: inline-block; font-family: var(--serif); font-style: italic; font-size: 13px; color: #8A7655; }
+.sci-title { margin: 4px 0 8px; font-family: var(--serif); font-weight: 500; font-size: 29px; line-height: 1.05; letter-spacing: -.01em; color: #2F4638; }
+.sci-sub { margin: 0 auto; max-width: 28em; font-size: 13.5px; line-height: 1.5; color: var(--text-2); }
+.sci-stamp { position: absolute; top: -12px; right: 10px; padding: 4px 9px; border: 1.5px solid #C8704F; border-radius: 6px; background: #FBF8F2; color: #C8704F; font-family: var(--serif); font-style: italic; font-size: 12.5px; transform: rotate(5deg); }
+/* livre de comptes : pointillés entre l'intitulé et la valeur */
+.sci-ledger { padding: 16px 16px 14px; border-radius: 18px; background: #fff; border: 1px solid #EADFCB; }
+.sl-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.sl-head span { font-family: var(--serif); font-size: 18px; color: var(--text); }
+.sl-head em { font-family: var(--serif); font-size: 14px; color: #8A7655; }
+.sl-row { display: flex; align-items: baseline; gap: 6px; padding: 6px 0; font-size: 13.5px; color: var(--text-2); }
+.sl-row i { flex: 1; min-width: 12px; border-bottom: 1.5px dotted #CDBB97; transform: translateY(-3px); }
+.sl-k { display: inline-flex; align-items: baseline; flex-wrap: wrap; }
+.sl-v { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text); white-space: nowrap; }
+.sl-sum { border-top: 1px solid #EADFCB; margin-top: 2px; }
+.sl-sum .sl-k, .sl-sum .sl-v { color: var(--text); font-weight: 700; }
+.sl-total { margin-top: 4px; padding-top: 10px; border-top: 3px double #3E5A48; }
+.sl-total .sl-k { font-family: var(--serif); font-size: 17px; color: var(--text); }
+.sl-total .sl-v { font-family: var(--serif); font-size: 24px; font-weight: 500; color: #2F4638; }
+.sl-macros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.sl-macros div { padding: 8px 6px; border-radius: 12px; background: #F6F1E7; text-align: center; }
+.sl-macros b { display: block; font-family: var(--serif); font-weight: 500; font-size: 18px; color: var(--text); }
+.sl-macros span { font-size: 11.5px; color: var(--text-2); }
+.sl-note { margin: 10px 0 0; font-size: 12.5px; color: var(--text-2); }
+/* planches : papier millimétré, numéro cerclé, dessin à l'encre */
+.sci-card { padding: 14px 16px 16px; border-radius: 18px; border: 1px solid #EADFCB;
   background-color: #FBF8F2;
   background-image: linear-gradient(#F3ECDF .5px, transparent .5px), linear-gradient(90deg, #F3ECDF .5px, transparent .5px), linear-gradient(#EBDFC7 .8px, transparent .8px), linear-gradient(90deg, #EBDFC7 .8px, transparent .8px);
   background-size: 8px 8px, 8px 8px, 40px 40px, 40px 40px; }
-.sci-sec { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 16px 16px 16px 14px; border-top: 1px dashed #DCCBAA; }
-.sci-sec:first-child { border-top: 0; }
-.sci-fig { display: flex; flex-direction: column; align-items: flex-start; padding-top: 2px; }
-.sci-fig b { font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1; letter-spacing: -.02em; color: #3E5A48; white-space: nowrap; }
-.sci-fig small { margin-top: 5px; font-family: var(--serif); font-style: italic; font-size: 12px; line-height: 1.25; color: #8A7655; }
-.sci-txt h3 { display: flex; align-items: baseline; gap: 7px; margin: 0 0 5px; font-family: var(--serif); font-weight: 500; font-size: 17px; line-height: 1.2; color: var(--text); }
-.sci-n { font-family: inherit; font-size: 12px; color: #C8704F; }
-.sci-txt p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--text-2); }
+.sci-card h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 8px; font-family: var(--serif); font-weight: 500; font-size: 18px; color: #2F4638; }
+.sci-n { flex-shrink: 0; width: 24px; height: 24px; display: grid; place-items: center; border: 1.3px solid #C8704F; border-radius: 50%; font-family: var(--serif); font-style: italic; font-size: 13px; color: #C8704F; }
+.sci-art { margin: 2px -4px 8px; }
+.sci-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sci-svg .sv-l { font-family: var(--serif); font-style: italic; font-size: 11.5px; fill: #8A7655; }
+.sci-svg .sv-t { font-size: 10.5px; fill: #8A7655; }
+.sci-svg .sv-k { font-family: var(--serif); font-style: italic; font-size: 12px; fill: #C8704F; }
+.sci-svg .sv-in { font-size: 11px; font-weight: 700; fill: #fff; }
+.sci-svg .sv-in.dk { fill: #2F4638; }
+.sci-card p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--text-2); }
 .sci-ref { display: inline-grid; place-items: center; min-width: 17px; height: 17px; margin: 0 1px 0 3px; padding: 0 4px; border: 0; border-radius: 999px; background: var(--sage-t); color: var(--accent); font: inherit; font-size: 10px; font-weight: 700; vertical-align: 2px; }
-.sci-note { margin: 16px 0 12px; padding: 11px 13px; border-radius: 14px; background: var(--honey-t); font-size: 13px; line-height: 1.45; color: var(--text); }
-.sci-src { margin-bottom: 14px; }
-.sci-src summary { cursor: pointer; padding: 8px 0; font-size: 14px; font-weight: 600; color: var(--accent); }
+.sci-note { margin: 2px 0 0; padding: 11px 13px; border-radius: 14px; background: var(--honey-t); font-size: 13px; line-height: 1.45; color: var(--text); }
+.sci-src summary { cursor: pointer; padding: 6px 0; font-size: 14px; font-weight: 600; color: var(--accent); }
 .sci-src ol { margin: 6px 0 0; padding-left: 24px; }
 .sci-src li { font-size: 12px; line-height: 1.5; color: var(--text-2); margin-bottom: 8px; padding: 4px 6px; border-radius: 8px; transition: background .4s; }
 .sci-src li::marker { font-family: var(--serif); color: #C8704F; }
