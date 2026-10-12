@@ -1743,3 +1743,9 @@ button.idf-stamp:active { opacity: .7; }
   .welcome-view.wl-in-f > *, .welcome-view.wl-in-b > * { animation: none !important; }
   .wl-ch { transition: none; }
 }
+
+/* v222 : même plat et soupes sans couleur, avec une phrase qui explique la question */
+.dt-card.dt-plain { background: rgba(255,255,255,.75) !important; }
+.dt-card.dt-plain .dt-seg { background: var(--bg); }
+.dt-card.dt-plain .dt-btn.on { background: var(--sage); color: #fff; }
+.dt-desc { margin: 4px 0 10px; font-size: 13px; line-height: 1.4; color: var(--text-2); }

@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T12:11:06.661Z
+// 2026-10-12T12:13:19.770Z
 
 
 // ──────────────────────────────────────────────
@@ -7105,15 +7105,16 @@ function equipmentBlock(eq) {
 
 // v208 : ta semaine — combien de fois le même plat, et soupes ou non (communs au foyer)
 const REPEAT_NOTES = {
-  2: 'Environ 7 plats à cuisiner le dimanche.',
-  3: 'Environ 5 plats à cuisiner le dimanche.',
-  4: 'Environ 4 plats à cuisiner le dimanche.',
+  2: 'Le plus varié, avec environ 7 plats à cuisiner le dimanche.',
+  3: 'Un bon équilibre, avec environ 5 plats à cuisiner le dimanche.',
+  4: 'Le plus simple, avec environ 4 plats à cuisiner le dimanche.',
 };
 // v221 : deux blocs séparés pour l'accueil (même plat dans « Ton rythme », soupes dans « Ce que tu manges »)
 function repeatBlock() {
   const rep = getMaxRepeat();
-  return `<div class="dt-card dt-repeat" style="--c:var(--bloom);--t:var(--bloom-t)">
-      <div class="dt-top"><b>Même plat dans la semaine</b></div>
+  return `<div class="dt-card dt-plain dt-repeat">
+      <div class="dt-top"><b>Combien de fois manger le même plat ?</b></div>
+      <p class="dt-desc">Chaque plat cuisiné le dimanche donne plusieurs repas dans la semaine.</p>
       <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
         ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
       </div>
@@ -7122,12 +7123,12 @@ function repeatBlock() {
 }
 function soupsBlock() {
   const soups = getSoups();
-  return `<div class="dt-card dt-soups" style="--c:var(--mint);--t:var(--mint-t)">
+  return `<div class="dt-card dt-plain dt-soups">
       <div class="dt-top"><b>Veux-tu des soupes ?</b></div>
+      <p class="dt-desc">Une soupe complète remplace un dîner, une fois par semaine au plus.</p>
       <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
         ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
       </div>
-      ${soups ? '<p class="dt-note">Une soupe par semaine au plus, le soir.</p>' : ''}
     </div>`;
 }
 function weekPrefsBlock() {
