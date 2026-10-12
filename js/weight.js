@@ -52,6 +52,17 @@ export function computeAdjust(m) {
   const next = Math.min(ADJ_MAX, Math.max(ADJ_MIN, old * 0.5 + (real / formula) * 0.5));
   return { old, next, real: Math.round(real), formula: Math.round(formula), rate: slope * 7, last: last.d };
 }
+// v235 : poids du profil (métabolisme, protéines) recalé sur la moyenne des 3 dernières pesées
+// dès qu'elle s'écarte de plus de 3 % ; renvoie le nouveau poids, ou null
+export function syncProfileWeight(mid) {
+  const ws = getWeights(mid).slice(-3);
+  const m = getMembers().find(x => x.id === mid);
+  if (!m || ws.length < 3 || !m.weight) return null;
+  const avg = Math.round(ws.reduce((a, w) => a + w.kg, 0) / ws.length * 10) / 10;
+  if (Math.abs(avg - m.weight) / m.weight <= 0.03) return null;
+  updateMember(mid, { weight: avg });
+  return avg;
+}
 // appliqué après une pesée, si l'ajustement est activé et que l'écart vaut la peine (≥ 1,5 %)
 export function autoAdjust(m) {
   if (m.autoAdjust === false || m.targets) return null; // calories réglées à la main : on n'y touche pas
@@ -229,11 +240,12 @@ export function renderWeight() {
   view.querySelector('.wt-save')?.addEventListener('click', () => {
     const d = getTodayDate();
     saveWeights(m.id, [...getWeights(m.id).filter(w => w.d !== d), { d, kg: +val.dataset.kg, kcal: getTargetsFor(m).kcal }]);
+    const moved = syncProfileWeight(m.id); // v235 : profil recalé sur le poids réel
     const adj = autoAdjust(getMembers().find(x => x.id === m.id));
     weighOpen = false;
     document.querySelector('.nav-btn[data-view="weight"] .nav-dot')?.remove();
     renderWeight();
-    toast(adj ? `Pesée enregistrée, tes calories passent à ${adj.toK} kcal par jour.` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg.`);
+    toast(adj ? `Pesée enregistrée, tes calories passent à ${adj.toK} kcal par jour.` : moved ? `Pesée enregistrée. Ton profil passe à ${kgFr(moved)} kg : tes besoins sont recalculés.` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg.`);
   });
   view.querySelector('[data-adj-undo]')?.addEventListener('click', () => {
     updateMember(m.id, { tdeeAdj: m.adjPrev ?? 1, adjNote: null });

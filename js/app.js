@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T13:47:38.838Z
+// 2026-10-12T14:00:12.950Z
 
 
 // ──────────────────────────────────────────────
@@ -1943,11 +1943,14 @@ function gx(text, sex) {
 // calculator.js — Moteur Zero to Hero, adapté aux hommes et aux femmes.
 //
 // Métabolisme de base = moyenne de deux formules :
-//   BMR1 (Harris-Benedict) homme = 13,707 × poids + 492,3 × taille (m) − 6,673 × âge + 77,607   (formule du tableur d'origine)
+//   BMR1 (Harris-Benedict révisée, Roza et Shizgal 1984) homme = 13,397 × poids + 479,9 × taille (m) − 5,677 × âge + 88,362
+//   (v235 : coefficients officiels ; ceux du tableur d'origine donnaient moins de 0,5 % d'écart)
 //   BMR1 (Harris-Benedict révisée) femme = 9,247 × poids + 309,8 × taille (m) − 4,330 × âge + 447,593
 //   BMR2 (Katch-McArdle, commune) = 21,6 × masse maigre + 370
 // Maintenance = BMR × coefficient d'activité (niveau 2 = 1,5, l'ancien coefficient fixe).
 // Protéines = moyenne(poids × 1,5 ; masse maigre × 2)
+//   v235 : en perte (déficit), au moins 2,3 g par kg de masse maigre pour les profils secs
+//   (moins de 15 % de gras pour un homme, 25 % pour une femme) : Helms et al. 2014 recommandent 2,3 à 3,1 g/kg de masse maigre.
 // Lipides   = 1,2 × masse maigre, jamais moins de 25 % des calories (femme) ou 20 % (homme)
 // Glucides  = le reste
 // Programmes : écart en POURCENTAGE de la maintenance (un écart fixe pèse trop lourd sur de petits besoins).
@@ -2031,7 +2034,7 @@ function computeBase(profile) {
   const female = profile.sex === 'female';
   const bmr1 = female
     ? 9.247 * weight + 309.8 * height - 4.330 * age + 447.593
-    : 13.707 * weight + 492.3 * height - 6.673 * age + 77.607;
+    : 13.397 * weight + 479.9 * height - 5.677 * age + 88.362;
   const leanMass = weight * (100 - bodyfat) / 100;
   const bmr2 = 21.6 * leanMass + 370;
   const bmr  = (bmr1 + bmr2) / 2;
@@ -2053,7 +2056,8 @@ function computeDetails(profile, protocolId, phaseIndex = 0) {
   const phase = protocol.phases[Math.min(phaseIndex, protocol.phases.length - 1)];
   const wanted = base.maintenance * (1 + phase.pct);
   const kcal = Math.max(wanted, base.floorKcal);
-  const protein = base.protein;
+  const lean = profile.sex === 'female' ? profile.bodyfat < 25 : profile.bodyfat < 15;
+  const protein = phase.pct < 0 && lean ? Math.max(base.protein, 2.3 * base.leanMass) : base.protein;
   const fat = Math.max(base.fat, kcal * base.fatShare / 9);
   const carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
   return {
@@ -2090,8 +2094,12 @@ function protocolFor(profile, protocolId) {
   const maint = computeBase(profile).maintenance;
   const ph = computeAllPhases(profile, protocolId);
   const t = s => gx(s, profile.sex);
+  // v235 : prise de muscle avec beaucoup de gras : on le dit, sans l'interdire
+  const fatty = profile.bodyfat > (profile.sex === 'female' ? 30 : 20);
+  const warn = p.id === 'P1' && fatty
+    ? `Avec ${Math.round(profile.bodyfat)} % de masse grasse, la recomposition corporelle est souvent plus efficace : tu gagnes du muscle tout en perdant du gras.` : '';
   return {
-    ...p,
+    ...p, warn,
     purpose: t(p.purpose), forWho: p.forWho.map(t), tagline: t(p.tagline),
     phases: p.phases.map((x, i) => ({
       ...x,
@@ -7400,6 +7408,7 @@ function openProtocolSheet(profile, pid, { isCurrent = false, onChoose = null } 
       <div class="pf-block">
         <div class="pf-h">À quoi sert ce programme</div>
         <p class="pf-purpose">${p.purpose}</p>
+        ${p.warn ? `<p class="pf-warn">${p.warn}</p>` : ''}
         <div class="pf-who">
           <div class="pf-who-h">C'est pour toi si…</div>
           ${p.forWho.map(t => `<div class="pf-who-i">${t}</div>`).join('')}
@@ -8181,6 +8190,17 @@ function computeAdjust(m) {
   const next = Math.min(ADJ_MAX, Math.max(ADJ_MIN, old * 0.5 + (real / formula) * 0.5));
   return { old, next, real: Math.round(real), formula: Math.round(formula), rate: slope * 7, last: last.d };
 }
+// v235 : poids du profil (métabolisme, protéines) recalé sur la moyenne des 3 dernières pesées
+// dès qu'elle s'écarte de plus de 3 % ; renvoie le nouveau poids, ou null
+function syncProfileWeight(mid) {
+  const ws = getWeights(mid).slice(-3);
+  const m = getMembers().find(x => x.id === mid);
+  if (!m || ws.length < 3 || !m.weight) return null;
+  const avg = Math.round(ws.reduce((a, w) => a + w.kg, 0) / ws.length * 10) / 10;
+  if (Math.abs(avg - m.weight) / m.weight <= 0.03) return null;
+  updateMember(mid, { weight: avg });
+  return avg;
+}
 // appliqué après une pesée, si l'ajustement est activé et que l'écart vaut la peine (≥ 1,5 %)
 function autoAdjust(m) {
   if (m.autoAdjust === false || m.targets) return null; // calories réglées à la main : on n'y touche pas
@@ -8358,11 +8378,12 @@ function renderWeight() {
   view.querySelector('.wt-save')?.addEventListener('click', () => {
     const d = getTodayDate();
     saveWeights(m.id, [...getWeights(m.id).filter(w => w.d !== d), { d, kg: +val.dataset.kg, kcal: getTargetsFor(m).kcal }]);
+    const moved = syncProfileWeight(m.id); // v235 : profil recalé sur le poids réel
     const adj = autoAdjust(getMembers().find(x => x.id === m.id));
     weighOpen = false;
     document.querySelector('.nav-btn[data-view="weight"] .nav-dot')?.remove();
     renderWeight();
-    toast(adj ? `Pesée enregistrée, tes calories passent à ${adj.toK} kcal par jour.` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg.`);
+    toast(adj ? `Pesée enregistrée, tes calories passent à ${adj.toK} kcal par jour.` : moved ? `Pesée enregistrée. Ton profil passe à ${kgFr(moved)} kg : tes besoins sont recalculés.` : `Pesée enregistrée : ${kgFr(+val.dataset.kg)} kg.`);
   });
   view.querySelector('[data-adj-undo]')?.addEventListener('click', () => {
     updateMember(m.id, { tdeeAdj: m.adjPrev ?? 1, adjNote: null });

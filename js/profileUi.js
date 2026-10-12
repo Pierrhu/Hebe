@@ -405,6 +405,7 @@ export function openProtocolSheet(profile, pid, { isCurrent = false, onChoose = 
       <div class="pf-block">
         <div class="pf-h">À quoi sert ce programme</div>
         <p class="pf-purpose">${p.purpose}</p>
+        ${p.warn ? `<p class="pf-warn">${p.warn}</p>` : ''}
         <div class="pf-who">
           <div class="pf-who-h">C'est pour toi si…</div>
           ${p.forWho.map(t => `<div class="pf-who-i">${t}</div>`).join('')}

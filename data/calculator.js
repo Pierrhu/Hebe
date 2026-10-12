@@ -1,11 +1,14 @@
 // calculator.js — Moteur Zero to Hero, adapté aux hommes et aux femmes.
 //
 // Métabolisme de base = moyenne de deux formules :
-//   BMR1 (Harris-Benedict) homme = 13,707 × poids + 492,3 × taille (m) − 6,673 × âge + 77,607   (formule du tableur d'origine)
+//   BMR1 (Harris-Benedict révisée, Roza et Shizgal 1984) homme = 13,397 × poids + 479,9 × taille (m) − 5,677 × âge + 88,362
+//   (v235 : coefficients officiels ; ceux du tableur d'origine donnaient moins de 0,5 % d'écart)
 //   BMR1 (Harris-Benedict révisée) femme = 9,247 × poids + 309,8 × taille (m) − 4,330 × âge + 447,593
 //   BMR2 (Katch-McArdle, commune) = 21,6 × masse maigre + 370
 // Maintenance = BMR × coefficient d'activité (niveau 2 = 1,5, l'ancien coefficient fixe).
 // Protéines = moyenne(poids × 1,5 ; masse maigre × 2)
+//   v235 : en perte (déficit), au moins 2,3 g par kg de masse maigre pour les profils secs
+//   (moins de 15 % de gras pour un homme, 25 % pour une femme) : Helms et al. 2014 recommandent 2,3 à 3,1 g/kg de masse maigre.
 // Lipides   = 1,2 × masse maigre, jamais moins de 25 % des calories (femme) ou 20 % (homme)
 // Glucides  = le reste
 // Programmes : écart en POURCENTAGE de la maintenance (un écart fixe pèse trop lourd sur de petits besoins).
@@ -90,7 +93,7 @@ export function computeBase(profile) {
   const female = profile.sex === 'female';
   const bmr1 = female
     ? 9.247 * weight + 309.8 * height - 4.330 * age + 447.593
-    : 13.707 * weight + 492.3 * height - 6.673 * age + 77.607;
+    : 13.397 * weight + 479.9 * height - 5.677 * age + 88.362;
   const leanMass = weight * (100 - bodyfat) / 100;
   const bmr2 = 21.6 * leanMass + 370;
   const bmr  = (bmr1 + bmr2) / 2;
@@ -112,7 +115,8 @@ export function computeDetails(profile, protocolId, phaseIndex = 0) {
   const phase = protocol.phases[Math.min(phaseIndex, protocol.phases.length - 1)];
   const wanted = base.maintenance * (1 + phase.pct);
   const kcal = Math.max(wanted, base.floorKcal);
-  const protein = base.protein;
+  const lean = profile.sex === 'female' ? profile.bodyfat < 25 : profile.bodyfat < 15;
+  const protein = phase.pct < 0 && lean ? Math.max(base.protein, 2.3 * base.leanMass) : base.protein;
   const fat = Math.max(base.fat, kcal * base.fatShare / 9);
   const carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
   return {
@@ -149,8 +153,12 @@ export function protocolFor(profile, protocolId) {
   const maint = computeBase(profile).maintenance;
   const ph = computeAllPhases(profile, protocolId);
   const t = s => gx(s, profile.sex);
+  // v235 : prise de muscle avec beaucoup de gras : on le dit, sans l'interdire
+  const fatty = profile.bodyfat > (profile.sex === 'female' ? 30 : 20);
+  const warn = p.id === 'P1' && fatty
+    ? `Avec ${Math.round(profile.bodyfat)} % de masse grasse, la recomposition corporelle est souvent plus efficace : tu gagnes du muscle tout en perdant du gras.` : '';
   return {
-    ...p,
+    ...p, warn,
     purpose: t(p.purpose), forWho: p.forWho.map(t), tagline: t(p.tagline),
     phases: p.phases.map((x, i) => ({
       ...x,

@@ -1807,3 +1807,6 @@ button.wl-ch:disabled { cursor: default; }
 /* v233 : vignettes de la session de cuisine sur plusieurs lignes quand il y en a beaucoup */
 .hb-batch-link > div { min-width: 0; }
 .hb-batch-thumbs { flex-wrap: wrap; overflow: visible; }
+
+/* v235 : remarque dans la fiche d'un programme (prise de muscle avec beaucoup de gras) */
+.pf-warn { margin: 10px 0 0; padding: 10px 12px; border-radius: 14px; background: var(--honey-t); color: var(--text); font-size: 13.5px; line-height: 1.45; }
