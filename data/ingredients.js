@@ -208,6 +208,10 @@ const RAW = {
   maquereau:     ['Maquereau au naturel (égoutté)', 'g',  195, 20,  0,   12.5, 'protein', 12, 'E', { lv: 'P', min: 80, max: 200, pack: 125 }],
   betterave:     ['Betterave cuite',            'g',     45,  1.6,  8.4, 0.1, 'veg', 3,   'F', { pack: 500 }],
   mache:         ['Mâche',                      'g',     21,  2,    1.5, 0.4, 'veg', 12,  'F', { buy: 125 }],
+  // ── v213 : recettes d'automne — valeurs Ciqual ──
+  chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
+  reblochon:     ['Reblochon',                  'g',     330, 20,   0,   27,  'dairy', 14,  'L', { pack: 240 }],
+  beurre:        ['Beurre',                     'g',     740, 0.7,  0.6, 82,  'fat', 9,    'L', { pantry: true }],
   noix:          ['Noix (cerneaux)',            'g',     690, 15,   7,   65,  'fat', 14,  'E', { pack: 200 }],
 };
 
@@ -301,6 +305,9 @@ export const SPICES = {
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
+  W81: 'origan, paprika', W82: 'thym', W83: 'cumin, paprika, piment', W84: 'thym, laurier', W85: 'thym', W86: 'thym',
+  W87: 'paprika fumé, ail en poudre', W88: 'muscade', W89: 'cumin, paprika fumé, piment', W92: 'cumin, paprika',
+  SO07: 'origan, piment', SO08: 'thym', SO09: 'thym, laurier',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
 export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';

@@ -11,8 +11,8 @@ import { getEquipment } from './adapt.js';
 import { applyStaples } from './staples.js';
 
 export const LACTOSE_OUT = ['fromage_blanc', 'fromage_frais', 'carre_frais', 'whey', 'cottage'];
-const SUB1 = { yaourt_grec: 'yaourt_sl', lait: 'boisson_avoine', creme: 'creme_coco' };
-const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental' };
+const SUB1 = { yaourt_grec: 'yaourt_sl', lait: 'boisson_avoine', creme: 'creme_coco', beurre: 'huile' };
+const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental', reblochon: 'emmental' };
 
 // Gluten : « Sensibilité » (1) ou « Strict » (2)
 export const GLUTEN_OUT1 = ['chapelure', 'gnocchis', 'boudoirs'];                // écartées dans les deux niveaux
