@@ -9,7 +9,7 @@ import { whoSwitch, bindWho, avatar } from './profileUi.js';
 import { getById, proteinFamily, isFreshFish } from '../data/recipes.js';
 import { INGREDIENTS, humanQty } from '../data/ingredients.js';
 import { el, computeDayMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
-import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
+import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, planMembers, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
 import { itemQuantities, plateTarget, PLATE_SHARE } from './optimizer.js';
 import { proteinBoost } from './diet.js';
 import { dishThumb, dishThumbRated, rateClass, ICON_HEART } from '../data/photos.js';
@@ -202,6 +202,10 @@ export function renderWeek() {
     </div>`;
   }
 
+  // v232 : petits-déjeuners et collations préparés pendant la session, montrés avec les plats
+  const prepExtras = [...new Set(planMembers(plan).flatMap(mid => plan.dates.flatMap(d => {
+    const e = getEntry(d, mid); return [...(e.meals.breakfast || []), ...(e.meals.sweet || [])].map(it => it.id);
+  })))].map(getById).filter(r => r && r.batch);
   view.innerHTML = `${top}
     ${formulaNote}
     ${strip}
@@ -211,8 +215,9 @@ export function renderWeek() {
       <div>
         <div class="hb-h3">Ta session de cuisine</div>
         ${sessionDate(plan) >= getTodayDate() ? `<div class="hb-batch-when"><span>${capFirst(sessionWhen(plan))}</span>${sessionDate(plan) === getTodayDate() ? 'courses puis cuisine' : 'courses la veille ou le matin même'}</div>` : ''}
-        <div class="hb-batch-thumbs">${plan.sessions.flatMap(s => s.recipes).map(r => dishThumb(getById(r.id), 'batch')).join('')}</div>
+        <div class="hb-batch-thumbs">${[...plan.sessions.flatMap(s => s.recipes).map(r => getById(r.id)), ...prepExtras].map(r => dishThumb(r, 'batch')).join('')}</div>
         ${plan.sessions.map(s => `<div class="hb-batch-line">${s.recipes.map(r => shortName(r.id)).join(', ')}</div>`).join('')}
+        ${prepExtras.length ? `<div class="hb-batch-line hb-batch-snk">À préparer aussi : ${prepExtras.map(r => (shortName(r.id) || r.name).toLowerCase()).join(', ')}</div>` : ''}
       </div>
       <span class="hb-chev">›</span>
     </button>

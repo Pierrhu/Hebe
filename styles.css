@@ -1795,3 +1795,11 @@ button.idf-stamp:active { opacity: .7; }
 /* v230 : les chapitres de l'accueil sont des boutons (retour à un chapitre déjà atteint) */
 button.wl-ch { appearance: none; border: 0; background: none; padding: 6px 2px; margin: -6px -2px; font: inherit; font-size: 13px; cursor: pointer; }
 button.wl-ch:disabled { cursor: default; }
+
+/* v232 : 12 couleurs de plats pour la session de cuisine (au-delà, elles se répètent) : jamais de bloc blanc */
+.dish-7  { --c: var(--mint); --t: var(--mint-t); }
+.dish-8  { --c: #B79B5E; --t: #F5EEDD; }
+.dish-9  { --c: #6F9FC9; --t: #E3EEF8; }
+.dish-10 { --c: #C7869A; --t: #F8E8ED; }
+.dish-11 { --c: #8FA86A; --t: #EDF3E3; }
+.hb-batch-snk { margin-top: 2px; }

@@ -394,7 +394,7 @@ export function renderCook() {
   // Une étape à la fois : la phase en cours en grand, les autres repliées
   const endText = `Prépare ${andList(list.map(x => `${x.portions} ${x.portions > 1 ? 'boîtes' : 'boîte'} de ${dishShort(x.r)}`))}, et écris sur chaque boîte le jour où elle sera mangée.${hasFrozen ? " Les boîtes à congeler vont au congélateur aujourd'hui même, une fois tièdes : la veille du jour prévu, l'onglet Semaine te rappelle de les sortir et de les mettre au frigo." : ''}`;
   const allPhases = [
-    ...phases.map((ph, k) => ({ num: k + 2, title: ph.title, hint: ph.hint, r: ph.r, cls: ph.idx === -2 ? `ck-phase-extra dish-${list.length + batchExtras.findIndex(x => x.r === ph.r)}` : ph.r ? `dish-${ph.idx}` : 'ck-phase-rice', steps: phaseSteps[k] })),
+    ...phases.map((ph, k) => ({ num: k + 2, title: ph.title, hint: ph.hint, r: ph.r, cls: ph.idx === -2 ? `ck-phase-extra dish-${(list.length + batchExtras.findIndex(x => x.r === ph.r)) % 12}` : ph.r ? `dish-${ph.idx % 12}` : 'ck-phase-rice', steps: phaseSteps[k] })),
     { num: phases.length + 2, title: 'Mettre en boîtes', hint: 'Laisse tiédir 20 minutes au plus, ferme les boîtes et range-les au frigo', r: null, cls: 'ck-phase-end', steps: [{ text: endText, i: boxIdx }, ...boxSteps] },
   ];
   const phaseHTML = P => {
@@ -431,7 +431,7 @@ export function renderCook() {
       <div class="ck-phase-hd"><span class="ck-phase-num">1</span><div><div class="ck-phase-title">Sortir les ingrédients</div><div class="ck-phase-hint">Touche une recette pour voir ses quantités</div></div></div>
       ${sessionIdx > 0 && list.some(x => x.r.ingredients.some(g => INGREDIENTS[g.key]?.snap)) ? `<div class="ck-note ck-note-safe">Viandes et poissons achetés en début de semaine : vérifie leur date limite. Si elle tombe avant aujourd'hui, ils auraient dû être congelés le jour des courses ; dans ce cas, fais-les décongeler la veille au frigo, jamais à température ambiante.</div>` : ''}
       <div class="ck-menu">
-        ${[...list, ...batchExtras].map((x, k) => `<div class="ck-card dish-${k}">
+        ${[...list, ...batchExtras].map((x, k) => `<div class="ck-card dish-${k % 12}">
           <button class="ck-card-hd" data-card aria-expanded="false">
             <span class="ck-menu-top">${dishThumbRated(x.r, 'menu')}<span class="ck-menu-n">${x.portions} ${x.portions > 1 ? 'portions' : 'portion'}</span></span>
             <span class="ck-menu-name">${dishShort(x.r)}</span>
@@ -454,7 +454,7 @@ export function renderCook() {
 
     <div class="ck-phase ck-store">
       <div class="ck-phase-hd"><div><div class="ck-phase-title">Rangement</div><div class="ck-phase-hint">Combien de temps se garde chaque plat</div></div></div>
-      ${mids.length > 1 ? `<div class="ck-split">${list.map((x, k) => `<div class="ck-split-dish dish-${k}">
+      ${mids.length > 1 ? `<div class="ck-split">${list.map((x, k) => `<div class="ck-split-dish dish-${k % 12}">
         <div class="ck-split-name">${dishThumb(x.r, 'mini')}${dishShort(x.r)}</div>
         ${mids.filter(mid => x.per[mid]?.n).map(mid => `<div class="ck-split-row"><span>${getMember(mid)?.name || 'Sans prénom'}</span><span>${x.per[mid].n} ${x.per[mid].n > 1 ? 'boîtes' : 'boîte'} d'environ ${Math.round(x.per[mid].w / x.per[mid].n / 10) * 10} g</span></div>`).join('')}
       </div>`).join('')}</div>` : ''}
