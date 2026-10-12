@@ -309,10 +309,10 @@ export const SPICES = {
   W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
-  W95: 'thym', W96: 'cumin, paprika, cannelle', W97: 'muscade', W98: 'paprika, poivre concassé', W99: 'thym, piment', W100: 'curry en poudre', W101: 'thym',
-  W81: 'origan, paprika', W82: 'thym', W83: 'cumin, paprika, piment', W84: 'thym, laurier', W85: 'thym', W86: 'thym',
-  W87: 'paprika fumé, ail en poudre', W88: 'muscade', W89: 'cumin, paprika fumé, piment', W92: 'cumin, paprika',
-  SO07: 'origan, piment', SO10: 'laurier', SO11: 'paprika doux, cumin', SO13: 'paprika, coriandre moulue, piment', SO14: 'laurier, poivre en grains', SO15: 'cumin, paprika, menthe séchée', SO16: 'origan', K22: 'cannelle', K23: 'cannelle', K24: 'cannelle, muscade', SO08: 'thym', SO09: 'thym, laurier',
+  W95: 'thym', W97: 'muscade', W98: 'paprika, poivre concassé', W101: 'thym',
+  W81: 'origan, paprika', W82: 'thym', W83: 'cumin, paprika, piment', W84: 'thym, laurier', W85: 'thym', 
+  W89: 'cumin, paprika fumé, piment', 
+  SO07: 'origan, piment', SO10: 'laurier', SO11: 'paprika doux, cumin', SO15: 'cumin, paprika, menthe séchée', K22: 'cannelle', K23: 'cannelle', K24: 'cannelle, muscade', SO08: 'thym', SO09: 'thym, laurier',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
 export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
