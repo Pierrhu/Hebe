@@ -9,7 +9,7 @@ import { whoSwitch, bindWho, avatar } from './profileUi.js';
 import { getById, proteinFamily, isFreshFish } from '../data/recipes.js';
 import { INGREDIENTS, humanQty } from '../data/ingredients.js';
 import { el, computeDayMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
-import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras } from './weekgen.js';
+import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
 import { itemQuantities, plateTarget, PLATE_SHARE } from './optimizer.js';
 import { proteinBoost } from './diet.js';
 import { dishThumb, dishThumbRated, rateClass, ICON_HEART } from '../data/photos.js';
@@ -442,6 +442,7 @@ function openDaySheet(date) {
     <div class="hb-sheet-pad">
       <div class="hb-h2">${DAY_LONG[dayIdx(date)]} ${new Date(date + 'T12:00:00').getDate()}</div>
       ${morningRow(e.meals.breakfast || [])}
+      ${(e.meals.breakfast || []).length && breakfastChoices(date).length > 1 ? '<div class="dv-acts dv-pick-row"><button class="act-btn" data-pick="breakfast">Changer le petit-déjeuner</button></div>' : ''}
       <div class="dv-meals">${bigTile('Midi', lunch)}${bigTile('Soir', dinner)}</div>
       <div class="dv-swaps">${[['lunch', lunch], ['dinner', dinner]].map(([meal, items]) => {
         const r = items[0] && getById(items[0].id);
@@ -464,6 +465,7 @@ function openDaySheet(date) {
         </div>`;
       }).join('')}</div>
       ${extras.length ? `<div class="hb-label dv-extras-lbl">Collations</div><div class="dv-extras">${extras.map(smallTile).join('')}</div>` : ''}
+      ${extras.length && snackChoices(date).length > 1 ? '<div class="dv-acts dv-pick-row"><button class="act-btn" data-pick="snack">Choisir ma collation</button></div>' : ''}
       <div class="ds-grid">
         ${cell('Calories', m.kcal, T.kcal, '', 'k')}
         ${cell('Protéines', m.protein, T.protein, ' g', 'p')}
@@ -511,9 +513,42 @@ function openDaySheet(date) {
     toast('Imprévu annulé');
   }));
   sheet.querySelectorAll('[data-swap]').forEach(b => b.addEventListener('click', () => { closeSheet(); openSwapSheet(b.dataset.swap, date); }));
+  sheet.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => { closeSheet(); openPickSheet(b.dataset.pick, date); }));
   sheet.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', () => {
     closeSheet();
     renderRecipeDetail(getById(b.dataset.rid), 'week', plannedItem(date, b.dataset.rid));
+  }));
+}
+
+// v208 : choisir soi-même son petit-déjeuner (petits-déjeuners et collations rapides) ou sa collation du jour
+function openPickSheet(kind, date) {
+  const e = getEntry(date);
+  const isBk = kind === 'breakfast';
+  const opts = isBk ? breakfastChoices(date) : snackChoices(date);
+  const current = new Set((isBk ? e.meals.breakfast : e.meals.sweet || []).map(it => it.id));
+  const groups = isBk
+    ? [['Petits-déjeuners', opts.filter(r => r.category === 'breakfast')], ['Collations rapides', opts.filter(r => r.category !== 'breakfast')]]
+    : [['Préparées dimanche', opts.filter(r => r.batch)], ['En quelques minutes', opts.filter(r => !r.batch)]];
+  const card = r => `<button class="sw-opt ${current.has(r.id) ? 'on' : ''}" data-choose="${r.id}">
+      ${dishThumb(r, 'sw-img')}
+      <span class="sw-txt"><b>${r.name}</b>${current.has(r.id) ? '<small>Prévu ce jour-là</small>' : ''}</span>
+      <span class="hb-chev">›</span>
+    </button>`;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="hb-sheet-pad">
+      <div class="hb-h2">${isBk ? 'Ton petit-déjeuner' : 'Ta collation'}</div>
+      <p class="sw-sub">${isBk ? 'Un petit-déjeuner ou une collation rapide.' : 'Elle passe en premier ce jour-là.'} Les portions se recalculent pour rester dans ta journée.</p>
+      ${groups.filter(([, l]) => l.length).map(([lbl, l]) => `<div class="hb-label sw-grp">${lbl}</div><div class="sw-list">${l.map(card).join('')}</div>`).join('')}
+      <button class="out-cancel sw-cancel">Annuler</button>
+    </div>`);
+  const sh = document.querySelector('.sheet') || document;
+  sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
+  sh.querySelectorAll('[data-choose]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.choose;
+    const ok = isBk ? setBreakfast(date, id) : pinSnack(date, id);
+    closeSheet(); renderWeek(); openDaySheet(date);
+    toast(isBk ? `Petit-déjeuner : ${shortName(id)}` : ok ? `Collation du jour : ${shortName(id)}` : `${shortName(id)} ne rentre pas dans ce qu'il te reste à manger ce jour-là`, ok || isBk ? undefined : 'warn');
   }));
 }
 

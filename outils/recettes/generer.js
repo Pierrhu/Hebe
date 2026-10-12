@@ -789,7 +789,7 @@ export const hasWhey = r => !!r && r.ingredients.some(i => i.key === 'whey');
 
 // ── Portion de féculent des plats : jamais sous le minimum (même règle que le moteur) ──
 const MAIN_CATS = ['lunch', 'dinner'];
-RECIPES.filter(r => MAIN_CATS.includes(r.category) && !(r.tags || []).includes('cantine')).forEach(r => {
+RECIPES.filter(r => MAIN_CATS.includes(r.category) && !(r.tags || []).includes('cantine') && !(r.tags || []).includes('soupe')).forEach(r => {
   let idx = r.ingredients.findIndex(i => i.key === 'riz');
   if (idx < 0) {
     let best = 0;
@@ -833,7 +833,12 @@ applyExtras();
 
 export const getDinners  = () => RECIPES.filter(r => r.category === 'dinner');
 export const getLunches  = () => RECIPES.filter(r => r.category === 'lunch');
-export const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine'));
+// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon programme)
+let SOUPS_ON = false;
+export const setSoupsOn = v => { SOUPS_ON = !!v; };
+export const isSoup = r => !!r && (r.tags || []).includes('soupe');
+export const soupHidden = r => isSoup(r) && !SOUPS_ON;
+export const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine') && !soupHidden(r));
 export const getSides    = () => RECIPES.filter(r => r.category === 'side' && !r.retired);
 export const getSweets   = () => RECIPES.filter(r => !r.retired && r.category === 'sweet');
 export const getBreakfasts = () => RECIPES.filter(r => !r.retired && r.category === 'breakfast');

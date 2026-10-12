@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T07:54:17.919Z
+// 2026-10-12T08:10:45.027Z
 
 
 // ──────────────────────────────────────────────
@@ -772,25 +772,25 @@ const RECIPES = [
     "L'entrée fraîcheur zéro effort.", ["entrée","0-cuisson","léger","salade"], false),
 
   // ══ Soupes (option « Soupe », pas encore proposées) ══
-  M("SO01", "Soupe thaï au poulet, carottes, coco et curry", "soup", "🍜", 15, 15,
+  M("SO01", "Soupe thaï au poulet, carottes, coco et curry", "dinner", "🍜", 15, 15,
     [["poulet",160],["carotte",120],["oignon",50],["ail",1],["bouillon",0.25],["lait_coco",100],["epices",1],["gingembre",5],["soja",5],["citron",10],["herbes",3],["nouilles_riz",60],["huile",3]],
-    ["Émince l'oignon, coupe les carottes en rondelles, écrase l'ail, râpe le gingembre et émince le poulet en fines lanières.","Mets l'autocuiseur en mode dorer avec l'huile. Fais revenir l'oignon 3 minutes, jusqu'à ce qu'il colore légèrement, puis ajoute l'ail, le gingembre et le curry, et remue 1 minute.","Ajoute le poulet et fais-le dorer 3 minutes sur toutes les faces.","Verse 200 ml d'eau froide par portion avec le bouillon cube émietté, le lait de coco et les carottes. Ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression : le poulet ne doit plus être rose au centre et les carottes doivent être tendres.","Ajoute la sauce soja et le jus de citron, goûte et ajuste.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Les nouilles restent dans leur paquet, la coriandre au frigo.","Au moment de manger : réchauffe le bouillon 3 minutes au micro-ondes, jusqu'à ce qu'il frémisse sans bouillir, puis ajoute les nouilles de riz et laisse-les gonfler 4 à 5 minutes à couvert, en remuant une fois. Parsème de coriandre ciselée."],
+    ["Émince l'oignon, coupe les carottes en rondelles, écrase l'ail, râpe le gingembre et émince le poulet en fines lanières.","Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, jusqu'à ce qu'il colore légèrement, puis ajoute l'ail, le gingembre et le curry, et remue 1 minute.","Ajoute le poulet et fais-le dorer 3 minutes sur toutes les faces.","Verse 200 ml d'eau froide par portion avec le bouillon cube émietté, le lait de coco et les carottes. Ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression : le poulet ne doit plus être rose au centre et les carottes doivent être tendres.","Ajoute la sauce soja et le jus de citron, goûte et ajuste.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Les nouilles restent dans leur paquet, la coriandre au frigo.","Au moment de manger : réchauffe le bouillon 3 minutes au micro-ondes, jusqu'à ce qu'il frémisse sans bouillir, puis ajoute les nouilles de riz et laisse-les gonfler 4 à 5 minutes à couvert, en remuant une fois. Parsème de coriandre ciselée."],
     "Les nouilles ajoutées au dernier moment restent fermes, même le troisième jour.", ["soupe","thaï","autocuiseur","batch"], true),
-  M("SO02", "Bouillon de poulet au miso, épinards et nouilles de riz", "soup", "🍲", 10, 25,
+  M("SO02", "Bouillon de poulet au miso, épinards et nouilles de riz", "dinner", "🍲", 10, 25,
     [["haut_cuisse",170],["epinards",120],["nouilles_riz",70],["ail",2],["oignon",50],["miso",12],["soja",5],["gingembre",5],["epices",1],["sesame",3]],
-    ["Pèle l'oignon et coupe-le en quatre. Écrase légèrement les gousses d'ail sans les peler. Râpe le gingembre.","Mets les hauts de cuisse dans l'autocuiseur avec l'oignon, l'ail, le gingembre, la feuille de laurier, la sauce soja et 350 ml d'eau froide par portion. Porte à ébullition en mode dorer et retire à la cuillère la mousse qui se forme en surface.","Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule 10 minutes.","Sors le poulet, laisse-le tiédir quelques minutes et effiloche-le à la fourchette. Retire le laurier et l'ail.","Remets l'autocuiseur en mode dorer, ajoute les épinards surgelés et laisse-les fondre 3 à 4 minutes. Arrête le feu.","Prélève une louche de bouillon dans un bol, délaye-y la pâte miso, puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir. Remets le poulet effiloché et poivre : le miso et la sauce soja salent déjà bien.","Mise en boîtes : le bouillon au frigo dès qu'il a tiédi, ou au congélateur. Les nouilles restent dans leur paquet.","Au moment de manger : réchauffe le bouillon 3 minutes au micro-ondes, jusqu'à ce qu'il frémisse sans bouillir, puis ajoute les nouilles de riz et laisse-les gonfler 4 à 5 minutes à couvert, en remuant une fois. Parsème de graines de sésame."],
+    ["Pèle l'oignon et coupe-le en quatre. Écrase légèrement les gousses d'ail sans les peler. Râpe le gingembre.","Mets les hauts de cuisse dans l'autocuiseur avec l'oignon, l'ail, le gingembre, la feuille de laurier, la sauce soja et 350 ml d'eau froide par portion. Porte à ébullition en mode dorer et retire à la cuillère la mousse qui se forme en surface.","Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule 10 minutes.","Sors le poulet, laisse-le tiédir quelques minutes et effiloche-le à la fourchette. Retire le laurier et l'ail.","Remets en mode dorer, ajoute les épinards surgelés et laisse-les fondre 3 à 4 minutes. Arrête le feu.","Prélève une louche de bouillon dans un bol, délaye-y la pâte miso, puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir. Remets le poulet effiloché et poivre : le miso et la sauce soja salent déjà bien.","Mise en boîtes : le bouillon au frigo dès qu'il a tiédi, ou au congélateur. Les nouilles restent dans leur paquet.","Au moment de manger : réchauffe le bouillon 3 minutes au micro-ondes, jusqu'à ce qu'il frémisse sans bouillir, puis ajoute les nouilles de riz et laisse-les gonfler 4 à 5 minutes à couvert, en remuant une fois. Parsème de graines de sésame."],
     "Le bouillon sans les nouilles se garde 3 jours au frigo : ajoute-les seulement au réchauffage.", ["soupe","japonais","autocuiseur","batch"], true),
-  M("SO03", "Bouillon miso au tofu, poireaux et champignons", "soup", "🍜", 10, 15,
+  M("SO03", "Bouillon miso au tofu, poireaux et champignons", "dinner", "🍜", 10, 15,
     [["tofu",180],["poireau",150],["champignons",120],["nouilles_riz",70],["miso",12],["huile",5],["ail",1],["gingembre",3],["epices",1],["sesame",3],["soja",3]],
-    ["Coupe le tofu en dés de 2 cm (presse-le d'abord quelques minutes dans un torchon, il se tiendra mieux). Coupe le poireau en rondelles, blanc et vert tendre, rince-les, et émince les champignons et l'ail. Râpe le gingembre.","Mets l'autocuiseur en mode dorer avec l'huile. Fais revenir l'ail 1 minute, puis ajoute le curcuma et le gingembre, 30 secondes.","Ajoute le poireau et fais-le cuire 4 à 5 minutes, jusqu'à ce qu'il soit tendre, puis les champignons, 3 à 4 minutes.","Ajoute le tofu et fais-le dorer légèrement 2 minutes.","Verse 400 ml d'eau froide par portion et porte à frémissement. Arrête le feu.","Prélève une louche de bouillon dans un bol, délaye-y la pâte miso, puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir.","Mise en boîtes : le bouillon au frigo dès qu'il a tiédi, ou au congélateur. Les nouilles restent dans leur paquet.","Au moment de manger : réchauffe le bouillon 3 minutes au micro-ondes, jusqu'à ce qu'il frémisse sans bouillir, puis ajoute les nouilles de riz et laisse-les gonfler 4 à 5 minutes à couvert, en remuant une fois. Ajoute quelques gouttes de sauce soja et les graines de sésame."],
+    ["Coupe le tofu en dés de 2 cm (presse-le d'abord quelques minutes dans un torchon, il se tiendra mieux). Coupe le poireau en rondelles, blanc et vert tendre, rince-les, et émince les champignons et l'ail. Râpe le gingembre.","Mets l'autocuiseur en mode dorer et fais revenir l'ail 1 minute dans l'huile, puis ajoute le curcuma et le gingembre, 30 secondes.","Ajoute le poireau et fais-le cuire 4 à 5 minutes, jusqu'à ce qu'il soit tendre, puis les champignons, 3 à 4 minutes.","Ajoute le tofu et fais-le dorer légèrement 2 minutes.","Verse 400 ml d'eau froide par portion et porte à frémissement. Arrête le feu.","Prélève une louche de bouillon dans un bol, délaye-y la pâte miso, puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir.","Mise en boîtes : le bouillon au frigo dès qu'il a tiédi, ou au congélateur. Les nouilles restent dans leur paquet.","Au moment de manger : réchauffe le bouillon 3 minutes au micro-ondes, jusqu'à ce qu'il frémisse sans bouillir, puis ajoute les nouilles de riz et laisse-les gonfler 4 à 5 minutes à couvert, en remuant une fois. Ajoute quelques gouttes de sauce soja et les graines de sésame."],
     "La pâte miso blanche est plus douce que la rouge.", ["soupe","japonais","végé","autocuiseur","batch"], true),
-  M("SO04", "Soupe de pois cassés, poireaux et cumin", "soup", "🥣", 10, 25,
+  M("SO04", "Soupe de pois cassés, poireaux et cumin", "dinner", "🥣", 10, 25,
     [["pois_casses",110],["poireau",110],["carotte",70],["oignon",50],["ail",1],["bouillon",0.25],["huile",5],["epices",2],["lin",5],["herbes",3]],
-    ["Rince les pois cassés à l'eau froide. Émince les poireaux et les oignons, coupe les carottes en rondelles et hache l'ail.","Mets l'autocuiseur en mode dorer avec l'huile. Fais revenir les oignons et les poireaux 5 minutes, puis l'ail 1 minute.","Ajoute le cumin, le curcuma, la coriandre moulue et le poivre, et fais-les griller 30 secondes en remuant.","Ajoute les pois cassés, les carottes, la feuille de laurier, le bouillon cube émietté et 250 ml d'eau froide par portion. Mélange et gratte bien le fond.","Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule 10 minutes : les pois cassés doivent être fondants et crémeux. Retire le laurier et goûte avant de saler.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Les graines de lin et le persil restent à part.","Au moment de manger : réchauffe 3 minutes au micro-ondes avec 3 cuillères à soupe d'eau, en remuant à mi-temps, jusqu'à ce que ce soit bien chaud partout : la soupe épaissit en refroidissant. Hors du feu, saupoudre les graines de lin moulues et le persil."],
+    ["Rince les pois cassés à l'eau froide. Émince les poireaux et les oignons, coupe les carottes en rondelles et hache l'ail.","Mets l'autocuiseur en mode dorer et fais revenir les oignons et les poireaux 5 minutes dans l'huile, puis l'ail 1 minute.","Ajoute le cumin, le curcuma, la coriandre moulue et le poivre, et fais-les griller 30 secondes en remuant.","Ajoute les pois cassés, les carottes, la feuille de laurier, le bouillon cube émietté et 250 ml d'eau froide par portion. Mélange et gratte bien le fond.","Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule 10 minutes : les pois cassés doivent être fondants et crémeux. Retire le laurier et goûte avant de saler.","Mise en boîtes : la soupe au frigo dès qu'elle a tiédi, ou au congélateur. Les graines de lin et le persil restent à part.","Au moment de manger : réchauffe 3 minutes au micro-ondes avec 3 cuillères à soupe d'eau, en remuant à mi-temps, jusqu'à ce que ce soit bien chaud partout : la soupe épaissit en refroidissant. Hors du feu, saupoudre les graines de lin moulues et le persil."],
     "Pas besoin de faire tremper les pois cassés. Le cumin les rend plus digestes.", ["soupe","français","végé","autocuiseur","batch"], true),
-  M("SO06", "Velouté carotte-butternut et œuf mollet", "soup", "🥕", 10, 10,
+  M("SO06", "Velouté carotte-butternut et œuf mollet", "dinner", "🥕", 10, 10,
     [["butternut",200],["carotte",100],["oignon",30],["ail",1],["bouillon",0.25],["huile",5],["lait_coco",40],["gingembre",3],["oeuf",2]],
-    ["Épluche la courge butternut et retire les graines. Coupe-la en morceaux avec les carottes. Émince finement l'oignon.","Mets l'autocuiseur en mode dorer avec l'huile, en gardant un filet pour le service. Fais revenir l'oignon et l'ail 3 à 4 minutes à feu doux, sans coloration.","Ajoute la courge et les carottes, mélange 1 minute, puis le gingembre râpé, le bouillon cube émietté et 250 ml d'eau froide par portion. Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression : les légumes doivent être bien tendres.","Mixe au mixeur plongeant jusqu'à ce que ce soit lisse, puis ajoute le lait de coco. Ajoute un peu d'eau si le velouté est trop épais. Sale très légèrement et poivre. Verse-le dans un plat et rince la cuve.","Œufs mollets : pose les œufs sur le panier vapeur de l'autocuiseur avec 200 ml d'eau froide, ferme et laisse cuire 3 minutes sous pression. Fais tomber la pression, plonge les œufs dans de l'eau froide 5 minutes et écale-les délicatement.","Mise en boîtes : le velouté au frigo dès qu'il a tiédi, ou au congélateur. Les œufs écalés à part, dans une boîte au frigo : ils se gardent 3 jours et ne se congèlent pas.","Au moment de manger : réchauffe le velouté 3 minutes au micro-ondes en remuant à mi-temps. Coupe les œufs en deux, pose-les dessus et ajoute un filet d'huile d'olive."],
+    ["Épluche la courge butternut et retire les graines. Coupe-la en morceaux avec les carottes. Émince finement l'oignon.","Mets l'autocuiseur en mode dorer et fais revenir l'oignon et l'ail 3 à 4 minutes dans l'huile, en gardant un filet pour le service, sans coloration.","Ajoute la courge et les carottes, mélange 1 minute, puis le gingembre râpé, le bouillon cube émietté et 250 ml d'eau froide par portion. Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression : les légumes doivent être bien tendres.","Mixe au mixeur plongeant jusqu'à ce que ce soit lisse, puis ajoute le lait de coco. Ajoute un peu d'eau si le velouté est trop épais. Sale très légèrement et poivre. Verse-le dans un plat et rince la cuve.","Œufs mollets : pose les œufs sur le panier vapeur de l'autocuiseur avec 200 ml d'eau froide, ferme et laisse cuire 3 minutes sous pression. Fais tomber la pression, plonge les œufs dans de l'eau froide 5 minutes et écale-les délicatement.","Mise en boîtes : le velouté au frigo dès qu'il a tiédi, ou au congélateur. Les œufs écalés à part, dans une boîte au frigo : ils se gardent 3 jours et ne se congèlent pas.","Au moment de manger : réchauffe le velouté 3 minutes au micro-ondes en remuant à mi-temps. Coupe les œufs en deux, pose-les dessus et ajoute un filet d'huile d'olive."],
     "Le velouté se congèle, pas les œufs : garde ceux-ci pour les trois premiers jours.", ["soupe","français","végé","autocuiseur","batch"], true),
 
   // ══ Petits-déjeuners (formule classique) ══
@@ -912,11 +912,11 @@ const RECIPES = [
     [["coco_rapee",20],["lait_coco",20],["whey",12],["miel",8],["chocolat",10]],
     ["Mélange la noix de coco râpée, le lait de coco, la whey et le miel jusqu'à obtenir une pâte qui se tient. Si elle colle trop, ajoute une pincée de coco.","Forme de petites bouchées allongées, environ 3 par portion, pose-les sur du papier cuisson et laisse-les durcir 20 minutes au congélateur.","Fais fondre le chocolat noir au micro-ondes par tranches de 30 secondes, trempe chaque bouchée dedans et repose-la sur le papier.","Mise en boîtes : les bouchées dans une boîte au congélateur. Sors-les 5 minutes avant de les manger."],
     "Le lait de coco et un peu de miel remplacent le lait concentré sucré : tout le goût du Bounty, avec bien moins de sucre.", ["sucré","sans cuisson","semaine","whey"], true),
-  M("K20", "Barres granola croustillantes à l'air fryer", "sweet", "🥜", 10, 12,
+  M("K20", "Barres granola croustillantes", "sweet", "🥜", 10, 12,
     [["flocons",30],["amandes",12],["whey",10],["beurre_cacahuete",8],["miel",10]],
     ["Concasse grossièrement les amandes et mélange-les avec les flocons d'avoine et la whey.","Fais tiédir le miel et le beurre de cacahuète 20 secondes au micro-ondes, puis verse-les sur les flocons et mélange bien, jusqu'à ce que tout soit enrobé.","Tasse la préparation sur 1,5 cm d'épaisseur sur une feuille de papier cuisson posée dans le panier de l'air fryer.","Fais cuire 12 minutes à 160 °C, jusqu'à ce que ce soit doré. Laisse refroidir complètement avant de couper : les barres durcissent en refroidissant.","Mise en boîtes : une barre par portion, dans une boîte hermétique. Elles se gardent une semaine."],
     "Bien les laisser refroidir avant de les couper, sinon elles s'émiettent.", ["américain","sucré","air fryer","semaine","whey"], true),
-  M("K21", "Cookies banane et pépites de chocolat à l'air fryer", "sweet", "🍪", 10, 8,
+  M("K21", "Cookies banane et pépites de chocolat", "sweet", "🍪", 10, 8,
     [["banane",50],["flocons",30],["whey",15],["chocolat",10]],
     ["Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine et la whey.","Ajoute le chocolat noir haché en petits morceaux.","Forme 3 cookies par portion, aplatis-les à 1 cm et pose-les sur du papier cuisson dans le panier de l'air fryer.","Fais-les cuire 8 minutes à 170 °C : ils doivent être dorés sur les bords et encore moelleux au centre. Laisse-les refroidir 10 minutes, ils se raffermissent.","Mise en boîtes : les cookies dans une boîte, 3 jours au frigo, ou au congélateur pour la semaine. Réchauffe-les 2 minutes à l'air fryer à 160 °C."],
     "La banane bien mûre remplace le beurre et le sucre.", ["américain","sucré","air fryer","semaine","whey"], true),
@@ -1658,7 +1658,7 @@ const hasWhey = r => !!r && r.ingredients.some(i => i.key === 'whey');
 
 // ── Portion de féculent des plats : jamais sous le minimum (même règle que le moteur) ──
 const MAIN_CATS = ['lunch', 'dinner'];
-RECIPES.filter(r => MAIN_CATS.includes(r.category) && !(r.tags || []).includes('cantine')).forEach(r => {
+RECIPES.filter(r => MAIN_CATS.includes(r.category) && !(r.tags || []).includes('cantine') && !(r.tags || []).includes('soupe')).forEach(r => {
   let idx = r.ingredients.findIndex(i => i.key === 'riz');
   if (idx < 0) {
     let best = 0;
@@ -1702,7 +1702,12 @@ applyExtras();
 
 const getDinners  = () => RECIPES.filter(r => r.category === 'dinner');
 const getLunches  = () => RECIPES.filter(r => r.category === 'lunch');
-const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine'));
+// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon programme)
+let SOUPS_ON = false;
+const setSoupsOn = v => { SOUPS_ON = !!v; };
+const isSoup = r => !!r && (r.tags || []).includes('soupe');
+const soupHidden = r => isSoup(r) && !SOUPS_ON;
+const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine') && !soupHidden(r));
 const getSides    = () => RECIPES.filter(r => r.category === 'side' && !r.retired);
 const getSweets   = () => RECIPES.filter(r => !r.retired && r.category === 'sweet');
 const getBreakfasts = () => RECIPES.filter(r => !r.retired && r.category === 'breakfast');
@@ -1880,6 +1885,14 @@ function setEquipment(eq) {
 }
 
 const isOnboarded = () => !!getHousehold().onboarded;
+
+// v208 : nombre de repas au plus pour un même plat dans la semaine (2, 3 ou 4 ; 4 = fonctionnement d'origine). Commun au foyer.
+const REPEAT_CHOICES = [2, 3, 4];
+const getMaxRepeat = () => (REPEAT_CHOICES.includes(+getHousehold().maxRepeat) ? +getHousehold().maxRepeat : 4);
+function setMaxRepeat(n) { const h = getHousehold(); h.maxRepeat = +n; saveHousehold(h); }
+// v208 : soupes au menu (oui / non, non par défaut). Commun au foyer.
+const getSoups = () => getHousehold().soups === true;
+function setSoups(on) { const h = getHousehold(); h.soups = !!on; saveHousehold(h); }
 
 // Riz et pâtes (v171) : 'complet' (par défaut), 'classique' ou 'plat' (choix sur la fiche de chaque plat).
 // Commun au foyer : les plats sont cuisinés une seule fois pour tout le monde.
@@ -2178,6 +2191,7 @@ function normalizeEntry(entry) {
   const out = { date: entry.date, meals };
   // imprévu : plat d'origine conservé pour pouvoir annuler
   if (entry.outside && Object.keys(entry.outside).length) out.outside = entry.outside;
+  if (entry.pinSnack) out.pinSnack = entry.pinSnack; // v208 : collation choisie dans le détail du jour
   return out;
 }
 
@@ -2420,6 +2434,11 @@ const STOVE = [
   ['W76', /^Ajoute le bouillon cube émietté et 1,7 fois/, "Ajoute le bouillon cube émietté et 2,2 fois le poids du riz en eau. Porte à ébullition, couvre et laisse cuire 35 minutes à feu très doux, puis laisse reposer 10 minutes hors du feu sans ouvrir."],
   ['W79', /^Rince les lentilles, puis mets-les dans l'autocuiseur/, "Rince les lentilles, puis mets-les dans une casserole avec 3 fois leur poids d'eau froide, sans sel. Porte à ébullition et laisse cuire 25 minutes à feu doux, jusqu'à ce qu'elles soient tendres mais encore entières. Égoutte-les et laisse-les refroidir."],
   ['W80', /^Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans l'autocuiseur/, "Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans une casserole d'eau froide salée, porte à ébullition et laisse cuire 12 minutes, jusqu'à ce qu'une lame s'enfonce sans résistance. Égoutte-les."],
+  ['SO01', /laisse cuire 4 minutes sous pression/, "Verse 200 ml d'eau froide par portion avec le bouillon cube émietté, le lait de coco et les carottes. Couvre et laisse mijoter 15 minutes à feu doux : le poulet ne doit plus être rose au centre et les carottes doivent être tendres."],
+  ['SO02', /^Ferme et laisse cuire 15 minutes sous pression/, "Couvre et laisse mijoter 35 minutes à feu doux, jusqu'à ce que la viande se détache facilement."],
+  ['SO04', /^Ferme et laisse cuire 15 minutes sous pression/, "Couvre et laisse mijoter 45 à 50 minutes à feu doux, en remuant régulièrement : les pois cassés attachent facilement au fond. Ils doivent être fondants et crémeux. Retire le laurier et goûte avant de saler."],
+  ['SO06', /laisse cuire 6 minutes sous pression/, "Ajoute la courge et les carottes, mélange 1 minute, puis le gingembre râpé, le bouillon cube émietté et 250 ml d'eau froide par portion. Couvre et laisse cuire 20 à 25 minutes à feu doux : les légumes doivent être bien tendres."],
+  ['SO06', /^Œufs mollets : pose les œufs sur le panier vapeur/, "Œufs mollets : plonge les œufs dans une casserole d'eau frémissante pendant 6 minutes, puis dans de l'eau froide 5 minutes, et écale-les délicatement."],
   ['K11', /^Mets dans l'autocuiseur le riz, le lait/, 'Mets dans une casserole le riz, le lait et le lait de coco.'],
   ['K11', /laisse cuire 12 minutes sous pression/, "Porte à frémissement, puis laisse cuire 30 minutes à feu très doux, sans couvrir, en remuant souvent pour que le lait n'attache pas."],
   ['S01', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 1,7 fois son poids d'eau (par exemple 135 ml d'eau pour 80 g de riz)."],
@@ -2435,6 +2454,20 @@ const stoveFor = (r, st) => {
 // Recette faisable sans autocuiseur : chaque étape sous pression a sa version vérifiée
 const stoveReady = r => (r.baseSteps || r.steps).filter(st => /sous pression/.test(st) && !/^Riz : /.test(st)).every(st => stoveFor(r, st));
 
+// L'astuce de la fiche : jamais d'air fryer cité si le foyer n'en a pas (four, sinon poêle, sinon astuce retirée)
+function adaptTip(tip, eq = eqOr()) {
+  if (!tip || eq.airfryer || !/air fryer/.test(tip)) return tip;
+  let s = tip;
+  if (eq.four) {
+    s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${ovenTime(+a)} minutes au four`);
+    s = s.replace(/à l'air fryer/g, 'au four').replace(/l'air fryer/g, 'le four').replace(/air fryer/g, 'four');
+  } else if (eq.plaque) {
+    s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${a} minute${+a > 1 ? 's' : ''} à la poêle`);
+    s = s.replace(/à l'air fryer/g, 'à la poêle');
+  }
+  return /air fryer/.test(s) ? '' : s;
+}
+
 // Réécrit une étape pour l'équipement donné
 function adaptStep(st, eq = eqOr(), r = null) {
   let s = st;
@@ -2445,6 +2478,8 @@ function adaptStep(st, eq = eqOr(), r = null) {
     s = s.replace(/(\d+)(?: à (\d+))? minutes? à l'air fryer à (\d+) °C/g, (_, a, b, t) =>
       `${ovenTime(+a)}${b ? ` à ${ovenTime(+b)}` : ''} minutes au four préchauffé à ${+t + 20} °C`);
     s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${ovenTime(+a)} minutes au four préchauffé à 200 °C`);
+    s = s.replace(/(?:posée |posés? )?dans le panier de l'air fryer/g, 'sur une plaque du four');
+    s = s.replace(/ dans le panier(?! vapeur)/g, ' sur une plaque couverte de papier cuisson');
     s = s.replace(/en secouant le panier (?:toutes les \d+ minutes|deux fois|à mi-cuisson)?/g, 'en les retournant à mi-cuisson');
     s = s.replace(/secoue le panier/g, 'retourne-les');
     s = s.replace(/l'air fryer/g, 'le four').replace(/air fryer/g, 'four');
@@ -2488,10 +2523,13 @@ function adaptStep(st, eq = eqOr(), r = null) {
 
 // Applique l'équipement du foyer à toutes les recettes (au démarrage et après un changement)
 function applyEquipment() {
+  setSoupsOn(getSoups()); // v208 : soupes proposées ou non
   const eq = eqOr();
   RECIPES.forEach(r => {
     if (!r.baseSteps) r.baseSteps = r.steps.slice();
     r.steps = r.baseSteps.map(st => adaptStep(st, eq, r));
+    if (r.baseTip === undefined) r.baseTip = r.tip || '';
+    r.tip = adaptTip(r.baseTip, eq);
     r._eqSteps = r.steps.slice(); // point de départ du régime (diet.js)
     r.unavailable = !isPossible(r, eq);
   });
@@ -2500,7 +2538,7 @@ const isAvailable = r => !!r && !r.unavailable;
 
 // Nombre de plats possibles avec un équipement donné (pour l'accueil)
 function countPossible(eq) {
-  const mains = RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && r.batch && !(r.tags || []).includes('cantine'));
+  const mains = RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && r.batch && !(r.tags || []).includes('cantine') && !soupHidden(r));
   return { ok: mains.filter(r => isPossible(r, eq)).length, total: mains.length };
 }
 
@@ -3164,7 +3202,8 @@ const DAIRY_BASES = ['fromage_blanc', 'yaourt_grec', 'yaourt_sl'];
 const WEEK_CAPS = { S12: 3, S11: 3 };
 const weekCap = id => WEEK_CAPS[id] ?? Infinity;
 const VARIETY_PENALTY = 0.6; // score × (1 + 0,6 × jours déjà servis)
-function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07', 'S08', 'S05', 'S16'], scale = 1, dayKeys = new Set(), charcLeft = Infinity, weekUse = {}) {
+function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07', 'S08', 'S05', 'S16'], scale = 1, dayKeys = new Set(), charcLeft = Infinity, weekUse = {}, pinned = null) {
+  // v208 : pinned = collation choisie par la personne : passe en premier, sans plafond de la semaine ni règle des laitages
   const out = [];
   let rem = { ...remaining };
   const used = new Set();
@@ -3193,19 +3232,20 @@ function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07
     // v199 : les jours sans préparée, une vraie collation rapide passe dès 140 kcal d'écart (avant 200 : on n'avait
     // presque que fruit, amandes et tartine) ; les compléments viennent ensuite si besoin
     const quickDay = stepCfg === plan[0] && !batchDay && getById(rotation[0])?.category === 'sweet';
-    if (rem.kcal < (batchDay ? 100 : quickDay ? 140 : stepCfg.minRem)) continue;
+    if (rem.kcal < (pinned && stepCfg === plan[0] ? 60 : batchDay ? 100 : quickDay ? 140 : stepCfg.minRem)) continue;
     const share = Math.min(1, stepCfg.cap / rem.kcal);
     const tgt = {};
     MACROS.forEach(m => tgt[m] = rem[m] * share);
     let best = null;
     let pool = stepCfg.pool;
     if (stepCfg.fatty && rem.fat * 9 > rem.kcal * 0.3) pool = [...new Set([...pool, ...fillers.filter(id => ['S07', 'S09', 'S08'].includes(id))])];
-    pool.filter(id => !used.has(id) && (weekUse[id] || 0) < weekCap(id)).forEach(id => { // plafond de la semaine
+    if (pinned && stepCfg === plan[0]) pool = [pinned];
+    pool.filter(id => !used.has(id) && (id === pinned || (weekUse[id] || 0) < weekCap(id))).forEach(id => { // plafond de la semaine
       const r = getById(id);
       if (!r) return;
       // v199 : pas deux fois le même laitage dans la journée (fromage blanc puis fromage blanc), mais un yaourt après un porridge
       // au fromage blanc, oui : sinon les collations rapides (presque toutes à base de laitage) ne passaient presque jamais
-      if (!r.batch && basesOf(r).some(k => usedBases.has(k))) return;
+      if (!r.batch && id !== pinned && basesOf(r).some(k => usedBases.has(k))) return;
       const res = optimizeRecipe(r, tgt, 'S', scale);
       // charcuterie : jamais au-delà de ce qu'il reste du plafond de la semaine
       const charc = charcGrams({ id, servings: 1, overrides: res.overrides });
@@ -3535,7 +3575,7 @@ function itemCost(item) {
 // Lundi, mardi et mercredi : boîtes au frigo (1 à 3 jours). Au-delà : boîtes congelées, décongelées la veille au frigo.
 // Poisson et fruits de mer : mangés lundi ou mardi. Plats qui ne se congèlent pas bien (frites, panures
 // croustillantes, crudités et sauces au yaourt dans la boîte) : mangés dans les 3 premiers jours.
-const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80'];
+const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80', 'SO06'];
 const FRIDGE_DAYS = 3;
 const isFreshOnly = r => FRESH_ONLY.includes(r.id);
 const deadlineOf = r => (isFreshFish(r) ? 1 : isFreshOnly(r) ? FRIDGE_DAYS - 1 : 99);
@@ -3591,6 +3631,8 @@ function pickMain(pool, chosen, { allowFish, served = { n: 0, last: {} }, earlyS
     && !(isFreshOnly(r) && nFreshOnly >= freshOnlyMax));
   // un seul plat de bœuf par semaine (sauf si on n'a choisi que du bœuf comme protéine)
   if (chosen.filter(isRedMeat).length >= RED_MEAT_DISHES && cands.some(r => !isRedMeat(r))) cands = cands.filter(r => !isRedMeat(r));
+  // v208 : une seule soupe par semaine
+  if (chosen.some(isSoup)) cands = cands.filter(r => !isSoup(r));
   // garde-fou : jamais plus de 2 plats de la même famille de féculents dans la semaine (s'il reste d'autres choix)
   const famCount = f => chosen.filter(c => starchFamily(c) === f).length;
   if (cands.some(r => famCount(starchFamily(r)) < STARCH_MAX)) cands = cands.filter(r => famCount(starchFamily(r)) < STARCH_MAX);
@@ -3616,7 +3658,7 @@ function pickMain(pool, chosen, { allowFish, served = { n: 0, last: {} }, earlyS
 
 // Répartit n repas entre des plats : un plat ne revient qu'une fois par jour,
 // et le poisson frais au plus 2 fois (2 premiers jours). Renvoie null si impossible.
-function allocate(n, plats, days, level = 2, early = 99, fishEarly = 99, earlyMeals = 99) {
+function allocate(n, plats, days, level = 2, early = 99, fishEarly = 99, earlyMeals = 99, maxRep = 99) {
   const onlyRed = plats.every(isRedMeat);
   let redLeft = RED_MEAT_MEALS;
   let freshLeft = earlyMeals; // repas des 3 premiers jours, à partager entre poisson frais et plats à manger frais
@@ -3625,7 +3667,7 @@ function allocate(n, plats, days, level = 2, early = 99, fishEarly = 99, earlyMe
     let c = isFreshFish(p) ? Math.min(2, days, fishEarly, freshLeft) : isFreshOnly(p) ? Math.min(FRIDGE_DAYS, days, early, freshLeft) : days;
     if (isFreshFish(p) || isFreshOnly(p)) freshLeft -= c;
     if (isRedMeat(p) && !onlyRed) { c = Math.min(c, RED_MEAT_PER_DISH, redLeft); redLeft -= c; }
-    return c;
+    return Math.min(c, maxRep); // v208 : même plat au plus maxRep repas dans la semaine (réglage du foyer)
   });
   const counts = plats.map(() => 0);
   let left = n;
@@ -4018,6 +4060,8 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
 
   // Pool : plats complets, batchables, filtrés par les protéines choisies
   applyDiet(); // régime du foyer à jour (lactose)
+  setSoupsOn(getSoups());
+  const maxRep = getMaxRepeat(); // v208 : même plat au plus maxRep repas
   let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()));
   if (proteins && proteins.length) {
     const f = pool.filter(r => proteins.includes(proteinFamily(r)));
@@ -4079,7 +4123,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     // environ 3 à 4 portions par plat : 4 plats pour une semaine complète
     let plats = [], counts = null, placed = null;
     for (let attempt = 0; attempt < 24 && !placed; attempt++) {
-      let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / 4));
+      let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / Math.min(4, maxRep)));
       plats = [];
       counts = null;
       for (let guard = 0; guard < 6; guard++) {
@@ -4088,11 +4132,11 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
           if (!p) break;
           plats.push(p);
         }
-        counts = allocate(n, plats, nDays, attempt < 16 ? 2 : attempt < 22 ? 1 : 0, early, fishEarly, earlyMeals); // derniers essais moins exigeants, pour toujours trouver une semaine
+        counts = allocate(n, plats, nDays, attempt < 16 ? 2 : attempt < 22 ? 1 : 0, early, fishEarly, earlyMeals, maxRep); // derniers essais moins exigeants, pour toujours trouver une semaine
         if (counts) break;
         // les premiers essais gardent le nombre de plats habituel (≈ 4 portions chacun) et tirent d'autres plats ;
         // un plat de plus seulement ensuite : moins de plats à cuisiner le dimanche
-        if (attempt < 8 && plats.length >= Math.ceil(n / 4)) break;
+        if (attempt < 8 && plats.length >= Math.ceil(n / Math.min(4, maxRep))) break;
         k++;
       }
       if (!counts) continue;
@@ -4346,7 +4390,10 @@ function fillDay(e, dayIdx, snackIds, targets, lac = 0, glu = 0, charcBudget = C
     if (k > rem0.kcal * 1.06 + 20) todayBatch = null;
   }
   let rot;
-  if (todayBatch) rot = [todayBatch, todayBatch, ...qOrdered];
+  // v208 : collation choisie par la personne dans le détail du jour : elle passe en premier
+  const pin = e.pinSnack && okPin(e.pinSnack, lac, glu) ? e.pinSnack : null;
+  if (pin) rot = [pin, pin, ...[...qOrdered, ...batchIds].filter(id => id !== pin)];
+  else if (todayBatch) rot = [todayBatch, todayBatch, ...qOrdered];
   else if (qOrdered.length) rot = [...qOrdered, ...batchIds];
   else { rot = snackIds.map((_, i) => snackIds[(i + dayIdx) % snackIds.length]); rot = [...rot.filter(id => !clash(id)), ...rot.filter(clash)]; }
   // compléments sans préparation : les 2 tartines carré frais d'abord (elles alternent), puis les autres
@@ -4355,7 +4402,56 @@ function fillDay(e, dayIdx, snackIds, targets, lac = 0, glu = 0, charcBudget = C
   // poignée d'amandes et fruit de saison d'abord : ce sont eux qui complètent la journée en priorité
   const OTHERS = ['S07', 'S05', 'S08', 'S09', 'S16'].filter(okFill);
   const fillers = [...TARTINES, ...OTHERS];
-  fillRemainder(rem, rot, fillers, portionScale(plateTarget(targets).kcal), dayKeys, Math.max(0, charcBudget), weekUse).forEach(f => e.meals[f.slot].push(f.item));
+  fillRemainder(rem, rot, fillers, portionScale(plateTarget(targets).kcal), dayKeys, Math.max(0, charcBudget), weekUse, pin).forEach(f => e.meals[f.slot].push(f.item));
+}
+
+// ── v208 : choisir soi-même une collation ou son petit-déjeuner (détail du jour) ──
+const okPin = (id, lac, glu) => { const r = getById(id); return !!r && !r.retired && dietOk(r, lac, glu); };
+const okFor = (r, mid) => r && !r.retired && isAvailable(r) && dietOk(r, lactoseOf(mid), glutenOf(mid)) && getRating(r.id) >= 0;
+// Collations proposées : celles qui se font en quelques minutes, et celles déjà préparées pour la semaine
+function snackChoices(date, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  if (!plan || !plan.dates.includes(date)) return [];
+  const planned = new Set(planSnacks(plan, mid));
+  const whey = plan.prefsBy?.[mid]?.whey !== false;
+  return getSweets().filter(r => okFor(r, mid) && (whey ? !r.wheyOf : !hasWhey(r)) && (!r.batch || planned.has(r.id) || planned.has(r.wheyOf)));
+}
+// Petits-déjeuners proposés : les petits-déjeuners, et les collations qui se font en quelques minutes
+function breakfastChoices(date, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  if (!plan || !plan.dates.includes(date)) return [];
+  const whey = plan.prefsBy?.[mid]?.whey !== false;
+  return [...getBreakfasts(), ...getSweets().filter(r => !r.batch)].filter(r => okFor(r, mid) && (whey ? !r.wheyOf : !hasWhey(r)));
+}
+function pinSnack(date, id, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  const i = plan ? plan.dates.indexOf(date) : -1;
+  if (i < 0 || !getById(id)) return false;
+  const e = getEntry(date, mid);
+  e.pinSnack = id;
+  saveEntry(e, mid);
+  rebalanceFrom(plan, i, mid);
+  return (getEntry(date, mid).meals.sweet || []).some(it => it.id === id);
+}
+function setBreakfast(date, id, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  const i = plan ? plan.dates.indexOf(date) : -1;
+  const r = getById(id);
+  if (i < 0 || !r) return false;
+  const T = planTargets(plan, mid);
+  const res = optimizeRecipe(r, breakfastTarget(T), 'B', portionScale(plateTarget(T, planShare(plan, mid)).kcal));
+  const e = getEntry(date, mid);
+  e.meals.breakfast = [{ id: r.id, servings: 1, overrides: { ...res.overrides } }];
+  saveEntry(e, mid);
+  // petits-déjeuners à préparer dans la session, recomptés pour tout le foyer
+  plan.sessions.forEach(S => {
+    const count = {};
+    planMembers(plan).forEach(m => S.dates.forEach(d => (getEntry(d, m).meals.breakfast || []).forEach(it => { count[it.id] = (count[it.id] || 0) + 1; })));
+    S.breakfasts = Object.entries(count).map(([bid, portions]) => ({ id: bid, portions, batch: !!getById(bid)?.batch }));
+  });
+  saveWeekPlan(plan);
+  rebalanceFrom(plan, i, mid);
+  return true;
 }
 
 // ── Remplacer un plat de la semaine ──
@@ -5422,6 +5518,7 @@ function openDaySheet(date) {
     <div class="hb-sheet-pad">
       <div class="hb-h2">${DAY_LONG[dayIdx(date)]} ${new Date(date + 'T12:00:00').getDate()}</div>
       ${morningRow(e.meals.breakfast || [])}
+      ${(e.meals.breakfast || []).length && breakfastChoices(date).length > 1 ? '<div class="dv-acts dv-pick-row"><button class="act-btn" data-pick="breakfast">Changer le petit-déjeuner</button></div>' : ''}
       <div class="dv-meals">${bigTile('Midi', lunch)}${bigTile('Soir', dinner)}</div>
       <div class="dv-swaps">${[['lunch', lunch], ['dinner', dinner]].map(([meal, items]) => {
         const r = items[0] && getById(items[0].id);
@@ -5444,6 +5541,7 @@ function openDaySheet(date) {
         </div>`;
       }).join('')}</div>
       ${extras.length ? `<div class="hb-label dv-extras-lbl">Collations</div><div class="dv-extras">${extras.map(smallTile).join('')}</div>` : ''}
+      ${extras.length && snackChoices(date).length > 1 ? '<div class="dv-acts dv-pick-row"><button class="act-btn" data-pick="snack">Choisir ma collation</button></div>' : ''}
       <div class="ds-grid">
         ${cell('Calories', m.kcal, T.kcal, '', 'k')}
         ${cell('Protéines', m.protein, T.protein, ' g', 'p')}
@@ -5491,9 +5589,42 @@ function openDaySheet(date) {
     toast('Imprévu annulé');
   }));
   sheet.querySelectorAll('[data-swap]').forEach(b => b.addEventListener('click', () => { closeSheet(); openSwapSheet(b.dataset.swap, date); }));
+  sheet.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => { closeSheet(); openPickSheet(b.dataset.pick, date); }));
   sheet.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', () => {
     closeSheet();
     renderRecipeDetail(getById(b.dataset.rid), 'week', plannedItem(date, b.dataset.rid));
+  }));
+}
+
+// v208 : choisir soi-même son petit-déjeuner (petits-déjeuners et collations rapides) ou sa collation du jour
+function openPickSheet(kind, date) {
+  const e = getEntry(date);
+  const isBk = kind === 'breakfast';
+  const opts = isBk ? breakfastChoices(date) : snackChoices(date);
+  const current = new Set((isBk ? e.meals.breakfast : e.meals.sweet || []).map(it => it.id));
+  const groups = isBk
+    ? [['Petits-déjeuners', opts.filter(r => r.category === 'breakfast')], ['Collations rapides', opts.filter(r => r.category !== 'breakfast')]]
+    : [['Préparées dimanche', opts.filter(r => r.batch)], ['En quelques minutes', opts.filter(r => !r.batch)]];
+  const card = r => `<button class="sw-opt ${current.has(r.id) ? 'on' : ''}" data-choose="${r.id}">
+      ${dishThumb(r, 'sw-img')}
+      <span class="sw-txt"><b>${r.name}</b>${current.has(r.id) ? '<small>Prévu ce jour-là</small>' : ''}</span>
+      <span class="hb-chev">›</span>
+    </button>`;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="hb-sheet-pad">
+      <div class="hb-h2">${isBk ? 'Ton petit-déjeuner' : 'Ta collation'}</div>
+      <p class="sw-sub">${isBk ? 'Un petit-déjeuner ou une collation rapide.' : 'Elle passe en premier ce jour-là.'} Les portions se recalculent pour rester dans ta journée.</p>
+      ${groups.filter(([, l]) => l.length).map(([lbl, l]) => `<div class="hb-label sw-grp">${lbl}</div><div class="sw-list">${l.map(card).join('')}</div>`).join('')}
+      <button class="out-cancel sw-cancel">Annuler</button>
+    </div>`);
+  const sh = document.querySelector('.sheet') || document;
+  sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
+  sh.querySelectorAll('[data-choose]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.choose;
+    const ok = isBk ? setBreakfast(date, id) : pinSnack(date, id);
+    closeSheet(); renderWeek(); openDaySheet(date);
+    toast(isBk ? `Petit-déjeuner : ${shortName(id)}` : ok ? `Collation du jour : ${shortName(id)}` : `${shortName(id)} ne rentre pas dans ce qu'il te reste à manger ce jour-là`, ok || isBk ? undefined : 'warn');
   }));
 }
 
@@ -6122,7 +6253,7 @@ function renderRecipes() {
     const noWhey = getActiveMember().whey === false;
     const filtered = RECIPES.filter(r => {
       // ni accompagnements retirés, ni repas libres ou cantine, et une seule version de chaque recette (avec ou sans whey)
-      if (r.retired || r.category === 'extra' || r.category === 'soup' || (r.tags || []).includes('cantine')) return false;
+      if (r.retired || r.category === 'extra' || soupHidden(r) || (r.tags || []).includes('cantine')) return false;
       if (noWhey ? hasWhey(r) : (r.tags || []).includes('sans-whey')) return false;
       if (!dietOk(r, getActiveMember().lactose || 0, getActiveMember().gluten || 0)) return false;
       const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
@@ -6947,6 +7078,30 @@ function equipmentBlock(eq) {
     ${can ? '' : '<p class="eq-count">Il faut au moins des plaques de cuisson ou un autocuiseur pour cuisiner les plats.</p>'}`;
 }
 
+// v208 : ta semaine — combien de fois le même plat, et soupes ou non (communs au foyer)
+const REPEAT_NOTES = {
+  2: 'Chaque plat revient 2 fois au plus : plus de variété, environ 7 plats à cuisiner le dimanche.',
+  3: 'Chaque plat revient 3 fois au plus : environ 5 plats à cuisiner le dimanche.',
+  4: 'Chaque plat revient 4 fois au plus : environ 4 plats à cuisiner le dimanche.',
+};
+function weekPrefsBlock() {
+  const rep = getMaxRepeat(), soups = getSoups();
+  return `<div class="dt-card dt-repeat" style="--c:var(--terra);--t:var(--terra-t)">
+      <div class="dt-top"><b>Même plat dans la semaine</b><span>Pour tout le foyer</span></div>
+      <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
+        ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
+      </div>
+      <p class="dt-note">${REPEAT_NOTES[rep]}</p>
+    </div>
+    <div class="dt-card dt-soups" style="--c:var(--sky);--t:var(--sky-t)">
+      <div class="dt-top"><b>Soupes</b><span>Pour tout le foyer</span></div>
+      <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
+        ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
+      </div>
+      <p class="dt-note">${soups ? 'Une soupe-repas peut remplacer un plat, le soir : soupe thaï, bouillons au miso, pois cassés, velouté.' : 'Pas de soupe dans tes semaines.'}</p>
+    </div>`;
+}
+
 // Repas de la journée : frise avec un point par repas (taille = part des calories)
 const MEAL_COLORS = { breakfast: 'var(--honey)', lunch: 'var(--terra)', snack: 'var(--leaf)', dinner: 'var(--sky)' };
 const FORMULAS = [
@@ -7260,6 +7415,7 @@ function renderSettings() {
         <div class="set-section-head">Tes repas</div>
         ${mealsBlock(member)}
         ${staplesCard()}
+        ${weekPrefsBlock()}
       </div>
 
       <!-- PROTOCOLE -->
@@ -7465,6 +7621,14 @@ function renderSettings() {
       setStaples(b.dataset.staples); applyEquipment(); applyDiet();
       const y = window.scrollY; render(); window.scrollTo(0, y);
       toast('Préférence enregistrée');
+    }));
+    view.querySelectorAll('[data-rep]').forEach(b => b.addEventListener('click', () => {
+      setMaxRepeat(+b.dataset.rep); const y = window.scrollY; render(); window.scrollTo(0, y);
+      toast('Préférence enregistrée : elle s\'applique à ta prochaine semaine');
+    }));
+    view.querySelectorAll('[data-soups]').forEach(b => b.addEventListener('click', () => {
+      setSoups(b.dataset.soups === '1'); applyEquipment(); applyDiet(); const y = window.scrollY; render(); window.scrollTo(0, y);
+      toast('Préférence enregistrée : elle s\'applique à ta prochaine semaine');
     }));
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ breakfast: b.dataset.bk }); render(); toast('Préférence enregistrée : mets à jour ta semaine depuis l\'onglet Semaine'); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ whey: b.dataset.whey === '1' }); render(); toast('Préférence enregistrée : mets à jour ta semaine depuis l\'onglet Semaine'); }));
@@ -7941,7 +8105,7 @@ function renderWelcome(onDone) {
     return out;
   }
   let steps;
-  if (firstTime) steps = [...(h.migrated ? [] : [{ type: 'hello' }]), { type: 'household' }, { type: 'tools' }, ...tail()];
+  if (firstTime) steps = [...(h.migrated ? [] : [{ type: 'hello' }]), { type: 'household' }, { type: 'tools' }, { type: 'week' }, ...tail()];
   else steps = [...incomplete().flatMap(memberSteps), { type: 'summary' }];
   let i = 0;
   let error = '';
@@ -7966,7 +8130,7 @@ function renderWelcome(onDone) {
     return `<div class="wl-who"><span class="wl-who-n">${k + 1}</span>${m.name ? esc(m.name) : `${ORD[k]} personne`}${m.name ? '' : ' sur deux'}</div>`;
   };
   // étiquette colorée de l'étape
-  const KICK = { tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
+  const KICK = { week: 'Ta semaine', tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
   const kick = () => ''; // pas d'étiquette au-dessus des titres
   const errBox = () => (error ? `<p class="wl-error" role="alert">${error}</p>` : '');
   const cta = label => `<div class="wl-cta"><button class="hb-btn hb-btn-primary wl-next">${label}</button></div>`;
@@ -8008,6 +8172,13 @@ function renderWelcome(onDone) {
         <h1 class="wl-title">Qu'as-tu dans ta cuisine ?</h1>
         ${equipmentBlock(getHousehold().equipment)}
         ${errBox()}
+        ${cta('Continuer')}`;
+
+      case 'week': return `
+        ${top()}${kick()}
+        <h1 class="wl-title">Ta semaine</h1>
+        <p class="wl-lead">Tu pourras changer ces choix dans Mon programme.</p>
+        <div class="wl-weekprefs">${weekPrefsBlock()}</div>
         ${cta('Continuer')}`;
 
       case 'identity': return `
@@ -8089,7 +8260,7 @@ function renderWelcome(onDone) {
     const m = member();
     if (s.type === 'household') {
       if (!h.countChosen && getMembers().length < 2) return fail('Choisis pour combien de personnes Hébé prépare les repas.');
-      steps = [...steps.slice(0, i + 1), { type: 'tools' }, ...tail()];
+      steps = [...steps.slice(0, i + 1), { type: 'tools' }, { type: 'week' }, ...tail()];
     }
     if (s.type === 'tools') {
       const eq = getHousehold().equipment || {};
@@ -8136,6 +8307,9 @@ function renderWelcome(onDone) {
       eq[b.dataset.tool] = !eq[b.dataset.tool];
       setEquipment(eq); error = ''; render();
     }));
+    // ta semaine (v208)
+    view.querySelectorAll('[data-rep]').forEach(b => b.addEventListener('click', () => { setMaxRepeat(+b.dataset.rep); render(); }));
+    view.querySelectorAll('[data-soups]').forEach(b => b.addEventListener('click', () => { setSoups(b.dataset.soups === '1'); render(); }));
     // foyer
     view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
       setMemberCount(+b.dataset.count); h.countChosen = true; getHousehold().countChosen = true; error = ''; render();

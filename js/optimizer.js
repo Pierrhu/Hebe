@@ -310,7 +310,8 @@ const DAIRY_BASES = ['fromage_blanc', 'yaourt_grec', 'yaourt_sl'];
 export const WEEK_CAPS = { S12: 3, S11: 3 };
 export const weekCap = id => WEEK_CAPS[id] ?? Infinity;
 const VARIETY_PENALTY = 0.6; // score × (1 + 0,6 × jours déjà servis)
-export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07', 'S08', 'S05', 'S16'], scale = 1, dayKeys = new Set(), charcLeft = Infinity, weekUse = {}) {
+export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07', 'S08', 'S05', 'S16'], scale = 1, dayKeys = new Set(), charcLeft = Infinity, weekUse = {}, pinned = null) {
+  // v208 : pinned = collation choisie par la personne : passe en premier, sans plafond de la semaine ni règle des laitages
   const out = [];
   let rem = { ...remaining };
   const used = new Set();
@@ -339,19 +340,20 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
     // v199 : les jours sans préparée, une vraie collation rapide passe dès 140 kcal d'écart (avant 200 : on n'avait
     // presque que fruit, amandes et tartine) ; les compléments viennent ensuite si besoin
     const quickDay = stepCfg === plan[0] && !batchDay && getById(rotation[0])?.category === 'sweet';
-    if (rem.kcal < (batchDay ? 100 : quickDay ? 140 : stepCfg.minRem)) continue;
+    if (rem.kcal < (pinned && stepCfg === plan[0] ? 60 : batchDay ? 100 : quickDay ? 140 : stepCfg.minRem)) continue;
     const share = Math.min(1, stepCfg.cap / rem.kcal);
     const tgt = {};
     MACROS.forEach(m => tgt[m] = rem[m] * share);
     let best = null;
     let pool = stepCfg.pool;
     if (stepCfg.fatty && rem.fat * 9 > rem.kcal * 0.3) pool = [...new Set([...pool, ...fillers.filter(id => ['S07', 'S09', 'S08'].includes(id))])];
-    pool.filter(id => !used.has(id) && (weekUse[id] || 0) < weekCap(id)).forEach(id => { // plafond de la semaine
+    if (pinned && stepCfg === plan[0]) pool = [pinned];
+    pool.filter(id => !used.has(id) && (id === pinned || (weekUse[id] || 0) < weekCap(id))).forEach(id => { // plafond de la semaine
       const r = getById(id);
       if (!r) return;
       // v199 : pas deux fois le même laitage dans la journée (fromage blanc puis fromage blanc), mais un yaourt après un porridge
       // au fromage blanc, oui : sinon les collations rapides (presque toutes à base de laitage) ne passaient presque jamais
-      if (!r.batch && basesOf(r).some(k => usedBases.has(k))) return;
+      if (!r.batch && id !== pinned && basesOf(r).some(k => usedBases.has(k))) return;
       const res = optimizeRecipe(r, tgt, 'S', scale);
       // charcuterie : jamais au-delà de ce qu'il reste du plafond de la semaine
       const charc = charcGrams({ id, servings: 1, overrides: res.overrides });

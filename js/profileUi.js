@@ -1,7 +1,7 @@
 // profileUi.js — Morceaux d'interface partagés entre « Mon programme » et l'accueil.
 // Même rendu aux deux endroits : mesures, prénom et sexe, activité, cartes des programmes.
 
-import { ACTIVITY, getMembers, getActiveMember, setActiveMember } from '../data/household.js';
+import { ACTIVITY, getMembers, getActiveMember, setActiveMember, getMaxRepeat, getSoups } from '../data/household.js';
 import { computeAllPhases, protocolsFor, protocolFor, computeBase, kgPerWeek } from '../data/calculator.js';
 import { openSheet, closeSheet } from './utils.js';
 import { TOOLS, countPossible } from './adapt.js';
@@ -173,6 +173,30 @@ export function equipmentBlock(eq) {
       </button>`).join('')}
     </div>
     ${can ? '' : '<p class="eq-count">Il faut au moins des plaques de cuisson ou un autocuiseur pour cuisiner les plats.</p>'}`;
+}
+
+// v208 : ta semaine — combien de fois le même plat, et soupes ou non (communs au foyer)
+const REPEAT_NOTES = {
+  2: 'Chaque plat revient 2 fois au plus : plus de variété, environ 7 plats à cuisiner le dimanche.',
+  3: 'Chaque plat revient 3 fois au plus : environ 5 plats à cuisiner le dimanche.',
+  4: 'Chaque plat revient 4 fois au plus : environ 4 plats à cuisiner le dimanche.',
+};
+export function weekPrefsBlock() {
+  const rep = getMaxRepeat(), soups = getSoups();
+  return `<div class="dt-card dt-repeat" style="--c:var(--terra);--t:var(--terra-t)">
+      <div class="dt-top"><b>Même plat dans la semaine</b><span>Pour tout le foyer</span></div>
+      <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
+        ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
+      </div>
+      <p class="dt-note">${REPEAT_NOTES[rep]}</p>
+    </div>
+    <div class="dt-card dt-soups" style="--c:var(--sky);--t:var(--sky-t)">
+      <div class="dt-top"><b>Soupes</b><span>Pour tout le foyer</span></div>
+      <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
+        ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
+      </div>
+      <p class="dt-note">${soups ? 'Une soupe-repas peut remplacer un plat, le soir : soupe thaï, bouillons au miso, pois cassés, velouté.' : 'Pas de soupe dans tes semaines.'}</p>
+    </div>`;
 }
 
 // Repas de la journée : frise avec un point par repas (taille = part des calories)

@@ -8,8 +8,8 @@ import {
   getProfile, saveProfile, getSelectedProtocol, saveSelectedProtocol,
   getSelectedPhase, saveSelectedPhase,
 } from '../data/calculator.js';
-import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples } from '../data/household.js';
-import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto } from './profileUi.js';
+import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups } from '../data/household.js';
+import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
 
@@ -73,6 +73,7 @@ export function renderSettings() {
         <div class="set-section-head">Tes repas</div>
         ${mealsBlock(member)}
         ${staplesCard()}
+        ${weekPrefsBlock()}
       </div>
 
       <!-- PROTOCOLE -->
@@ -278,6 +279,14 @@ export function renderSettings() {
       setStaples(b.dataset.staples); applyEquipment(); applyDiet();
       const y = window.scrollY; render(); window.scrollTo(0, y);
       toast('Préférence enregistrée');
+    }));
+    view.querySelectorAll('[data-rep]').forEach(b => b.addEventListener('click', () => {
+      setMaxRepeat(+b.dataset.rep); const y = window.scrollY; render(); window.scrollTo(0, y);
+      toast('Préférence enregistrée : elle s\'applique à ta prochaine semaine');
+    }));
+    view.querySelectorAll('[data-soups]').forEach(b => b.addEventListener('click', () => {
+      setSoups(b.dataset.soups === '1'); applyEquipment(); applyDiet(); const y = window.scrollY; render(); window.scrollTo(0, y);
+      toast('Préférence enregistrée : elle s\'applique à ta prochaine semaine');
     }));
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ breakfast: b.dataset.bk }); render(); toast('Préférence enregistrée : mets à jour ta semaine depuis l\'onglet Semaine'); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateActiveMember({ whey: b.dataset.whey === '1' }); render(); toast('Préférence enregistrée : mets à jour ta semaine depuis l\'onglet Semaine'); }));

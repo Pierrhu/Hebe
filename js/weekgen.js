@@ -16,7 +16,7 @@
 // Les collations s'adaptent jour par jour pour boucler les objectifs.
 
 import { dietOk, householdLactose, householdGluten, lactoseOf, glutenOf, applyDiet, proteinBoost } from './diet.js';
-import { getMains, getSweets, getBreakfasts, getById, hasWhey, proteinFamily, isFreshFish, mainStarch } from '../data/recipes.js';
+import { getMains, getSweets, getBreakfasts, getById, hasWhey, proteinFamily, isFreshFish, mainStarch, setSoupsOn, isSoup } from '../data/recipes.js';
 import { INGREDIENTS, ingCost, NATURAL_UNITS } from '../data/ingredients.js';
 import { optimizeRecipe, calibratePlate, plateTarget, portionScale, plateFloor, mainProteinIdx, PLATE_SHARE, breakfastTarget, computeMealMacros, subtractMacros, fillRemainder, itemQuantities, CHARC_MAX, CHARC_KEYS, charcOfEntry, charcGrams, RED_MEAT_KEYS, calciumPer100kcal } from './optimizer.js';
 import { weekMicros } from './micros.js';
@@ -24,7 +24,7 @@ import { getWeekDates, getNextWeekDates, getTodayDate, getEntry, saveEntry, loca
 import { getRating } from '../data/prefs.js';
 import { USER } from '../data/user.js';
 import { isAvailable } from './adapt.js';
-import { getActiveMember, getMembers, weekBudget } from '../data/household.js';
+import { getActiveMember, getMembers, weekBudget, getMaxRepeat, getSoups } from '../data/household.js';
 
 const PLAN_KEY = 'hebe_week_plan';
 export function getWeekPlan() {
@@ -72,7 +72,7 @@ export function itemCost(item) {
 // Lundi, mardi et mercredi : boîtes au frigo (1 à 3 jours). Au-delà : boîtes congelées, décongelées la veille au frigo.
 // Poisson et fruits de mer : mangés lundi ou mardi. Plats qui ne se congèlent pas bien (frites, panures
 // croustillantes, crudités et sauces au yaourt dans la boîte) : mangés dans les 3 premiers jours.
-export const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80'];
+export const FRESH_ONLY = ['W02', 'W04', 'W09', 'W10', 'W11', 'W13', 'W15', 'W19', 'W31', 'W33', 'W35', 'W36', 'W40', 'W41', 'W42', 'W74', 'W78', 'W79', 'W80', 'SO06'];
 export const FRIDGE_DAYS = 3;
 const isFreshOnly = r => FRESH_ONLY.includes(r.id);
 const deadlineOf = r => (isFreshFish(r) ? 1 : isFreshOnly(r) ? FRIDGE_DAYS - 1 : 99);
@@ -128,6 +128,8 @@ function pickMain(pool, chosen, { allowFish, served = { n: 0, last: {} }, earlyS
     && !(isFreshOnly(r) && nFreshOnly >= freshOnlyMax));
   // un seul plat de bœuf par semaine (sauf si on n'a choisi que du bœuf comme protéine)
   if (chosen.filter(isRedMeat).length >= RED_MEAT_DISHES && cands.some(r => !isRedMeat(r))) cands = cands.filter(r => !isRedMeat(r));
+  // v208 : une seule soupe par semaine
+  if (chosen.some(isSoup)) cands = cands.filter(r => !isSoup(r));
   // garde-fou : jamais plus de 2 plats de la même famille de féculents dans la semaine (s'il reste d'autres choix)
   const famCount = f => chosen.filter(c => starchFamily(c) === f).length;
   if (cands.some(r => famCount(starchFamily(r)) < STARCH_MAX)) cands = cands.filter(r => famCount(starchFamily(r)) < STARCH_MAX);
@@ -153,7 +155,7 @@ function pickMain(pool, chosen, { allowFish, served = { n: 0, last: {} }, earlyS
 
 // Répartit n repas entre des plats : un plat ne revient qu'une fois par jour,
 // et le poisson frais au plus 2 fois (2 premiers jours). Renvoie null si impossible.
-function allocate(n, plats, days, level = 2, early = 99, fishEarly = 99, earlyMeals = 99) {
+function allocate(n, plats, days, level = 2, early = 99, fishEarly = 99, earlyMeals = 99, maxRep = 99) {
   const onlyRed = plats.every(isRedMeat);
   let redLeft = RED_MEAT_MEALS;
   let freshLeft = earlyMeals; // repas des 3 premiers jours, à partager entre poisson frais et plats à manger frais
@@ -162,7 +164,7 @@ function allocate(n, plats, days, level = 2, early = 99, fishEarly = 99, earlyMe
     let c = isFreshFish(p) ? Math.min(2, days, fishEarly, freshLeft) : isFreshOnly(p) ? Math.min(FRIDGE_DAYS, days, early, freshLeft) : days;
     if (isFreshFish(p) || isFreshOnly(p)) freshLeft -= c;
     if (isRedMeat(p) && !onlyRed) { c = Math.min(c, RED_MEAT_PER_DISH, redLeft); redLeft -= c; }
-    return c;
+    return Math.min(c, maxRep); // v208 : même plat au plus maxRep repas dans la semaine (réglage du foyer)
   });
   const counts = plats.map(() => 0);
   let left = n;
@@ -555,6 +557,8 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
 
   // Pool : plats complets, batchables, filtrés par les protéines choisies
   applyDiet(); // régime du foyer à jour (lactose)
+  setSoupsOn(getSoups());
+  const maxRep = getMaxRepeat(); // v208 : même plat au plus maxRep repas
   let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()));
   if (proteins && proteins.length) {
     const f = pool.filter(r => proteins.includes(proteinFamily(r)));
@@ -616,7 +620,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     // environ 3 à 4 portions par plat : 4 plats pour une semaine complète
     let plats = [], counts = null, placed = null;
     for (let attempt = 0; attempt < 24 && !placed; attempt++) {
-      let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / 4));
+      let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / Math.min(4, maxRep)));
       plats = [];
       counts = null;
       for (let guard = 0; guard < 6; guard++) {
@@ -625,11 +629,11 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
           if (!p) break;
           plats.push(p);
         }
-        counts = allocate(n, plats, nDays, attempt < 16 ? 2 : attempt < 22 ? 1 : 0, early, fishEarly, earlyMeals); // derniers essais moins exigeants, pour toujours trouver une semaine
+        counts = allocate(n, plats, nDays, attempt < 16 ? 2 : attempt < 22 ? 1 : 0, early, fishEarly, earlyMeals, maxRep); // derniers essais moins exigeants, pour toujours trouver une semaine
         if (counts) break;
         // les premiers essais gardent le nombre de plats habituel (≈ 4 portions chacun) et tirent d'autres plats ;
         // un plat de plus seulement ensuite : moins de plats à cuisiner le dimanche
-        if (attempt < 8 && plats.length >= Math.ceil(n / 4)) break;
+        if (attempt < 8 && plats.length >= Math.ceil(n / Math.min(4, maxRep))) break;
         k++;
       }
       if (!counts) continue;
@@ -883,7 +887,10 @@ function fillDay(e, dayIdx, snackIds, targets, lac = 0, glu = 0, charcBudget = C
     if (k > rem0.kcal * 1.06 + 20) todayBatch = null;
   }
   let rot;
-  if (todayBatch) rot = [todayBatch, todayBatch, ...qOrdered];
+  // v208 : collation choisie par la personne dans le détail du jour : elle passe en premier
+  const pin = e.pinSnack && okPin(e.pinSnack, lac, glu) ? e.pinSnack : null;
+  if (pin) rot = [pin, pin, ...[...qOrdered, ...batchIds].filter(id => id !== pin)];
+  else if (todayBatch) rot = [todayBatch, todayBatch, ...qOrdered];
   else if (qOrdered.length) rot = [...qOrdered, ...batchIds];
   else { rot = snackIds.map((_, i) => snackIds[(i + dayIdx) % snackIds.length]); rot = [...rot.filter(id => !clash(id)), ...rot.filter(clash)]; }
   // compléments sans préparation : les 2 tartines carré frais d'abord (elles alternent), puis les autres
@@ -892,7 +899,56 @@ function fillDay(e, dayIdx, snackIds, targets, lac = 0, glu = 0, charcBudget = C
   // poignée d'amandes et fruit de saison d'abord : ce sont eux qui complètent la journée en priorité
   const OTHERS = ['S07', 'S05', 'S08', 'S09', 'S16'].filter(okFill);
   const fillers = [...TARTINES, ...OTHERS];
-  fillRemainder(rem, rot, fillers, portionScale(plateTarget(targets).kcal), dayKeys, Math.max(0, charcBudget), weekUse).forEach(f => e.meals[f.slot].push(f.item));
+  fillRemainder(rem, rot, fillers, portionScale(plateTarget(targets).kcal), dayKeys, Math.max(0, charcBudget), weekUse, pin).forEach(f => e.meals[f.slot].push(f.item));
+}
+
+// ── v208 : choisir soi-même une collation ou son petit-déjeuner (détail du jour) ──
+const okPin = (id, lac, glu) => { const r = getById(id); return !!r && !r.retired && dietOk(r, lac, glu); };
+const okFor = (r, mid) => r && !r.retired && isAvailable(r) && dietOk(r, lactoseOf(mid), glutenOf(mid)) && getRating(r.id) >= 0;
+// Collations proposées : celles qui se font en quelques minutes, et celles déjà préparées pour la semaine
+export function snackChoices(date, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  if (!plan || !plan.dates.includes(date)) return [];
+  const planned = new Set(planSnacks(plan, mid));
+  const whey = plan.prefsBy?.[mid]?.whey !== false;
+  return getSweets().filter(r => okFor(r, mid) && (whey ? !r.wheyOf : !hasWhey(r)) && (!r.batch || planned.has(r.id) || planned.has(r.wheyOf)));
+}
+// Petits-déjeuners proposés : les petits-déjeuners, et les collations qui se font en quelques minutes
+export function breakfastChoices(date, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  if (!plan || !plan.dates.includes(date)) return [];
+  const whey = plan.prefsBy?.[mid]?.whey !== false;
+  return [...getBreakfasts(), ...getSweets().filter(r => !r.batch)].filter(r => okFor(r, mid) && (whey ? !r.wheyOf : !hasWhey(r)));
+}
+export function pinSnack(date, id, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  const i = plan ? plan.dates.indexOf(date) : -1;
+  if (i < 0 || !getById(id)) return false;
+  const e = getEntry(date, mid);
+  e.pinSnack = id;
+  saveEntry(e, mid);
+  rebalanceFrom(plan, i, mid);
+  return (getEntry(date, mid).meals.sweet || []).some(it => it.id === id);
+}
+export function setBreakfast(date, id, mid = getActiveMember().id) {
+  const plan = getActivePlan();
+  const i = plan ? plan.dates.indexOf(date) : -1;
+  const r = getById(id);
+  if (i < 0 || !r) return false;
+  const T = planTargets(plan, mid);
+  const res = optimizeRecipe(r, breakfastTarget(T), 'B', portionScale(plateTarget(T, planShare(plan, mid)).kcal));
+  const e = getEntry(date, mid);
+  e.meals.breakfast = [{ id: r.id, servings: 1, overrides: { ...res.overrides } }];
+  saveEntry(e, mid);
+  // petits-déjeuners à préparer dans la session, recomptés pour tout le foyer
+  plan.sessions.forEach(S => {
+    const count = {};
+    planMembers(plan).forEach(m => S.dates.forEach(d => (getEntry(d, m).meals.breakfast || []).forEach(it => { count[it.id] = (count[it.id] || 0) + 1; })));
+    S.breakfasts = Object.entries(count).map(([bid, portions]) => ({ id: bid, portions, batch: !!getById(bid)?.batch }));
+  });
+  saveWeekPlan(plan);
+  rebalanceFrom(plan, i, mid);
+  return true;
 }
 
 // ── Remplacer un plat de la semaine ──

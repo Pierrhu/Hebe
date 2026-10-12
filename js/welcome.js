@@ -8,14 +8,14 @@ import { el, toast } from './utils.js';
 import { askRestore } from './settings.js';
 import {
   getHousehold, getMembers, getMember, getActiveMember, setActiveMember, updateMember, setOnboarded,
-  setMemberCount, isComplete,
+  setMemberCount, isComplete, setMaxRepeat, setSoups,
 } from '../data/household.js';
 import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } from '../data/calculator.js';
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
   measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
-  householdCards, mealsBlock, openProtocolSheet, equipmentBlock,
+  householdCards, mealsBlock, openProtocolSheet, equipmentBlock, weekPrefsBlock,
 } from './profileUi.js';
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)
@@ -54,7 +54,7 @@ export function renderWelcome(onDone) {
     return out;
   }
   let steps;
-  if (firstTime) steps = [...(h.migrated ? [] : [{ type: 'hello' }]), { type: 'household' }, { type: 'tools' }, ...tail()];
+  if (firstTime) steps = [...(h.migrated ? [] : [{ type: 'hello' }]), { type: 'household' }, { type: 'tools' }, { type: 'week' }, ...tail()];
   else steps = [...incomplete().flatMap(memberSteps), { type: 'summary' }];
   let i = 0;
   let error = '';
@@ -79,7 +79,7 @@ export function renderWelcome(onDone) {
     return `<div class="wl-who"><span class="wl-who-n">${k + 1}</span>${m.name ? esc(m.name) : `${ORD[k]} personne`}${m.name ? '' : ' sur deux'}</div>`;
   };
   // étiquette colorée de l'étape
-  const KICK = { tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
+  const KICK = { week: 'Ta semaine', tools: 'Ta cuisine', household: 'Ton foyer', identity: 'Profil', measures: 'Mesures', activity: 'Quotidien', meals: 'Repas', goal: 'Objectif', summary: 'Résumé' };
   const kick = () => ''; // pas d'étiquette au-dessus des titres
   const errBox = () => (error ? `<p class="wl-error" role="alert">${error}</p>` : '');
   const cta = label => `<div class="wl-cta"><button class="hb-btn hb-btn-primary wl-next">${label}</button></div>`;
@@ -121,6 +121,13 @@ export function renderWelcome(onDone) {
         <h1 class="wl-title">Qu'as-tu dans ta cuisine ?</h1>
         ${equipmentBlock(getHousehold().equipment)}
         ${errBox()}
+        ${cta('Continuer')}`;
+
+      case 'week': return `
+        ${top()}${kick()}
+        <h1 class="wl-title">Ta semaine</h1>
+        <p class="wl-lead">Tu pourras changer ces choix dans Mon programme.</p>
+        <div class="wl-weekprefs">${weekPrefsBlock()}</div>
         ${cta('Continuer')}`;
 
       case 'identity': return `
@@ -202,7 +209,7 @@ export function renderWelcome(onDone) {
     const m = member();
     if (s.type === 'household') {
       if (!h.countChosen && getMembers().length < 2) return fail('Choisis pour combien de personnes Hébé prépare les repas.');
-      steps = [...steps.slice(0, i + 1), { type: 'tools' }, ...tail()];
+      steps = [...steps.slice(0, i + 1), { type: 'tools' }, { type: 'week' }, ...tail()];
     }
     if (s.type === 'tools') {
       const eq = getHousehold().equipment || {};
@@ -249,6 +256,9 @@ export function renderWelcome(onDone) {
       eq[b.dataset.tool] = !eq[b.dataset.tool];
       setEquipment(eq); error = ''; render();
     }));
+    // ta semaine (v208)
+    view.querySelectorAll('[data-rep]').forEach(b => b.addEventListener('click', () => { setMaxRepeat(+b.dataset.rep); render(); }));
+    view.querySelectorAll('[data-soups]').forEach(b => b.addEventListener('click', () => { setSoups(b.dataset.soups === '1'); render(); }));
     // foyer
     view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
       setMemberCount(+b.dataset.count); h.countChosen = true; getHousehold().countChosen = true; error = ''; render();

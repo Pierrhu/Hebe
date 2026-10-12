@@ -29,6 +29,7 @@ function normalizeEntry(entry) {
   const out = { date: entry.date, meals };
   // imprévu : plat d'origine conservé pour pouvoir annuler
   if (entry.outside && Object.keys(entry.outside).length) out.outside = entry.outside;
+  if (entry.pinSnack) out.pinSnack = entry.pinSnack; // v208 : collation choisie dans le détail du jour
   return out;
 }
 

@@ -9,8 +9,8 @@
 //   - ce qui reste impossible (mixeur absent, aucun moyen de cuire) rend la recette indisponible.
 // Les étapes d'origine sont gardées dans r.baseSteps ; r.steps contient la version adaptée.
 
-import { RECIPES } from '../data/recipes.js';
-import { getHousehold } from '../data/household.js';
+import { RECIPES, soupHidden, setSoupsOn } from '../data/recipes.js';
+import { getHousehold, getSoups } from '../data/household.js';
 
 export const TOOLS = [
   { key: 'plaque',      label: 'Plaques de cuisson', desc: 'Poêle et casserole' },
@@ -74,6 +74,11 @@ const STOVE = [
   ['W76', /^Ajoute le bouillon cube émietté et 1,7 fois/, "Ajoute le bouillon cube émietté et 2,2 fois le poids du riz en eau. Porte à ébullition, couvre et laisse cuire 35 minutes à feu très doux, puis laisse reposer 10 minutes hors du feu sans ouvrir."],
   ['W79', /^Rince les lentilles, puis mets-les dans l'autocuiseur/, "Rince les lentilles, puis mets-les dans une casserole avec 3 fois leur poids d'eau froide, sans sel. Porte à ébullition et laisse cuire 25 minutes à feu doux, jusqu'à ce qu'elles soient tendres mais encore entières. Égoutte-les et laisse-les refroidir."],
   ['W80', /^Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans l'autocuiseur/, "Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans une casserole d'eau froide salée, porte à ébullition et laisse cuire 12 minutes, jusqu'à ce qu'une lame s'enfonce sans résistance. Égoutte-les."],
+  ['SO01', /laisse cuire 4 minutes sous pression/, "Verse 200 ml d'eau froide par portion avec le bouillon cube émietté, le lait de coco et les carottes. Couvre et laisse mijoter 15 minutes à feu doux : le poulet ne doit plus être rose au centre et les carottes doivent être tendres."],
+  ['SO02', /^Ferme et laisse cuire 15 minutes sous pression/, "Couvre et laisse mijoter 35 minutes à feu doux, jusqu'à ce que la viande se détache facilement."],
+  ['SO04', /^Ferme et laisse cuire 15 minutes sous pression/, "Couvre et laisse mijoter 45 à 50 minutes à feu doux, en remuant régulièrement : les pois cassés attachent facilement au fond. Ils doivent être fondants et crémeux. Retire le laurier et goûte avant de saler."],
+  ['SO06', /laisse cuire 6 minutes sous pression/, "Ajoute la courge et les carottes, mélange 1 minute, puis le gingembre râpé, le bouillon cube émietté et 250 ml d'eau froide par portion. Couvre et laisse cuire 20 à 25 minutes à feu doux : les légumes doivent être bien tendres."],
+  ['SO06', /^Œufs mollets : pose les œufs sur le panier vapeur/, "Œufs mollets : plonge les œufs dans une casserole d'eau frémissante pendant 6 minutes, puis dans de l'eau froide 5 minutes, et écale-les délicatement."],
   ['K11', /^Mets dans l'autocuiseur le riz, le lait/, 'Mets dans une casserole le riz, le lait et le lait de coco.'],
   ['K11', /laisse cuire 12 minutes sous pression/, "Porte à frémissement, puis laisse cuire 30 minutes à feu très doux, sans couvrir, en remuant souvent pour que le lait n'attache pas."],
   ['S01', /^Mets-le dans l'autocuiseur/, "Mets-le dans une casserole avec 1,7 fois son poids d'eau (par exemple 135 ml d'eau pour 80 g de riz)."],
@@ -89,6 +94,20 @@ const stoveFor = (r, st) => {
 // Recette faisable sans autocuiseur : chaque étape sous pression a sa version vérifiée
 const stoveReady = r => (r.baseSteps || r.steps).filter(st => /sous pression/.test(st) && !/^Riz : /.test(st)).every(st => stoveFor(r, st));
 
+// L'astuce de la fiche : jamais d'air fryer cité si le foyer n'en a pas (four, sinon poêle, sinon astuce retirée)
+export function adaptTip(tip, eq = eqOr()) {
+  if (!tip || eq.airfryer || !/air fryer/.test(tip)) return tip;
+  let s = tip;
+  if (eq.four) {
+    s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${ovenTime(+a)} minutes au four`);
+    s = s.replace(/à l'air fryer/g, 'au four').replace(/l'air fryer/g, 'le four').replace(/air fryer/g, 'four');
+  } else if (eq.plaque) {
+    s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${a} minute${+a > 1 ? 's' : ''} à la poêle`);
+    s = s.replace(/à l'air fryer/g, 'à la poêle');
+  }
+  return /air fryer/.test(s) ? '' : s;
+}
+
 // Réécrit une étape pour l'équipement donné
 export function adaptStep(st, eq = eqOr(), r = null) {
   let s = st;
@@ -99,6 +118,8 @@ export function adaptStep(st, eq = eqOr(), r = null) {
     s = s.replace(/(\d+)(?: à (\d+))? minutes? à l'air fryer à (\d+) °C/g, (_, a, b, t) =>
       `${ovenTime(+a)}${b ? ` à ${ovenTime(+b)}` : ''} minutes au four préchauffé à ${+t + 20} °C`);
     s = s.replace(/(\d+) minutes? à l'air fryer/g, (_, a) => `${ovenTime(+a)} minutes au four préchauffé à 200 °C`);
+    s = s.replace(/(?:posée |posés? )?dans le panier de l'air fryer/g, 'sur une plaque du four');
+    s = s.replace(/ dans le panier(?! vapeur)/g, ' sur une plaque couverte de papier cuisson');
     s = s.replace(/en secouant le panier (?:toutes les \d+ minutes|deux fois|à mi-cuisson)?/g, 'en les retournant à mi-cuisson');
     s = s.replace(/secoue le panier/g, 'retourne-les');
     s = s.replace(/l'air fryer/g, 'le four').replace(/air fryer/g, 'four');
@@ -142,10 +163,13 @@ export function adaptStep(st, eq = eqOr(), r = null) {
 
 // Applique l'équipement du foyer à toutes les recettes (au démarrage et après un changement)
 export function applyEquipment() {
+  setSoupsOn(getSoups()); // v208 : soupes proposées ou non
   const eq = eqOr();
   RECIPES.forEach(r => {
     if (!r.baseSteps) r.baseSteps = r.steps.slice();
     r.steps = r.baseSteps.map(st => adaptStep(st, eq, r));
+    if (r.baseTip === undefined) r.baseTip = r.tip || '';
+    r.tip = adaptTip(r.baseTip, eq);
     r._eqSteps = r.steps.slice(); // point de départ du régime (diet.js)
     r.unavailable = !isPossible(r, eq);
   });
@@ -154,6 +178,6 @@ export const isAvailable = r => !!r && !r.unavailable;
 
 // Nombre de plats possibles avec un équipement donné (pour l'accueil)
 export function countPossible(eq) {
-  const mains = RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && r.batch && !(r.tags || []).includes('cantine'));
+  const mains = RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && r.batch && !(r.tags || []).includes('cantine') && !soupHidden(r));
   return { ok: mains.filter(r => isPossible(r, eq)).length, total: mains.length };
 }

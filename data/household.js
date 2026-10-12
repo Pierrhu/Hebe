@@ -134,6 +134,14 @@ export function setEquipment(eq) {
 
 export const isOnboarded = () => !!getHousehold().onboarded;
 
+// v208 : nombre de repas au plus pour un même plat dans la semaine (2, 3 ou 4 ; 4 = fonctionnement d'origine). Commun au foyer.
+export const REPEAT_CHOICES = [2, 3, 4];
+export const getMaxRepeat = () => (REPEAT_CHOICES.includes(+getHousehold().maxRepeat) ? +getHousehold().maxRepeat : 4);
+export function setMaxRepeat(n) { const h = getHousehold(); h.maxRepeat = +n; saveHousehold(h); }
+// v208 : soupes au menu (oui / non, non par défaut). Commun au foyer.
+export const getSoups = () => getHousehold().soups === true;
+export function setSoups(on) { const h = getHousehold(); h.soups = !!on; saveHousehold(h); }
+
 // Riz et pâtes (v171) : 'complet' (par défaut), 'classique' ou 'plat' (choix sur la fiche de chaque plat).
 // Commun au foyer : les plats sont cuisinés une seule fois pour tout le monde.
 export const STAPLE_MODES = ['complet', 'classique', 'plat'];
