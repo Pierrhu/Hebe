@@ -7,6 +7,7 @@ import { getActiveMember, updateMember, getMembers } from '../data/household.js'
 import { getProtocol, computeAllPhases, computeBase } from '../data/calculator.js';
 import { getTargetsFor } from '../data/user.js';
 import { el, toast } from './utils.js';
+import { bodyCards, bindBody } from './body.js';
 
 const WEIGH_KEY = 'hebe_weights';
 export const getWeights = mid => { try { return (JSON.parse(localStorage.getItem(WEIGH_KEY) || '{}')[mid] || []).sort((a, b) => a.d.localeCompare(b.d)); } catch { return []; } };
@@ -182,6 +183,8 @@ export function renderWeight() {
       ${chart(ws)}
     </div>` : ''}
 
+    ${bodyCards(m)}
+
     <div class="wt-card wt-kcal">
       <div class="wt-row">
         <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon programme : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées.'}</div></div>
@@ -220,6 +223,7 @@ export function renderWeight() {
     b.addEventListener('pointerdown', () => { hold = setTimeout(() => { hold = setInterval(step, 80); }, 400); });
     ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => { clearTimeout(hold); clearInterval(hold); }));
   });
+  bindBody(view, m, () => { const y = window.scrollY; renderWeight(); window.scrollTo(0, y); }, getWeights); // v227 : tour de taille et photos
   view.querySelector('[data-weigh-open]')?.addEventListener('click', () => { weighOpen = true; renderWeight(); });
   view.querySelector('[data-weigh-cancel]')?.addEventListener('click', () => { weighOpen = false; renderWeight(); });
   view.querySelector('.wt-save')?.addEventListener('click', () => {

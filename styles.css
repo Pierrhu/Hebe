@@ -1749,3 +1749,38 @@ button.idf-stamp:active { opacity: .7; }
 .dt-card.dt-plain .dt-seg { background: var(--bg); margin-top: 10px; }
 .dt-card.dt-plain .dt-btn.on { background: var(--sage); color: #fff; }
 .dt-desc { margin: 4px 0 10px; font-size: 13px; line-height: 1.4; color: var(--text-2); }
+
+/* ── v227 : Mon poids, tour de taille (mètre ruban) et photos (polaroïds) ── */
+.bd-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.bd-btn { flex-shrink: 0; height: 36px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--sage); background: transparent; color: var(--accent); font: inherit; font-size: 14px; font-weight: 600; }
+.bd-val { margin-top: 14px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; }
+.bd-val b { font-family: var(--serif); font-weight: 500; font-size: 40px; letter-spacing: -.02em; color: var(--text); }
+.bd-val small { font-size: 15px; color: var(--text-2); }
+.bd-delta { margin-left: auto; padding: 5px 11px; border-radius: 999px; background: #F1ECE2; color: var(--text-2); font-size: 13px; font-weight: 700; }
+.bd-delta.good { background: var(--sage-t); color: var(--accent); }
+.bd-tapebox { margin: 12px 0 4px; }
+.bd-tape { display: block; width: 100%; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.bd-empty { opacity: .55; }
+.bd-foot { font-size: 12.5px; line-height: 1.4; color: var(--muted); margin-top: 6px; }
+.bd-weigh { margin-top: 14px; }
+.bd-waist .wt-cta { margin-top: 10px; }
+.bd-pol { display: flex; gap: 12px; margin: 18px 0 4px; padding: 0 2px; min-height: 40px; }
+.bd-p { flex: 0 0 calc((100% - 24px) / 3); min-width: 0; display: flex; flex-direction: column; background: #fff; padding: 6px 6px 0; border: 0; border-radius: 3px; box-shadow: 0 1px 2px rgba(60,50,30,.12), 0 6px 14px rgba(60,50,30,.10); font: inherit; color: inherit; }
+.bd-pol .bd-p:nth-child(1) { transform: rotate(-2.5deg); } .bd-pol .bd-p:nth-child(2) { transform: rotate(1.8deg) translateY(4px); } .bd-pol .bd-p:nth-child(3) { transform: rotate(-1deg); }
+.bd-img { display: block; aspect-ratio: 3/4; overflow: hidden; border-radius: 1px; background: linear-gradient(160deg, #E6E1D3, #CFC8B6); }
+.bd-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bd-cap { display: block; font-family: var(--serif); font-style: italic; font-size: 14px; color: #6B5E45; text-align: center; padding: 6px 0 8px; }
+.bd-add { background: transparent; box-shadow: none; border: 1.5px dashed #C9BFA6; }
+.bd-add .bd-img { background: transparent; display: grid; place-items: center; color: var(--sage); font-size: 30px; font-weight: 300; }
+.bd-add .bd-cap { font-style: normal; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--accent); }
+.bd-cmp { display: block; text-align: center; margin-top: 16px; width: 100%; height: 48px; border: 0; border-radius: 999px; background: var(--sage-t); color: var(--accent); font: inherit; font-size: 15px; font-weight: 600; }
+.bd-cmp[hidden] { display: none; }
+.bd-sheet { display: flex; flex-direction: column; gap: 12px; }
+.bd-sh-t { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 24px; }
+.bd-big { border-radius: 14px; overflow: hidden; max-height: 62vh; }
+.bd-big img { width: 100%; height: 100%; max-height: 62vh; object-fit: contain; display: block; background: #F1ECE2; }
+.bd-del { color: #A4553A; }
+.bd-duo { display: flex; gap: 12px; margin: 4px 0 6px; }
+.bd-duo .bd-p-big { margin: 0; flex: 1 1 0; }
+.bd-duo .bd-p-big:first-child { transform: rotate(-1.5deg); } .bd-duo .bd-p-big:last-child { transform: rotate(1.2deg); }
+.bd-info { display: block; text-align: center; font-size: 12.5px; font-weight: 600; color: var(--text-2); padding-bottom: 8px; margin-top: -4px; }
