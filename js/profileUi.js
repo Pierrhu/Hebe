@@ -191,7 +191,7 @@ export function weekPrefsBlock() {
       <p class="dt-note">${REPEAT_NOTES[rep]}</p>
     </div>
     <div class="dt-card dt-soups" style="--c:var(--mint);--t:var(--mint-t)">
-      <div class="dt-top"><b>Soupes</b></div>
+      <div class="dt-top"><b>Veux-tu des soupes ?</b></div>
       <div class="dt-seg dt-seg-2" role="radiogroup" aria-label="Soupes au menu">
         ${[[true, 'Oui'], [false, 'Non']].map(([v, l]) => `<button class="dt-btn ${soups === v ? 'on' : ''}" data-soups="${v ? 1 : 0}" role="radio" aria-checked="${soups === v}">${l}</button>`).join('')}
       </div>
