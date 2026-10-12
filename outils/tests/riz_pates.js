@@ -1,7 +1,7 @@
 // Test du réglage « Riz et pâtes » (v171) : complets, classiques, plat par plat, avec et sans autocuiseur, avec le régime sans gluten.
 // Lancer : node outils/tests/riz_pates.js
 const L = require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','js/weekgen.js'], `
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'], `
 let fails = 0;
 const ok = (cond, msg) => { if (!cond) { fails++; console.log('  ÉCHEC :', msg); } };
 const act = () => RECIPES.filter(r => !r.retired);

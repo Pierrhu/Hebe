@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T12:17:57.520Z
+// 2026-10-12T12:48:47.731Z
 
 
 // ──────────────────────────────────────────────
@@ -2374,6 +2374,47 @@ function dishThumbRated(r, cls = '') {
 
 
 // ──────────────────────────────────────────────
+// data/season.js
+// ──────────────────────────────────────────────
+// season.js — v226 : plats de saison.
+// Les plats « froid » (mijotés, crèmes, courges, châtaignes, soupes d'hiver) ne sortent que d'octobre à avril,
+// les plats « chaud » (salades et bols froids, tomates cerises, herbes fraîches) que de mai à septembre.
+// Tous les autres plats sortent toute l'année. Le Catalogue montre toujours toutes les recettes.
+
+const COLD = [
+  'W63', 'W81', 'W82', 'W84', 'W85', 'W89', 'W90', 'W93', 'W94', 'W95', 'W97', 'W98', 'W101',
+  'SO04', 'SO06', 'SO07', 'SO08', 'SO09', 'SO10', 'SO11', 'SO15',
+  'K23', 'K24',
+];
+const WARM = ['W02', 'W19', 'W47', 'W52', 'W53', 'W59'];
+
+const COLD_MONTHS = [10, 11, 12, 1, 2, 3, 4];
+const WARM_MONTHS = [5, 6, 7, 8, 9];
+
+// Saison d'une recette : 'froid', 'chaud' ou null (toute l'année). Les versions sans whey suivent leur recette.
+function seasonOf(r) {
+  const id = r?.wheyOf || r?.id;
+  if (COLD.includes(id)) return 'froid';
+  if (WARM.includes(id)) return 'chaud';
+  return null;
+}
+
+// La recette est-elle de saison à cette date (« AAAA-MM-JJ », un objet Date, ou aujourd'hui) ?
+function inSeason(r, when = new Date()) {
+  const s = seasonOf(r);
+  if (!s) return true;
+  const month = typeof when === 'string' ? +when.slice(5, 7) : when.getMonth() + 1;
+  return (s === 'froid' ? COLD_MONTHS : WARM_MONTHS).includes(month);
+}
+
+// Filtre de saison, sans jamais trop vider la liste : en dessous de `min` recettes, on garde la liste entière
+function seasonal(list, when, min = 1) {
+  const f = list.filter(r => inSeason(r, when));
+  return f.length >= min ? f : list;
+}
+
+
+// ──────────────────────────────────────────────
 // js/adapt.js
 // ──────────────────────────────────────────────
 // adapt.js — Adapte les recettes à l'équipement du foyer.
@@ -3771,8 +3812,8 @@ function schedule(slots, plats, counts) {
 function snackPool(whey = true, lac = 0, glu = 0) {
   // avec whey : la version d'origine, sauf si le régime l'interdit (lactose) ; alors sa version sans whey
   const wheyBlocked = r => r.wheyOf && !dietOk(getById(r.wheyOf), lac, glu);
-  return getSweets().filter(r => isAvailable(r) && dietOk(r, lac, glu) && getRating(r.id) >= 0
-    && (whey === false ? !hasWhey(r) : (!(r.tags || []).includes('sans-whey') || wheyBlocked(r))));
+  return seasonal(getSweets().filter(r => isAvailable(r) && dietOk(r, lac, glu) && getRating(r.id) >= 0
+    && (whey === false ? !hasWhey(r) : (!(r.tags || []).includes('sans-whey') || wheyBlocked(r)))), undefined, 4); // v226 : de saison
 }
 // ordre aléatoire pondéré : les recettes qui partagent un produit déjà pris passent plus souvent devant
 const weightedOrder = (list, prefer) => list.map(r => ({ r, k: Math.random() ** (1 / (sharesWith(r, prefer) ? SHARE_BONUS : 1)) })).sort((a, b) => b.k - a.k).map(x => x.r);
@@ -4088,6 +4129,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
   setSoupsOn(getSoups());
   const maxRep = getMaxRepeat(); // v208 : même plat au plus maxRep repas
   let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()));
+  pool = seasonal(pool, dates[0], 20); // v226 : plats de saison
   if (proteins && proteins.length) {
     const f = pool.filter(r => proteins.includes(proteinFamily(r)));
     if (f.length >= 4) pool = f;
@@ -4505,6 +4547,7 @@ function replacePool(oldId) {
   const sessIdx = plan.sessions.indexOf(sess);
   const fishOk = sessIdx === 0 && !plan.sessions.some(s => s.recipes.some(r => r.id !== oldId && isFreshFish(getById(r.id))));
   let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && getRating(r.id) >= 0 && (fishOk || !isFreshFish(r)));
+  pool = seasonal(pool, plan.dates?.[0], 8); // v226 : plats de saison
   const mids = planMembers(plan);
   const ptOf = mid => plateTarget(planTargets(plan, mid), planShare(plan, mid), proteinBoost(mid));
   const ptMin = mids.map(ptOf).reduce((x, y) => (x.kcal <= y.kcal ? x : y));

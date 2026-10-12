@@ -1,5 +1,5 @@
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
 const KEYS=Object.keys(INGREDIENTS).filter(k=>INGREDIENTS[k].minP);
 function mainIdx(r){let m=r.ingredients.findIndex(i=>i.key==='riz');if(m<0){let b=0;r.ingredients.forEach((g,i)=>{if(INGREDIENTS[g.key].minP&&g.kcal>b){b=g.kcal;m=i}})}return m}
 function chk(T,label){const sc=portionScale(plateTarget(T).kcal);const minOf=k=>{const nu=NATURAL_UNITS[k],v=INGREDIENTS[k].minP;return sc>=1?v:nu?Math.max(nu.g,Math.ceil(v*sc/nu.g-1e-9)*nu.g):Math.ceil(v*sc/(v>=200?25:10)-1e-9)*(v>=200?25:10)};const g={},under=[],nonInt=[];let ok=0,n=0,worst=0,sn=0;

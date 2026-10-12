@@ -1,6 +1,6 @@
 // Foyer de deux personnes : mêmes plats, portions de chacun, barquettes communes, précision par personne.
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
 setMemberCount(2);
 updateMember('m1',{name:'Pierre',sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P4',phase:0,free:[]});
 updateMember('m2',{name:'Léa',sex:'female',age:30,height:1.65,weight:62,bodyfat:28,activity:1,protocol:'P4',phase:1,free:['1-lunch','3-lunch','5-dinner']});

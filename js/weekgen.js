@@ -24,6 +24,7 @@ import { getWeekDates, getNextWeekDates, getTodayDate, getEntry, saveEntry, loca
 import { getRating } from '../data/prefs.js';
 import { USER } from '../data/user.js';
 import { isAvailable } from './adapt.js';
+import { seasonal } from '../data/season.js';
 import { getActiveMember, getMembers, weekBudget, getMaxRepeat, getSoups } from '../data/household.js';
 
 const PLAN_KEY = 'hebe_week_plan';
@@ -243,8 +244,8 @@ function schedule(slots, plats, counts) {
 function snackPool(whey = true, lac = 0, glu = 0) {
   // avec whey : la version d'origine, sauf si le régime l'interdit (lactose) ; alors sa version sans whey
   const wheyBlocked = r => r.wheyOf && !dietOk(getById(r.wheyOf), lac, glu);
-  return getSweets().filter(r => isAvailable(r) && dietOk(r, lac, glu) && getRating(r.id) >= 0
-    && (whey === false ? !hasWhey(r) : (!(r.tags || []).includes('sans-whey') || wheyBlocked(r))));
+  return seasonal(getSweets().filter(r => isAvailable(r) && dietOk(r, lac, glu) && getRating(r.id) >= 0
+    && (whey === false ? !hasWhey(r) : (!(r.tags || []).includes('sans-whey') || wheyBlocked(r)))), undefined, 4); // v226 : de saison
 }
 // ordre aléatoire pondéré : les recettes qui partagent un produit déjà pris passent plus souvent devant
 const weightedOrder = (list, prefer) => list.map(r => ({ r, k: Math.random() ** (1 / (sharesWith(r, prefer) ? SHARE_BONUS : 1)) })).sort((a, b) => b.k - a.k).map(x => x.r);
@@ -560,6 +561,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
   setSoupsOn(getSoups());
   const maxRep = getMaxRepeat(); // v208 : même plat au plus maxRep repas
   let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()));
+  pool = seasonal(pool, dates[0], 20); // v226 : plats de saison
   if (proteins && proteins.length) {
     const f = pool.filter(r => proteins.includes(proteinFamily(r)));
     if (f.length >= 4) pool = f;
@@ -977,6 +979,7 @@ function replacePool(oldId) {
   const sessIdx = plan.sessions.indexOf(sess);
   const fishOk = sessIdx === 0 && !plan.sessions.some(s => s.recipes.some(r => r.id !== oldId && isFreshFish(getById(r.id))));
   let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && getRating(r.id) >= 0 && (fishOk || !isFreshFish(r)));
+  pool = seasonal(pool, plan.dates?.[0], 8); // v226 : plats de saison
   const mids = planMembers(plan);
   const ptOf = mid => plateTarget(planTargets(plan, mid), planShare(plan, mid), proteinBoost(mid));
   const ptMin = mids.map(ptOf).reduce((x, y) => (x.kcal <= y.kcal ? x : y));

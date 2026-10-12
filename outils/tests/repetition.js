@@ -1,7 +1,7 @@
 // Réglages « même plat au plus N fois » et « soupes » (v208) : vérifie la limite, le nombre de plats, la précision.
 // Lancer : node outils/tests/repetition.js
 const L = require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','js/weekgen.js'], `
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','data/season.js','js/weekgen.js'], `
 const PROFILS = [
   ['Pierre 2838', {sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P4',phase:0,formula:'classique'}, []],
   ['Femme 1642', {sex:'female',age:30,height:1.65,weight:60,bodyfat:27,activity:1,protocol:'P2',phase:0,formula:'classique'}, []],

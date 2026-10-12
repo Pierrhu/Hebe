@@ -2,7 +2,7 @@
 // Lancer : node outils/tests/frais.js [semaines] [2 pour un foyer de deux]
 const L=require('./charger.js');
 const N=+(process.argv[2]||100), DUO=process.argv[3]==='2';
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','data/season.js','js/weekgen.js'],`
 // conditionnement réel des produits frais (g ou ml, pièce pour les œufs) : ce qu'on achète d'un coup
 const UNIT={ poulet:500, poulet_hache:350, boeuf:500, saumon:250, haut_cuisse:500, boeuf_emince:500, tofu:200, poulet_tranches:160, jambon_blanc:160,
  fromage_blanc:1000, yaourt_grec:500, cottage:200, fromage_frais:150, carre_frais:200, feta:200, creme:200, houmous:200, lait:1000, yaourt_sl:500,

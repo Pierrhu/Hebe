@@ -1,6 +1,6 @@
 // Formules jeûne et classique : respect des calories et quantités réellement mangées à chaque repas.
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
 const PROFILS=[
  ['Homme 24 ans, 97 kg, perte progressive',{sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P4',phase:0}],
  ['Homme 24 ans, 97 kg, prise de muscle',{sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P1',phase:1}],

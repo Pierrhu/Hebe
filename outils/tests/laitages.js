@@ -1,6 +1,6 @@
 // Un seul laitage en bol (fromage blanc ou yaourt) par jour, petit-déjeuner compris.
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
 const B=['fromage_blanc','yaourt_grec','yaourt_sl'];
 [['classique','mix'],['jeune','mix']].forEach(([formula,bk])=>{
  setMemberCount(1); updateMember('m1',{name:'P',sex:'male',age:31,height:1.79,weight:78.5,bodyfat:30,activity:3,protocol:'P3',phase:0,free:[],formula,breakfast:bk,whey:true,lactose:0,gluten:0});
