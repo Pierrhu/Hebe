@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T13:37:03.476Z
+// 2026-10-12T13:38:45.323Z
 
 
 // ──────────────────────────────────────────────
@@ -8457,7 +8457,7 @@ function renderWelcome(onDone) {
     const curCh = CHAPTER[cur().type];
     return `<div class="wl-progress" aria-label="Étape ${k + 1} sur ${counted.length}, ${CHAPTER_NAMES[curCh]}">
       ${chs.map(c => { const to = chapterStart(c); const ok = to >= 0 && to <= furthest && c !== curCh;
-        return `<button class="wl-ch ${c === curCh ? 'cur' : ok ? 'done' : ''}" data-ch="${c}"${c === curCh ? ' aria-current="step"' : ''}${ok ? '' : ' disabled'}>${CHAPTER_NAMES[c]}</button>`; }).join('')}</div>`;
+        return `<button class="wl-ch ${c === curCh ? 'cur' : c < curCh ? 'done' : ''}" data-ch="${c}"${c === curCh ? ' aria-current="step"' : ''}${ok ? '' : ' disabled'}>${CHAPTER_NAMES[c]}</button>`; }).join('')}</div>`;
   };
   // v230 : toucher un chapitre déjà atteint y ramène (première étape du chapitre, pour la personne en cours si possible)
   let furthest = 0;
