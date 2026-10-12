@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T12:16:17.151Z
+// 2026-10-12T12:17:57.520Z
 
 
 // ──────────────────────────────────────────────
@@ -7108,7 +7108,7 @@ function equipmentBlock(eq) {
 function repeatBlock() {
   const rep = getMaxRepeat();
   return `<div class="dt-card dt-plain dt-repeat">
-      <div class="dt-top"><b>Combien de fois veux-tu manger le même repas ?</b></div>
+      <div class="dt-top"><b>Au maximum, combien de fois veux-tu manger le même repas ?</b></div>
       <div class="dt-seg" role="radiogroup" aria-label="Même plat dans la semaine, au plus">
         ${[2, 3, 4].map(n => `<button class="dt-btn ${rep === n ? 'on' : ''}" data-rep="${n}" role="radio" aria-checked="${rep === n}">${n} fois</button>`).join('')}
       </div>
