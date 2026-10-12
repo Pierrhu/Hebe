@@ -10,6 +10,7 @@ import {
 } from '../data/calculator.js';
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups } from '../data/household.js';
 import { exportPhotos, importPhotos } from './body.js';
+import { openScienceSheet } from './science.js';
 import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
@@ -104,6 +105,7 @@ export function renderSettings() {
           </div>
           ${details.floored ? `<p class="tc-note">Le programme visait ${details.wanted} kcal. Hébé remonte ton objectif à ${details.targets.kcal} kcal pour ne pas descendre sous ce dont ton corps a besoin au repos.</p>` : ''}
           ${details.fatRaised ? `<p class="tc-note">Tes lipides sont relevés à ${details.targets.fat} g pour rester au-dessus de ${profile.sex === 'female' ? '25' : '20'} % de tes calories, un minimum important pour l'équilibre hormonal.</p>` : ''}
+          <button class="sci-link" data-science>Comment Hébé calcule tes besoins<span aria-hidden="true">›</span></button>
         </div>
 
         ${(() => {
@@ -112,7 +114,7 @@ export function renderSettings() {
           const isLast = !nxt;
           return `<div class="phase-guide pc-${protocol.id}">
             <div class="pg-now">
-              <div class="pg-kicker">Cette phase · ${label(phaseIdx)}</div>
+              <div class="pg-kicker">Cette phase : ${label(phaseIdx)}</div>
               <div class="pg-big">${cur.short || ''}</div>
               <p>${cur.advice}</p>
             </div>
@@ -243,6 +245,7 @@ export function renderSettings() {
   }
 
   function bind() {
+    view.querySelector('[data-science]')?.addEventListener('click', openScienceSheet); // v236
     view.querySelector('[data-backup]')?.addEventListener('click', async () => {
       await exportBackup();
       const last = view.querySelector('.bk-last'); if (last) last.textContent = `Dernière sauvegarde : ${lastBackupText()}`;

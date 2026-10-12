@@ -1,6 +1,7 @@
 // profileUi.js — Morceaux d'interface partagés entre « Mon programme » et l'accueil.
 // Même rendu aux deux endroits : mesures, prénom et sexe, activité, cartes des programmes.
 
+import { openScienceSheet } from './science.js';
 import { ACTIVITY, getMembers, getActiveMember, setActiveMember, getMaxRepeat, getSoups } from '../data/household.js';
 import { computeAllPhases, protocolsFor, protocolFor, computeBase, kgPerWeek } from '../data/calculator.js';
 import { openSheet, closeSheet } from './utils.js';
@@ -445,8 +446,10 @@ export function openProtocolSheet(profile, pid, { isCurrent = false, onChoose = 
       </div>
 
       <button class="hb-btn ${isCurrent ? '' : 'hb-btn-primary'} pf-choose">${isCurrent ? 'Programme actuel' : 'Choisir ce programme'}</button>
+      <button class="sci-link sci-link-c" data-science>D'où viennent ces chiffres ?<span aria-hidden="true">›</span></button>
     </div>`);
   const sheet = document.getElementById('sheet');
+  sheet.querySelector('[data-science]')?.addEventListener('click', () => { closeSheet(); openScienceSheet(); });
   sheet.querySelector('.pf-choose').addEventListener('click', () => {
     closeSheet();
     if (!isCurrent && onChoose) onChoose(pid);
