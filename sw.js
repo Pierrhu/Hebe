@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v211';
+const CACHE = 'hebe-v212';
 const ASSETS = [
   './',
   './index.html',
@@ -20,6 +20,16 @@ const ASSETS = [
   './data/prefs.js',
   './img/dishes/C01.webp',
   './img/dishes/K01.webp',
+  './img/dishes/W76.webp',
+  './img/dishes/W77.webp',
+  './img/dishes/W78.webp',
+  './img/dishes/W79.webp',
+  './img/dishes/W80.webp',
+  './img/dishes/SO01.webp',
+  './img/dishes/SO02.webp',
+  './img/dishes/SO03.webp',
+  './img/dishes/SO04.webp',
+  './img/dishes/SO06.webp',
   './img/dishes/K02.webp',
   './img/dishes/K03.webp',
   './img/dishes/K05.webp',
