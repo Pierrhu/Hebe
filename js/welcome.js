@@ -7,6 +7,7 @@
 
 import { el, toast } from './utils.js';
 import { askRestore } from './settings.js';
+import { openScienceSheet } from './science.js';
 import {
   getHousehold, getMembers, getMember, getActiveMember, setActiveMember, updateMember, setOnboarded,
   setMemberCount, isComplete, setMaxRepeat, setSoups, setEquipment,
@@ -119,6 +120,7 @@ export function renderWelcome(onDone) {
             <div><i style="background:var(--sky)"></i>Des portions calculées pour toi</div>
             <div><i style="background:var(--terra)"></i>Une seule session de cuisine par semaine</div>
             <div><i style="background:var(--sage)"></i>La liste de courses toute prête</div>
+            <div><i style="background:var(--bloom)"></i><button class="wl-sci" data-science>Des calculs fondés sur la science</button></div>
           </div>
           <p class="wl-end">Plus qu'à cuisiner !</p>
         </div>
@@ -152,7 +154,7 @@ export function renderWelcome(onDone) {
       case 'measures': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les mesures de ${esc(m.name)}` : 'Tes mesures'}</h1>
-        ${sub('Touche chaque case pour la remplir. Elles servent à calculer tes portions au gramme près.')}
+        ${sub('Touche chaque case pour la remplir. Elles servent à calculer tes portions.')}
         ${idCard(m, p, { num: getMembers().findIndex(x => x.id === m.id) + 1 })}
         ${errBox()}
         ${cta('Continuer')}`;
@@ -211,6 +213,10 @@ export function renderWelcome(onDone) {
             </div>`;
           }).join('')}
         </div>
+        <button class="wl-sci-card" data-science>
+          <b>D'où viennent ces chiffres ?</b>
+          <span>Ton calcul ligne par ligne, et les études qui le justifient.</span>
+        </button>
         ${cta('Préparer ma semaine')}`;
       }
     }
@@ -280,6 +286,7 @@ export function renderWelcome(onDone) {
 
   function bind() {
     view.querySelector('.wl-next')?.addEventListener('click', () => { clearTimeout(autoT); next(); });
+    view.querySelectorAll('[data-science]').forEach(b => b.addEventListener('click', openScienceSheet)); // v253
     // v195 : nouveau téléphone, reprendre ses données sans refaire le profil
     const wlFile = view.querySelector('[data-wl-file]');
     view.querySelector('[data-wl-restore]')?.addEventListener('click', () => wlFile?.click());

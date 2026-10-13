@@ -1924,3 +1924,13 @@ button.wl-ch:disabled { cursor: default; }
 .idf-f { text-align: left; }
 .idf-static { pointer-events: none; }
 .idf-empty b { color: #C8704F; font-weight: 600; font-size: 14px; }
+
+/* v253 : fondements scientifiques visibles dans l'accueil */
+.wl-sci { padding: 0; border: 0; background: none; font: inherit; font-size: 14.5px; font-weight: 600; color: var(--text); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--bloom) 70%, transparent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.wl-sci-card { display: block; width: 100%; margin: 14px 0 0; padding: 14px 16px; border: 1px solid #EADFCB; border-radius: 18px; text-align: left; font: inherit;
+  background-color: #FBF8F2; background-image: linear-gradient(#F3ECDF .5px, transparent .5px), linear-gradient(90deg, #F3ECDF .5px, transparent .5px); background-size: 8px 8px; }
+.wl-sci-card b { display: block; font-family: var(--serif); font-weight: 500; font-size: 17px; color: #2F4638; }
+.wl-sci-card span { display: block; margin-top: 2px; font-size: 13px; color: var(--text-2); }
+.wl-art { max-height: 41vh; }
+.wl-points { gap: 8px; }
+@media (max-height: 700px) { .wl-art { max-height: 31vh; } .wl-points div { font-size: 14px; } }
