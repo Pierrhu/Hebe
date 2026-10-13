@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T13:45:36.352Z
+// 2026-10-13T13:49:24.682Z
 
 
 // ──────────────────────────────────────────────
@@ -8085,6 +8085,39 @@ function renderSettings() {
     protocolId = pid; phaseIdx = 0; saveSelectedProtocol(pid); saveSelectedPhase(0); applyComputed();
     toast(`Programme : ${protocolFor(profile, pid).name}`); render();
   }
+  // v273 : sommaire de « Mon profil »
+  let section = null;
+  const AIM = { P1: 'Prendre du muscle', P2: 'Remodeler mon corps', P3: 'Perdre du gras, assez vite', P4: 'Perdre du gras, sur la durée' };
+  const ICONS = {
+    objectif: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" />',
+    repas: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 21V3c-2.5 1-3.5 4-3.5 7.5 0 1.5 1 2.5 2.5 2.5h1"/>',
+    semaine: '<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+    foyer: '<path d="M4 11l8-6.5 8 6.5M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>',
+    cuisine: '<path d="M5 10h14v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7zM3 10h18M9 6.5c0-1 .8-1.5 1.5-2.5M13 6.5c0-1 .8-1.5 1.5-2.5"/>',
+    donnees: '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/>',
+  };
+  const pfRow = (k, tint, ic, title, sub) => `<button class="pf-row" data-sec="${k}">
+      <span class="pf-ic pf-${tint}"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></span>
+      <span class="pf-txt"><b>${title}</b><span>${sub}</span></span><span class="hb-chev">›</span></button>`;
+  const objSummary = () => `${AIM[protocolId] || ''}, ${(protocolFor(profile, protocolId).phases[phaseIdx]?.label || '').toLowerCase()}`;
+  function repasSummary(m) {
+    const f = FORMULAS.find(x => x.id === (m.formula || 'jeune'));
+    const bk = { sucre: 'petit-déj sucré', sale: 'petit-déj salé', mix: 'petit-déj sucré et salé' }[m.breakfast || 'mix'];
+    return [f?.title, f && !f.fast ? bk : '', m.whey !== false ? 'whey' : '', m.lactose ? 'sans lactose' : '', m.gluten ? 'sans gluten' : ''].filter(Boolean).join(', ');
+  }
+  const semaineSummary = () => [`Même plat ${getMaxRepeat()} fois max`, getSoups() ? 'soupes' : 'sans soupe',
+    { complet: 'complets', classique: 'féculents classiques', plat: 'féculents au choix' }[getStaples()] || ''].filter(Boolean).join(', ');
+  const foyerSummary = () => `${getMembers().map(m => esc(m.name || 'Sans prénom')).join(' et ')}, ${weekBudget()} € par semaine`;
+  const cuisineSummary = () => { const eq = getHousehold().equipment || getEquipment() || {}; return TOOLS.filter(t => eq[t.key]).map(t => t.label).join(', ') || 'Rien de coché'; };
+  function dayCard() {
+    const t = getTargets(), p = protocolFor(profile, protocolId), ph = p.phases[phaseIdx];
+    return `<button class="pf-day pc-${protocolId}" data-sec="objectif">
+      <span class="pf-day-top"><span><small>Chaque jour</small><b class="pf-kcal">${t.kcal}<i> kcal</i></b></span>
+        <span class="pf-prog"><b>${p.name}</b><span>${ph ? ph.label : ''}${hasManualTargets() ? ', réglé à la main' : ''}</span></span></span>
+      <span class="pf-mac"><span><b>${t.protein} g</b>protéines</span><span><b>${t.carbs} g</b>glucides</span><span><b>${t.fat} g</b>lipides</span></span>
+    </button>`;
+  }
+  const goSection = k => { section = k; render(); window.scrollTo(0, 0); };
   function render() {
     const keepY = firstRender ? 0 : window.scrollY; // une modification ne fait pas remonter la page
     const member   = getActiveMember();
@@ -8097,50 +8130,15 @@ function renderSettings() {
     const current  = getTargets();
     const isComputed = !hasManualTargets();
 
-    view.innerHTML = `
-      <div class="page-head">
-        <button class="hb-back round-back" aria-label="Retour à ma semaine"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <div class="hb-page-title">Mon profil</div>
-      </div>
-      ${whoSwitch()}
-      <p class="pg-hello"><b>Bienvenue dans ton programme${member.name ? ` ${esc(member.name)}` : ''} !</b><span>C'est ici que tu retrouveras ta fiche, tes repas et ton objectif. Touche une information pour la modifier : tes besoins se recalculent tout seuls.</span></p>
-      <!-- FICHE D'IDENTITÉ -->
-      <div class="idf">
-        <div class="idf-band"><span>Fiche Hébé</span><span>N° ${String(getMembers().findIndex(x => x.id === member.id) + 1).padStart(3, '0')}</span></div>
-        <div class="idf-body">
-          <div class="idf-photo">${idPhoto(member.sex)}</div>
-          <div class="idf-fields">
-            <button class="idf-f idf-full" data-edit="name"><span>Prénom</span><b class="idf-name">${esc(member.name || 'Sans prénom')}</b></button>
-            <button class="idf-f" data-edit="age"><span>Âge</span><b>${profile.age} ans</b></button>
-            <button class="idf-f" data-edit="height"><span>Taille</span><b>${String(profile.height).replace('.', ',')} m</b></button>
-            <button class="idf-f" data-edit="weight"><span>Poids</span><b>${String(profile.weight).replace('.', ',')} kg</b></button>
-            <button class="idf-f" data-edit="bodyfat"><span>Masse grasse</span><b>${String(profile.bodyfat).replace('.', ',')} %</b></button>
-            <button class="idf-f idf-full" data-edit="activity"><span>Quotidien</span><b>${(ACTIVITY.find(a => a.level === profile.activity) || ACTIVITY[1]).label}</b></button>
-          </div>
-        </div>
-        <button class="idf-stamp pc-${protocolId}" data-edit="protocol">
-          <div><span>Programme</span><b>${protocol.name}</b></div>
-          <div class="idf-goal"><span>Objectif</span><b>${current.kcal} kcal</b></div>
-        </button>
-      </div>
-
-
-      <!-- REPAS ET RÉGIME -->
+    // v273 : « Mon profil » en sommaire. Chaque ligne ouvre sa partie, sur la même page.
+    const SECTIONS = {
+      objectif: { title: 'Mon objectif', who: true, html: `
       <div class="set-section">
-        <div class="set-section-head">Tes repas</div>
-        ${mealsBlock(member)}
-        ${staplesCard()}
-      </div>
-
-      <!-- PROTOCOLE -->
-      <div class="set-section">
-        <div class="set-section-head">Ton objectif</div>
         ${goalPicker(profile, protocolId)}
       </div>
 
-      <!-- PHASES -->
+      
       <div class="set-section">
-        <div class="set-section-head">Ta progression</div>
         <div class="phase-stepper">
           ${phases.map((ph, i) => `
             <button class="phase-step ${i === phaseIdx ? 'active' : ''} ${i < phaseIdx ? 'done' : ''}" data-phase="${i}">
@@ -8189,7 +8187,7 @@ function renderSettings() {
 
       </div>
 
-      <!-- MANUEL -->
+      
       <details class="set-manual pc-${protocolId}" ${manualOpen ? 'open' : ''}>
         <summary>Régler mes calories à la main</summary>
         <div class="manual-body">
@@ -8202,9 +8200,11 @@ function renderSettings() {
         </div>
       </details>
 
-      <!-- FOYER -->
+      ` },
+      repas:    { title: 'Mes repas', who: true, html: `<div class="set-section">${mealsBlock(member, { week: false })}</div>` },
+      semaine:  { title: 'Ma semaine', html: `<div class="set-section">${weekPrefsBlock()}${staplesCard()}</div>` },
+      foyer:    { title: 'Mon foyer', html: `
       <div class="set-section">
-        <div class="set-section-head">Ton foyer</div>
         ${getMembers().length < 2
           ? `<button class="hh-row" data-count="2"><span class="hh-plus" aria-hidden="true">+</span><span class="hh-row-txt"><b>Ajouter une personne</b><span>Mêmes plats, portions calculées pour chacun</span></span><span class="hb-chev">›</span></button>`
           : `<div class="hh-members">${getMembers().map(m => `<div class="hh-mem"><b>${esc(m.name || 'Sans prénom')}</b><span>${m.sex === 'female' ? 'Femme' : 'Homme'}, ${m.age} ans</span></div>`).join('')}</div>
@@ -8219,15 +8219,15 @@ function renderSettings() {
         </div>
       </div>
 
-      <!-- ÉQUIPEMENT -->
+      ` },
+      cuisine:  { title: 'Ma cuisine', html: `
       <div class="set-section">
-        <div class="set-section-head">Ta cuisine</div>
         ${equipmentBlock(getHousehold().equipment)}
       </div>
 
-      <!-- SAUVEGARDE (v193) -->
+      ` },
+      donnees:  { title: 'Mes données', html: `
       <div class="set-section">
-        <div class="set-section-head">Tes données</div>
         <div class="bk-card">
           <p>Tout est enregistré sur ce téléphone, photos comprises. Garde une copie dans tes fichiers (iCloud, Drive…) pour ne rien perdre.</p>
           <div class="bk-btns"><button class="hb-btn hb-btn-primary" data-backup>Sauvegarder</button><button class="hb-btn bk-sec" data-restore>Restaurer</button></div>
@@ -8236,8 +8236,50 @@ function renderSettings() {
         </div>
       </div>
 
-      <button class="hb-btn set-back-bottom">Retour à ma semaine</button>
+      ` },
+    };
+    const sec = section && SECTIONS[section];
+    view.innerHTML = sec ? `
+      <div class="page-head">
+        <button class="round-back pf-up" aria-label="Retour à Mon profil"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="hb-page-title">${sec.title}</div>
+      </div>
+      ${sec.who ? whoSwitch() : ''}
+      <div class="pf-sec pf-${section}">${sec.html}</div>
+      <button class="hb-btn pf-up pf-up-bottom">Retour à Mon profil</button>` : `
+      <div class="page-head">
+        <button class="hb-back round-back" aria-label="Retour à ma semaine"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="hb-page-title">Mon profil</div>
+      </div>
+      ${whoSwitch()}
+      <div class="idf">
+        <div class="idf-band"><span>Fiche Hébé</span><span>N° ${String(getMembers().findIndex(x => x.id === member.id) + 1).padStart(3, '0')}</span></div>
+        <div class="idf-body">
+          <div class="idf-photo">${idPhoto(member.sex)}</div>
+          <div class="idf-fields">
+            <button class="idf-f idf-full" data-edit="name"><span>Prénom</span><b class="idf-name">${esc(member.name || 'Sans prénom')}</b></button>
+            <button class="idf-f" data-edit="age"><span>Âge</span><b>${profile.age} ans</b></button>
+            <button class="idf-f" data-edit="height"><span>Taille</span><b>${String(profile.height).replace('.', ',')} m</b></button>
+            <button class="idf-f" data-edit="weight"><span>Poids</span><b>${String(profile.weight).replace('.', ',')} kg</b></button>
+            <button class="idf-f" data-edit="bodyfat"><span>Masse grasse</span><b>${String(profile.bodyfat).replace('.', ',')} %</b></button>
+            <button class="idf-f idf-full" data-edit="activity"><span>Quotidien</span><b>${(ACTIVITY.find(a => a.level === profile.activity) || ACTIVITY[1]).label}</b></button>
+          </div>
+        </div>
+      </div>
+      ${dayCard()}
+      <div class="pf-group">
+        ${pfRow('objectif', 'terra', ICONS.objectif, 'Mon objectif', objSummary())}
+        ${pfRow('repas', 'honey', ICONS.repas, 'Mes repas', repasSummary(member))}
+        ${pfRow('semaine', 'leaf', ICONS.semaine, 'Ma semaine', semaineSummary())}
+      </div>
+      <div class="pf-group">
+        ${pfRow('foyer', 'sky', ICONS.foyer, 'Mon foyer', foyerSummary())}
+        ${pfRow('cuisine', 'sage', ICONS.cuisine, 'Ma cuisine', cuisineSummary())}
+        ${pfRow('donnees', 'sage', ICONS.donnees, 'Mes données', `Dernière sauvegarde : ${lastBackupText()}`)}
+      </div>
+      <button class="sci-link pf-sci" data-science>Comment Hébé calcule tes besoins</button>
     `;
+
     bind();
     if (!firstRender) window.scrollTo(0, keepY);
     firstRender = false;
@@ -8316,6 +8358,8 @@ function renderSettings() {
     fileIn?.addEventListener('change', async () => { const f = fileIn.files?.[0]; fileIn.value = ''; if (f) askRestore(await f.text()); });
     view.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEdit(b.dataset.edit)));
     view.querySelector('.hb-back')?.addEventListener('click', () => window._nav?.('week'));
+    view.querySelectorAll('[data-sec]').forEach(b => b.addEventListener('click', () => goSection(b.dataset.sec)));
+    view.querySelectorAll('.pf-up').forEach(b => b.addEventListener('click', () => goSection(null)));
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () => openBodyfatGuide(profile.bodyfat, v => {
       profile.bodyfat = v; saveProfile(profile); applyComputed(); render();
       toast(`Masse grasse : ${v} %`);

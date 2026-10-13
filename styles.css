@@ -1972,3 +1972,43 @@ button.wl-ch:disabled { cursor: default; }
 .gp-maint { stroke: var(--c); stroke-opacity: .4; stroke-dasharray: 3 3; stroke-width: 1.2; }
 .gp-line { fill: none; stroke: var(--c); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
 .gp-warn { font-size: 12px; line-height: 1.4; color: var(--text-2); margin: 8px 4px 0; }
+
+/* v273 : Mon profil en sommaire */
+.settings-view .idf { margin-bottom: 12px; }
+.pf-day { display: block; width: 100%; text-align: left; padding: 16px 16px 14px; border-radius: 24px; background: var(--t); margin-bottom: 18px; }
+.pf-day-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.pf-day small { display: block; font-size: 12px; color: var(--text-2); }
+.pf-kcal { display: block; font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.05; letter-spacing: -0.02em; }
+.pf-kcal i { font-style: normal; font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--text-2); letter-spacing: 0; }
+.pf-prog { text-align: right; min-width: 0; padding-bottom: 3px; }
+.pf-prog b { display: block; font-size: 14px; font-weight: 600; line-height: 1.2; }
+.pf-prog span { display: block; font-size: 12px; color: var(--text-2); margin-top: 2px; }
+.pf-mac { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.pf-mac span { background: rgba(255,255,255,.72); border-radius: 14px; padding: 7px 10px; font-size: 11.5px; color: var(--text-2); }
+.pf-mac b { display: block; font-size: 15px; font-weight: 600; color: var(--text); }
+.pf-group { background: rgba(255,255,255,.85); border-radius: 22px; overflow: hidden; margin-bottom: 12px; }
+.pf-row { display: flex; align-items: center; gap: 13px; width: 100%; padding: 12px 14px; text-align: left; }
+.pf-row + .pf-row { border-top: 1px solid var(--line); }
+.pf-row:active { background: var(--sunken); }
+.pf-ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; }
+.pf-ic svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.pf-terra { background: var(--terra-t); color: color-mix(in srgb, var(--terra) 72%, #1E2A22); }
+.pf-honey { background: var(--honey-t); color: color-mix(in srgb, var(--honey) 72%, #1E2A22); }
+.pf-leaf  { background: var(--leaf-t);  color: color-mix(in srgb, var(--leaf) 72%, #1E2A22); }
+.pf-sky   { background: var(--sky-t);   color: color-mix(in srgb, var(--sky) 72%, #1E2A22); }
+.pf-sage  { background: var(--sage-t);  color: var(--accent); }
+.pf-txt { flex: 1; min-width: 0; }
+.pf-txt b { display: block; font-size: 15px; font-weight: 600; }
+.pf-txt span { display: block; font-size: 12.5px; color: var(--text-2); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-sci { display: block; margin: 6px auto 0; }
+.pf-sec > .set-section:first-child { margin-top: 4px; }
+.pf-up-bottom { display: block; width: 100%; margin-top: 18px; }
+.settings-view .idf-body { padding: 12px 14px; gap: 12px; }
+.settings-view .idf-photo { width: 78px; height: 98px; }
+.settings-view .idf-fields { grid-template-columns: repeat(3, 1fr); gap: 6px 8px; }
+.settings-view .idf-fields .idf-full:first-child { grid-column: 1 / 4; }
+.settings-view .idf-fields .idf-full:last-child { grid-column: 2 / 4; }
+.settings-view .idf-f b { font-size: 15px; }
+.settings-view .idf-f b.idf-name { font-size: 21px; }
+.pf-sec .who-switch + * , .pf-sec > :first-child { margin-top: 0; }
+.settings-view .who-switch + .pf-sec { margin-top: 14px; }
