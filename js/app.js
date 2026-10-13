@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-12T15:55:04.298Z
+// 2026-10-13T07:08:36.244Z
 
 
 // ──────────────────────────────────────────────
@@ -8814,7 +8814,7 @@ const MEMBER_STEPS = ['identity', 'measures', 'activity', 'rhythm', 'food', 'goa
 const CHAPTER = { household: 0, tools: 0, identity: 1, measures: 1, activity: 1, rhythm: 2, food: 2, goal: 3, summary: 3 };
 const CHAPTER_NAMES = ['Cuisine', 'Profil', 'Repas', 'Objectif'];
 // Écrans à choix unique : on passe au suivant dès qu'on a choisi
-const AUTO_NEXT = ['household', 'activity', 'rhythm'];
+const AUTO_NEXT = []; // v251 : plus de passage automatique, on appuie toujours sur « Continuer »
 const ORD = ['Première', 'Deuxième'];
 
 const WL_BACK = '<button class="round-back wl-back" aria-label="Étape précédente"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>';
@@ -8888,7 +8888,7 @@ function renderWelcome(onDone) {
       case 'hello': return `
         <div class="wl-hero" aria-hidden="true">
           <span class="wl-blob b1"></span><span class="wl-blob b2"></span>
-          <img class="wl-art" src="img/art/accueil.webp" alt="">
+          <img class="wl-art" src="img/art/accueil.webp" alt="" width="900" height="889" fetchpriority="high" decoding="async">
         </div>
         <div class="wl-hello">
           <div class="brand-word">Héb<span class="brand-accent">é</span></div>

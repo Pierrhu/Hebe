@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v250';
+const CACHE = 'hebe-v251';
 const ASSETS = [
   './',
   './index.html',
@@ -188,11 +188,19 @@ const ASSETS = [
   './icon-512-maskable.png',
 ];
 
+// v251 : à l'installation, seulement l'essentiel (code, styles, polices, illustrations) ; les photos des plats
+// (13 Mo) se téléchargent ensuite en arrière-plan, sans ralentir le premier lancement.
+const isPhoto = u => u.includes('/img/dishes/');
+const CORE = ASSETS.filter(u => !isPhoto(u)), PHOTOS = ASSETS.filter(isPhoto);
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())
   );
 });
+async function cachePhotos() {
+  const c = await caches.open(CACHE);
+  for (const u of PHOTOS) { try { if (!(await c.match(u))) await c.add(u); } catch {} }
+}
 
 self.addEventListener('activate', e => {
   e.waitUntil(
@@ -200,6 +208,7 @@ self.addEventListener('activate', e => {
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
+  setTimeout(() => { cachePhotos(); }, 8000); // photos en arrière-plan, une fois l'app ouverte
 });
 
 self.addEventListener('fetch', e => {
