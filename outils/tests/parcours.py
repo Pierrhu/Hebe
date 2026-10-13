@@ -93,6 +93,7 @@ async def reglage(p):
         return await pg.inner_text('body')
     # 1. Classiques
     await pg.evaluate("window._nav('settings')"); await pg.wait_for_timeout(500)
+    await pg.click('.pf-row[data-sec="semaine"]'); await pg.wait_for_timeout(400)  # v274 : Riz et pâtes dans « Ma semaine »
     found['carte présente'] = await pg.query_selector('.dt-staples') is not None
     await pg.click('[data-staples="classique"]'); await pg.wait_for_timeout(400)
     el = await pg.query_selector('.dt-staples'); await el.scroll_into_view_if_needed()
@@ -103,6 +104,7 @@ async def reglage(p):
     found['classiques : pas de choix sur la fiche'] = await pg.query_selector('.rd-staple') is None
     # 2. Plat par plat
     await pg.evaluate("window._nav('settings')"); await pg.wait_for_timeout(500)
+    await pg.click('.pf-row[data-sec="semaine"]'); await pg.wait_for_timeout(400)
     await pg.click('[data-staples="plat"]'); await pg.wait_for_timeout(400)
     el = await pg.query_selector('.dt-staples'); await el.scroll_into_view_if_needed()
     await pg.screenshot(path='outils/tests/captures/reglage_plat_par_plat.png')
@@ -116,6 +118,7 @@ async def reglage(p):
     await pg.screenshot(path='outils/tests/captures/reglage_fiche.png')
     # 3. retour au complet par défaut
     await pg.evaluate("window._nav('settings')"); await pg.wait_for_timeout(500)
+    await pg.click('.pf-row[data-sec="semaine"]'); await pg.wait_for_timeout(400)
     await pg.click('[data-staples="complet"]'); await pg.wait_for_timeout(300)
     det = await fiche()
     found['complets : retour au riz complet'] = 'riz complet' in det and await pg.query_selector('.rd-staple') is None
