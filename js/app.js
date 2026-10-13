@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T11:04:58.856Z
+// 2026-10-13T11:06:15.331Z
 
 
 // ──────────────────────────────────────────────
@@ -7825,8 +7825,8 @@ function bindActivityPicker(root, get, onChange) {
 const AIMS = [
   { k: 'muscle', pid: 'P1', label: 'Prendre du muscle', sub: 'Gagner du volume sans gras',
     ic: '<path d="M4 14h20M7 9v10M21 9v10M4 11v6M24 11v6"/>' },
-  { k: 'both', pid: 'P2', label: 'Les deux à la fois', sub: 'Moins de gras, plus de muscle',
-    ic: '<path d="M5 18c4-8 14-8 18 0M9 10l5-4 5 4"/>' },
+  { k: 'both', pid: 'P2', label: 'Remodeler mon corps', sub: 'Perdre du gras et gagner du muscle',
+    ic: '<path d="M9 5v17M5 18l4 4 4-4M19 23V6M15 10l4-4 4 4"/>' },
   { k: 'fat', pid: 'P4', label: 'Perdre du gras', sub: 'Sécher, affiner la taille',
     ic: '<path d="M6 8l6 6 4-4 7 8M17 18h6v-6"/>' },
 ];
