@@ -1261,6 +1261,8 @@ const STEPS = {
   ]
 };
 RECIPES.forEach(r => { if (STEPS[r.id]) r.steps = STEPS[r.id]; });
+// v275 : les hauts de cuisse s'achètent avec la peau, on la retire à la préparation
+RECIPES.forEach(r => { if (r.ingredients.some(i => i.key === 'haut_cuisse') && !/peau des hauts de cuisse/.test(r.steps.join(' '))) r.steps = ['Retire la peau des hauts de cuisse avec un couteau bien aiguisé.', ...r.steps]; });
 // Riz complet : 20 minutes sous pression au lieu de 5
 RECIPES.forEach(r => { if (['lunch', 'dinner'].includes(r.category) && r.ingredients.some(i => i.key === 'riz')) r.cookTime += 15; });
 
@@ -1364,12 +1366,11 @@ applyExtras();
 
 export const getDinners  = () => RECIPES.filter(r => r.category === 'dinner');
 export const getLunches  = () => RECIPES.filter(r => r.category === 'lunch');
-// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon profil)
+// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon programme)
 let SOUPS_ON = false;
 export const setSoupsOn = v => { SOUPS_ON = !!v; };
 export const isSoup = r => !!r && (r.tags || []).includes('soupe');
 export const soupHidden = r => isSoup(r) && !SOUPS_ON;
-export const getAllSoups = () => RECIPES.filter(r => !r.retired && isSoup(r)); // v270 : soupe choisie à la main
 export const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine') && !soupHidden(r));
 export const getSides    = () => RECIPES.filter(r => r.category === 'side' && !r.retired);
 export const getSweets   = () => RECIPES.filter(r => !r.retired && r.category === 'sweet');

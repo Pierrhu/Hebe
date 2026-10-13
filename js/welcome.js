@@ -6,17 +6,19 @@
 // Personne ajoutée depuis Mon profil : seulement les étapes de cette personne.
 
 import { el, toast } from './utils.js';
+import { applyEquipment } from './adapt.js';
+import { applyDiet } from './diet.js';
 import { askRestore } from './settings.js';
 import { openScienceSheet } from './science.js';
 import {
   getHousehold, getMembers, getMember, getActiveMember, setActiveMember, updateMember, setOnboarded,
-  setMemberCount, isComplete, setMaxRepeat, setSoups, setEquipment,
+  setMemberCount, isComplete, setMaxRepeat, setSoups, setEquipment, setStaples,
 } from '../data/household.js';
 import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } from '../data/calculator.js';
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
-  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, bindMeasures, esc, avatar,
+  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, staplesBlock, bindMeasures, esc, avatar,
   householdCards, idCard, openMeasureSheet, MEAS_KEYS, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
@@ -181,6 +183,7 @@ export function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
         ${sub('Hébé écarte ce qui ne te convient pas.')}
         ${foodBlock(m)}
+        ${houseQ() ? staplesBlock() : ''}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -343,6 +346,8 @@ export function renderWelcome(onDone) {
     view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { [b.dataset.diet]: +b.dataset.level }); render(); }));
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { breakfast: b.dataset.bk }); render(); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { whey: b.dataset.whey === '1' }); error = ''; render(); }));
+    // v275 : riz et pâtes complets ou classiques, pour tout le foyer
+    view.querySelectorAll('[data-staples]').forEach(b => b.addEventListener('click', () => { setStaples(b.dataset.staples); applyEquipment(); applyDiet(); render(); }));
     // objectif (avec la fiche détaillée)
     const choose = pid => { updateMember(m.id, { protocol: pid, phase: 0, targets: null }); error = ''; render(); };
     bindGoalPicker(view, () => getMember(m.id).protocol, choose);

@@ -16,6 +16,8 @@
 //       packs : formats vendus pour les viandes (ex. [500, 250] : barquette de 4 ou de 2 steaks)
 //       pantry : produit de placard (pas de quantité dans la liste, juste « à vérifier »)
 //       fridge : jours de conservation au frigo une fois cuit (pour le planning batch)
+//       edible : part gardée à la préparation (v275 : haut de cuisse acheté avec la peau, 15 % de peau retirée).
+//                Les recettes comptent le poids sans peau ; barquettes et courses comptent le poids acheté.
 
 const RAYON = {
   V: 'Viandes & poisson',
@@ -130,7 +132,7 @@ const RAW = {
   levure:        ['Levure chimique',            'g',     100, 0,    25,  0,   'flavor', 5,  'E', { pantry: true }],
 
   // ── Ajouts « cuisines du monde » ───────────────────────────────
-  haut_cuisse:   ['Haut de cuisse de poulet (sans peau)', 'g', 120, 19.5, 0, 4.5, 'protein', 9,  'V', { lv: 'P', min: 110, max: 350, fridge: 3, pack: 500, snap: true, packs: [500, 250] }],
+  haut_cuisse:   ['Haut de cuisse de poulet', 'g', 120, 19.5, 0, 4.5, 'protein', 9,  'V', { lv: 'P', min: 110, max: 350, fridge: 3, pack: 500, snap: true, packs: [500, 250], edible: 0.85 }],
   boeuf_emince:  ['Bœuf à émincer (macreuse)', 'g',     135, 21,   0,   5.5, 'protein', 14,  'V', { lv: 'P', min: 110, max: 350, fridge: 3, pack: 500, snap: true, packs: [500, 250] }],
   aubergine:     ['Aubergine',                  'g',     25,  1,    4,   0.2, 'veg', 3,   'F', { buy: 300 }],
   tomate:        ['Tomates',                    'g',     18,  0.9,  3,   0.2, 'veg', 3,   'F', {}],
@@ -229,6 +231,7 @@ for (const [key, [name, unit, kcal, protein, carbs, fat, role, price, rayon, opt
     buy: opts.buy || null, // produit frais vendu à la pièce : poids d'une pièce (calage « tout consommer », pas la liste de courses)
     packs: opts.packs || (opts.pack ? [opts.pack] : null), // formats vendus, du plus grand au plus petit
     pantry: !!opts.pantry, fridge: opts.fridge || null, // (v194 : étaient restés dans le commentaire ci-dessus, donc ignorés)
+    edible: opts.edible || 1,
   };
 }
 

@@ -2,10 +2,10 @@
 // Même rendu aux deux endroits : mesures, prénom et sexe, activité, cartes des programmes.
 
 import { openScienceSheet } from './science.js';
-import { ACTIVITY, getMembers, getActiveMember, setActiveMember, getMaxRepeat, getSoups } from '../data/household.js';
+import { ACTIVITY, getMembers, getActiveMember, setActiveMember, getMaxRepeat, getSoups, getStaples } from '../data/household.js';
 import { computeAllPhases, protocolsFor, protocolFor, computeBase, kgPerWeek } from '../data/calculator.js';
 import { openSheet, closeSheet } from './utils.js';
-import { TOOLS, countPossible } from './adapt.js';
+import { TOOLS, countPossible, getEquipment } from './adapt.js';
 import { torso, bodyfatRange, openBodyfatGuide } from './bodyfat.js';
 
 export const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -399,6 +399,24 @@ export function bindGoalPicker(root, getPid, onChoose) {
     onChoose(a.k === 'fat' && (cur === 'P3' || cur === 'P4') ? cur : a.pid);
   }));
   root.querySelectorAll('[data-pace]').forEach(b => b.addEventListener('click', () => onChoose(b.dataset.pace)));
+}
+
+// v275 : riz et pâtes, demandé à l'accueil et réglable dans Mon profil
+export function staplesBlock() {
+  const mode = getStaples();
+  const NOTES = {
+    complet: `Riz complet et pâtes complètes dans tous les plats : plus de fibres, cuisson plus longue (riz : ${getEquipment()?.autocuiseur === false ? '35 min à la casserole au lieu de 12' : '20 min sous pression au lieu de 5'}).`,
+    classique: 'Riz blanc et pâtes classiques dans tous les plats.',
+    plat: 'Tu choisis sur la fiche de chaque plat. Par défaut : complet.',
+  };
+  return `<div class="dt-card dt-staples" style="--c:var(--leaf);--t:var(--leaf-t)">
+    <div class="dt-top"><b>Riz et pâtes</b></div>
+    <div class="dt-seg" role="radiogroup" aria-label="Riz et pâtes">
+      ${[['complet', 'Complets'], ['classique', 'Classiques'], ['plat', 'Plat par plat']].map(([v, l]) =>
+        `<button class="dt-btn ${mode === v ? 'on' : ''}" data-staples="${v}" role="radio" aria-checked="${mode === v}">${l}</button>`).join('')}
+    </div>
+    <p class="dt-note">${NOTES[mode]}</p>
+  </div>`;
 }
 
 // Sélecteur de personne (foyer de deux) : chacun voit ses portions et ses collations

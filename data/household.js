@@ -124,7 +124,8 @@ export function setMemberCount(n) {
 }
 export const logKey = id => (!id || id === 'm1' ? 'diet_log' : 'diet_log_' + id);
 // Budget de la semaine : réglé à la main, sinon environ 60 € par adulte (les semaines au-delà de +15 % sont écartées)
-export const weekBudget = () => getHousehold().budget || 60 * getHousehold().members.length;
+// v275 : plus de réglage de budget dans l'app : repère fixe de 60 € par personne et par semaine
+export const weekBudget = () => 60 * getHousehold().members.length;
 
 export function setEquipment(eq) {
   const h = getHousehold();

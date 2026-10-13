@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T13:49:24.682Z
+// 2026-10-13T13:53:47.626Z
 
 
 // ──────────────────────────────────────────────
@@ -48,6 +48,8 @@ localStorage.removeItem('hebe_timers'); // minuteurs retirés
 //       packs : formats vendus pour les viandes (ex. [500, 250] : barquette de 4 ou de 2 steaks)
 //       pantry : produit de placard (pas de quantité dans la liste, juste « à vérifier »)
 //       fridge : jours de conservation au frigo une fois cuit (pour le planning batch)
+//       edible : part gardée à la préparation (v275 : haut de cuisse acheté avec la peau, 15 % de peau retirée).
+//                Les recettes comptent le poids sans peau ; barquettes et courses comptent le poids acheté.
 
 const RAYON = {
   V: 'Viandes & poisson',
@@ -162,7 +164,7 @@ const RAW = {
   levure:        ['Levure chimique',            'g',     100, 0,    25,  0,   'flavor', 5,  'E', { pantry: true }],
 
   // ── Ajouts « cuisines du monde » ───────────────────────────────
-  haut_cuisse:   ['Haut de cuisse de poulet (sans peau)', 'g', 120, 19.5, 0, 4.5, 'protein', 9,  'V', { lv: 'P', min: 110, max: 350, fridge: 3, pack: 500, snap: true, packs: [500, 250] }],
+  haut_cuisse:   ['Haut de cuisse de poulet', 'g', 120, 19.5, 0, 4.5, 'protein', 9,  'V', { lv: 'P', min: 110, max: 350, fridge: 3, pack: 500, snap: true, packs: [500, 250], edible: 0.85 }],
   boeuf_emince:  ['Bœuf à émincer (macreuse)', 'g',     135, 21,   0,   5.5, 'protein', 14,  'V', { lv: 'P', min: 110, max: 350, fridge: 3, pack: 500, snap: true, packs: [500, 250] }],
   aubergine:     ['Aubergine',                  'g',     25,  1,    4,   0.2, 'veg', 3,   'F', { buy: 300 }],
   tomate:        ['Tomates',                    'g',     18,  0.9,  3,   0.2, 'veg', 3,   'F', {}],
@@ -261,6 +263,7 @@ for (const [key, [name, unit, kcal, protein, carbs, fat, role, price, rayon, opt
     buy: opts.buy || null, // produit frais vendu à la pièce : poids d'une pièce (calage « tout consommer », pas la liste de courses)
     packs: opts.packs || (opts.pack ? [opts.pack] : null), // formats vendus, du plus grand au plus petit
     pantry: !!opts.pantry, fridge: opts.fridge || null, // (v194 : étaient restés dans le commentaire ci-dessus, donc ignorés)
+    edible: opts.edible || 1,
   };
 }
 
@@ -1614,6 +1617,8 @@ const STEPS = {
   ]
 };
 RECIPES.forEach(r => { if (STEPS[r.id]) r.steps = STEPS[r.id]; });
+// v275 : les hauts de cuisse s'achètent avec la peau, on la retire à la préparation
+RECIPES.forEach(r => { if (r.ingredients.some(i => i.key === 'haut_cuisse') && !/peau des hauts de cuisse/.test(r.steps.join(' '))) r.steps = ['Retire la peau des hauts de cuisse avec un couteau bien aiguisé.', ...r.steps]; });
 // Riz complet : 20 minutes sous pression au lieu de 5
 RECIPES.forEach(r => { if (['lunch', 'dinner'].includes(r.category) && r.ingredients.some(i => i.key === 'riz')) r.cookTime += 15; });
 
@@ -1717,12 +1722,11 @@ applyExtras();
 
 const getDinners  = () => RECIPES.filter(r => r.category === 'dinner');
 const getLunches  = () => RECIPES.filter(r => r.category === 'lunch');
-// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon profil)
+// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon programme)
 let SOUPS_ON = false;
 const setSoupsOn = v => { SOUPS_ON = !!v; };
 const isSoup = r => !!r && (r.tags || []).includes('soupe');
 const soupHidden = r => isSoup(r) && !SOUPS_ON;
-const getAllSoups = () => RECIPES.filter(r => !r.retired && isSoup(r)); // v270 : soupe choisie à la main
 const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine') && !soupHidden(r));
 const getSides    = () => RECIPES.filter(r => r.category === 'side' && !r.retired);
 const getSweets   = () => RECIPES.filter(r => !r.retired && r.category === 'sweet');
@@ -1892,7 +1896,8 @@ function setMemberCount(n) {
 }
 const logKey = id => (!id || id === 'm1' ? 'diet_log' : 'diet_log_' + id);
 // Budget de la semaine : réglé à la main, sinon environ 60 € par adulte (les semaines au-delà de +15 % sont écartées)
-const weekBudget = () => getHousehold().budget || 60 * getHousehold().members.length;
+// v275 : plus de réglage de budget dans l'app : repère fixe de 60 € par personne et par semaine
+const weekBudget = () => 60 * getHousehold().members.length;
 
 function setEquipment(eq) {
   const h = getHousehold();
@@ -3923,7 +3928,7 @@ function snapFresh(entries, canTake = () => true, phase = 'collations') {
   // deux tours : un complément de reste utilise lui-même d'autres produits frais déjà ouverts (la tartine : pain et carré frais)
   for (let round = 0; round < 2; round++) FRESH_KEYS.forEach(key => {
     const db = INGREDIENTS[key];
-    const P = db?.pack || db?.buy;
+    const P = (db?.pack || db?.buy) * (db?.edible || 1); // v275 : poids utilisé d'une barquette (sans la peau)
     if (!P) return;
     const g = NATURAL_UNITS[key]?.g || 1; // pas d'ajustement : 1 g, ou une unité entière (wrap, tranche…)
     const spots = [];
@@ -4112,7 +4117,7 @@ function generateWeek(opts = {}) {
       r.ingredients.forEach((i, ix) => { if (KEEP_2W.includes(i.key)) tot[i.key] = (tot[i.key] || 0) + qs[ix]; });
     }))));
     const left = {};
-    Object.entries(tot).forEach(([k, t]) => { const P = INGREDIENTS[k]?.pack || INGREDIENTS[k]?.buy; if (P) { const l = Math.ceil(t / P - 1e-9) * P - t; if (l > 0.5) left[k] = Math.round(l); } });
+    Object.entries(tot).forEach(([k, t]) => { const P = (INGREDIENTS[k]?.pack || INGREDIENTS[k]?.buy) * (INGREDIENTS[k]?.edible || 1); if (P) { const l = Math.ceil(t / P - 1e-9) * P - t; if (l > 0.5) left[k] = Math.round(l); } });
     localStorage.setItem(LEFT_KEY, JSON.stringify(left));
   } catch {}
   saveWeekPlan(cand.plan);
@@ -4381,7 +4386,8 @@ function snapToPacks(entries, dates, scale = 1, plateTargets = null, breakfastTa
   const touched = new Set();
   Object.entries(uses).forEach(([key, list]) => {
     const db = INGREDIENTS[key];
-    const unit = Math.min(...(db.packs || [db.pack]));
+    // v275 : barquette achetée avec la peau, recettes comptées sans peau
+    const unit = Math.min(...(db.packs || [db.pack])) * (db.edible || 1);
     const total = list.reduce((a, u) => a + u.qty, 0);
     const done = base?.[key] || 0;
     // bornes d'une portion : protéine principale dans sa fourchette réaliste,
@@ -6692,7 +6698,7 @@ const PIECES = {
 
 // Quantité à acheter, arrondie au format du commerce.
 function toPurchase(item) {
-  const db = item.dbKey ? INGREDIENTS[item.dbKey] : null;
+  const db = item._db ? { ...item._db, edible: 1 } : item.dbKey ? INGREDIENTS[item.dbKey] : null;
   const q = item.qty;
   if (db && PIECES[db.key]) {
     const [g, one, many, label, approx] = PIECES[db.key];
@@ -6718,6 +6724,8 @@ function toPurchase(item) {
   if (db && db.snap) {
     // viandes et poissons : le total tombe sur des barquettes entières (voir weekgen.snapToPacks),
     // éventuellement en combinant les formats vendus (ex. 500 g + 250 g)
+    // v275 : poids acheté (avec la peau pour les hauts de cuisse)
+    if (db.edible && db.edible < 1) return toPurchase({ ...item, qty: q / db.edible, dbKey: null, _db: db });
     const sizes = db.packs || [db.pack];
     const unit = Math.min(...sizes);
     let left = Math.max(unit, Math.ceil(q / unit - 0.02) * unit);
@@ -6728,7 +6736,8 @@ function toPurchase(item) {
     const fmt = total >= 1000 ? `${String(total / 1000).replace('.', ',')} kg` : `${total} g`;
     const txt = parts.map(([k, sz], i) => i === 0 ? `${k} ${word}${k > 1 ? 's' : ''} de ${sz} g` : `${k} de ${sz} g`).join(' et ');
     const rest = Math.round((total - q) / 10) * 10;
-    return { qty: fmt, unit: `· ${txt}${rest >= 50 ? `, il restera ${rest} g à congeler` : ''}` };
+    const skin = item._db ? ', avec la peau (à retirer)' : '';
+    return { qty: fmt, unit: `· ${txt}${skin}${rest >= 50 ? `, il restera ${rest} g à congeler` : ''}` };
   }
   if (db && db.pack) {
     const n = Math.max(1, Math.ceil(q / db.pack - 0.05));
@@ -6745,7 +6754,8 @@ function listCost(items) {
     const db = it.dbKey && INGREDIENTS[it.dbKey];
     if (!db || db.pantry) return a;
     const P = db.pack || db.buy;
-    const q = P ? Math.max(1, Math.ceil(it.qty / P - 0.05)) * P : it.qty;
+    const qb = it.qty / (db.edible || 1); // v275 : poids acheté
+    const q = P ? Math.max(1, Math.ceil(qb / P - 0.05)) * P : qb;
     return a + ingCost(it.dbKey, q);
   }, 0);
 }
@@ -7898,6 +7908,24 @@ function bindGoalPicker(root, getPid, onChoose) {
   root.querySelectorAll('[data-pace]').forEach(b => b.addEventListener('click', () => onChoose(b.dataset.pace)));
 }
 
+// v275 : riz et pâtes, demandé à l'accueil et réglable dans Mon profil
+function staplesBlock() {
+  const mode = getStaples();
+  const NOTES = {
+    complet: `Riz complet et pâtes complètes dans tous les plats : plus de fibres, cuisson plus longue (riz : ${getEquipment()?.autocuiseur === false ? '35 min à la casserole au lieu de 12' : '20 min sous pression au lieu de 5'}).`,
+    classique: 'Riz blanc et pâtes classiques dans tous les plats.',
+    plat: 'Tu choisis sur la fiche de chaque plat. Par défaut : complet.',
+  };
+  return `<div class="dt-card dt-staples" style="--c:var(--leaf);--t:var(--leaf-t)">
+    <div class="dt-top"><b>Riz et pâtes</b></div>
+    <div class="dt-seg" role="radiogroup" aria-label="Riz et pâtes">
+      ${[['complet', 'Complets'], ['classique', 'Classiques'], ['plat', 'Plat par plat']].map(([v, l]) =>
+        `<button class="dt-btn ${mode === v ? 'on' : ''}" data-staples="${v}" role="radio" aria-checked="${mode === v}">${l}</button>`).join('')}
+    </div>
+    <p class="dt-note">${NOTES[mode]}</p>
+  </div>`;
+}
+
 // Sélecteur de personne (foyer de deux) : chacun voit ses portions et ses collations
 function whoSwitch() {
   const ms = getMembers();
@@ -8107,7 +8135,7 @@ function renderSettings() {
   }
   const semaineSummary = () => [`Même plat ${getMaxRepeat()} fois max`, getSoups() ? 'soupes' : 'sans soupe',
     { complet: 'complets', classique: 'féculents classiques', plat: 'féculents au choix' }[getStaples()] || ''].filter(Boolean).join(', ');
-  const foyerSummary = () => `${getMembers().map(m => esc(m.name || 'Sans prénom')).join(' et ')}, ${weekBudget()} € par semaine`;
+  const foyerSummary = () => getMembers().length > 1 ? `${getMembers().map(m => esc(m.name || 'Sans prénom')).join(' et ')}` : `${esc(getMembers()[0].name || 'Toi')}, seul${getMembers()[0].sex === 'female' ? 'e' : ''}`;
   const cuisineSummary = () => { const eq = getHousehold().equipment || getEquipment() || {}; return TOOLS.filter(t => eq[t.key]).map(t => t.label).join(', ') || 'Rien de coché'; };
   function dayCard() {
     const t = getTargets(), p = protocolFor(profile, protocolId), ph = p.phases[phaseIdx];
@@ -8202,24 +8230,14 @@ function renderSettings() {
 
       ` },
       repas:    { title: 'Mes repas', who: true, html: `<div class="set-section">${mealsBlock(member, { week: false })}</div>` },
-      semaine:  { title: 'Ma semaine', html: `<div class="set-section">${weekPrefsBlock()}${staplesCard()}</div>` },
+      semaine:  { title: 'Ma semaine', html: `<div class="set-section">${weekPrefsBlock()}${staplesBlock()}</div>` },
       foyer:    { title: 'Mon foyer', html: `
       <div class="set-section">
         ${getMembers().length < 2
           ? `<button class="hh-row" data-count="2"><span class="hh-plus" aria-hidden="true">+</span><span class="hh-row-txt"><b>Ajouter une personne</b><span>Mêmes plats, portions calculées pour chacun</span></span><span class="hb-chev">›</span></button>`
           : `<div class="hh-members">${getMembers().map(m => `<div class="hh-mem"><b>${esc(m.name || 'Sans prénom')}</b><span>${m.sex === 'female' ? 'Femme' : 'Homme'}, ${m.age} ans</span></div>`).join('')}</div>
              <button class="hh-row hh-remove" data-count="1"><span class="hh-row-txt"><b>Retirer ${esc(getMembers()[1].name || 'la deuxième personne')} du foyer</b><span>Sa fiche et ses repas prévus seront effacés</span></span><span class="hb-chev">›</span></button>`}
-        <div class="budget-row">
-          <div><b>Budget des courses</b><span>Par semaine, pour tout le foyer</span></div>
-          <div class="field-control">
-            <button class="mrow-btn bud-btn" data-delta="-5" aria-label="Budget : moins">−</button>
-            <span class="bud-val">${weekBudget()} €</span>
-            <button class="mrow-btn bud-btn" data-delta="5" aria-label="Budget : plus">+</button>
-          </div>
-        </div>
-      </div>
-
-      ` },
+      </div>` },
       cuisine:  { title: 'Ma cuisine', html: `
       <div class="set-section">
         ${equipmentBlock(getHousehold().equipment)}
@@ -8405,12 +8423,6 @@ function renderSettings() {
       setEquipment(eq); applyEquipment(); applyDiet(); render();
       toast('Recettes adaptées à ton équipement');
     }));
-    view.querySelectorAll('.bud-btn').forEach(b => b.addEventListener('click', () => {
-      const h = getHousehold();
-      h.budget = Math.max(20, Math.min(400, weekBudget() + +b.dataset.delta));
-      saveHousehold(h);
-      view.querySelector('.bud-val').textContent = `${h.budget} €`;
-    }));
     view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
       const n = +b.dataset.count, ms = getMembers();
       if (n === ms.length) return;
@@ -8491,23 +8503,6 @@ function renderSettings() {
 }
 
 // Riz et pâtes (v171) : complets, classiques ou au choix sur la fiche de chaque plat. Commun au foyer.
-function staplesCard() {
-  const mode = getStaples();
-  const NOTES = {
-    complet: `Riz complet et pâtes complètes dans tous les plats : plus de fibres, cuisson plus longue (riz : ${getEquipment()?.autocuiseur === false ? '35 min à la casserole au lieu de 12' : '20 min sous pression au lieu de 5'}).`,
-    classique: 'Riz blanc et pâtes classiques dans tous les plats.',
-    plat: 'Tu choisis sur la fiche de chaque plat. Par défaut : complet.',
-  };
-  return `<div class="dt-card dt-staples" style="--c:var(--leaf);--t:var(--leaf-t)">
-    <div class="dt-top"><b>Riz et pâtes</b></div>
-    <div class="dt-seg" role="radiogroup" aria-label="Riz et pâtes">
-      ${[['complet', 'Complets'], ['classique', 'Classiques'], ['plat', 'Plat par plat']].map(([v, l]) =>
-        `<button class="dt-btn ${mode === v ? 'on' : ''}" data-staples="${v}" role="radio" aria-checked="${mode === v}">${l}</button>`).join('')}
-    </div>
-    <p class="dt-note">${NOTES[mode]}</p>
-  </div>`;
-}
-
 // ── Sauvegarde et restauration des données (v193) ──
 // Tout ce que l'app enregistre sur le téléphone commence par « hebe_ » ou « diet_ » (fiches, semaine, notes, placard, journal…).
 const BACKUP_PREFIXES = ['hebe_', 'diet_'];
@@ -9232,6 +9227,7 @@ function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
         ${sub('Hébé écarte ce qui ne te convient pas.')}
         ${foodBlock(m)}
+        ${houseQ() ? staplesBlock() : ''}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -9394,6 +9390,8 @@ function renderWelcome(onDone) {
     view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { [b.dataset.diet]: +b.dataset.level }); render(); }));
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { breakfast: b.dataset.bk }); render(); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { whey: b.dataset.whey === '1' }); error = ''; render(); }));
+    // v275 : riz et pâtes complets ou classiques, pour tout le foyer
+    view.querySelectorAll('[data-staples]').forEach(b => b.addEventListener('click', () => { setStaples(b.dataset.staples); applyEquipment(); applyDiet(); render(); }));
     // objectif (avec la fiche détaillée)
     const choose = pid => { updateMember(m.id, { protocol: pid, phase: 0, targets: null }); error = ''; render(); };
     bindGoalPicker(view, () => getMember(m.id).protocol, choose);

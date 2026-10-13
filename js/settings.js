@@ -11,7 +11,7 @@ import {
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups, getMaxRepeat, getSoups } from '../data/household.js';
 import { exportPhotos, importPhotos } from './body.js';
 import { openScienceSheet } from './science.js';
-import { FORMULAS, measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
+import { FORMULAS, staplesBlock, measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment, TOOLS } from './adapt.js';
 
 
@@ -58,7 +58,7 @@ export function renderSettings() {
   }
   const semaineSummary = () => [`Même plat ${getMaxRepeat()} fois max`, getSoups() ? 'soupes' : 'sans soupe',
     { complet: 'complets', classique: 'féculents classiques', plat: 'féculents au choix' }[getStaples()] || ''].filter(Boolean).join(', ');
-  const foyerSummary = () => `${getMembers().map(m => esc(m.name || 'Sans prénom')).join(' et ')}, ${weekBudget()} € par semaine`;
+  const foyerSummary = () => getMembers().length > 1 ? `${getMembers().map(m => esc(m.name || 'Sans prénom')).join(' et ')}` : `${esc(getMembers()[0].name || 'Toi')}, seul${getMembers()[0].sex === 'female' ? 'e' : ''}`;
   const cuisineSummary = () => { const eq = getHousehold().equipment || getEquipment() || {}; return TOOLS.filter(t => eq[t.key]).map(t => t.label).join(', ') || 'Rien de coché'; };
   function dayCard() {
     const t = getTargets(), p = protocolFor(profile, protocolId), ph = p.phases[phaseIdx];
@@ -153,24 +153,14 @@ export function renderSettings() {
 
       ` },
       repas:    { title: 'Mes repas', who: true, html: `<div class="set-section">${mealsBlock(member, { week: false })}</div>` },
-      semaine:  { title: 'Ma semaine', html: `<div class="set-section">${weekPrefsBlock()}${staplesCard()}</div>` },
+      semaine:  { title: 'Ma semaine', html: `<div class="set-section">${weekPrefsBlock()}${staplesBlock()}</div>` },
       foyer:    { title: 'Mon foyer', html: `
       <div class="set-section">
         ${getMembers().length < 2
           ? `<button class="hh-row" data-count="2"><span class="hh-plus" aria-hidden="true">+</span><span class="hh-row-txt"><b>Ajouter une personne</b><span>Mêmes plats, portions calculées pour chacun</span></span><span class="hb-chev">›</span></button>`
           : `<div class="hh-members">${getMembers().map(m => `<div class="hh-mem"><b>${esc(m.name || 'Sans prénom')}</b><span>${m.sex === 'female' ? 'Femme' : 'Homme'}, ${m.age} ans</span></div>`).join('')}</div>
              <button class="hh-row hh-remove" data-count="1"><span class="hh-row-txt"><b>Retirer ${esc(getMembers()[1].name || 'la deuxième personne')} du foyer</b><span>Sa fiche et ses repas prévus seront effacés</span></span><span class="hb-chev">›</span></button>`}
-        <div class="budget-row">
-          <div><b>Budget des courses</b><span>Par semaine, pour tout le foyer</span></div>
-          <div class="field-control">
-            <button class="mrow-btn bud-btn" data-delta="-5" aria-label="Budget : moins">−</button>
-            <span class="bud-val">${weekBudget()} €</span>
-            <button class="mrow-btn bud-btn" data-delta="5" aria-label="Budget : plus">+</button>
-          </div>
-        </div>
-      </div>
-
-      ` },
+      </div>` },
       cuisine:  { title: 'Ma cuisine', html: `
       <div class="set-section">
         ${equipmentBlock(getHousehold().equipment)}
@@ -356,12 +346,6 @@ export function renderSettings() {
       setEquipment(eq); applyEquipment(); applyDiet(); render();
       toast('Recettes adaptées à ton équipement');
     }));
-    view.querySelectorAll('.bud-btn').forEach(b => b.addEventListener('click', () => {
-      const h = getHousehold();
-      h.budget = Math.max(20, Math.min(400, weekBudget() + +b.dataset.delta));
-      saveHousehold(h);
-      view.querySelector('.bud-val').textContent = `${h.budget} €`;
-    }));
     view.querySelectorAll('[data-count]').forEach(b => b.addEventListener('click', () => {
       const n = +b.dataset.count, ms = getMembers();
       if (n === ms.length) return;
@@ -442,23 +426,6 @@ export function renderSettings() {
 }
 
 // Riz et pâtes (v171) : complets, classiques ou au choix sur la fiche de chaque plat. Commun au foyer.
-function staplesCard() {
-  const mode = getStaples();
-  const NOTES = {
-    complet: `Riz complet et pâtes complètes dans tous les plats : plus de fibres, cuisson plus longue (riz : ${getEquipment()?.autocuiseur === false ? '35 min à la casserole au lieu de 12' : '20 min sous pression au lieu de 5'}).`,
-    classique: 'Riz blanc et pâtes classiques dans tous les plats.',
-    plat: 'Tu choisis sur la fiche de chaque plat. Par défaut : complet.',
-  };
-  return `<div class="dt-card dt-staples" style="--c:var(--leaf);--t:var(--leaf-t)">
-    <div class="dt-top"><b>Riz et pâtes</b></div>
-    <div class="dt-seg" role="radiogroup" aria-label="Riz et pâtes">
-      ${[['complet', 'Complets'], ['classique', 'Classiques'], ['plat', 'Plat par plat']].map(([v, l]) =>
-        `<button class="dt-btn ${mode === v ? 'on' : ''}" data-staples="${v}" role="radio" aria-checked="${mode === v}">${l}</button>`).join('')}
-    </div>
-    <p class="dt-note">${NOTES[mode]}</p>
-  </div>`;
-}
-
 // ── Sauvegarde et restauration des données (v193) ──
 // Tout ce que l'app enregistre sur le téléphone commence par « hebe_ » ou « diet_ » (fiches, semaine, notes, placard, journal…).
 const BACKUP_PREFIXES = ['hebe_', 'diet_'];

@@ -347,7 +347,7 @@ function snapFresh(entries, canTake = () => true, phase = 'collations') {
   // deux tours : un complément de reste utilise lui-même d'autres produits frais déjà ouverts (la tartine : pain et carré frais)
   for (let round = 0; round < 2; round++) FRESH_KEYS.forEach(key => {
     const db = INGREDIENTS[key];
-    const P = db?.pack || db?.buy;
+    const P = (db?.pack || db?.buy) * (db?.edible || 1); // v275 : poids utilisé d'une barquette (sans la peau)
     if (!P) return;
     const g = NATURAL_UNITS[key]?.g || 1; // pas d'ajustement : 1 g, ou une unité entière (wrap, tranche…)
     const spots = [];
@@ -536,7 +536,7 @@ export function generateWeek(opts = {}) {
       r.ingredients.forEach((i, ix) => { if (KEEP_2W.includes(i.key)) tot[i.key] = (tot[i.key] || 0) + qs[ix]; });
     }))));
     const left = {};
-    Object.entries(tot).forEach(([k, t]) => { const P = INGREDIENTS[k]?.pack || INGREDIENTS[k]?.buy; if (P) { const l = Math.ceil(t / P - 1e-9) * P - t; if (l > 0.5) left[k] = Math.round(l); } });
+    Object.entries(tot).forEach(([k, t]) => { const P = (INGREDIENTS[k]?.pack || INGREDIENTS[k]?.buy) * (INGREDIENTS[k]?.edible || 1); if (P) { const l = Math.ceil(t / P - 1e-9) * P - t; if (l > 0.5) left[k] = Math.round(l); } });
     localStorage.setItem(LEFT_KEY, JSON.stringify(left));
   } catch {}
   saveWeekPlan(cand.plan);
@@ -805,7 +805,8 @@ export function snapToPacks(entries, dates, scale = 1, plateTargets = null, brea
   const touched = new Set();
   Object.entries(uses).forEach(([key, list]) => {
     const db = INGREDIENTS[key];
-    const unit = Math.min(...(db.packs || [db.pack]));
+    // v275 : barquette achetée avec la peau, recettes comptées sans peau
+    const unit = Math.min(...(db.packs || [db.pack])) * (db.edible || 1);
     const total = list.reduce((a, u) => a + u.qty, 0);
     const done = base?.[key] || 0;
     // bornes d'une portion : protéine principale dans sa fourchette réaliste,

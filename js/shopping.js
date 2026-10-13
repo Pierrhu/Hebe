@@ -286,7 +286,7 @@ const PIECES = {
 
 // Quantité à acheter, arrondie au format du commerce.
 function toPurchase(item) {
-  const db = item.dbKey ? INGREDIENTS[item.dbKey] : null;
+  const db = item._db ? { ...item._db, edible: 1 } : item.dbKey ? INGREDIENTS[item.dbKey] : null;
   const q = item.qty;
   if (db && PIECES[db.key]) {
     const [g, one, many, label, approx] = PIECES[db.key];
@@ -312,6 +312,8 @@ function toPurchase(item) {
   if (db && db.snap) {
     // viandes et poissons : le total tombe sur des barquettes entières (voir weekgen.snapToPacks),
     // éventuellement en combinant les formats vendus (ex. 500 g + 250 g)
+    // v275 : poids acheté (avec la peau pour les hauts de cuisse)
+    if (db.edible && db.edible < 1) return toPurchase({ ...item, qty: q / db.edible, dbKey: null, _db: db });
     const sizes = db.packs || [db.pack];
     const unit = Math.min(...sizes);
     let left = Math.max(unit, Math.ceil(q / unit - 0.02) * unit);
@@ -322,7 +324,8 @@ function toPurchase(item) {
     const fmt = total >= 1000 ? `${String(total / 1000).replace('.', ',')} kg` : `${total} g`;
     const txt = parts.map(([k, sz], i) => i === 0 ? `${k} ${word}${k > 1 ? 's' : ''} de ${sz} g` : `${k} de ${sz} g`).join(' et ');
     const rest = Math.round((total - q) / 10) * 10;
-    return { qty: fmt, unit: `· ${txt}${rest >= 50 ? `, il restera ${rest} g à congeler` : ''}` };
+    const skin = item._db ? ', avec la peau (à retirer)' : '';
+    return { qty: fmt, unit: `· ${txt}${skin}${rest >= 50 ? `, il restera ${rest} g à congeler` : ''}` };
   }
   if (db && db.pack) {
     const n = Math.max(1, Math.ceil(q / db.pack - 0.05));
@@ -339,7 +342,8 @@ function listCost(items) {
     const db = it.dbKey && INGREDIENTS[it.dbKey];
     if (!db || db.pantry) return a;
     const P = db.pack || db.buy;
-    const q = P ? Math.max(1, Math.ceil(it.qty / P - 0.05)) * P : it.qty;
+    const qb = it.qty / (db.edible || 1); // v275 : poids acheté
+    const q = P ? Math.max(1, Math.ceil(qb / P - 0.05)) * P : qb;
     return a + ingCost(it.dbKey, q);
   }, 0);
 }
