@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T11:40:14.263Z
+// 2026-10-13T13:10:31.984Z
 
 
 // ──────────────────────────────────────────────
@@ -4533,16 +4533,22 @@ function setBreakfast(date, id, mid = getActiveMember().id) {
 // Tire un autre plat (même protéine si possible), recalcule ses portions, l'applique à toutes
 // ses portions de la session, puis recale barquettes et collations. Renvoie le nouveau plat ou null.
 // v195 : 3 propositions au choix pour « Changer »
-function replaceOptions(oldId, n = 3, { soup = false } = {}) {
+function replaceOptions(oldId, n = 3, { soup = false, seen = [] } = {}) {
   const pool = replacePool(oldId, { soup });
   if (!pool || !pool.length) return [];
-  const left = [...pool], out = [];
-  while (out.length < n && left.length) {
-    const w = left.map(r => getRating(r.id) > 0 ? 2.2 : 1);
-    let x = Math.random() * w.reduce((a, b) => a + b, 0), k = left.length - 1;
-    for (let i = 0; i < left.length; i++) { x -= w[i]; if (x <= 0) { k = i; break; } }
-    out.push(left.splice(k, 1)[0]);
-  }
+  // v271 : « Autres idées » fait tourner toute la liste avant de reproposer un plat déjà vu
+  // on tire d'abord parmi les plats pas encore vus, puis on complète avec les autres
+  const out = [];
+  const draw = left => {
+    while (out.length < n && left.length) {
+      const w = left.map(r => getRating(r.id) > 0 ? 2.2 : 1);
+      let x = Math.random() * w.reduce((a, b) => a + b, 0), k = left.length - 1;
+      for (let i = 0; i < left.length; i++) { x -= w[i]; if (x <= 0) { k = i; break; } }
+      out.push(left.splice(k, 1)[0]);
+    }
+  };
+  draw(pool.filter(r => !seen.includes(r.id)));
+  draw(pool.filter(r => seen.includes(r.id) && !out.includes(r)));
   return out;
 }
 // v270 : soup = true ne propose que des soupes (même si les soupes sont désactivées dans les réglages)
@@ -4613,6 +4619,16 @@ function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
     });
     return entries;
   });
+  // v271 : une soupe se mange le soir. Si elle tombe un midi, on l'échange avec le plat du soir du même jour.
+  if (isSoup(next)) all.forEach(entries => plan.dates.forEach(d => {
+    const e = entries[d]; if (!e) return;
+    const L = e.meals.lunch || [], D = e.meals.dinner || [];
+    const soupAtLunch = L.some(it => it.id === next.id);
+    const dish = D[0] && getById(D[0].id);
+    if (!soupAtLunch || !dish || isSoup(dish) || !dish.batch) return;
+    e.meals.lunch = D; e.meals.dinner = L;
+    (e.meals.sides || []).forEach(sd => { if (sd.with === 'lunch') sd.with = 'dinner'; else if (sd.with === 'dinner') sd.with = 'lunch'; });
+  }));
   // barquettes entières pour le foyer, puis collations recalées jour par jour
   snapToPacks(all, plan.dates, mids.map(mid => portionScale(ptOf(mid).kcal)), mids.map(ptOf), mids.map(mid => breakfastTarget(planTargets(plan, mid))));
   mids.forEach((mid, mi) => plan.dates.forEach((d, dayIdx) => {
@@ -5714,13 +5730,16 @@ function openPickSheet(kind, date) {
 const PROT_LBL = { poulet: 'Poulet', boeuf: 'Bœuf', poisson: 'Poisson', crevettes: 'Crevettes', tofu: 'Végé', vege: 'Végé' };
 const proteinLabel = r => PROT_LBL[proteinFamily(r)] || '';
 // v195 : « Changer » propose 3 plats au choix, et prévient si la liste de courses est déjà commencée
-function openSwapSheet(oldId, date, { meal = '', soup = false } = {}) {
+function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {}) {
   const old = getById(oldId);
   const plan = getActivePlan();
-  const opts = replaceOptions(oldId, 3, { soup });
+  const opts = replaceOptions(oldId, 3, { soup, seen });
+  // quand tout a été vu, la rotation repart de zéro
+  const seenNext = opts.some(r => seen.includes(r.id)) ? opts.map(r => r.id) : [...seen, ...opts.map(r => r.id)];
   if (!opts.length) { toast(soup ? 'Aucune soupe ne convient pour cette session' : 'Aucun autre plat disponible pour le moment', 'warn'); return; }
   // v270 : le soir, on peut demander une soupe à la place
-  const canSoup = !soup && meal === 'dinner' && !isSoup(old) && replaceOptions(oldId, 1, { soup: true }).length > 0;
+  // v271 : aussi depuis une soupe déjà choisie, pour en prendre une autre
+  const canSoup = !soup && (meal === 'dinner' || isSoup(old)) && replaceOptions(oldId, 1, { soup: true }).length > 0;
   const ckKey = 'diet_shopping_checked_' + (plan?.generatedAt || 'x');
   let nChecked = 0; try { nChecked = JSON.parse(localStorage.getItem(ckKey) || '[]').length; } catch {}
   const portions = plan.sessions.flatMap(s => s.recipes).find(r => r.id === oldId)?.portions || 0;
@@ -5737,11 +5756,11 @@ function openSwapSheet(oldId, date, { meal = '', soup = false } = {}) {
       ${nChecked ? `<div class="sw-warn">Tu as déjà coché ${nChecked} produit${nChecked > 1 ? 's' : ''} dans ta liste de courses : la liste va changer pour ce plat, tes coches sont gardées.</div>` : ''}
       <div class="sw-list">${opts.map(card).join('')}</div>
       <button class="hb-btn sw-more">${soup ? 'Autres soupes' : 'Autres idées'}</button>
-      ${canSoup ? '<button class="hb-btn sw-soup">Plutôt une soupe</button>' : ''}
+      ${canSoup ? `<button class="hb-btn sw-soup">${isSoup(old) ? 'Une autre soupe' : 'Plutôt une soupe'}</button>` : ''}
       <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
     </div>`);
   const sh = document.querySelector('.sheet') || document;
-  sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup }); });
+  sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup, seen: seenNext }); });
   sh.querySelector('.sw-soup')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup: true }); });
   sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
   sh.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {

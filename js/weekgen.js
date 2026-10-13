@@ -957,16 +957,22 @@ export function setBreakfast(date, id, mid = getActiveMember().id) {
 // Tire un autre plat (même protéine si possible), recalcule ses portions, l'applique à toutes
 // ses portions de la session, puis recale barquettes et collations. Renvoie le nouveau plat ou null.
 // v195 : 3 propositions au choix pour « Changer »
-export function replaceOptions(oldId, n = 3, { soup = false } = {}) {
+export function replaceOptions(oldId, n = 3, { soup = false, seen = [] } = {}) {
   const pool = replacePool(oldId, { soup });
   if (!pool || !pool.length) return [];
-  const left = [...pool], out = [];
-  while (out.length < n && left.length) {
-    const w = left.map(r => getRating(r.id) > 0 ? 2.2 : 1);
-    let x = Math.random() * w.reduce((a, b) => a + b, 0), k = left.length - 1;
-    for (let i = 0; i < left.length; i++) { x -= w[i]; if (x <= 0) { k = i; break; } }
-    out.push(left.splice(k, 1)[0]);
-  }
+  // v271 : « Autres idées » fait tourner toute la liste avant de reproposer un plat déjà vu
+  // on tire d'abord parmi les plats pas encore vus, puis on complète avec les autres
+  const out = [];
+  const draw = left => {
+    while (out.length < n && left.length) {
+      const w = left.map(r => getRating(r.id) > 0 ? 2.2 : 1);
+      let x = Math.random() * w.reduce((a, b) => a + b, 0), k = left.length - 1;
+      for (let i = 0; i < left.length; i++) { x -= w[i]; if (x <= 0) { k = i; break; } }
+      out.push(left.splice(k, 1)[0]);
+    }
+  };
+  draw(pool.filter(r => !seen.includes(r.id)));
+  draw(pool.filter(r => seen.includes(r.id) && !out.includes(r)));
   return out;
 }
 // v270 : soup = true ne propose que des soupes (même si les soupes sont désactivées dans les réglages)
@@ -1037,6 +1043,16 @@ export function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
     });
     return entries;
   });
+  // v271 : une soupe se mange le soir. Si elle tombe un midi, on l'échange avec le plat du soir du même jour.
+  if (isSoup(next)) all.forEach(entries => plan.dates.forEach(d => {
+    const e = entries[d]; if (!e) return;
+    const L = e.meals.lunch || [], D = e.meals.dinner || [];
+    const soupAtLunch = L.some(it => it.id === next.id);
+    const dish = D[0] && getById(D[0].id);
+    if (!soupAtLunch || !dish || isSoup(dish) || !dish.batch) return;
+    e.meals.lunch = D; e.meals.dinner = L;
+    (e.meals.sides || []).forEach(sd => { if (sd.with === 'lunch') sd.with = 'dinner'; else if (sd.with === 'dinner') sd.with = 'lunch'; });
+  }));
   // barquettes entières pour le foyer, puis collations recalées jour par jour
   snapToPacks(all, plan.dates, mids.map(mid => portionScale(ptOf(mid).kcal)), mids.map(ptOf), mids.map(mid => breakfastTarget(planTargets(plan, mid))));
   mids.forEach((mid, mi) => plan.dates.forEach((d, dayIdx) => {

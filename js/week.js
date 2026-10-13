@@ -560,13 +560,16 @@ function openPickSheet(kind, date) {
 const PROT_LBL = { poulet: 'Poulet', boeuf: 'Bœuf', poisson: 'Poisson', crevettes: 'Crevettes', tofu: 'Végé', vege: 'Végé' };
 const proteinLabel = r => PROT_LBL[proteinFamily(r)] || '';
 // v195 : « Changer » propose 3 plats au choix, et prévient si la liste de courses est déjà commencée
-function openSwapSheet(oldId, date, { meal = '', soup = false } = {}) {
+function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {}) {
   const old = getById(oldId);
   const plan = getActivePlan();
-  const opts = replaceOptions(oldId, 3, { soup });
+  const opts = replaceOptions(oldId, 3, { soup, seen });
+  // quand tout a été vu, la rotation repart de zéro
+  const seenNext = opts.some(r => seen.includes(r.id)) ? opts.map(r => r.id) : [...seen, ...opts.map(r => r.id)];
   if (!opts.length) { toast(soup ? 'Aucune soupe ne convient pour cette session' : 'Aucun autre plat disponible pour le moment', 'warn'); return; }
   // v270 : le soir, on peut demander une soupe à la place
-  const canSoup = !soup && meal === 'dinner' && !isSoup(old) && replaceOptions(oldId, 1, { soup: true }).length > 0;
+  // v271 : aussi depuis une soupe déjà choisie, pour en prendre une autre
+  const canSoup = !soup && (meal === 'dinner' || isSoup(old)) && replaceOptions(oldId, 1, { soup: true }).length > 0;
   const ckKey = 'diet_shopping_checked_' + (plan?.generatedAt || 'x');
   let nChecked = 0; try { nChecked = JSON.parse(localStorage.getItem(ckKey) || '[]').length; } catch {}
   const portions = plan.sessions.flatMap(s => s.recipes).find(r => r.id === oldId)?.portions || 0;
@@ -583,11 +586,11 @@ function openSwapSheet(oldId, date, { meal = '', soup = false } = {}) {
       ${nChecked ? `<div class="sw-warn">Tu as déjà coché ${nChecked} produit${nChecked > 1 ? 's' : ''} dans ta liste de courses : la liste va changer pour ce plat, tes coches sont gardées.</div>` : ''}
       <div class="sw-list">${opts.map(card).join('')}</div>
       <button class="hb-btn sw-more">${soup ? 'Autres soupes' : 'Autres idées'}</button>
-      ${canSoup ? '<button class="hb-btn sw-soup">Plutôt une soupe</button>' : ''}
+      ${canSoup ? `<button class="hb-btn sw-soup">${isSoup(old) ? 'Une autre soupe' : 'Plutôt une soupe'}</button>` : ''}
       <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
     </div>`);
   const sh = document.querySelector('.sheet') || document;
-  sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup }); });
+  sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup, seen: seenNext }); });
   sh.querySelector('.sw-soup')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup: true }); });
   sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
   sh.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {
