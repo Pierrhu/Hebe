@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T13:53:47.626Z
+// 2026-10-13T14:12:44.775Z
 
 
 // ──────────────────────────────────────────────
@@ -833,16 +833,16 @@ const RECIPES = [
     ["Pendant la session de cuisine, fais chauffer les fruits rouges surgelés 2 minutes à la poêle, jusqu'à ce qu'ils frémissent, puis laisse-les refroidir et range-les au frigo : c'est la recommandation sanitaire pour les petits fruits surgelés mangés sans cuisson. Ils se gardent 3 jours.","Le matin, verse le fromage blanc dans un bol et ajoute les fruits rouges, le granola et le miel."],
     "", ["sucré","sans cuisson","frigo-3"], true),
   M("B06", "Muffins aux œufs, épinards et feta", "breakfast", "🧁", 10, 14,
-    [["oeuf",3],["epinards",60],["poivron",50],["feta",30],["fruit_saison",150]],
-    ["Pendant la session de cuisine, fais décongeler les épinards 2 minutes à la poêle, puis presse-les pour retirer l'eau. Coupe le poivron en petits dés.","Bats les œufs avec une pincée de sel, puis ajoute les épinards, le poivron et la feta émiettée.","Verse dans des moules à muffins en silicone (3 muffins par portion) et fais cuire 12 à 14 minutes à l'air fryer à 160 °C, jusqu'à ce qu'ils soient pris au centre.","Laisse refroidir et range-les en boîte au frigo : ils se gardent 4 jours. Le matin, réchauffe-les 2 minutes à l'air fryer à 160 °C.","Accompagne-les d'un fruit de saison."],
+    [["oeuf",3],["epinards",60],["poivron",50],["feta",30]],
+    ["Pendant la session de cuisine, fais décongeler les épinards 2 minutes à la poêle, puis presse-les pour retirer l'eau. Coupe le poivron en petits dés.","Bats les œufs avec une pincée de sel, puis ajoute les épinards, le poivron et la feta émiettée.","Verse dans des moules à muffins en silicone (3 muffins par portion) et fais cuire 12 à 14 minutes à l'air fryer à 160 °C, jusqu'à ce qu'ils soient pris au centre.","Laisse refroidir et range-les en boîte au frigo : ils se gardent 4 jours. Le matin, réchauffe-les 2 minutes à l'air fryer à 160 °C."],
     "", ["salé","air fryer","frigo-4"], true),
   M("B07", "Wrap poulet et carré frais", "breakfast", "🌯", 2, 0,
     [["tortilla",60],["carre_frais",50],["poulet_tranches",80],["concombre",60]],
     ["Tartine le wrap de carré frais.","Ajoute les tranches de blanc de poulet et le concombre en bâtonnets, puis roule."],
     "", ["salé","sans cuisson"], false),
   M("B15", "Œufs brouillés et tartines", "breakfast", "🍳", 2, 4,
-    [["oeuf",3],["huile",3],["emmental",20],["pain",80],["tomate",80],["fruit_saison",150]],
-    ["Bats les œufs avec une pincée de sel et de poivre.","Fais-les cuire 3 minutes à feu doux dans la poêle huilée, en remuant sans arrêt avec une spatule. Ajoute l'emmental râpé hors du feu et mélange : il fond dans les œufs, qui restent crémeux.","Sers avec le pain, la tomate coupée en rondelles et un fruit de saison."],
+    [["oeuf",3],["huile",3],["emmental",20],["pain",80],["tomate",80]],
+    ["Bats les œufs avec une pincée de sel et de poivre.","Fais-les cuire 3 minutes à feu doux dans la poêle huilée, en remuant sans arrêt avec une spatule. Ajoute l'emmental râpé hors du feu et mélange : il fond dans les œufs, qui restent crémeux.","Sers avec le pain et la tomate coupée en rondelles."],
     "", ["salé","poêle"], false),
   M("B16", "Porridge banane-cannelle à la whey", "breakfast", "🥣", 1, 4,
     [["flocons",60],["lait",250],["whey",20],["banane",100],["epices",1],["miel",8],["amandes",15]],
