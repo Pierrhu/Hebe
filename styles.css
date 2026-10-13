@@ -1956,4 +1956,13 @@ button.wl-ch:disabled { cursor: default; }
 .idf-f span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .idf-f b { white-space: nowrap; }
 .welcome-view .bf-guide-btn { margin-top: 12px; }
-@media (max-width: 360px) { .idf-fields { gap: 8px 6px; } .idf-f span { font-size: 10.5px; } button.idf-f { padding-right: 10px; } }
+@media (max-width: 360px) {
+  .idf-body { gap: 12px; padding: 14px; }
+  .idf-photo { width: 76px; height: 96px; }
+  .idf-fields { gap: 8px; }
+  button.idf-f { padding-right: 8px; }
+  .welcome-view .bf-guide-btn { gap: 10px; padding: 10px 12px; }
+  .welcome-view .bf-guide-ic { width: 34px; height: 34px; }
+  .welcome-view .bf-guide-btn b { font-size: 13px; white-space: nowrap; }
+  .welcome-view .bf-guide-btn span span { font-size: 12px; }
+}

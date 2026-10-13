@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T08:14:12.609Z
+// 2026-10-13T08:26:00.877Z
 
 
 // ──────────────────────────────────────────────
@@ -6882,7 +6882,7 @@ const LEVELS_F = [
 const bodyfatLevels = sex => (sex === 'female' ? LEVELS_F : LEVELS_M);
 const bodyfatRange = sex => {
   const l = bodyfatLevels(sex);
-  return `de ${l[0].bf} à ${l[l.length - 1].bf} %`;
+  return `de\u00a0${l[0].bf}\u00a0à\u00a0${l[l.length - 1].bf}\u00a0%`;
 };
 
 // Silhouette selon le sexe

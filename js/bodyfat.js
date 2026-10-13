@@ -28,7 +28,7 @@ const LEVELS_F = [
 export const bodyfatLevels = sex => (sex === 'female' ? LEVELS_F : LEVELS_M);
 export const bodyfatRange = sex => {
   const l = bodyfatLevels(sex);
-  return `de ${l[0].bf} à ${l[l.length - 1].bf} %`;
+  return `de\u00a0${l[0].bf}\u00a0à\u00a0${l[l.length - 1].bf}\u00a0%`;
 };
 
 // Silhouette selon le sexe
