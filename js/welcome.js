@@ -16,7 +16,7 @@ import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } fro
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
-  measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
+  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, protocolCards, bindMeasures, esc, avatar,
   householdCards, idCard, openMeasureSheet, MEAS_KEYS, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
@@ -163,8 +163,8 @@ export function renderWelcome(onDone) {
       case 'activity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le quotidien de ${esc(m.name)}` : 'Ton quotidien'}</h1>
-        ${sub('Pense à une semaine habituelle, travail et sport compris.')}
-        ${activityList(p.activity)}
+        ${sub('Deux questions sur une semaine habituelle, et Hébé trouve ton niveau.')}
+        ${activityPicker(p, m.sex)}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -263,7 +263,7 @@ export function renderWelcome(onDone) {
       const bad = Object.keys(RANGES).find(k => pr[k] == null || pr[k] < RANGES[k].min || pr[k] > RANGES[k].max);
       if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures de ta fiche pour continuer.' : RANGES[bad].msg, `[data-meas="${bad}"]`);
     }
-    if (s.type === 'activity' && !getMember(m.id).activity) return fail('Choisis le quotidien qui ressemble le plus à une semaine habituelle.');
+    if (s.type === 'activity' && !getMember(m.id).activity) return fail('Réponds aux deux questions : ton travail et tes séances de sport.');
     if (s.type === 'rhythm' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
     if (s.type === 'food' && getMember(m.id).whey == null) return fail('Indique si tu as de la protéine en poudre (whey).');
     if (s.type === 'goal' && !getMember(m.id).protocol) return fail('Choisis un programme pour continuer.');
@@ -337,7 +337,7 @@ export function renderWelcome(onDone) {
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
       openBodyfatGuide(getProfile().bodyfat ?? start().bodyfat, v => { saveProfile({ bodyfat: v }); error = ''; render(); }, getMember(m.id).sex));
     // quotidien
-    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => { saveProfile({ activity: parseInt(b.dataset.act) }); error = ''; render(); autoNext(); }));
+    bindActivityPicker(view, getProfile, patch => { saveProfile(patch); error = ''; render(); });
     // repas et régime
     view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { formula: b.dataset.formula }); error = ''; render(); autoNext(); }));
     view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { [b.dataset.diet]: +b.dataset.level }); render(); }));

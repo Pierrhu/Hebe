@@ -11,7 +11,7 @@ import {
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups } from '../data/household.js';
 import { exportPhotos, importPhotos } from './body.js';
 import { openScienceSheet } from './science.js';
-import { measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
+import { measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
 
@@ -217,10 +217,14 @@ export function renderSettings() {
       return;
     }
     if (k === 'activity') {
-      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton quotidien</div>${activityList(profile.activity)}</div>`);
-      document.getElementById('sheet').querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
-        profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); closeSheet(); render();
-      }));
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton quotidien</div>${activityPicker(profile, profile.sex)}</div>`);
+      const sh = document.getElementById('sheet');
+      const redraw = () => { sh.querySelector('.actp').outerHTML = activityPicker(profile, profile.sex); bindActivityPicker(sh, () => profile, onAct); };
+      const onAct = patch => {
+        Object.assign(profile, patch); saveProfile(profile); applyComputed(); redraw();
+        if (patch.activity) render();
+      };
+      bindActivityPicker(sh, () => profile, onAct);
       return;
     }
     const E = EDIT[k]; let v = profile[k];

@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T08:30:33.828Z
+// 2026-10-13T10:34:38.385Z
 
 
 // ──────────────────────────────────────────────
@@ -2111,7 +2111,7 @@ function protocolFor(profile, protocolId) {
 const protocolsFor = profile => PROTOCOLS.map(p => protocolFor(profile, p.id));
 
 // ── Profil de la personne active (stocké dans le foyer) ──
-const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity', 'tdeeAdj'];
+const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity', 'work', 'sport', 'tdeeAdj'];
 function getProfile() {
   const m = getActiveMember();
   const p = {};
@@ -7771,6 +7771,56 @@ function mealsBlock(member, { error = '', week = true } = {}) {
   return formulaBlock(member, { error }) + foodBlock(member) + (week ? weekPrefsBlock() : '');
 }
 
+// v265 : niveau d'activité déduit de deux questions (travail, séances de sport)
+const WORK = [
+  { k: 'assis', label: 'Assis', ex: 'Bureau, études' },
+  { k: 'debout', label: 'Debout', ex: 'Vente, école, soins' },
+  { k: 'physique', label: 'Physique', ex: 'Chantier, artisanat' },
+];
+const SPORT = [
+  { label: '0', sub: 'aucune' }, { label: '1–2', sub: 'parfois' },
+  { label: '3–4', sub: 'souvent' }, { label: '5+', sub: 'très souvent' },
+];
+// lignes : travail ; colonnes : séances par semaine
+const LEVEL = [[1, 1, 2, 3], [2, 3, 3, 4], [3, 3, 4, 4]];
+const activityFrom = (work, sport) => (work == null || sport == null ? null : LEVEL[work][sport]);
+const coefTxt = c => String(c).replace('.', ',');
+
+function activityPicker(p = {}, sex = 'male') {
+  const g = sex === 'female' ? 'femme' : 'homme';
+  const lvl = activityFrom(p.work, p.sport) ?? p.activity ?? null;
+  const a = ACTIVITY.find(x => x.level === lvl);
+  return `<div class="actp">
+    <div class="actp-lab">Ton travail, la plupart du temps</div>
+    <div class="actp-work" role="radiogroup" aria-label="Ton travail">
+      ${WORK.map((w, i) => `<button class="actp-wk ${p.work === i ? 'on' : ''}" data-work="${i}" role="radio" aria-checked="${p.work === i}">
+        <span class="actp-img"><img src="img/art/act-${w.k}-${g}.webp" alt="" loading="lazy"></span>
+        <b>${w.label}</b><span>${w.ex}</span></button>`).join('')}
+    </div>
+    <div class="actp-lab">Tes séances de sport par semaine</div>
+    <div class="actp-seg" role="radiogroup" aria-label="Séances de sport par semaine">
+      ${SPORT.map((s, i) => `<button class="${p.sport === i ? 'on' : ''}" data-sport="${i}" role="radio" aria-checked="${p.sport === i}">${s.label}<small>${s.sub}</small></button>`).join('')}
+    </div>
+    <p class="actp-hint">Une séance : au moins 30 minutes où tu transpires (salle, course, vélo, foot…).</p>
+    <div class="actp-res ${a ? '' : 'empty'}">
+      <span class="act-bars" aria-hidden="true">${[1, 2, 3, 4].map(i => `<i class="${a && i <= a.level ? 'f' : ''}"></i>`).join('')}</span>
+      <div>${a
+        ? `<small>Ton niveau</small><b>${a.label}</b><p>Hébé compte ta journée à ${coefTxt(a.coef)} fois ta dépense au repos.</p>`
+        : `<small>Ton niveau</small><p>Réponds aux deux questions, Hébé le trouve pour toi.</p>`}</div>
+    </div>
+  </div>`;
+}
+// Branche les deux questions ; onChange reçoit { work, sport, activity? }
+function bindActivityPicker(root, get, onChange) {
+  const upd = patch => {
+    const n = { ...get(), ...patch };
+    const lvl = activityFrom(n.work, n.sport);
+    onChange(lvl ? { ...patch, activity: lvl } : patch);
+  };
+  root.querySelectorAll('[data-work]').forEach(b => b.addEventListener('click', () => upd({ work: +b.dataset.work })));
+  root.querySelectorAll('[data-sport]').forEach(b => b.addEventListener('click', () => upd({ sport: +b.dataset.sport })));
+}
+
 // Niveau d'activité : quatre choix décrits par une phrase
 function activityList(level = null) {
   return `<div class="act-list" role="radiogroup" aria-label="Niveau d'activité">
@@ -8179,10 +8229,14 @@ function renderSettings() {
       return;
     }
     if (k === 'activity') {
-      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton quotidien</div>${activityList(profile.activity)}</div>`);
-      document.getElementById('sheet').querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
-        profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); closeSheet(); render();
-      }));
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton quotidien</div>${activityPicker(profile, profile.sex)}</div>`);
+      const sh = document.getElementById('sheet');
+      const redraw = () => { sh.querySelector('.actp').outerHTML = activityPicker(profile, profile.sex); bindActivityPicker(sh, () => profile, onAct); };
+      const onAct = patch => {
+        Object.assign(profile, patch); saveProfile(profile); applyComputed(); redraw();
+        if (patch.activity) render();
+      };
+      bindActivityPicker(sh, () => profile, onAct);
       return;
     }
     const E = EDIT[k]; let v = profile[k];
@@ -9081,8 +9135,8 @@ function renderWelcome(onDone) {
       case 'activity': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Le quotidien de ${esc(m.name)}` : 'Ton quotidien'}</h1>
-        ${sub('Pense à une semaine habituelle, travail et sport compris.')}
-        ${activityList(p.activity)}
+        ${sub('Deux questions sur une semaine habituelle, et Hébé trouve ton niveau.')}
+        ${activityPicker(p, m.sex)}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -9181,7 +9235,7 @@ function renderWelcome(onDone) {
       const bad = Object.keys(RANGES).find(k => pr[k] == null || pr[k] < RANGES[k].min || pr[k] > RANGES[k].max);
       if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures de ta fiche pour continuer.' : RANGES[bad].msg, `[data-meas="${bad}"]`);
     }
-    if (s.type === 'activity' && !getMember(m.id).activity) return fail('Choisis le quotidien qui ressemble le plus à une semaine habituelle.');
+    if (s.type === 'activity' && !getMember(m.id).activity) return fail('Réponds aux deux questions : ton travail et tes séances de sport.');
     if (s.type === 'rhythm' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
     if (s.type === 'food' && getMember(m.id).whey == null) return fail('Indique si tu as de la protéine en poudre (whey).');
     if (s.type === 'goal' && !getMember(m.id).protocol) return fail('Choisis un programme pour continuer.');
@@ -9255,7 +9309,7 @@ function renderWelcome(onDone) {
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
       openBodyfatGuide(getProfile().bodyfat ?? start().bodyfat, v => { saveProfile({ bodyfat: v }); error = ''; render(); }, getMember(m.id).sex));
     // quotidien
-    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => { saveProfile({ activity: parseInt(b.dataset.act) }); error = ''; render(); autoNext(); }));
+    bindActivityPicker(view, getProfile, patch => { saveProfile(patch); error = ''; render(); });
     // repas et régime
     view.querySelectorAll('[data-formula]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { formula: b.dataset.formula }); error = ''; render(); autoNext(); }));
     view.querySelectorAll('[data-diet]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { [b.dataset.diet]: +b.dataset.level }); render(); }));

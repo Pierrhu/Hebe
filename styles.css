@@ -1967,3 +1967,29 @@ button.wl-ch:disabled { cursor: default; }
   .welcome-view .bf-guide-btn b { font-size: 13px; white-space: nowrap; }
   .welcome-view .bf-guide-btn span span { font-size: 12px; }
 }
+
+/* v265 : Ton quotidien, deux questions */
+.actp-lab { font-size: 13.5px; font-weight: 600; margin: 4px 0 8px; }
+.actp-work { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.actp-wk { background: var(--surface); border-radius: 18px; padding: 6px 6px 10px; text-align: center; min-width: 0; }
+.actp-wk.on { background: var(--sage-t); box-shadow: inset 0 0 0 2px var(--sage); }
+.actp-img { display: block; aspect-ratio: 3 / 4; border-radius: 12px; overflow: hidden; }
+.actp-img img { width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; }
+.actp-wk b { display: block; font-size: 14px; font-weight: 600; margin-top: 4px; }
+.actp-wk span:last-child { display: block; font-size: 11px; line-height: 1.3; color: var(--text-2); margin-top: 1px; }
+.actp-seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; border-radius: 16px; background: var(--surface); }
+.actp-seg button { text-align: center; padding: 9px 2px 8px; border-radius: 12px; font-size: 15px; font-weight: 600; line-height: 1.15; color: var(--text); }
+.actp-seg button small { display: block; font-size: 10.5px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+.actp-seg button.on { background: var(--sage); color: #fff; }
+.actp-seg button.on small { color: var(--sage-t); }
+.actp-hint { font-size: 11.5px; line-height: 1.4; color: var(--muted); margin: 6px 2px 14px; }
+.actp-res { display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-radius: 22px; background: var(--warm); box-shadow: inset 0 0 0 1.5px #E9DFCC; }
+.actp-res .act-bars { height: 28px; gap: 4px; }
+.actp-res .act-bars i { width: 7px; }
+.actp-res .act-bars i:nth-child(1) { height: 10px; } .actp-res .act-bars i:nth-child(2) { height: 16px; }
+.actp-res .act-bars i:nth-child(3) { height: 22px; } .actp-res .act-bars i:nth-child(4) { height: 28px; }
+.actp-res small { display: block; font-size: 12px; color: var(--muted); }
+.actp-res b { display: block; font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.15; }
+.actp-res p { font-size: 12.5px; line-height: 1.35; color: var(--text-2); margin: 2px 0 0; }
+.actp-res.empty p { margin-top: 1px; }
+.edit-sheet .actp { margin-top: 10px; }

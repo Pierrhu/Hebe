@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v264';
+const CACHE = 'hebe-v265';
 const ASSETS = [
   './',
   './index.html',
@@ -165,6 +165,8 @@ const ASSETS = [
   './img/dishes/K21.webp',
   './img/art/man.webp',
   './img/art/woman.webp',
+  './img/art/act-assis-homme.webp', './img/art/act-debout-homme.webp', './img/art/act-physique-homme.webp',
+  './img/art/act-assis-femme.webp', './img/art/act-debout-femme.webp', './img/art/act-physique-femme.webp',
   './img/art/man_bowl.webp',
   './img/art/couple.webp',
   './img/art/tablier.webp',

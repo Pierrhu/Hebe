@@ -170,7 +170,7 @@ export function protocolFor(profile, protocolId) {
 export const protocolsFor = profile => PROTOCOLS.map(p => protocolFor(profile, p.id));
 
 // ── Profil de la personne active (stocké dans le foyer) ──
-const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity', 'tdeeAdj'];
+const PROFILE_KEYS = ['sex', 'age', 'height', 'weight', 'bodyfat', 'activity', 'work', 'sport', 'tdeeAdj'];
 export function getProfile() {
   const m = getActiveMember();
   const p = {};

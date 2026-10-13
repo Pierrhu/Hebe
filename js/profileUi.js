@@ -303,6 +303,56 @@ export function mealsBlock(member, { error = '', week = true } = {}) {
   return formulaBlock(member, { error }) + foodBlock(member) + (week ? weekPrefsBlock() : '');
 }
 
+// v265 : niveau d'activité déduit de deux questions (travail, séances de sport)
+const WORK = [
+  { k: 'assis', label: 'Assis', ex: 'Bureau, études' },
+  { k: 'debout', label: 'Debout', ex: 'Vente, école, soins' },
+  { k: 'physique', label: 'Physique', ex: 'Chantier, artisanat' },
+];
+const SPORT = [
+  { label: '0', sub: 'aucune' }, { label: '1–2', sub: 'parfois' },
+  { label: '3–4', sub: 'souvent' }, { label: '5+', sub: 'très souvent' },
+];
+// lignes : travail ; colonnes : séances par semaine
+const LEVEL = [[1, 1, 2, 3], [2, 3, 3, 4], [3, 3, 4, 4]];
+export const activityFrom = (work, sport) => (work == null || sport == null ? null : LEVEL[work][sport]);
+const coefTxt = c => String(c).replace('.', ',');
+
+export function activityPicker(p = {}, sex = 'male') {
+  const g = sex === 'female' ? 'femme' : 'homme';
+  const lvl = activityFrom(p.work, p.sport) ?? p.activity ?? null;
+  const a = ACTIVITY.find(x => x.level === lvl);
+  return `<div class="actp">
+    <div class="actp-lab">Ton travail, la plupart du temps</div>
+    <div class="actp-work" role="radiogroup" aria-label="Ton travail">
+      ${WORK.map((w, i) => `<button class="actp-wk ${p.work === i ? 'on' : ''}" data-work="${i}" role="radio" aria-checked="${p.work === i}">
+        <span class="actp-img"><img src="img/art/act-${w.k}-${g}.webp" alt="" loading="lazy"></span>
+        <b>${w.label}</b><span>${w.ex}</span></button>`).join('')}
+    </div>
+    <div class="actp-lab">Tes séances de sport par semaine</div>
+    <div class="actp-seg" role="radiogroup" aria-label="Séances de sport par semaine">
+      ${SPORT.map((s, i) => `<button class="${p.sport === i ? 'on' : ''}" data-sport="${i}" role="radio" aria-checked="${p.sport === i}">${s.label}<small>${s.sub}</small></button>`).join('')}
+    </div>
+    <p class="actp-hint">Une séance : au moins 30 minutes où tu transpires (salle, course, vélo, foot…).</p>
+    <div class="actp-res ${a ? '' : 'empty'}">
+      <span class="act-bars" aria-hidden="true">${[1, 2, 3, 4].map(i => `<i class="${a && i <= a.level ? 'f' : ''}"></i>`).join('')}</span>
+      <div>${a
+        ? `<small>Ton niveau</small><b>${a.label}</b><p>Hébé compte ta journée à ${coefTxt(a.coef)} fois ta dépense au repos.</p>`
+        : `<small>Ton niveau</small><p>Réponds aux deux questions, Hébé le trouve pour toi.</p>`}</div>
+    </div>
+  </div>`;
+}
+// Branche les deux questions ; onChange reçoit { work, sport, activity? }
+export function bindActivityPicker(root, get, onChange) {
+  const upd = patch => {
+    const n = { ...get(), ...patch };
+    const lvl = activityFrom(n.work, n.sport);
+    onChange(lvl ? { ...patch, activity: lvl } : patch);
+  };
+  root.querySelectorAll('[data-work]').forEach(b => b.addEventListener('click', () => upd({ work: +b.dataset.work })));
+  root.querySelectorAll('[data-sport]').forEach(b => b.addEventListener('click', () => upd({ sport: +b.dataset.sport })));
+}
+
 // Niveau d'activité : quatre choix décrits par une phrase
 export function activityList(level = null) {
   return `<div class="act-list" role="radiogroup" aria-label="Niveau d'activité">
