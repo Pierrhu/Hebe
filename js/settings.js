@@ -11,7 +11,7 @@ import {
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups } from '../data/household.js';
 import { exportPhotos, importPhotos } from './body.js';
 import { openScienceSheet } from './science.js';
-import { measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
+import { measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
 
@@ -335,9 +335,6 @@ export function renderSettings() {
         profile = getProfile(); protocolId = getSelectedProtocol(); phaseIdx = getSelectedPhase(); render();
         toast(`${gone.name || 'La deuxième personne'} ne fait plus partie du foyer`);
       });
-    }));
-    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
-      profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); render();
     }));
     bindGoalPicker(view, () => protocolId, chooseProtocol);
     view.querySelector('.gp-res')?.addEventListener('click', () => openProtocolSheet(profile, protocolId, { isCurrent: true, onChoose: chooseProtocol }));

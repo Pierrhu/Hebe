@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T13:10:31.984Z
+// 2026-10-13T13:37:13.379Z
 
 
 // ──────────────────────────────────────────────
@@ -7897,46 +7897,6 @@ function bindGoalPicker(root, getPid, onChoose) {
   root.querySelectorAll('[data-pace]').forEach(b => b.addEventListener('click', () => onChoose(b.dataset.pace)));
 }
 
-// Niveau d'activité : quatre choix décrits par une phrase
-function activityList(level = null) {
-  return `<div class="act-list" role="radiogroup" aria-label="Niveau d'activité">
-    ${ACTIVITY.map(a => `
-      <button class="act-opt ${a.level === level ? 'on' : ''}" data-act="${a.level}" role="radio" aria-checked="${a.level === level}">
-        <span class="act-bars" aria-hidden="true">${[1, 2, 3, 4].map(i => `<i class="${i <= a.level ? 'f' : ''}"></i>`).join('')}</span>
-        <span class="act-txt"><b>${a.label}</b><span>${a.desc}</span></span>
-        <span class="act-check" aria-hidden="true"></span>
-      </button>`).join('')}
-  </div>`;
-}
-
-// v195 : « Départ 2526 kcal », puis ce qui se passe ensuite, en clair
-function phaseRange(profile, pid) {
-  const ph = computeAllPhases(profile, pid);
-  const k = ph.map(x => x.targets.kcal);
-  if (ph.length === 1) return `<b>${k[0]} kcal</b><span>sans changer de palier</span>`;
-  const more = k[k.length - 1] > k[0];
-  const then = ph.length === 2
-    ? `puis ${k[1]} si ${more ? 'tu stagnes' : 'le poids stagne'}`
-    : `puis jusqu'à ${k[k.length - 1]}, en ${ph.length - 1} paliers`;
-  return `<b>Départ ${k[0]} kcal</b><span>${then}</span>`;
-}
-
-// Cartes des quatre programmes
-function protocolCards(profile, selectedId, { info = true, range = true } = {}) {
-  return `<div class="protocol-grid">
-    ${protocolsFor(profile).map(p => `
-      <button class="proto-card pc-${p.id} ${p.id === selectedId ? 'active' : ''}" data-pid="${p.id}">
-        <div class="proto-head">
-          <div class="proto-name">${p.name}</div>
-          ${info ? `<span class="proto-info" data-sheet="${p.id}" role="button" tabindex="0" aria-label="En savoir plus sur ${p.name}">i</span>` : ''}
-        </div>
-        <div class="proto-tagline">${p.tagline}</div>
-        ${range ? `<div class="proto-range">${phaseRange(profile, p.id)}</div>` : ''}
-        <div class="proto-check">✓</div>
-      </button>`).join('')}
-  </div>`;
-}
-
 // Sélecteur de personne (foyer de deux) : chacun voit ses portions et ses collations
 function whoSwitch() {
   const ms = getMembers();
@@ -8423,9 +8383,6 @@ function renderSettings() {
         profile = getProfile(); protocolId = getSelectedProtocol(); phaseIdx = getSelectedPhase(); render();
         toast(`${gone.name || 'La deuxième personne'} ne fait plus partie du foyer`);
       });
-    }));
-    view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
-      profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); render();
     }));
     bindGoalPicker(view, () => protocolId, chooseProtocol);
     view.querySelector('.gp-res')?.addEventListener('click', () => openProtocolSheet(profile, protocolId, { isCurrent: true, onChoose: chooseProtocol }));

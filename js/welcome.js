@@ -16,7 +16,7 @@ import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } fro
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
-  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, protocolCards, bindMeasures, esc, avatar,
+  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, bindMeasures, esc, avatar,
   householdCards, idCard, openMeasureSheet, MEAS_KEYS, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 

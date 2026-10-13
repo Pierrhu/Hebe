@@ -307,15 +307,9 @@ img { display: block; }
 .pc-value { display: flex; align-items: baseline; justify-content: center; gap: 3px; min-width: 0; }
 .pcell-input, .mrow-input { width: 54px; border: none; background: none; text-align: center; font-size: 18px; font-weight: 700; outline: none; font-variant-numeric: tabular-nums; }
 .pc-unit, .field-unit { font-size: 12.5px; color: var(--muted); }
-.protocol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.proto-card { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: var(--r-s); background: var(--surface); border: 1px solid var(--line); text-align: left; }
-.proto-card.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
 .proto-num { font-size: 12px; font-weight: 700; color: var(--muted); }
-.proto-name { font-size: 14.5px; font-weight: 600; line-height: 1.3; }
-.proto-tagline { font-size: 12.5px; color: var(--text-2); line-height: 1.4; }
-.proto-range { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
-.proto-check { position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: none; place-items: center; }
-.proto-card.active .proto-check { display: grid; }
+
 .phase-stepper { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
 .phase-step { flex: 1 0 96px; padding: 12px; border-radius: var(--r-s); border: 1px solid var(--line); background: var(--surface); text-align: left; }
 .phase-step.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
@@ -384,7 +378,7 @@ img { display: block; }
 .hb-btn-primary:active, .apply-btn:active { background: var(--accent); }
 .tab-btn.active, .prot-filter-btn.active { background: var(--accent); border-color: var(--accent); }
 .hb-batch-link { background: rgba(255,255,255,.6); border-color: var(--line); }
-.profile-cell, .proto-card, .phase-step { background: rgba(255,255,255,.6); }
+.profile-cell, .phase-step { background: rgba(255,255,255,.6); }
 .ck-pause { color: #B98A4A; }
 #nav { background: rgba(244, 246, 241, .9); }
 .hb-tile-lbl { color: var(--accent); }
@@ -514,10 +508,9 @@ img { display: block; }
 .detail-batch-tag { background: var(--sage-t); }
 
 /* ── Réglages ── */
-.profile-cell, .proto-card, .phase-step { border: none; border-radius: 22px; background: rgba(255,255,255,.7); }
-.proto-card:nth-child(1) { background: var(--leaf-t); } .proto-card:nth-child(2) { background: var(--sky-t); }
-.proto-card:nth-child(3) { background: var(--honey-t); } .proto-card:nth-child(4) { background: var(--terra-t); }
-.proto-card.active, .phase-step.active { box-shadow: inset 0 0 0 2px var(--sage); }
+.profile-cell, .phase-step { border: none; border-radius: 22px; background: rgba(255,255,255,.7); }
+
+.phase-step.active { box-shadow: inset 0 0 0 2px var(--sage); }
 .target-card { border: none; padding: 18px; border-radius: 24px; background: linear-gradient(150deg, #E4EEE6, #F6F1E6); }
 .set-manual { border: none; padding: 0 16px; border-radius: 22px; background: rgba(255,255,255,.7); }
 .apply-btn { border-radius: 999px; }
@@ -694,16 +687,12 @@ img { display: block; }
 .bf-guide-ic { width: 44px; height: 44px; padding: 4px; overflow: hidden; }
 .bf-guide-ic .bf-svg { width: 34px; margin: 0; }
 
-
-
 /* ═══ Programmes : cartes simples + fiche ═══ */
 .pc-P1 { --c: var(--leaf);  --t: var(--leaf-t); }
 .pc-P2 { --c: var(--sky);   --t: var(--sky-t); }
 .pc-P3 { --c: var(--honey); --t: var(--honey-t); }
 .pc-P4 { --c: var(--terra); --t: var(--terra-t); }
-.proto-card { background: var(--t) !important; }
-.proto-card.active { box-shadow: inset 0 0 0 2px var(--c); }
-.proto-card .proto-check { background: var(--c); }
+
 .proto-more { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--text-2); }
 .pf-tag { font-size: 15px; color: var(--text-2); margin-top: -2px; }
 .pf-desc { font-size: 15px; line-height: 1.55; margin-top: 14px; }
@@ -790,21 +779,9 @@ img { display: block; }
 .bf-desc { font-size: 10.5px; }
 .set-hero-meta { display: block; max-width: 34em; line-height: 1.5; margin-top: 6px; }
 
-/* Carte programme : bouton « i » */
-.proto-card { padding-top: 12px; }
-.proto-info {
-  align-self: flex-start; width: 24px; height: 24px; margin-bottom: 8px; border-radius: 50%;
-  display: grid; place-items: center; background: rgba(255,255,255,.85);
-  font-family: var(--serif); font-style: italic; font-size: 14px; font-weight: 600; line-height: 1; color: var(--text-2);
-}
-.proto-info:active { transform: scale(.9); }
 .back-to-plan { display: block; width: 100%; margin: 4px 0 8px; padding: 10px; border-radius: 999px; background: var(--sage-t); color: var(--accent); font-size: 14px; font-weight: 600; text-align: center; }
-/* « i » à droite du titre, ✓ en bas à droite */
-.proto-card { padding-top: 14px; }
-.proto-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.proto-head .proto-name { flex: 1; min-width: 0; }
-.proto-info { flex-shrink: 0; margin: -1px -2px 0 0; }
-.proto-card .proto-check { top: auto; bottom: 12px; right: 12px; }
+/* « i » à droite du titre { padding-top: 14px; }
+
 .mrow-btn { touch-action: manipulation; user-select: none; -webkit-user-select: none; }
 .mrow-btn:active { background: var(--sage-t); }
 
@@ -1017,31 +994,17 @@ img { display: block; }
 .id-sex .hb-seg-btn.on { background: var(--sage); color: #fff; box-shadow: none; }
 .id-error { margin-top: 10px; font-size: 13.5px; font-weight: 500; color: #A4553A; }
 
-/* Activité : quatre niveaux */
-.act-list { display: grid; gap: 8px; }
-.act-opt {
-  display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 16px;
-  border-radius: 22px; background: rgba(255,255,255,.7); text-align: left;
-}
-.act-opt.on { background: var(--sage-t); box-shadow: inset 0 0 0 2px var(--sage); }
 .act-bars { display: flex; align-items: flex-end; gap: 3px; height: 20px; flex-shrink: 0; }
 .act-bars i { display: block; width: 5px; border-radius: 3px; background: var(--line-2); }
 .act-bars i:nth-child(1) { height: 7px; } .act-bars i:nth-child(2) { height: 11px; }
 .act-bars i:nth-child(3) { height: 15px; } .act-bars i:nth-child(4) { height: 20px; }
 .act-bars i.f { background: var(--sage); }
-.act-txt { flex: 1; min-width: 0; }
-.act-txt b { display: block; font-size: 14.5px; font-weight: 600; }
-.act-txt span { display: block; font-size: 12.5px; line-height: 1.4; color: var(--text-2); margin-top: 1px; }
-.act-check { position: relative; width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--line-2); }
-.act-opt.on .act-check { background: var(--sage); box-shadow: none; }
-.act-opt.on .act-check::after { content: ''; position: absolute; left: 7.5px; top: 4px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 
 /* Garde-fous sur l'objectif */
 .tc-note { margin-top: 12px; padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,.75); font-size: 13px; line-height: 1.45; color: var(--text-2); }
 
 /* Silhouette féminine : pli de la brassière */
 .bf-fold { fill: none; stroke: #8FAE99; stroke-width: 1; stroke-linecap: round; }
-
 
 .pcell-input::placeholder { color: var(--muted); }
 
@@ -1197,24 +1160,21 @@ img { display: block; }
 
 .dt-seg-2 { grid-template-columns: 1fr 1fr; }
 
-
 /* ════════════════════════════════════════════════════════════
    Uniformisation (v121) : le style du reste de l'app
    Cartes blanches translucides, sélection en sauge, la couleur reste dans le contenu
    (photos, illustrations, frise des repas, barres de macros, pastilles Midi et Soir).
 ════════════════════════════════════════════════════════════ */
-.hh-card, .sx-card, .fm-card, .dt-card, .sm-card, .act-opt {
+.hh-card, .sx-card, .fm-card, .dt-card, .sm-card {
   background: rgba(255,255,255,.72) !important; box-shadow: none;
 }
-.hh-card.on, .sx-card.on, .fm-card.on, .act-opt.on {
+.hh-card.on, .sx-card.on, .fm-card.on {
   background: var(--sage-t) !important; box-shadow: inset 0 0 0 2px var(--sage);
 }
-/* Ton objectif : chaque programme garde sa couleur pâle, comme à l'origine dans l'app */
-.welcome-view .proto-card, .settings-view .proto-card { background: color-mix(in srgb, var(--t) 75%, #fff) !important; box-shadow: none; }
-.welcome-view .proto-card.active, .settings-view .proto-card.active { background: var(--t) !important; box-shadow: inset 0 0 0 2px var(--c); }
-.sel-check, .hh-card .sel-check, .sx-card .sel-check, .fm-card .sel-check, .act-opt.on .act-check { background: var(--sage); }
-.welcome-view .proto-card .proto-check, .settings-view .proto-card .proto-check { background: var(--c); }
-.welcome-view .proto-info, .settings-view .proto-info { background: rgba(255,255,255,.85); }
+/* Ton objectif : chaque programme garde sa couleur pâle { background: color-mix(in srgb, var(--t) 75%, #fff) !important; box-shadow: none; }
+
+.sel-check, .hh-card .sel-check, .sx-card .sel-check, .fm-card .sel-check { background: var(--sage); }
+
 .hh-2 img:last-child { box-shadow: 0 0 0 4px #fff; }
 .hh-card.on .hh-2 img:last-child { box-shadow: 0 0 0 4px var(--sage-t); }
 .sx-card .av-svg circle:first-child { fill: var(--bg); opacity: 1; }
@@ -1694,9 +1654,7 @@ button.idf-stamp:active { opacity: .7; }
 .tuto-steps li > div > b { font-family: var(--serif); font-size: 17px; font-weight: 500; }
 .tuto-steps p { margin: 3px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
 .tuto .hb-btn { width: 100%; }
-/* v195 : programmes plus lisibles + « Manger équilibré » */
-.proto-range b { display: block; font-weight: 700; color: var(--text); }
-.proto-range span { display: block; margin-top: 1px; font-size: 12px; color: var(--muted); }
+
 .tuto-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .tuto-tab { flex: none; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--sage-t); color: var(--accent); font-size: 12px; font-weight: 600; }
 .tuto-tab svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
