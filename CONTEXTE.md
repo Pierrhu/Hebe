@@ -12,7 +12,7 @@ App web (PWA) de batch cooking pour 1 personne : elle génère une semaine de re
 ## Architecture
 - `data/` : `household.js` (le foyer : une fiche par personne, migration de l'ancien profil, accord des textes avec `[masculin|féminin]`), `ingredients.js` (base d'ingrédients : macros, bornes, formats magasin, unités naturelles), `recipes.js` (**généré, ne pas modifier à la main**), `calculator.js` (programmes), `user.js`, `log.js`, `prefs.js` (notes 👍/👎), `photos.js`, `migrate.js`.
 - `js/` : `optimizer.js` (calibrage des portions), `weekgen.js` (génération de semaine, remplacement de plat, imprévu, recalcul), vues `week.js`, `cook.js`, `shopping.js`, `recipes.js`, `recipeDetail.js`, `settings.js` (« Mon programme »), `welcome.js` (accueil au premier lancement), `profileUi.js` (composants communs à l'accueil et à Mon programme), `bodyfat.js` (guides homme et femme).
-- `build.js` assemble `js/app.js`. Après chaque modification : `node build.js` et **incrémenter `hebe-vXX` dans `sw.js`** (actuellement hebe-v263). Une version de plus à CHAQUE livraison (règle de Pierre). Livraison : un zip par version ; envoi sur GitHub (Pierrhu/Hebe, branche main) seulement une fois en fin de session de gros travaux, ou quand Pierre le demande.
+- `build.js` assemble `js/app.js`. Après chaque modification : `node build.js` et **incrémenter `hebe-vXX` dans `sw.js`** (actuellement hebe-v264). Une version de plus à CHAQUE livraison (règle de Pierre). Livraison : un zip par version ; envoi sur GitHub (Pierrhu/Hebe, branche main) seulement une fois en fin de session de gros travaux, ou quand Pierre le demande.
 - `outils/recettes/` : sources des recettes + `generer.js` (noms courts, astuces, étapes rédigées). `outils/tests/` : `precision.js`, `macros.js`, `feculents.js`, `parcours.py` (navigateur, foyer de deux déjà renseigné, avec et sans autocuiseur). Voir `outils/README.md`.
 - L'utilisateur met à jour GitHub **à la main par le site web** (pas de terminal) : toujours lister les fichiers modifiés.
 - Mise à jour automatique (v128) : à chaque ouverture, l'app vérifie s'il y a une nouvelle version et se recharge seule une fois installée (`js/main.js`). Ne jamais conseiller « Effacer les données du site » : cela supprime le profil et la semaine (localStorage).
@@ -123,6 +123,7 @@ Revue une par une avec Pierre : 49 recettes (31 plats, 7 petits-déjeuners, 6 co
 - v261 : fiche Hébé (intro et Programme) : le personnage est zoomé dans le cadre photo (128 % au lieu de 100 %), visage plus grand.
 - v262 : personnage de la fiche un peu moins zoomé (120 %).
 - v263 : personnage de la fiche descendu de 5 px pour que le polo remplisse le bas du cadre (plus de liseré blanc).
+- v264 : cadre photo de la fiche découpé de force aux coins arrondis (clip-path + masque) : sur iPhone, le personnage dépassait dans les coins (overflow hidden ignoré avec transform). Image placée sans transform.
 - Anciennes propositions en attente : hachis parmentier butternut, risotto champignons-poulet, poulet rôti aux pommes, lasagnes de courge, chou braisé ; soupes butternut-crevettes, poireaux-saumon, minestrone ; collations muffins pomme-cannelle, crumble pomme-poire, overnight oats pumpkin spice, chia pomme-cannelle, yaourt-compote-granola, pancakes à la courge.
 
 ## Ta semaine, soupes, four sans air fryer, collations au choix (v208)
