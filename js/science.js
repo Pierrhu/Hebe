@@ -58,6 +58,23 @@ const SRC = {
   wcrf: ['World Cancer Research Fund. Limit consumption of red and processed meat. Cancer Prevention Recommendations, Third Expert Report. 2018.', 'https://www.wcrf.org/research-policy/evidence-for-our-recommendations/limit-red-processed-meat/'],
   iarc: ['Bouvard V, Loomis D, Guyton KZ, et al. Carcinogenicity of consumption of red and processed meat. Lancet Oncol. 2015;16(16):1599-1600.', 'https://doi.org/10.1016/S1470-2045(15)00444-1'],
   ansesFish: ['Anses. Manger du poisson : pourquoi ? comment ?', 'https://www.anses.fr/fr/article/manger-du-poisson-pourquoi-comment'],
+  ansesVitD: ['Anses. Vitamine D : pourquoi et comment assurer un apport suffisant ? 2022.', 'https://www.anses.fr/fr/content/vitamine-d-pourquoi-et-comment-assurer-un-apport-suffisant'],
+  vital: ['Manson JE, Cook NR, Lee IM, et al. Vitamin D supplements and prevention of cancer and cardiovascular disease. N Engl J Med. 2019;380(1):33-44.', 'https://doi.org/10.1056/NEJMoa1809944'],
+  avenell: ['Avenell A, Mak JC, O\'Connell D. Vitamin D and vitamin D analogues for preventing fractures in post-menopausal women and older men. Cochrane Database Syst Rev. 2014;(4):CD000227.', 'https://doi.org/10.1002/14651858.CD000227.pub4'],
+  ansesLip: ['Anses. Les lipides.', 'https://www.anses.fr/fr/content/les-lipides'],
+  abdelhamid: ['Abdelhamid AS, Brown TJ, Brainard JS, et al. Omega-3 fatty acids for the primary and secondary prevention of cardiovascular disease. Cochrane Database Syst Rev. 2020;3(3):CD003177.', 'https://doi.org/10.1002/14651858.CD003177.pub5'],
+  rimm: ['Rimm EB, Appel LJ, Chiuve SE, et al. Seafood long-chain n-3 polyunsaturated fatty acids and cardiovascular disease: a science advisory from the American Heart Association. Circulation. 2018;138(1):e35-e47.', 'https://doi.org/10.1161/CIR.0000000000000574'],
+  ansesRef: ['Anses. Les références nutritionnelles en vitamines et minéraux. 2025.', 'https://www.anses.fr/fr/content/les-r%C3%A9f%C3%A9rences-nutritionnelles-en-vitamines-et-min%C3%A9raux'],
+  ansesPnns: ['Anses. Actualisation des repères du PNNS : révision des repères de consommations alimentaires. Avis et rapport d\'expertise collective. 2016.', 'https://www.anses.fr/fr/system/files/NUT2012SA0103Ra-1.pdf'],
+  nihIron: ['NIH Office of Dietary Supplements. Iron: Fact Sheet for Consumers. 2023.', 'https://ods.od.nih.gov/factsheets/Iron-Consumer/'],
+  reynolds: ['Reynolds A, Mann J, Cummings J, et al. Carbohydrate quality and human health: a series of systematic reviews and meta-analyses. Lancet. 2019;393(10170):434-445.', 'https://doi.org/10.1016/S0140-6736(18)31809-9'],
+  kreider: ['Kreider RB, Kalman DS, Antonio J, et al. International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine. J Int Soc Sports Nutr. 2017;14:18.', 'https://doi.org/10.1186/s12970-017-0173-z'],
+  delpino: ['Delpino FM, Figueiredo LM, Forbes SC, et al. Influence of age, sex, and type of exercise on the efficacy of creatine supplementation on lean body mass: a systematic review and meta-analysis of randomized clinical trials. Nutrition. 2022;103-104:111791.', 'https://doi.org/10.1016/j.nut.2022.111791'],
+  wang: ['Wang Z, Qiu B, Li R, et al. Effects of creatine supplementation and resistance training on muscle strength gains in adults under 50 years of age: a systematic review and meta-analysis. Nutrients. 2024;16(21):3665.', 'https://doi.org/10.3390/nu16213665'],
+  guest: ['Guest NS, VanDusseldorp TA, Nelson MT, et al. International Society of Sports Nutrition position stand: caffeine and exercise performance. J Int Soc Sports Nutr. 2021;18(1):1.', 'https://doi.org/10.1186/s12970-020-00383-4'],
+  efsaCaf: ['EFSA NDA Panel. Scientific Opinion on the safety of caffeine. EFSA J. 2015;13(5):4102.', 'https://doi.org/10.2903/j.efsa.2015.4102'],
+  hasFol: ['HAS, Commission de la transparence. Avis Acide folique 0,4 mg. 2018.', 'https://has-sante.fr/upload/docs/evamed/CT-16672_ACIDE_FOLIQUE_CCD_0,4mg_PIS_RI_Avis1_CT16672.pdf'],
+  uspstf: ['US Preventive Services Task Force, Mangione CM, Barry MJ, et al. Vitamin, mineral, and multivitamin supplementation to prevent cardiovascular disease and cancer: US Preventive Services Task Force recommendation statement. JAMA. 2022;327(23):2326-2333.', 'https://doi.org/10.1001/jama.2022.8970'],
   kyle: ['Kyle UG, Bosaeus I, De Lorenzo AD, et al. Bioelectrical impedance analysis, part I: review of principles and methods. Clin Nutr. 2004;23(5):1226-1243.', 'https://doi.org/10.1016/j.clnu.2004.06.004'],
 };
 
@@ -204,6 +221,20 @@ function weekMeals() {
   </svg>`;
 }
 
+// ce que couvrent les menus d'Hébé, rapporté au repère (moyenne des menus testés)
+function coverBars() {
+  const rows = [['vitamine D', 3, 3, 15, 'µg'], ['fibres', 26, 38, 30, 'g'], ['fer, femmes', 12, 12, 11, 'mg']];
+  const X = f => 96 + Math.min(1.35, f) / 1.35 * 210;
+  return `<svg viewBox="0 0 320 128" class="sci-svg" aria-hidden="true">
+    ${[0, 1, 2].map(i => `<line x1="${X(1)}" y1="${6 + i * 34}" x2="${X(1)}" y2="${26 + i * 34}" stroke="${TERRA}" stroke-width="2"/>`).join('')}
+    <text x="${X(1)}" y="120" text-anchor="middle" class="sv-k">le repère</text>
+    ${rows.map(([lbl, lo, hi, ref, u], i) => { const y = 10 + i * 34; return `<text x="88" y="${y + 9}" text-anchor="end" class="sv-l">${lbl}</text>
+      <rect x="96" y="${y}" width="${X(hi / ref) - 96}" height="12" rx="6" fill="${hi / ref < 0.6 ? '#EAD9CF' : '#C9D9CD'}"/>
+      <rect x="96" y="${y}" width="${X(lo / ref) - 96}" height="12" rx="6" fill="${lo / ref < 0.6 ? TERRA : '#9DB7A3'}"/>
+      <text x="96" y="${y + 27}" class="sv-t">tes menus : ${lo === hi ? lo : `${lo} à ${hi}`} ${u}, repère ${ref} ${u}</text>`; }).join('')}
+  </svg>`;
+}
+
 // erreur sur la masse grasse : ce qu'elle change sur ta dépense au repos, avec une formule seule puis avec la moyenne
 function fatFunnel(kg, rmr) {
   const km = 0.05 * kg * 21.6, avg = km / 2, span = 250;
@@ -316,7 +347,15 @@ export function openScienceSheet() {
       ["Poisson : le repère est de 2 fois par semaine, dont un poisson gras, en variant les espèces. Hébé fait manger le poisson frais dans les 2 jours qui suivent la cuisson, par prudence.", ['spf', 'ansesFish']],
       ["Féculents : une même famille, comme le riz ou les pâtes, revient au plus 2 ou 3 fois par semaine, pour varier. Les féculents restent conseillés chaque jour, dont au moins un complet.", ['spf']],
     ]),
-    sec(10, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
+    sec(10, 'Ce que l\'assiette ne couvre pas', coverBars(), "Tes menus couvrent l'essentiel, pas tout. Voici les compléments qui ont fait leurs preuves, à qui ils servent, et ce qu'ils n'apportent pas. Demande l'avis d'un professionnel de santé avant d'en prendre.", [
+      ["Vitamine D : le repère est de 15 µg par jour, et l'alimentation en apporte environ 3, tes menus aussi. Expose-toi au soleil 15 à 20 minutes en fin de matinée ou l'après-midi. Un complément se prend seulement sur prescription, car le surdosage est possible. En prévention, il n'a réduit ni les cancers ni les accidents cardiovasculaires ; avec du calcium, il diminue un peu les fractures de hanche chez les personnes âgées.", ['ansesVitD', 'vital', 'avenell']],
+      ["Oméga-3 : le repère est de 500 mg d'EPA et de DHA par jour, apportés par les poissons gras. Tes menus n'en servent qu'une semaine sur deux : ajoute une boîte de sardines ou de maquereau. En capsules, ils changent peu ou pas le risque cardiovasculaire.", ['ansesLip', 'abdelhamid', 'rimm']],
+      ["Fer et fibres, pour les femmes : tes menus apportent environ 12 mg de fer, au-dessus des 11 mg conseillés si tes règles sont faibles à modérées, mais sous les 16 mg si elles sont abondantes. Parles-en à ton médecin, qui peut vérifier ton stock de fer : n'en prends pas de toi-même. Avec environ 26 g de fibres, tes menus font comme ceux de l'Anses, et les bénéfices sont nets dès 25 g.", ['ansesRef', 'ansesPnns', 'nihIron', 'reynolds']],
+      ["Créatine, si tu fais de la musculation : c'est le complément le mieux prouvé. Avec l'entraînement, elle ajoute en moyenne 1,1 kg de masse maigre et de la force, avec un effet net chez les hommes et moins clair chez les femmes. 3 à 5 g par jour. Elle fait garder un peu d'eau, jusqu'à 1 kg sur la balance : Hébé suit la tendance de tes pesées, pas un jour isolé.", ['kreider', 'delpino', 'wang']],
+      ["Caféine, avant ta séance : 3 à 6 mg par kg de poids, souvent une heure avant, donne un petit gain de force et d'endurance. Pas plus de 400 mg par jour, 200 mg si tu es enceinte, et pas trop tard pour ne pas gêner ton sommeil. La whey, elle, reste un moyen pratique d'atteindre tes protéines, pas un produit magique.", ['guest', 'efsaCaf', 'jager']],
+      ["Projet de grossesse : 0,4 mg d'acide folique par jour, au moins 4 semaines avant la conception et 8 semaines après, pour protéger le bébé. Les multivitamines, en revanche, n'ont pas prouvé qu'ils protègent du cœur ou du cancer, et les compléments de bêta-carotène et de vitamine E sont déconseillés.", ['hasFol', 'uspstf']],
+    ]),
+    sec(11, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
       ["Les tables Ciqual de l'Anses, complétées par la base FoodData Central de l'USDA.", ['ciqual', 'fdc']],
     ]),
   ].join('');
