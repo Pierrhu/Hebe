@@ -16,7 +16,7 @@ import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } fro
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
-  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, protocolCards, bindMeasures, esc, avatar,
+  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, protocolCards, bindMeasures, esc, avatar,
   householdCards, idCard, openMeasureSheet, MEAS_KEYS, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
@@ -187,8 +187,8 @@ export function renderWelcome(onDone) {
       case 'goal': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `L'objectif de ${esc(m.name)}` : 'Ton objectif'}</h1>
-        ${sub('Choisis un programme. Touche le i pour voir le détail.')}
-        ${protocolCards(p, m.protocol, { range: false })}
+        ${sub('Dis ce que tu veux, Hébé choisit le programme.')}
+        ${goalPicker(p, m.protocol)}
         ${errBox()}
         ${cta('Voir mon programme')}`;
 
@@ -344,14 +344,10 @@ export function renderWelcome(onDone) {
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { breakfast: b.dataset.bk }); render(); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { whey: b.dataset.whey === '1' }); error = ''; render(); }));
     // objectif (avec la fiche détaillée)
-    view.querySelectorAll('.proto-card').forEach(b => b.addEventListener('click', e => {
-      if (e.target.closest('[data-sheet]')) {
-        return openProtocolSheet(getProfile(), b.dataset.pid, {
-          isCurrent: getMember(m.id).protocol === b.dataset.pid,
-          onChoose: pid => { updateMember(m.id, { protocol: pid, phase: 0, targets: null }); error = ''; render(); },
-        });
-      }
-      updateMember(m.id, { protocol: b.dataset.pid, phase: 0, targets: null }); error = ''; render();
+    const choose = pid => { updateMember(m.id, { protocol: pid, phase: 0, targets: null }); error = ''; render(); };
+    bindGoalPicker(view, () => getMember(m.id).protocol, choose);
+    view.querySelector('.gp-res')?.addEventListener('click', e => openProtocolSheet(getProfile(), e.currentTarget.dataset.sheet, {
+      isCurrent: true, onChoose: choose,
     }));
   }
 

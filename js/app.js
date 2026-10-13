@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T10:34:38.385Z
+// 2026-10-13T11:04:58.856Z
 
 
 // ──────────────────────────────────────────────
@@ -7821,6 +7821,54 @@ function bindActivityPicker(root, get, onChange) {
   root.querySelectorAll('[data-sport]').forEach(b => b.addEventListener('click', () => upd({ sport: +b.dataset.sport })));
 }
 
+// v266 : objectif en deux questions (ce que tu veux, puis le rythme si perte de gras)
+const AIMS = [
+  { k: 'muscle', pid: 'P1', label: 'Prendre du muscle', sub: 'Gagner du volume sans gras',
+    ic: '<path d="M4 14h20M7 9v10M21 9v10M4 11v6M24 11v6"/>' },
+  { k: 'both', pid: 'P2', label: 'Les deux à la fois', sub: 'Moins de gras, plus de muscle',
+    ic: '<path d="M5 18c4-8 14-8 18 0M9 10l5-4 5 4"/>' },
+  { k: 'fat', pid: 'P4', label: 'Perdre du gras', sub: 'Sécher, affiner la taille',
+    ic: '<path d="M6 8l6 6 4-4 7 8M17 18h6v-6"/>' },
+];
+const aimOf = pid => (pid === 'P1' ? 'muscle' : pid === 'P2' ? 'both' : pid === 'P3' || pid === 'P4' ? 'fat' : null);
+// petite courbe des paliers de calories, maintenance en pointillés
+function phaseCurve(phases) {
+  const W = 90, n = phases.length, y = pct => 24 - pct * 85;
+  let d = '';
+  phases.forEach((ph, i) => { const x0 = 3 + i * (W - 6) / n, x1 = 3 + (i + 1) * (W - 6) / n, yy = y(ph.pct).toFixed(1);
+    d += i ? ` V${yy} H${x1.toFixed(1)}` : `M${x0} ${yy} H${x1.toFixed(1)}`; });
+  return `<svg viewBox="0 0 90 48" aria-hidden="true"><line x1="0" y1="24" x2="90" y2="24" class="gp-maint"/><path d="${d}" class="gp-line"/></svg>`;
+}
+function goalPicker(profile, pid) {
+  const aim = aimOf(pid);
+  const p = pid && protocolsFor(profile).find(x => x.id === pid);
+  return `<div class="gp">
+    <div class="actp-lab">Tu veux surtout…</div>
+    <div class="gp-aims" role="radiogroup" aria-label="Ton objectif">
+      ${AIMS.map(a => `<button class="gp-aim pc-${a.k === 'fat' ? (pid === 'P3' ? 'P3' : 'P4') : a.pid} ${aim === a.k ? 'on' : ''}" data-aim="${a.k}" role="radio" aria-checked="${aim === a.k}">
+        <span class="gp-ic"><svg viewBox="0 0 28 28" aria-hidden="true">${a.ic}</svg></span>
+        <span class="gp-txt"><b>${a.label}</b><span>${a.sub}</span></span></button>`).join('')}
+    </div>
+    ${aim === 'fat' ? `<div class="actp-lab">À quel rythme ?</div>
+    <div class="actp-seg gp-pace pc-${pid}" role="radiogroup" aria-label="Rythme">
+      <button class="${pid === 'P3' ? 'on' : ''}" data-pace="P3" role="radio" aria-checked="${pid === 'P3'}">Assez vite<small>4 à 8 semaines</small></button>
+      <button class="${pid === 'P4' ? 'on' : ''}" data-pace="P4" role="radio" aria-checked="${pid === 'P4'}">Sur la durée<small>3 à 6 mois</small></button>
+    </div>` : ''}
+    ${p ? `<button class="gp-res pc-${p.id}" data-sheet="${p.id}" aria-label="Voir le détail de ${p.name}">
+      <span class="gp-res-txt"><small>Ton programme</small><b>${p.name}</b><span>${p.duration}. Touche pour voir le détail.</span></span>
+      <span class="gp-curve">${phaseCurve(p.phases)}</span></button>
+    ${p.warn ? `<p class="gp-warn">${p.warn}</p>` : ''}` : ''}
+  </div>`;
+}
+function bindGoalPicker(root, getPid, onChoose) {
+  root.querySelectorAll('[data-aim]').forEach(b => b.addEventListener('click', () => {
+    const a = AIMS.find(x => x.k === b.dataset.aim);
+    const cur = getPid();
+    onChoose(a.k === 'fat' && (cur === 'P3' || cur === 'P4') ? cur : a.pid);
+  }));
+  root.querySelectorAll('[data-pace]').forEach(b => b.addEventListener('click', () => onChoose(b.dataset.pace)));
+}
+
 // Niveau d'activité : quatre choix décrits par une phrase
 function activityList(level = null) {
   return `<div class="act-list" role="radiogroup" aria-label="Niveau d'activité">
@@ -9159,8 +9207,8 @@ function renderWelcome(onDone) {
       case 'goal': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `L'objectif de ${esc(m.name)}` : 'Ton objectif'}</h1>
-        ${sub('Choisis un programme. Touche le i pour voir le détail.')}
-        ${protocolCards(p, m.protocol, { range: false })}
+        ${sub('Dis ce que tu veux, Hébé choisit le programme.')}
+        ${goalPicker(p, m.protocol)}
         ${errBox()}
         ${cta('Voir mon programme')}`;
 
@@ -9316,14 +9364,10 @@ function renderWelcome(onDone) {
     view.querySelectorAll('[data-bk]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { breakfast: b.dataset.bk }); render(); }));
     view.querySelectorAll('[data-whey]').forEach(b => b.addEventListener('click', () => { updateMember(m.id, { whey: b.dataset.whey === '1' }); error = ''; render(); }));
     // objectif (avec la fiche détaillée)
-    view.querySelectorAll('.proto-card').forEach(b => b.addEventListener('click', e => {
-      if (e.target.closest('[data-sheet]')) {
-        return openProtocolSheet(getProfile(), b.dataset.pid, {
-          isCurrent: getMember(m.id).protocol === b.dataset.pid,
-          onChoose: pid => { updateMember(m.id, { protocol: pid, phase: 0, targets: null }); error = ''; render(); },
-        });
-      }
-      updateMember(m.id, { protocol: b.dataset.pid, phase: 0, targets: null }); error = ''; render();
+    const choose = pid => { updateMember(m.id, { protocol: pid, phase: 0, targets: null }); error = ''; render(); };
+    bindGoalPicker(view, () => getMember(m.id).protocol, choose);
+    view.querySelector('.gp-res')?.addEventListener('click', e => openProtocolSheet(getProfile(), e.currentTarget.dataset.sheet, {
+      isCurrent: true, onChoose: choose,
     }));
   }
 
