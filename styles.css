@@ -1952,3 +1952,8 @@ button.wl-ch:disabled { cursor: default; }
 .sp-best { border-color: #C9D9CD; box-shadow: inset 0 0 0 1px #C9D9CD; }
 .sp-best .sp-ic, .sp-best em { background: #3E5A48; color: #fff; }
 .sci-intro { margin: -2px 0 8px; font-size: 13.5px; line-height: 1.5; color: var(--text-2); }
+/* v259 : fiche des mesures, intitulés sur une seule ligne */
+.idf-f span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.idf-f b { white-space: nowrap; }
+.welcome-view .bf-guide-btn { margin-top: 12px; }
+@media (max-width: 360px) { .idf-fields { gap: 8px 6px; } .idf-f span { font-size: 10.5px; } button.idf-f { padding-right: 10px; } }

@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T08:11:48.940Z
+// 2026-10-13T08:14:12.609Z
 
 
 // ──────────────────────────────────────────────
@@ -9074,6 +9074,7 @@ function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les mesures de ${esc(m.name)}` : 'Tes mesures'}</h1>
         ${sub('Touche chaque case pour la remplir. Elles servent à calculer tes portions.')}
         ${idCard(m, p, { num: getMembers().findIndex(x => x.id === m.id) + 1 })}
+        ${bodyfatButton(m.sex)}
         ${errBox()}
         ${cta('Continuer')}`;
 
