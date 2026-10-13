@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T14:12:44.775Z
+// 2026-10-13T21:38:56.000Z
 
 
 // ──────────────────────────────────────────────
@@ -1727,6 +1727,7 @@ let SOUPS_ON = false;
 const setSoupsOn = v => { SOUPS_ON = !!v; };
 const isSoup = r => !!r && (r.tags || []).includes('soupe');
 const soupHidden = r => isSoup(r) && !SOUPS_ON;
+const getAllSoups = () => RECIPES.filter(r => !r.retired && isSoup(r)); // v270 : soupe choisie à la main
 const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine') && !soupHidden(r));
 const getSides    = () => RECIPES.filter(r => r.category === 'side' && !r.retired);
 const getSweets   = () => RECIPES.filter(r => !r.retired && r.category === 'sweet');
@@ -9227,7 +9228,7 @@ function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
         ${sub('Hébé écarte ce qui ne te convient pas.')}
         ${foodBlock(m)}
-        ${houseQ() ? staplesBlock() : ''}
+        ${houseQ() ? soupsBlock() + staplesBlock() : ''}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -9376,9 +9377,7 @@ function renderWelcome(onDone) {
     bindMeasures(view, getValue, (k, v) => { saveProfile({ [k]: v }); error = ''; render(); });
     // v252 : fiche à remplir, une case après l'autre
     const openMeas = k => openMeasureSheet(k, getProfile()[k], getMember(m.id).sex, start()[k], v => {
-      saveProfile({ [k]: v }); error = ''; render();
-      const nextK = MEAS_KEYS.find(x => getProfile()[x] == null);
-      if (nextK) setTimeout(() => openMeas(nextK), 220);
+      saveProfile({ [k]: v }); error = ''; render(); // v277 : plus d'ouverture automatique de la case suivante
     });
     view.querySelectorAll('[data-meas]').forEach(b => b.addEventListener('click', () => openMeas(b.dataset.meas)));
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>

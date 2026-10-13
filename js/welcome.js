@@ -18,7 +18,7 @@ import { computeBase, computeTargets, protocolFor, getProfile, saveProfile } fro
 import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
-  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, staplesBlock, bindMeasures, esc, avatar,
+  measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, staplesBlock, soupsBlock, bindMeasures, esc, avatar,
   householdCards, idCard, openMeasureSheet, MEAS_KEYS, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
@@ -183,7 +183,7 @@ export function renderWelcome(onDone) {
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Ce que mange ${esc(m.name)}` : 'Ce que tu manges'}</h1>
         ${sub('Hébé écarte ce qui ne te convient pas.')}
         ${foodBlock(m)}
-        ${houseQ() ? staplesBlock() : ''}
+        ${houseQ() ? soupsBlock() + staplesBlock() : ''}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -332,9 +332,7 @@ export function renderWelcome(onDone) {
     bindMeasures(view, getValue, (k, v) => { saveProfile({ [k]: v }); error = ''; render(); });
     // v252 : fiche à remplir, une case après l'autre
     const openMeas = k => openMeasureSheet(k, getProfile()[k], getMember(m.id).sex, start()[k], v => {
-      saveProfile({ [k]: v }); error = ''; render();
-      const nextK = MEAS_KEYS.find(x => getProfile()[x] == null);
-      if (nextK) setTimeout(() => openMeas(nextK), 220);
+      saveProfile({ [k]: v }); error = ''; render(); // v277 : plus d'ouverture automatique de la case suivante
     });
     view.querySelectorAll('[data-meas]').forEach(b => b.addEventListener('click', () => openMeas(b.dataset.meas)));
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
