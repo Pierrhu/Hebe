@@ -314,7 +314,7 @@ const SPORT = [
   { label: '3–4', sub: 'souvent' }, { label: '5+', sub: 'très souvent' },
 ];
 // lignes : travail ; colonnes : séances par semaine
-const LEVEL = [[1, 1, 2, 3], [2, 3, 3, 4], [3, 3, 4, 4]];
+const LEVEL = [[1, 1, 2, 3], [3, 3, 3, 4], [3, 3, 4, 4]];
 export const activityFrom = (work, sport) => (work == null || sport == null ? null : LEVEL[work][sport]);
 const coefTxt = c => String(c).replace('.', ',');
 

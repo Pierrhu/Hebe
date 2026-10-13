@@ -11,7 +11,7 @@ import {
 import { ACTIVITY, getActiveMember, updateActiveMember, gx, getMembers, getHousehold, saveHousehold, setMemberCount, setOnboarded, weekBudget, setEquipment, getStaples, setStaples, setMaxRepeat, setSoups } from '../data/household.js';
 import { exportPhotos, importPhotos } from './body.js';
 import { openScienceSheet } from './science.js';
-import { measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
+import { measuresGrid, bodyfatButton, identityBlock, activityPicker, bindActivityPicker, goalPicker, bindGoalPicker, protocolCards, bindMeasures, openProtocolSheet, mealsBlock, householdCards, whoSwitch, bindWho, esc, equipmentBlock, idPhoto, weekPrefsBlock } from './profileUi.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
 
@@ -30,6 +30,12 @@ export function renderSettings() {
   let manualOpen = false; // la section « à la main » reste ouverte entre deux rendus
 
   let firstRender = true;
+  // v269 : choix du programme depuis les deux questions de l'objectif
+  function chooseProtocol(pid) {
+    if (pid === protocolId) return;
+    protocolId = pid; phaseIdx = 0; saveSelectedProtocol(pid); saveSelectedPhase(0); applyComputed();
+    toast(`Programme : ${protocolFor(profile, pid).name}`); render();
+  }
   function render() {
     const keepY = firstRender ? 0 : window.scrollY; // une modification ne fait pas remonter la page
     const member   = getActiveMember();
@@ -80,7 +86,7 @@ export function renderSettings() {
       <!-- PROTOCOLE -->
       <div class="set-section">
         <div class="set-section-head">Ton objectif</div>
-        ${protocolCards(profile, protocolId)}
+        ${goalPicker(profile, protocolId)}
       </div>
 
       <!-- PHASES -->
@@ -207,13 +213,15 @@ export function renderSettings() {
       return;
     }
     if (k === 'protocol') {
-      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton programme</div>${protocolCards(profile, protocolId)}</div>`);
-      document.getElementById('sheet').querySelectorAll('.proto-card').forEach(b => b.addEventListener('click', () => {
-        const pid = b.dataset.pid; closeSheet();
-        if (pid === protocolId) return;
-        protocolId = pid; phaseIdx = 0; saveSelectedProtocol(pid); saveSelectedPhase(0); applyComputed();
-        toast(`Programme : ${protocolFor(profile, pid).name}`); render();
-      }));
+      openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">Ton objectif</div>${goalPicker(profile, protocolId)}</div>`);
+      const sh = document.getElementById('sheet');
+      const redraw = () => {
+        sh.querySelector('.gp').outerHTML = goalPicker(profile, protocolId);
+        bindGoalPicker(sh, () => protocolId, pick);
+        sh.querySelector('.gp-res')?.addEventListener('click', () => openProtocolSheet(profile, protocolId, { isCurrent: true, onChoose: chooseProtocol }));
+      };
+      const pick = pid => { chooseProtocol(pid); redraw(); };
+      redraw();
       return;
     }
     if (k === 'activity') {
@@ -331,15 +339,8 @@ export function renderSettings() {
     view.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
       profile.activity = parseInt(b.dataset.act); saveProfile(profile); applyComputed(); render();
     }));
-    view.querySelectorAll('.proto-card').forEach(b => b.addEventListener('click', e => {
-      if (e.target.closest('[data-sheet]')) return openProtocolSheet(profile, b.dataset.pid, {
-        isCurrent: b.dataset.pid === protocolId,
-        onChoose: pid => { protocolId = pid; phaseIdx = 0; saveSelectedProtocol(pid); saveSelectedPhase(0); applyComputed(); toast(`Programme : ${protocolFor(profile, pid).name}`); render(); },
-      });
-      if (b.dataset.pid === protocolId) return;
-      protocolId = b.dataset.pid; phaseIdx = 0;
-      saveSelectedProtocol(protocolId); saveSelectedPhase(0); applyComputed(); render();
-    }));
+    bindGoalPicker(view, () => protocolId, chooseProtocol);
+    view.querySelector('.gp-res')?.addEventListener('click', () => openProtocolSheet(profile, protocolId, { isCurrent: true, onChoose: chooseProtocol }));
     view.querySelectorAll('.phase-step').forEach(b => b.addEventListener('click', () => {
       phaseIdx = parseInt(b.dataset.phase); saveSelectedPhase(phaseIdx); applyComputed(); render();
     }));
