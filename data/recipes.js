@@ -1369,6 +1369,7 @@ let SOUPS_ON = false;
 export const setSoupsOn = v => { SOUPS_ON = !!v; };
 export const isSoup = r => !!r && (r.tags || []).includes('soupe');
 export const soupHidden = r => isSoup(r) && !SOUPS_ON;
+export const getAllSoups = () => RECIPES.filter(r => !r.retired && isSoup(r)); // v270 : soupe choisie à la main
 export const getMains    = () => RECIPES.filter(r => !r.retired && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine') && !soupHidden(r));
 export const getSides    = () => RECIPES.filter(r => r.category === 'side' && !r.retired);
 export const getSweets   = () => RECIPES.filter(r => !r.retired && r.category === 'sweet');

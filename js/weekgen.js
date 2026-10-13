@@ -16,7 +16,7 @@
 // Les collations s'adaptent jour par jour pour boucler les objectifs.
 
 import { dietOk, householdLactose, householdGluten, lactoseOf, glutenOf, applyDiet, proteinBoost } from './diet.js';
-import { getMains, getSweets, getBreakfasts, getById, hasWhey, proteinFamily, isFreshFish, mainStarch, setSoupsOn, isSoup } from '../data/recipes.js';
+import { getMains, getSweets, getBreakfasts, getById, hasWhey, proteinFamily, isFreshFish, mainStarch, setSoupsOn, isSoup, getAllSoups } from '../data/recipes.js';
 import { INGREDIENTS, ingCost, NATURAL_UNITS } from '../data/ingredients.js';
 import { optimizeRecipe, calibratePlate, plateTarget, portionScale, plateFloor, mainProteinIdx, PLATE_SHARE, breakfastTarget, computeMealMacros, subtractMacros, fillRemainder, itemQuantities, CHARC_MAX, CHARC_KEYS, charcOfEntry, charcGrams, RED_MEAT_KEYS, calciumPer100kcal } from './optimizer.js';
 import { weekMicros } from './micros.js';
@@ -957,8 +957,8 @@ export function setBreakfast(date, id, mid = getActiveMember().id) {
 // Tire un autre plat (même protéine si possible), recalcule ses portions, l'applique à toutes
 // ses portions de la session, puis recale barquettes et collations. Renvoie le nouveau plat ou null.
 // v195 : 3 propositions au choix pour « Changer »
-export function replaceOptions(oldId, n = 3) {
-  const pool = replacePool(oldId);
+export function replaceOptions(oldId, n = 3, { soup = false } = {}) {
+  const pool = replacePool(oldId, { soup });
   if (!pool || !pool.length) return [];
   const left = [...pool], out = [];
   while (out.length < n && left.length) {
@@ -969,7 +969,8 @@ export function replaceOptions(oldId, n = 3) {
   }
   return out;
 }
-function replacePool(oldId) {
+// v270 : soup = true ne propose que des soupes (même si les soupes sont désactivées dans les réglages)
+function replacePool(oldId, { soup = false } = {}) {
   const plan = getActivePlan();
   if (!plan) return null;
   const old = getById(oldId);
@@ -978,7 +979,7 @@ function replacePool(oldId) {
   const inPlan = new Set(plan.sessions.flatMap(s => s.recipes.map(r => r.id)));
   const sessIdx = plan.sessions.indexOf(sess);
   const fishOk = sessIdx === 0 && !plan.sessions.some(s => s.recipes.some(r => r.id !== oldId && isFreshFish(getById(r.id))));
-  let pool = getMains().filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && getRating(r.id) >= 0 && (fishOk || !isFreshFish(r)));
+  let pool = (soup ? getAllSoups() : getMains()).filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && getRating(r.id) >= 0 && (fishOk || !isFreshFish(r)));
   pool = seasonal(pool, plan.dates?.[0], 8); // v226 : plats de saison
   const mids = planMembers(plan);
   const ptOf = mid => plateTarget(planTargets(plan, mid), planShare(plan, mid), proteinBoost(mid));
@@ -997,11 +998,12 @@ function replacePool(oldId) {
   const others = plan.sessions.flatMap(s => s.recipes.map(x => getById(x.id))).filter(r => r && r.id !== oldId);
   const okStarch = pool.filter(r => others.filter(o => starchFamily(o) === starchFamily(r)).length < STARCH_MAX);
   if (okStarch.length) pool = okStarch;
+  if (soup) return pool;
   const same = pool.filter(r => proteinFamily(r) === proteinFamily(old));
   if (same.length) pool = same;
   return pool;
 }
-export function replaceDish(oldId, chosenId = null) {
+export function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
   const plan = getActivePlan();
   if (!plan) return null;
   const old = getById(oldId);
@@ -1009,7 +1011,7 @@ export function replaceDish(oldId, chosenId = null) {
   if (!old || !sess) return null;
   const mids = planMembers(plan);
   const ptOf = mid => plateTarget(planTargets(plan, mid), planShare(plan, mid), proteinBoost(mid));
-  const pool = replacePool(oldId);
+  const pool = replacePool(oldId, { soup });
   if (!pool || !pool.length) return null;
   let next = chosenId && pool.find(r => r.id === chosenId);
   if (!next) {
