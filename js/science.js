@@ -84,6 +84,8 @@ const srcHtml = ([t, url]) => {
   const link = url ? ` <a href="${url}" target="_blank" rel="noopener">${url.startsWith('https://doi.org/') ? 'doi' : 'lien'}</a>` : '';
   return body + link;
 };
+// profil d'exemple pour les dessins quand la fiche n'est pas encore remplie (fiche ouverte depuis l'accueil)
+const EX_T = { kcal: 2200, protein: 140, carbs: 250, fat: 72 };
 const nf = v => Math.round(v).toLocaleString('fr-FR');
 const dec = (v, d = 1) => v.toFixed(d).replace('.', ',');
 // numéros attribués à la première citation ; ORDER garde l'ordre pour la liste en bas
@@ -151,7 +153,7 @@ function trendCurve(ws) {
 }
 
 // plancher : barre de ton objectif au-dessus du minimum
-function floorBar(kcal, floor) {
+function floorBar(kcal, floor, example = false) {
   const max = Math.max(kcal, floor) * 1.15, X = v => 20 + v / max * 280;
   return `<svg viewBox="0 0 320 70" class="sci-svg" aria-hidden="true">
     <rect x="20" y="18" width="${X(kcal) - 20}" height="18" rx="4" fill="#9DB7A3"/>
@@ -159,6 +161,7 @@ function floorBar(kcal, floor) {
     <line x1="${X(floor)}" y1="8" x2="${X(floor)}" y2="46" stroke="${TERRA}" stroke-width="2"/>
     <path d="M${X(floor) - 5} 46 h10" stroke="${TERRA}" stroke-width="2"/>
     <text x="${X(floor)}" y="62" text-anchor="middle" class="sv-k">plancher ${nf(floor)}</text>
+    ${example ? '<text x="300" y="62" text-anchor="end" class="sv-t">exemple</text>' : ''}
   </svg>`;
 }
 
@@ -302,10 +305,11 @@ export function openScienceSheet() {
 
   // v241-v242 : chaque planche = une phrase à retenir, puis des points courts regroupés, chacun avec ses sources
   const nb = x => x.replace(/(\d) (\d{3})/g, '$1\u00a0$2').replace(/(\d) (kcal|g|kg|h|jours|%|°C|points)/g, '$1\u00a0$2').replace(/ ([%:;?!])/g, '\u00a0$1');
-  const sec = (n, title, art, lede, points) => `<section class="sci-card">
+  const sec = (n, title, art, lede, points, intro = '') => `<section class="sci-card">
       <h3><span class="sci-n">${n}</span>${title}</h3>
       <p class="sci-lede">${nb(lede)}</p>
       ${art ? `<div class="sci-art">${art}</div>` : ''}
+      ${intro ? `<p class="sci-intro">${nb(intro)}</p>` : ''}
       <ul class="sci-pts">${points.map(([x, refs]) => `<li>${nb(x)}${refs ? pills(...refs) : ''}</li>`).join('')}</ul>
     </section>`;
   const kg = ok ? m.weight : 95;
@@ -318,12 +322,12 @@ export function openScienceSheet() {
       ["La moyenne limite l'erreur de chacune et reste proche de Mifflin-St Jeor, la formule la plus fiable dans les comparaisons. Aucune formule n'est exacte pour tout le monde : c'est pour ça que Hébé se recale ensuite sur tes pesées.", ['mifflin', 'frankenfield', 'oneill']],
       ["Pour passer à la dépense de la journée, on multiplie par un coefficient d'activité de 1,4 à 1,8, selon les niveaux de la FAO et de l'OMS.", ['fao']],
     ]),
-    sec(2, 'Ton assiette', ok ? macroBar(t) : '', "Assez de protéines pour le muscle, assez de lipides pour les hormones, et des glucides pour l'énergie. Les trois premières lignes parlent des protéines : leurs grammes sont des grammes de protéines.", [
+    sec(2, 'Ton assiette', macroBar(ok ? t : EX_T), "Assez de protéines pour le muscle, assez de lipides pour les hormones, et des glucides pour l'énergie.", [
       ...(ok ? [[`Pour toi : ${t.protein} g par jour, soit ${dec(t.protein / b.leanMass)} g par kg de masse maigre et ${dec(t.protein / m.weight)} g par kg de poids.`, null]] : []),
       ["La prise de muscle plafonne autour de 1,6 g par kg de poids, et les recommandations vont de 1,4 à 2,0 g par kg de poids. Ces repères sont donnés sur le poids total : Hébé part de la masse maigre, un choix pratique pour ne pas gonfler les besoins quand la masse grasse est élevée.", ['morton', 'nunes', 'jager']],
       ["En perte de gras, les profils déjà secs montent à au moins 2,3 g par kg de masse maigre, pour protéger leurs muscles.", ['helms14a']],
       ["Les lipides ne descendent jamais sous 20 % des calories pour un homme et 25 % pour une femme, et les glucides complètent le reste.", ['efsaF', 'efsaC']],
-    ]),
+    ], `Les ${ok ? 'trois' : 'deux'} premières lignes parlent des protéines : leurs grammes sont des grammes de protéines.`),
     sec(3, 'Des écarts mesurés', programScale(phase.pct), "Chaque programme s'écarte un peu de ta dépense, jamais beaucoup : c'est ce qui protège le muscle.", [
       ["Prise de muscle : un surplus de 5 à 10 %, le réglage prudent conseillé aux pratiquants avancés, quand les débutants peuvent monter jusqu'à 20 %. Une étude chez des pratiquants entraînés suggère que prendre du poids plus vite fait surtout gagner du gras.", ['iraki', 'helms23']],
       ["Recomposition : un léger déficit, réglé à 10 % par Hébé. Prendre du muscle et perdre du gras en même temps est possible, même entraîné, avec une musculation progressive et beaucoup de protéines.", ['barakat']],
@@ -333,7 +337,7 @@ export function openScienceSheet() {
       ["Un kilo de variation correspond à environ 7 700 kcal, mais cette règle fixe surestime la perte sur la durée, car le corps s'adapte.", ['wish', 'thomas', 'hall']],
       ["Hébé compare donc ton plan à la tendance de tes pesées sur deux à quatre semaines, en ignorant la première, où l'on perd surtout de l'eau. La correction est lissée et ne dépasse jamais 15 %.", null],
     ]),
-    sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : '', "Quel que soit le programme, tes calories ne descendent jamais sous un minimum.", [
+    sec(5, 'Un plancher, toujours', ok ? floorBar(t.kcal, det.floor) : floorBar(EX_T.kcal, 1500, true), "Quel que soit le programme, tes calories ne descendent jamais sous un minimum.", [
       ["Jamais moins que ta dépense au repos, ni moins de 1 200 kcal pour une femme et 1 500 kcal pour un homme : c'est le bas des apports conseillés en perte de poids par les recommandations de référence.", ['jensen']],
     ]),
     sec(6, 'Ton taux de gras, sans stress', fatFunnel(kg, ok ? b.bmr : 1980), "Aucune méthode simple ne mesure ton taux de gras au point près : Hébé est conçue pour qu'une erreur de quelques points pèse peu sur ta dépense au repos.", [
