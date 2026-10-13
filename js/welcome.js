@@ -3,7 +3,7 @@
 // v220 : une question par écran, quatre chapitres visibles en haut (Cuisine, Profil, Repas, Objectif), une phrase qui dit
 // pourquoi on demande, passage automatique à l'écran suivant sur les choix uniques, glissement entre les écrans.
 // Profil repris d'une ancienne version : foyer, prénom et profil, repas, puis les autres personnes éventuelles.
-// Personne ajoutée depuis Mon programme : seulement les étapes de cette personne.
+// Personne ajoutée depuis Mon profil : seulement les étapes de cette personne.
 
 import { el, toast } from './utils.js';
 import { askRestore } from './settings.js';

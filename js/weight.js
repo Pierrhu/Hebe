@@ -198,7 +198,7 @@ export function renderWeight() {
 
     <div class="wt-card wt-kcal">
       <div class="wt-row">
-        <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon programme : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées.'}</div></div>
+        <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon profil : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées.'}</div></div>
         <button class="wt-switch ${autoOn ? 'on' : ''}" role="switch" aria-checked="${autoOn}" aria-label="Ajustement automatique des calories" data-auto ${m.targets ? 'disabled' : ''}><i></i></button>
       </div>
       <div class="wt-kcal-v">${kcalNow}<small>kcal / jour</small></div>

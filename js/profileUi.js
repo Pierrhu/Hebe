@@ -1,4 +1,4 @@
-// profileUi.js — Morceaux d'interface partagés entre « Mon programme » et l'accueil.
+// profileUi.js — Morceaux d'interface partagés entre « Mon profil » et l'accueil.
 // Même rendu aux deux endroits : mesures, prénom et sexe, activité, cartes des programmes.
 
 import { openScienceSheet } from './science.js';
@@ -33,7 +33,7 @@ export function measuresGrid(p) {
   </div>`;
 }
 
-// v252 : la Fiche Hébé à remplir pendant l'accueil (mêmes cases que dans Mon programme)
+// v252 : la Fiche Hébé à remplir pendant l'accueil (mêmes cases que dans Mon profil)
 const MEAS = {
   age:     { label: 'Âge',          title: 'Ton âge',         unit: 'ans', step: 1,    min: 18,  max: 99 },
   height:  { label: 'Taille',       title: 'Ta taille',       unit: 'm',   step: 0.01, min: 1.3, max: 2.3 },

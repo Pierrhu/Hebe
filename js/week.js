@@ -62,7 +62,7 @@ export function renderWeek() {
     <div class="hb-top">
       <div><div class="brand-word">Héb<span class="brand-accent">é</span></div><div class="brand-tag">Bien manger sans y penser</div></div>
       <div class="hb-top-actions">
-        <button class="hb-avatar" data-go="settings" aria-label="Mon programme">${avatar(getActiveMember().sex)}</button>
+        <button class="hb-avatar" data-go="settings" aria-label="Mon profil">${avatar(getActiveMember().sex)}</button>
       </div>
     </div>
     ${whoSwitch()}`;
@@ -408,6 +408,7 @@ function bindGenerator(root, onDone) {
       const { entriesBy } = generateWeek({ members, nextWeek: next, proteins: selProteins, startFrom: next ? 0 : todayIdx() + 1 });
       Object.entries(entriesBy).forEach(([mid, entries]) => Object.values(entries).forEach(en => saveEntry(en, mid)));
       onDone();
+      window.scrollTo(0, 0); // v273 : la semaine s'affiche depuis le haut, tuto compris
       showTutoOnce(hadPlan);
     }, 50);
   });

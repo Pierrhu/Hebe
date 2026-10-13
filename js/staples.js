@@ -1,5 +1,5 @@
 // staples.js — Riz et pâtes complets ou classiques (v171)
-// Les recettes sont écrites au riz complet et aux pâtes complètes. Selon le réglage du foyer (Mon programme → Riz et pâtes),
+// Les recettes sont écrites au riz complet et aux pâtes complètes. Selon le réglage du foyer (Mon profil → Riz et pâtes),
 // ou le choix fait sur la fiche d'un plat en mode « plat par plat », on repasse au riz blanc et aux pâtes classiques :
 // ingrédient, valeurs nutritionnelles, nom, étapes (eau et temps de cuisson) et temps affiché.
 // Appliqué en dernier, après l'équipement (adapt.js) et le régime (diet.js), pour couvrir aussi le riz

@@ -15,7 +15,7 @@ import { stapleKind, isWhole } from './staples.js';
 import { applyDiet } from './diet.js';
 import { applyEquipment, getEquipment } from './adapt.js';
 
-// Choix complet / classique sur la fiche, en mode « plat par plat » (Mon programme → Riz et pâtes)
+// Choix complet / classique sur la fiche, en mode « plat par plat » (Mon profil → Riz et pâtes)
 function stapleBlock(recipe) {
   const kind = stapleKind(recipe);
   if (getStaples() !== 'plat' || !kind) return '';

@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T13:37:13.379Z
+// 2026-10-13T13:45:36.352Z
 
 
 // ──────────────────────────────────────────────
@@ -1717,7 +1717,7 @@ applyExtras();
 
 const getDinners  = () => RECIPES.filter(r => r.category === 'dinner');
 const getLunches  = () => RECIPES.filter(r => r.category === 'lunch');
-// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon programme)
+// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon profil)
 let SOUPS_ON = false;
 const setSoupsOn = v => { SOUPS_ON = !!v; };
 const isSoup = r => !!r && (r.tags || []).includes('soupe');
@@ -2621,7 +2621,7 @@ function countPossible(eq) {
 // js/staples.js
 // ──────────────────────────────────────────────
 // staples.js — Riz et pâtes complets ou classiques (v171)
-// Les recettes sont écrites au riz complet et aux pâtes complètes. Selon le réglage du foyer (Mon programme → Riz et pâtes),
+// Les recettes sont écrites au riz complet et aux pâtes complètes. Selon le réglage du foyer (Mon profil → Riz et pâtes),
 // ou le choix fait sur la fiche d'un plat en mode « plat par plat », on repasse au riz blanc et aux pâtes classiques :
 // ingrédient, valeurs nutritionnelles, nom, étapes (eau et temps de cuisson) et temps affiché.
 // Appliqué en dernier, après l'équipement (adapt.js) et le régime (diet.js), pour couvrir aussi le riz
@@ -4973,7 +4973,7 @@ function renderNav() {
 // Le sélecteur de portions recalcule ingrédients ET macros en direct.
 
 
-// Choix complet / classique sur la fiche, en mode « plat par plat » (Mon programme → Riz et pâtes)
+// Choix complet / classique sur la fiche, en mode « plat par plat » (Mon profil → Riz et pâtes)
 function stapleBlock(recipe) {
   const kind = stapleKind(recipe);
   if (getStaples() !== 'plat' || !kind) return '';
@@ -5232,7 +5232,7 @@ function renderWeek() {
     <div class="hb-top">
       <div><div class="brand-word">Héb<span class="brand-accent">é</span></div><div class="brand-tag">Bien manger sans y penser</div></div>
       <div class="hb-top-actions">
-        <button class="hb-avatar" data-go="settings" aria-label="Mon programme">${avatar(getActiveMember().sex)}</button>
+        <button class="hb-avatar" data-go="settings" aria-label="Mon profil">${avatar(getActiveMember().sex)}</button>
       </div>
     </div>
     ${whoSwitch()}`;
@@ -5578,6 +5578,7 @@ function bindGenerator(root, onDone) {
       const { entriesBy } = generateWeek({ members, nextWeek: next, proteins: selProteins, startFrom: next ? 0 : todayIdx() + 1 });
       Object.entries(entriesBy).forEach(([mid, entries]) => Object.values(entries).forEach(en => saveEntry(en, mid)));
       onDone();
+      window.scrollTo(0, 0); // v273 : la semaine s'affiche depuis le haut, tuto compris
       showTutoOnce(hadPlan);
     }, 50);
   });
@@ -7500,7 +7501,7 @@ function openScienceSheet() {
 // ──────────────────────────────────────────────
 // js/profileUi.js
 // ──────────────────────────────────────────────
-// profileUi.js — Morceaux d'interface partagés entre « Mon programme » et l'accueil.
+// profileUi.js — Morceaux d'interface partagés entre « Mon profil » et l'accueil.
 // Même rendu aux deux endroits : mesures, prénom et sexe, activité, cartes des programmes.
 
 
@@ -7529,7 +7530,7 @@ function measuresGrid(p) {
   </div>`;
 }
 
-// v252 : la Fiche Hébé à remplir pendant l'accueil (mêmes cases que dans Mon programme)
+// v252 : la Fiche Hébé à remplir pendant l'accueil (mêmes cases que dans Mon profil)
 const MEAS = {
   age:     { label: 'Âge',          title: 'Ton âge',         unit: 'ans', step: 1,    min: 18,  max: 99 },
   height:  { label: 'Taille',       title: 'Ta taille',       unit: 'm',   step: 0.01, min: 1.3, max: 2.3 },
@@ -8060,7 +8061,7 @@ function openProtocolSheet(profile, pid, { isCurrent = false, onChoose = null } 
 // ──────────────────────────────────────────────
 // js/settings.js
 // ──────────────────────────────────────────────
-// settings.js — « Mon programme » : fiche de la personne, activité, programme et objectifs
+// settings.js — « Mon profil » : fiche de la personne, activité, programme et objectifs
 
 
 function renderSettings() {
@@ -8099,7 +8100,7 @@ function renderSettings() {
     view.innerHTML = `
       <div class="page-head">
         <button class="hb-back round-back" aria-label="Retour à ma semaine"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <div class="hb-page-title">Mon programme</div>
+        <div class="hb-page-title">Mon profil</div>
       </div>
       ${whoSwitch()}
       <p class="pg-hello"><b>Bienvenue dans ton programme${member.name ? ` ${esc(member.name)}` : ''} !</b><span>C'est ici que tu retrouveras ta fiche, tes repas et ton objectif. Touche une information pour la modifier : tes besoins se recalculent tout seuls.</span></p>
@@ -8940,7 +8941,7 @@ function renderWeight() {
 
     <div class="wt-card wt-kcal">
       <div class="wt-row">
-        <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon programme : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées.'}</div></div>
+        <div><h2>Calories ajustées</h2><div class="wt-m">${m.targets ? "Réglées à la main dans Mon profil : Hébé n'y touche pas." : 'Hébé recale ton objectif selon tes pesées.'}</div></div>
         <button class="wt-switch ${autoOn ? 'on' : ''}" role="switch" aria-checked="${autoOn}" aria-label="Ajustement automatique des calories" data-auto ${m.targets ? 'disabled' : ''}><i></i></button>
       </div>
       <div class="wt-kcal-v">${kcalNow}<small>kcal / jour</small></div>
@@ -9023,7 +9024,7 @@ window._weighDue = () => { try { return weighDue(getActiveMember()); } catch { r
 // v220 : une question par écran, quatre chapitres visibles en haut (Cuisine, Profil, Repas, Objectif), une phrase qui dit
 // pourquoi on demande, passage automatique à l'écran suivant sur les choix uniques, glissement entre les écrans.
 // Profil repris d'une ancienne version : foyer, prénom et profil, repas, puis les autres personnes éventuelles.
-// Personne ajoutée depuis Mon programme : seulement les étapes de cette personne.
+// Personne ajoutée depuis Mon profil : seulement les étapes de cette personne.
 
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)

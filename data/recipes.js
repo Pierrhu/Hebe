@@ -1364,7 +1364,7 @@ applyExtras();
 
 export const getDinners  = () => RECIPES.filter(r => r.category === 'dinner');
 export const getLunches  = () => RECIPES.filter(r => r.category === 'lunch');
-// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon programme)
+// Soupes (v208) : proposées seulement si le foyer a choisi « Soupes : oui » (réglé au démarrage et dans Mon profil)
 let SOUPS_ON = false;
 export const setSoupsOn = v => { SOUPS_ON = !!v; };
 export const isSoup = r => !!r && (r.tags || []).includes('soupe');

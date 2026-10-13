@@ -1,4 +1,4 @@
-// settings.js — « Mon programme » : fiche de la personne, activité, programme et objectifs
+// settings.js — « Mon profil » : fiche de la personne, activité, programme et objectifs
 import { applyDiet } from './diet.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import { toast, openSheet, closeSheet, el } from './utils.js';
@@ -51,7 +51,7 @@ export function renderSettings() {
     view.innerHTML = `
       <div class="page-head">
         <button class="hb-back round-back" aria-label="Retour à ma semaine"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <div class="hb-page-title">Mon programme</div>
+        <div class="hb-page-title">Mon profil</div>
       </div>
       ${whoSwitch()}
       <p class="pg-hello"><b>Bienvenue dans ton programme${member.name ? ` ${esc(member.name)}` : ''} !</b><span>C'est ici que tu retrouveras ta fiche, tes repas et ton objectif. Touche une information pour la modifier : tes besoins se recalculent tout seuls.</span></p>
