@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T07:17:35.529Z
+// 2026-10-13T07:32:55.270Z
 
 
 // ──────────────────────────────────────────────
@@ -7103,6 +7103,11 @@ const SRC = {
   kim: ['Kim KK, Kang JH, Kim EM. Updated meta-analysis of studies from 2011 to 2021 comparing the effectiveness of intermittent energy restriction and continuous energy restriction. J Obes Metab Syndr. 2022;31(3):230-244.', 'https://doi.org/10.7570/jomes22050'],
   woolcott: ['Woolcott OO, Bergman RN. Relative fat mass (RFM) as a new estimator of whole-body fat percentage: a cross-sectional study in American adult individuals. Sci Rep. 2018;8(1):10980.', 'https://doi.org/10.1038/s41598-018-29362-1'],
   palumbo: ['Palumbo AM, et al. Validity of non-traditional measures of obesity compared to total body fat across the life course: a systematic review and meta-analysis. Obes Rev. 2025;26(6):e13894.', 'https://doi.org/10.1111/obr.13894'],
+  spf: ["Santé publique France. Recommandations relatives à l'alimentation, à l'activité physique et à la sédentarité pour les adultes. 2019.", 'https://www.santepubliquefrance.fr/determinants-de-sante/nutrition-et-activite-physique/documents/rapport-synthese/recommandations-relatives-a-l-alimentation-a-l-activite-physique-et-a-la-sedentarite-pour-les-adultes'],
+  wcrf: ['World Cancer Research Fund. Limit consumption of red and processed meat. Cancer Prevention Recommendations, Third Expert Report. 2018.', 'https://www.wcrf.org/research-policy/evidence-for-our-recommendations/limit-red-processed-meat/'],
+  iarc: ['Bouvard V, Loomis D, Guyton KZ, et al. Carcinogenicity of consumption of red and processed meat. Lancet Oncol. 2015;16(16):1599-1600.', 'https://doi.org/10.1016/S1470-2045(15)00444-1'],
+  ansesFish: ['Anses. Manger du poisson : pourquoi ? comment ?', 'https://www.anses.fr/fr/article/manger-du-poisson-pourquoi-comment'],
+  efsaP: ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for protein. EFSA J. 2012;10(2):2557.', 'https://doi.org/10.2903/j.efsa.2012.2557'],
   kyle: ['Kyle UG, Bosaeus I, De Lorenzo AD, et al. Bioelectrical impedance analysis, part I: review of principles and methods. Clin Nutr. 2004;23(5):1226-1243.', 'https://doi.org/10.1016/j.clnu.2004.06.004'],
 };
 
@@ -7236,6 +7241,19 @@ function batchWeek() {
   </svg>`;
 }
 
+// une semaine de 14 repas (midi et soir) : la place que prennent le bœuf et le poisson
+function weekMeals() {
+  const days = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'];
+  const kind = (d, m) => (d <= 1 && m === 0 ? 'fish' : (d === 2 && m === 1) || (d === 4 && m === 0) || (d === 5 && m === 1) || (d === 6 && m === 0) ? 'beef' : 'other');
+  const col = { beef: TERRA, fish: '#6F9FC9', other: '#DCE8DF' };
+  return `<svg viewBox="0 0 320 114" class="sci-svg" aria-hidden="true">
+    ${days.map((d, i) => [0, 1].map(m => { const k = kind(i, m); return `<rect x="${44 + i * 38}" y="${8 + m * 26}" width="30" height="20" rx="5" fill="${col[k]}" ${k === 'other' ? `stroke="${INK}" stroke-opacity=".25"` : ''}/>`; }).join('') + `<text x="${59 + i * 38}" y="66" text-anchor="middle" class="sv-t">${d}</text>`).join('')}
+    <text x="38" y="22" text-anchor="end" class="sv-t">midi</text><text x="38" y="48" text-anchor="end" class="sv-t">soir</text>
+    <rect x="44" y="80" width="12" height="10" rx="3" fill="${TERRA}"/><text x="62" y="89" class="sv-l">bœuf, un plat, 4 repas au plus</text>
+    <rect x="44" y="98" width="12" height="10" rx="3" fill="#6F9FC9"/><text x="62" y="107" class="sv-l">poisson frais, dans les 2 premiers jours</text>
+  </svg>`;
+}
+
 // erreur sur la masse grasse : ce qu'elle change sur ta dépense au repos, avec une formule seule puis avec la moyenne
 function fatFunnel(kg, rmr) {
   const km = 0.05 * kg * 21.6, avg = km / 2, span = 250;
@@ -7342,7 +7360,14 @@ function openScienceSheet() {
       ["Réchauffe jusqu'à 74 °C : couvre, remue à mi-temps et vérifie que c'est chaud partout, car le micro-ondes laisse des zones froides.", ['fsis', 'foodsafety']],
       ["Le riz cuit peut contenir des spores de Bacillus cereus qui survivent à la cuisson. S'il reste tiède, elles produisent une toxine que le réchauffage ne détruit pas : d'où le refroidissement rapide.", ['ansesBc', 'ansesFiche']],
     ]),
-    sec(9, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
+    sec(9, 'Des limites raisonnables', weekMeals(), "Hébé suit les repères officiels de santé comme des recommandations. Quand un réglage les dépasse un peu, on te le dit.", [
+      ["Viande rouge : un seul plat de bœuf par semaine. Le repère est de 500 g de viande hors volaille par semaine, soit 3 ou 4 steaks, ou 350 à 500 g cuits. Pour les gros appétits, les 4 repas de ce plat peuvent le dépasser : remplace-en un si tu veux t'y tenir.", ['spf', 'wcrf', 'iarc']],
+      ["Charcuterie (jambon, blanc de volaille en tranches) : 160 g par semaine au plus, une barquette de 4 tranches, juste au-dessus du repère de 150 g.", ['spf']],
+      ["Poisson : le repère est de 2 fois par semaine, dont un poisson gras, en variant les espèces. Hébé fait manger le poisson frais dans les 2 jours qui suivent la cuisson, par prudence.", ['spf', 'ansesFish']],
+      ["Féculents : une même famille, comme le riz ou les pâtes, revient au plus 2 ou 3 fois par semaine, pour varier. Les féculents restent conseillés chaque jour, dont au moins un complet.", ['spf']],
+      ["Protéines : il n'existe pas de limite haute officielle, et jusqu'à environ 1,7 g par kg de poids est considéré comme sûr. Les profils secs en perte de gras montent un peu au-dessus, comme le recommandent les études sportives, pour protéger leur muscle.", ['efsaP', 'helms14a']],
+    ]),
+    sec(10, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
       ["Les tables Ciqual de l'Anses, complétées par la base FoodData Central de l'USDA.", ['ciqual', 'fdc']],
     ]),
   ].join('');
