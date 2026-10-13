@@ -58,7 +58,6 @@ const SRC = {
   wcrf: ['World Cancer Research Fund. Limit consumption of red and processed meat. Cancer Prevention Recommendations, Third Expert Report. 2018.', 'https://www.wcrf.org/research-policy/evidence-for-our-recommendations/limit-red-processed-meat/'],
   iarc: ['Bouvard V, Loomis D, Guyton KZ, et al. Carcinogenicity of consumption of red and processed meat. Lancet Oncol. 2015;16(16):1599-1600.', 'https://doi.org/10.1016/S1470-2045(15)00444-1'],
   ansesFish: ['Anses. Manger du poisson : pourquoi ? comment ?', 'https://www.anses.fr/fr/article/manger-du-poisson-pourquoi-comment'],
-  efsaP: ['EFSA NDA Panel. Scientific Opinion on Dietary Reference Values for protein. EFSA J. 2012;10(2):2557.', 'https://doi.org/10.2903/j.efsa.2012.2557'],
   kyle: ['Kyle UG, Bosaeus I, De Lorenzo AD, et al. Bioelectrical impedance analysis, part I: review of principles and methods. Clin Nutr. 2004;23(5):1226-1243.', 'https://doi.org/10.1016/j.clnu.2004.06.004'],
 };
 
@@ -316,7 +315,6 @@ export function openScienceSheet() {
       ["Charcuterie (jambon, blanc de volaille en tranches) : 160 g par semaine au plus, une barquette de 4 tranches, juste au-dessus du repère de 150 g.", ['spf']],
       ["Poisson : le repère est de 2 fois par semaine, dont un poisson gras, en variant les espèces. Hébé fait manger le poisson frais dans les 2 jours qui suivent la cuisson, par prudence.", ['spf', 'ansesFish']],
       ["Féculents : une même famille, comme le riz ou les pâtes, revient au plus 2 ou 3 fois par semaine, pour varier. Les féculents restent conseillés chaque jour, dont au moins un complet.", ['spf']],
-      ["Protéines : il n'existe pas de limite haute officielle, et jusqu'à environ 1,7 g par kg de poids est considéré comme sûr. Les profils secs en perte de gras montent un peu au-dessus, comme le recommandent les études sportives, pour protéger leur muscle.", ['efsaP', 'helms14a']],
     ]),
     sec(10, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
       ["Les tables Ciqual de l'Anses, complétées par la base FoodData Central de l'USDA.", ['ciqual', 'fdc']],
