@@ -221,6 +221,20 @@ function weekMeals() {
   </svg>`;
 }
 
+// petites icônes au trait pour les compléments
+const ic = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const SP_ICONS = {
+  sun: ic('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+  fish: ic('<path d="M3 12c3-5 9-6 13-3l5-3v12l-5-3c-4 3-10 2-13-3z"/><circle cx="8" cy="11" r=".8" fill="currentColor"/>'),
+  drop: ic('<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>'),
+  bolt: ic('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'),
+  cup: ic('<path d="M4 8h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17M8 2v3M12 2v3"/>'),
+  shake: ic('<path d="M7 7h10l-1.5 14h-7z"/><path d="M6 4h12v3H6zM10 11h4"/>'),
+  baby: ic('<circle cx="12" cy="8" r="4"/><path d="M5 21c1-4 4-6 7-6s6 2 7 6"/>'),
+  x: ic('<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>'),
+  leaf: ic('<path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15"/><path d="M5 19l8-8"/>'),
+};
+
 // ce que couvrent les menus d'Hébé, rapporté au repère (moyenne des menus testés)
 function coverBars() {
   const rows = [['vitamine D', 3, 3, 15, 'µg'], ['fibres', 26, 38, 30, 'g'], ['fer, femmes', 12, 12, 11, 'mg']];
@@ -347,14 +361,28 @@ export function openScienceSheet() {
       ["Poisson : le repère est de 2 fois par semaine, dont un poisson gras, en variant les espèces. Hébé fait manger le poisson frais dans les 2 jours qui suivent la cuisson, par prudence.", ['spf', 'ansesFish']],
       ["Féculents : une même famille, comme le riz ou les pâtes, revient au plus 2 ou 3 fois par semaine, pour varier. Les féculents restent conseillés chaque jour, dont au moins un complet.", ['spf']],
     ]),
-    sec(10, 'Ce que l\'assiette ne couvre pas', coverBars(), "Tes menus couvrent l'essentiel, pas tout. Voici les compléments qui ont fait leurs preuves, à qui ils servent, et ce qu'ils n'apportent pas. Demande l'avis d'un professionnel de santé avant d'en prendre.", [
-      ["Vitamine D : le repère est de 15 µg par jour, et l'alimentation en apporte environ 3, tes menus aussi. Expose-toi au soleil 15 à 20 minutes en fin de matinée ou l'après-midi. Un complément se prend seulement sur prescription, car le surdosage est possible. En prévention, il n'a réduit ni les cancers ni les accidents cardiovasculaires ; avec du calcium, il diminue un peu les fractures de hanche chez les personnes âgées.", ['ansesVitD', 'vital', 'avenell']],
-      ["Oméga-3 : le repère est de 500 mg d'EPA et de DHA par jour, apportés par les poissons gras. Tes menus n'en servent qu'une semaine sur deux : ajoute une boîte de sardines ou de maquereau. En capsules, ils changent peu ou pas le risque cardiovasculaire.", ['ansesLip', 'abdelhamid', 'rimm']],
-      ["Fer et fibres, pour les femmes : tes menus apportent environ 12 mg de fer, au-dessus des 11 mg conseillés si tes règles sont faibles à modérées, mais sous les 16 mg si elles sont abondantes. Parles-en à ton médecin, qui peut vérifier ton stock de fer : n'en prends pas de toi-même. Avec environ 26 g de fibres, tes menus font comme ceux de l'Anses, et les bénéfices sont nets dès 25 g.", ['ansesRef', 'ansesPnns', 'nihIron', 'reynolds']],
-      ["Créatine, si tu fais de la musculation : c'est le complément le mieux prouvé. Avec l'entraînement, elle ajoute en moyenne 1,1 kg de masse maigre et de la force, avec un effet net chez les hommes et moins clair chez les femmes. 3 à 5 g par jour. Elle fait garder un peu d'eau, jusqu'à 1 kg sur la balance : Hébé suit la tendance de tes pesées, pas un jour isolé.", ['kreider', 'delpino', 'wang']],
-      ["Caféine, avant ta séance : 3 à 6 mg par kg de poids, souvent une heure avant, donne un petit gain de force et d'endurance. Pas plus de 400 mg par jour, 200 mg si tu es enceinte, et pas trop tard pour ne pas gêner ton sommeil. La whey, elle, reste un moyen pratique d'atteindre tes protéines, pas un produit magique.", ['guest', 'efsaCaf', 'jager']],
-      ["Projet de grossesse : 0,4 mg d'acide folique par jour, au moins 4 semaines avant la conception et 8 semaines après, pour protéger le bébé. Les multivitamines, en revanche, n'ont pas prouvé qu'ils protègent du cœur ou du cancer, et les compléments de bêta-carotène et de vitamine E sont déconseillés.", ['hasFol', 'uspstf']],
-    ]),
+    `<section class="sci-card sci-supp">
+      <h3><span class="sci-n">10</span>Ce que l'assiette ne couvre pas</h3>
+      <p class="sci-lede">${nb("Tes menus font le gros du travail. Pour le reste, voici ce qui marche vraiment, et ce qui ne sert à rien.")}</p>
+      <div class="sci-art">${coverBars()}</div>
+      <div class="sp-list">
+        ${[
+          ['sun', 'Vitamine D', 'Le soleil d\'abord', 'warn', "15 à 20 minutes dehors en fin de matinée ou l'après-midi. Tes menus en apportent 3 µg sur 15 : en complément, seulement sur prescription, car on peut en prendre trop.", ['ansesVitD', 'vital', 'avenell']],
+          ['fish', 'Oméga-3', 'Mange du poisson gras', 'good', "Une boîte de sardines ou de maquereau en plus par semaine, et c'est réglé. En capsules, ils ne changent presque rien pour le cœur.", ['ansesLip', 'abdelhamid', 'rimm']],
+          ['drop', 'Fer, pour les femmes', 'Prise de sang d\'abord', 'warn', "12 mg dans tes menus : assez si tes règles sont légères, un peu juste si elles sont abondantes. Ton médecin vérifie ton stock avant tout complément.", ['ansesRef', 'ansesPnns', 'nihIron']],
+          ['leaf', 'Fibres', 'Rien à ajouter', 'good', "26 à 38 g dans tes menus, comme ceux de l'Anses : les bénéfices pour le cœur et l'intestin sont nets dès 25 g.", ['ansesPnns', 'reynolds']],
+          ['bolt', 'Créatine', 'Le mieux prouvé', 'best', "3 à 5 g par jour avec la musculation : en moyenne 1,1 kg de muscle en plus et de la force. Elle fait garder un peu d'eau, alors pas de panique si la balance monte d'un kilo.", ['kreider', 'delpino', 'wang']],
+          ['cup', 'Caféine', 'Un coup de pouce', 'good', "3 à 6 mg par kg une heure avant ta séance. 400 mg par jour au maximum, 200 mg si tu es enceinte, et pas trop tard pour bien dormir.", ['guest', 'efsaCaf']],
+          ['shake', 'Whey', 'Pratique, pas magique', 'good', "Une façon simple d'atteindre tes protéines quand l'assiette ne suffit pas.", ['jager']],
+          ['baby', 'Projet bébé', 'Acide folique', 'warn', "0,4 mg par jour, au moins 4 semaines avant la conception. Parles-en à ton médecin ou à ta sage-femme.", ['hasFol']],
+          ['x', 'Multivitamines', 'Inutile', 'no', "Aucune preuve qu'elles protègent du cœur ou du cancer. Bêta-carotène et vitamine E en complément : à éviter.", ['uspstf']],
+        ].map(([ic, name, verdict, tone, text, refs]) => `<div class="sp sp-${tone}">
+          <span class="sp-ic" aria-hidden="true">${SP_ICONS[ic]}</span>
+          <div class="sp-body"><div class="sp-top"><b>${name}</b><em>${verdict}</em></div><p>${nb(text)}${pills(...refs)}</p></div>
+        </div>`).join('')}
+      </div>
+      <p class="sp-note">Demande toujours l'avis d'un professionnel de santé avant de prendre un complément.</p>
+    </section>`,
     sec(11, 'Des aliments bien mesurés', '', "Toutes les valeurs nutritionnelles de tes recettes viennent de tables officielles.", [
       ["Les tables Ciqual de l'Anses, complétées par la base FoodData Central de l'USDA.", ['ciqual', 'fdc']],
     ]),
