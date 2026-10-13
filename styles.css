@@ -1918,3 +1918,9 @@ button.wl-ch:disabled { cursor: default; }
 .bf-sheet .bfm-sil svg { width: 90px; height: auto; }
 .bf-sheet .bfm-sil span { font-size: 13px; color: var(--text-2); }
 .bfm-small { margin: 4px 0 14px; text-align: center; font-size: 13px; color: var(--text-2); }
+
+/* v252 : la Fiche Hébé à remplir pendant l'accueil */
+.welcome-view .idf { margin-top: 4px; }
+.idf-f { text-align: left; }
+.idf-static { pointer-events: none; }
+.idf-empty b { color: #C8704F; font-weight: 600; font-size: 14px; }

@@ -16,7 +16,7 @@ import { saveTargets, getTargetsFor } from '../data/user.js';
 import { openBodyfatGuide } from './bodyfat.js';
 import {
   measuresGrid, bodyfatButton, identityBlock, activityList, protocolCards, bindMeasures, esc, avatar,
-  householdCards, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
+  householdCards, idCard, openMeasureSheet, MEAS_KEYS, formulaBlock, foodBlock, repeatBlock, openProtocolSheet, equipmentBlock,
 } from './profileUi.js';
 
 // Point de départ des boutons − et + quand une case est encore vide (rien n'est enregistré tant qu'on n'y touche pas)
@@ -152,9 +152,8 @@ export function renderWelcome(onDone) {
       case 'measures': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les mesures de ${esc(m.name)}` : 'Tes mesures'}</h1>
-        ${sub('Elles servent à calculer les portions au gramme près. Tu pourras les changer à tout moment.')}
-        ${measuresGrid(p)}
-        ${bodyfatButton(m.sex)}
+        ${sub('Touche chaque case pour la remplir. Elles servent à calculer tes portions au gramme près.')}
+        ${idCard(m, p, { num: getMembers().findIndex(x => x.id === m.id) + 1 })}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -255,7 +254,7 @@ export function renderWelcome(onDone) {
     if (s.type === 'measures') {
       const pr = getProfile();
       const bad = Object.keys(RANGES).find(k => pr[k] == null || pr[k] < RANGES[k].min || pr[k] > RANGES[k].max);
-      if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures pour continuer.' : RANGES[bad].msg, `.pcell-input[data-key="${bad}"]`);
+      if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures de ta fiche pour continuer.' : RANGES[bad].msg, `[data-meas="${bad}"]`);
     }
     if (s.type === 'activity' && !getMember(m.id).activity) return fail('Choisis le quotidien qui ressemble le plus à une semaine habituelle.');
     if (s.type === 'rhythm' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
@@ -320,6 +319,13 @@ export function renderWelcome(onDone) {
     const getValue = (k, fallback) => getProfile()[k] ?? (fallback ? null : start()[k]);
     getValue.allowEmpty = true;
     bindMeasures(view, getValue, (k, v) => { saveProfile({ [k]: v }); error = ''; render(); });
+    // v252 : fiche à remplir, une case après l'autre
+    const openMeas = k => openMeasureSheet(k, getProfile()[k], getMember(m.id).sex, start()[k], v => {
+      saveProfile({ [k]: v }); error = ''; render();
+      const nextK = MEAS_KEYS.find(x => getProfile()[x] == null);
+      if (nextK) setTimeout(() => openMeas(nextK), 220);
+    });
+    view.querySelectorAll('[data-meas]').forEach(b => b.addEventListener('click', () => openMeas(b.dataset.meas)));
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
       openBodyfatGuide(getProfile().bodyfat ?? start().bodyfat, v => { saveProfile({ bodyfat: v }); error = ''; render(); }, getMember(m.id).sex));
     // quotidien

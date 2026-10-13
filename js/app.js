@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-13T07:08:36.244Z
+// 2026-10-13T07:14:03.846Z
 
 
 // ──────────────────────────────────────────────
@@ -7407,6 +7407,52 @@ function measuresGrid(p) {
   </div>`;
 }
 
+// v252 : la Fiche Hébé à remplir pendant l'accueil (mêmes cases que dans Mon programme)
+const MEAS = {
+  age:     { label: 'Âge',          title: 'Ton âge',         unit: 'ans', step: 1,    min: 18,  max: 99 },
+  height:  { label: 'Taille',       title: 'Ta taille',       unit: 'm',   step: 0.01, min: 1.3, max: 2.3 },
+  weight:  { label: 'Poids',        title: 'Ton poids',       unit: 'kg',  step: 0.5,  min: 35,  max: 250 },
+  bodyfat: { label: 'Masse grasse', title: 'Ta masse grasse', unit: '%',   step: 1,    min: 5,   max: 60 },
+};
+const MEAS_KEYS = Object.keys(MEAS);
+const mfmt = v => String(Math.round(v * 100) / 100).replace('.', ',');
+function idCard(member, p, { band = 'Fiche Hébé', num = 1 } = {}) {
+  const f = k => `<button class="idf-f ${p[k] == null ? 'idf-empty' : ''}" data-meas="${k}"><span>${MEAS[k].label}</span><b>${p[k] == null ? 'À remplir' : `${k === 'height' ? p[k].toFixed(2).replace('.', ',') : mfmt(p[k])} ${MEAS[k].unit}`}</b></button>`;
+  return `<div class="idf">
+    <div class="idf-band"><span>${band}</span><span>N° ${String(num).padStart(3, '0')}</span></div>
+    <div class="idf-body">
+      <div class="idf-photo">${idPhoto(member.sex)}</div>
+      <div class="idf-fields">
+        <div class="idf-f idf-full idf-static"><span>Prénom</span><b class="idf-name">${esc(member.name || '')}</b></div>
+        ${MEAS_KEYS.map(f).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+// panneau de saisie d'une mesure ; onSave(valeur) puis, s'il en reste, la suivante
+function openMeasureSheet(k, value, sex, start, onSave) {
+  const E = MEAS[k]; const v0 = value ?? start;
+  openSheet(`<div class="sheet-handle"></div><div class="hb-sheet-pad edit-sheet"><div class="hb-h2">${E.title}</div>
+    <div class="edit-step"><button class="edit-btn" data-d="-1" aria-label="Moins">−</button>
+      <label class="edit-val"><input class="edit-input" inputmode="decimal" value="${mfmt(v0)}"><span>${E.unit}</span></label>
+      <button class="edit-btn" data-d="1" aria-label="Plus">+</button></div>
+    ${k === 'bodyfat' ? bodyfatButton(sex) : ''}
+    <button class="hb-btn hb-btn-primary edit-save">Enregistrer</button></div>`);
+  const sh = document.getElementById('sheet'), inp = sh.querySelector('.edit-input');
+  const read = () => { let x = parseFloat(inp.value.replace(',', '.')); if (k === 'height' && x > 3) x = x / 100; return x; };
+  inp.addEventListener('focus', () => inp.select());
+  sh.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', () => {
+    const x = isNaN(read()) ? v0 : read();
+    inp.value = mfmt(Math.min(E.max, Math.max(E.min, Math.round((x + E.step * +b.dataset.d) * 100) / 100)));
+  }));
+  sh.querySelector('.bf-guide-btn')?.addEventListener('click', () => { closeSheet(); openBodyfatGuide(value ?? start, b => onSave(b), sex); });
+  sh.querySelector('.edit-save').addEventListener('click', () => {
+    const x = read();
+    if (isNaN(x) || x < E.min || x > E.max) { sh.querySelector('.edit-err')?.remove(); sh.querySelector('.edit-step').insertAdjacentHTML('afterend', `<p class="wl-error edit-err">Indique une valeur entre ${mfmt(E.min)} et ${mfmt(E.max)} ${E.unit}.</p>`); return; }
+    closeSheet(); onSave(Math.round(x * 100) / 100);
+  });
+}
+
 function bodyfatButton(sex) {
   sex = sex || 'male';
   return `<button class="bf-guide-btn">
@@ -8931,9 +8977,8 @@ function renderWelcome(onDone) {
       case 'measures': return `
         ${top()}${who()}${kick()}
         <h1 class="wl-title">${getMembers().length > 1 && m.name ? `Les mesures de ${esc(m.name)}` : 'Tes mesures'}</h1>
-        ${sub('Elles servent à calculer les portions au gramme près. Tu pourras les changer à tout moment.')}
-        ${measuresGrid(p)}
-        ${bodyfatButton(m.sex)}
+        ${sub('Touche chaque case pour la remplir. Elles servent à calculer tes portions au gramme près.')}
+        ${idCard(m, p, { num: getMembers().findIndex(x => x.id === m.id) + 1 })}
         ${errBox()}
         ${cta('Continuer')}`;
 
@@ -9034,7 +9079,7 @@ function renderWelcome(onDone) {
     if (s.type === 'measures') {
       const pr = getProfile();
       const bad = Object.keys(RANGES).find(k => pr[k] == null || pr[k] < RANGES[k].min || pr[k] > RANGES[k].max);
-      if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures pour continuer.' : RANGES[bad].msg, `.pcell-input[data-key="${bad}"]`);
+      if (bad) return fail(pr[bad] == null ? 'Remplis les quatre mesures de ta fiche pour continuer.' : RANGES[bad].msg, `[data-meas="${bad}"]`);
     }
     if (s.type === 'activity' && !getMember(m.id).activity) return fail('Choisis le quotidien qui ressemble le plus à une semaine habituelle.');
     if (s.type === 'rhythm' && !getMember(m.id).formula) return fail('Choisis le rythme de repas.');
@@ -9099,6 +9144,13 @@ function renderWelcome(onDone) {
     const getValue = (k, fallback) => getProfile()[k] ?? (fallback ? null : start()[k]);
     getValue.allowEmpty = true;
     bindMeasures(view, getValue, (k, v) => { saveProfile({ [k]: v }); error = ''; render(); });
+    // v252 : fiche à remplir, une case après l'autre
+    const openMeas = k => openMeasureSheet(k, getProfile()[k], getMember(m.id).sex, start()[k], v => {
+      saveProfile({ [k]: v }); error = ''; render();
+      const nextK = MEAS_KEYS.find(x => getProfile()[x] == null);
+      if (nextK) setTimeout(() => openMeas(nextK), 220);
+    });
+    view.querySelectorAll('[data-meas]').forEach(b => b.addEventListener('click', () => openMeas(b.dataset.meas)));
     view.querySelector('.bf-guide-btn')?.addEventListener('click', () =>
       openBodyfatGuide(getProfile().bodyfat ?? start().bodyfat, v => { saveProfile({ bodyfat: v }); error = ''; render(); }, getMember(m.id).sex));
     // quotidien
