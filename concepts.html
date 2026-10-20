@@ -1,0 +1,92 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Fraunces;font-weight:400;src:url(fonts/fraunces-400.woff2)}
+@font-face{font-family:Fraunces;font-weight:400;font-style:italic;src:url(fonts/fraunces-400-italic.woff2)}
+@font-face{font-family:Outfit;font-weight:400;src:url(fonts/outfit-400.woff2)}
+@font-face{font-family:Outfit;font-weight:500;src:url(fonts/outfit-500.woff2)}
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-600.woff2)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#cfd3cc;display:flex;gap:36px;padding:30px;font-family:Outfit}
+.lab{font:600 22px Outfit;color:#22322A;margin:0 0 12px 4px}
+.ph{width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.word{font:400 26px Fraunces;letter-spacing:-.02em}
+.word i{font-style:italic}
+
+/* A : mur de plats */
+.A{background:#1F2E25}
+.A .wall{position:absolute;inset:-40px -60px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;transform:rotate(-8deg)}
+.A .wall img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%}
+.A .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,46,37,.15) 0%,rgba(31,46,37,.1) 35%,rgba(31,46,37,.92) 62%,#1F2E25 80%)}
+.A .txt{position:absolute;left:24px;right:24px;bottom:44px;color:#F4F1E8}
+.A h1{font:400 50px/.96 Fraunces;letter-spacing:-.035em}
+.A h1 i{color:#A9C2B2}
+.A p{color:#C9D2C7;font-size:16.5px;margin:16px 0 24px;line-height:1.5}
+.A .btn{display:inline-block;background:#E0A95E;color:#1F2E25;font:600 16px Outfit;padding:17px 28px;border-radius:28px}
+.A .top{position:absolute;top:22px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;color:#F4F1E8;z-index:2}
+.A .top span{font:600 13px Outfit;padding:9px 14px;border-radius:18px;background:rgba(31,46,37,.75);backdrop-filter:blur(6px)}
+
+/* B : le couple */
+.B{background:#FBF0DD}
+.B .top{position:absolute;top:22px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;color:#2A3A30}
+.B h1{position:absolute;top:84px;left:24px;right:24px;font:400 46px/.98 Fraunces;letter-spacing:-.03em;color:#2A3A30}
+.B h1 i{color:#B5683F}
+.B .art{position:absolute;left:-30px;right:-30px;top:262px}
+.B .art img{width:100%}
+.B .lbl{position:absolute;background:#fff;border-radius:16px;padding:8px 12px;box-shadow:0 12px 24px -12px rgba(90,60,30,.45);font-size:12px;color:#7A8A80;line-height:1.2}
+.B .lbl b{display:block;font:400 19px Fraunces;color:#2A3A30}
+.B .lbl::after{content:'';position:absolute;width:10px;height:10px;background:#fff;transform:rotate(45deg)}
+.B .l1{left:22px;top:470px}.B .l1::after{right:-4px;top:22px}
+.B .l2{right:22px;top:432px}.B .l2::after{left:-4px;top:22px}
+.B .bottom{position:absolute;left:0;right:0;bottom:0;background:#2A3A30;color:#F4F1E8;padding:22px 24px 34px;border-radius:28px 28px 0 0}
+.B .bottom p{font-size:15.5px;color:#C9D2C7;line-height:1.45}
+.B .bottom .btn{margin-top:16px;display:block;text-align:center;background:#E0A95E;color:#1F2E25;font:600 16px Outfit;padding:16px;border-radius:26px}
+
+/* C : magazine */
+.C{background:#F4F6F1}
+.C .top{position:absolute;top:22px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;color:#2A3A30;z-index:2}
+.C .big{position:absolute;width:520px;height:520px;right:-290px;top:70px;border-radius:50%;overflow:hidden;box-shadow:0 40px 70px -30px rgba(31,46,37,.6)}
+.C .big img{width:100%;height:100%;object-fit:cover}
+.C .num{position:absolute;left:24px;top:110px;font:400 13px Outfit;color:#7A8A80;letter-spacing:.02em}
+.C .num b{display:block;font:400 120px/.85 Fraunces;color:#2A3A30;letter-spacing:-.05em}
+.C .side{position:absolute;left:24px;top:260px;width:118px;font-size:13.5px;color:#53645A;line-height:1.4}
+.C .side b{display:block;font:400 22px/1.05 Fraunces;color:#2A3A30;margin-bottom:6px}
+.C h1{position:absolute;left:24px;right:24px;top:600px;font:400 40px/1 Fraunces;letter-spacing:-.03em;color:#2A3A30}
+.C h1 i{color:#7C9885}
+.C .btn{position:absolute;left:24px;right:24px;bottom:34px;text-align:center;background:#1F2E25;color:#F4F1E8;font:600 16px Outfit;padding:17px;border-radius:28px}
+</style></head><body>
+
+<div><div class="lab">A. Le mur de plats</div>
+<div class="ph A">
+  <div class="wall">
+    <img src="img/dishes/W20.webp"><img src="img/dishes/W14.webp"><img src="img/dishes/W25.webp"><img src="img/dishes/W84.webp">
+    <img src="img/dishes/W22.webp"><img src="img/dishes/W03.webp"><img src="img/dishes/W89.webp"><img src="img/dishes/W18.webp">
+    <img src="img/dishes/W107.webp"><img src="img/dishes/W98.webp"><img src="img/dishes/W10.webp"><img src="img/dishes/W66.webp">
+    <img src="img/dishes/W40.webp"><img src="img/dishes/W90.webp"><img src="img/dishes/W78.webp"><img src="img/dishes/W74.webp">
+    <img src="img/dishes/SO10.webp"><img src="img/dishes/W09.webp"><img src="img/dishes/W109.webp"><img src="img/dishes/W81.webp">
+    <img src="img/dishes/W110.webp"><img src="img/dishes/W05.webp"><img src="img/dishes/W36.webp"><img src="img/dishes/W93.webp">
+  </div>
+  <div class="veil"></div>
+  <div class="top"><span class="word">Héb<i>é</i></span><span>Ouvrir l'app</span></div>
+  <div class="txt"><h1>Tout ça, cuisiné <i>en une seule fois.</i></h1><p>Une session le dimanche, et ta semaine est au frigo. Avec la bonne portion pour chacun.</p><span class="btn">Préparer ma semaine</span></div>
+</div></div>
+
+<div><div class="lab">B. Le couple</div>
+<div class="ph B">
+  <div class="top"><span class="word">Héb<i>é</i></span><span style="font:600 13px Outfit">Ouvrir l'app</span></div>
+  <h1>Le même plat. <i>Pas la même assiette.</i></h1>
+  <div class="art"><img src="img/art/couple.webp"></div>
+  <div class="lbl l1"><b>1 010 kcal</b>233 g de bœuf</div>
+  <div class="lbl l2"><b>755 kcal</b>142 g de bœuf</div>
+  <div class="bottom"><p>Vous cuisinez une fois le dimanche. Hébé calcule l'assiette de chacun, toute la semaine.</p><span class="btn">Préparer notre semaine</span></div>
+</div></div>
+
+<div><div class="lab">C. Le magazine</div>
+<div class="ph C">
+  <div class="top"><span class="word">Héb<i>é</i></span><span style="font:600 13px Outfit">Ouvrir l'app</span></div>
+  <div class="big"><img src="img/dishes/W107.webp"></div>
+  <div class="num"><b>10</b>repas, 1 session</div>
+  <div class="side"><b>Carbonade flamande</b>Jeudi soir. Bœuf à la bière, purée.</div>
+  <h1>Ta semaine, <i>cuisinée dimanche.</i></h1>
+  <span class="btn">Préparer ma semaine</span>
+</div></div>
+</body></html>
