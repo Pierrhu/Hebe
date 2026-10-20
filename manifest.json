@@ -2,7 +2,7 @@
   "name": "Hébé — Bien manger sans y penser",
   "short_name": "Hébé",
   "description": "Ta semaine de repas du monde, calibrée sur tes besoins et cuisinée en une seule session le dimanche.",
-  "start_url": "./index.html",
+  "start_url": "./app.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#F4F6F1",

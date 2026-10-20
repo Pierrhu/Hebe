@@ -5,7 +5,7 @@
 import os, asyncio, json
 os.makedirs('outils/tests/captures', exist_ok=True)
 from playwright.async_api import async_playwright
-URL = 'http://localhost:8765/index.html'
+URL = 'http://localhost:8765/app.html'
 
 def household(equipment):
     base = dict(activity=2, phase=0, free=[], breakfast='mix', whey=True, lactose=0, gluten=0, targets=None)

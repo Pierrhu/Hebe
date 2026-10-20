@@ -1,7 +1,8 @@
-const CACHE = 'hebe-v289';
+const CACHE = 'hebe-v290';
 const ASSETS = [
   './',
   './index.html',
+  './app.html',
   './styles.css',
   './fonts/fraunces-400.woff2',
   './fonts/fraunces-400-italic.woff2',
