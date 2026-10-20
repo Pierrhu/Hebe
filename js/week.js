@@ -30,6 +30,7 @@ const PROTEINS = [
   { id: 'tofu',      label: 'Végé',      emoji: '🌱' },
 ];
 let selProteins = JSON.parse(localStorage.getItem('hebe_proteins') || 'null') || PROTEINS.map(p => p.id);
+let novelty = localStorage.getItem('hebe_novelty') === '1'; // v278 : mode nouveautés (recettes d'automne)
 
 const ICON_BOOK = '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>';
 const ICON_SET = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></svg>';
@@ -354,6 +355,11 @@ function generatorHTML(plan) {
         ${PROTEINS.map(p => `<button class="prot-chip ${selProteins.includes(p.id) ? 'on' : ''}" data-p="${p.id}"><span class="prot-emoji"><img src="img/art/prot-${p.id}.webp" alt=""></span>${p.label}</button>`).join('')}
       </div>
     </div>
+    <button class="nov-toggle ${novelty ? 'on' : ''}" data-nov role="switch" aria-checked="${novelty}">
+      <span class="nov-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19 13 11"/></svg></span>
+      <span class="nov-txt"><b>Mode nouveautés</b><span>Uniquement les recettes d'automne cette semaine</span></span>
+      <span class="nov-sw" aria-hidden="true"></span>
+    </button>
     <button class="hb-btn hb-btn-primary hb-generate">Générer ma semaine</button>`;
 }
 function bindGenerator(root, onDone) {
@@ -391,6 +397,11 @@ function bindGenerator(root, onDone) {
     b.classList.toggle('on');
     b.setAttribute('aria-pressed', b.classList.contains('on'));
   }));
+  root.querySelector('[data-nov]')?.addEventListener('click', e => {
+    novelty = !novelty;
+    try { localStorage.setItem('hebe_novelty', novelty ? '1' : '0'); } catch {}
+    e.currentTarget.classList.toggle('on', novelty); e.currentTarget.setAttribute('aria-checked', novelty);
+  });
   root.querySelectorAll('.prot-chip').forEach(b => b.addEventListener('click', () => {
     const p = b.dataset.p;
     if (selProteins.includes(p)) { if (selProteins.length > 1) selProteins = selProteins.filter(x => x !== p); }
@@ -405,7 +416,7 @@ function bindGenerator(root, onDone) {
       // un seul planning pour le foyer, des portions pour chacun
       const hadPlan = !!getActivePlan() || !!localStorage.getItem('hebe_served_mains');
       const members = getMembers().map(m => ({ id: m.id, targets: getTargetsFor(m), free: m.free || [], freeKcal: m.freeKcal || 0, formula: m.formula || 'jeune', breakfast: m.breakfast || 'mix', whey: m.whey !== false }));
-      const { entriesBy } = generateWeek({ members, nextWeek: next, proteins: selProteins, startFrom: next ? 0 : todayIdx() + 1 });
+      const { entriesBy } = generateWeek({ members, nextWeek: next, proteins: selProteins, novelty, startFrom: next ? 0 : todayIdx() + 1 });
       Object.entries(entriesBy).forEach(([mid, entries]) => Object.values(entries).forEach(en => saveEntry(en, mid)));
       onDone();
       window.scrollTo(0, 0); // v273 : la semaine s'affiche depuis le haut, tuto compris

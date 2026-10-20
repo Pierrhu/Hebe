@@ -546,7 +546,7 @@ export function generateWeek(opts = {}) {
 // opts.members = [{ id, targets, free }] : un seul planning de plats pour tout le foyer,
 // puis des portions calculées pour chaque personne (sans opts.members : la personne active seule).
 // m.free = ['0-lunch', '3-dinner', …] : repas libres (non calculés) de la personne
-function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = { n: 0, last: {} }, members = null, startFrom = 0 } = {}) {
+function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = { n: 0, last: {} }, members = null, startFrom = 0, novelty = false } = {}) {
   targets = targets || { kcal: 2200, protein: 150, carbs: 230, fat: 70 };
   members = members && members.length ? members : [{ id: getActiveMember().id, targets, free: [] }];
   // v195 : semaine commencée en cours de route (startFrom = 1 à 6, 0 = lundi) : on cuisine aujourd'hui
@@ -565,6 +565,11 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
   if (proteins && proteins.length) {
     const f = pool.filter(r => proteins.includes(proteinFamily(r)));
     if (f.length >= 4) pool = f;
+  }
+  // v278 : mode nouveautés, seulement les recettes d'automne (s'il y en a assez pour faire une semaine)
+  if (novelty) {
+    const nov = pool.filter(r => (r.tags || []).includes('automne'));
+    if (nov.length >= 4) pool = nov;
   }
   // Petits besoins : on écarte les plats trop copieux même au minimum (pour le plus petit appétit du foyer)
   const shares = members.map(m => PLATE_SHARE[m.formula || 'jeune'] || 0.40);

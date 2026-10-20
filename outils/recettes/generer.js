@@ -80,7 +80,7 @@ for(const o of old){const f=FIX[o.id]||{};const r={...o,...f};if(f.add)r.steps=[
 const NEW=require(path.join(ICI,'complements.js'));
 const W=require(path.join(ICI,'plats_du_monde.js'));
 W.mains.push(...require(path.join(ICI,'nouveautes.js')).mains); // nouveaux plats (v174)
-W.mains.push(...require(path.join(ICI,'automne.js')).mains); // recettes d'automne (v213)
+W.mains.push(...require(path.join(ICI,'automne.js')).mains.map(r => ({ ...r, tags: [...(r.tags || []), 'automne'] }))); // recettes d'automne (v213), étiquetées pour le mode nouveautés (v278)
 const SO=require(path.join(ICI,'soupes.js')); // soupes (v205), option « Soupe » à venir
 const K=require(path.join(ICI,'collations.js'));
 K.snacks.push(...require(path.join(ICI,'automne.js')).snacks); // collations d'automne (v214)
