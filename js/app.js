@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-20T11:06:49.761Z
+// 2026-10-20T11:08:30.487Z
 
 
 // ──────────────────────────────────────────────
@@ -6426,7 +6426,7 @@ function renderRecipes() {
   // v287 : bandeau d'automne, comme sur la Semaine
   const autOn = () => (state.filterCategory || 'all') === 'automne';
   const autN = RECIPES.filter(r => (r.tags || []).includes('automne') && !r.retired && !soupHidden(r)).length;
-  const aut = el('button', 'rc-aut' + (autOn() ? ' on' : ''), `<img src="img/dishes/W107.webp" alt="" loading="lazy"><span class="rc-aut-t"><b>Recettes d'automne</b><small>${autN} plats de saison</small></span><span class="aut-pill"><i aria-hidden="true"></i><em>${autOn() ? 'Affichées' : 'Afficher'}</em></span>`);
+  const aut = el('button', 'rc-aut' + (autOn() ? ' on' : ''), `<i aria-hidden="true"></i><em>Automne</em><small>${autN}</small>`);
   aut.setAttribute('role', 'switch'); aut.setAttribute('aria-checked', autOn());
   aut.addEventListener('click', () => {
     const on = !autOn();
@@ -6434,12 +6434,12 @@ function renderRecipes() {
     const sel = filters.querySelector('select[data-f="cat"]'); sel.value = on ? 'automne' : 'all'; sel.closest('.rc-select').classList.toggle('on', on);
     syncAut(); renderList(search.value);
   });
-  const syncAut = () => { aut.classList.toggle('on', autOn()); aut.setAttribute('aria-checked', autOn()); aut.querySelector('em').textContent = autOn() ? 'Affichées' : 'Afficher'; };
+  const syncAut = () => { aut.classList.toggle('on', autOn()); aut.setAttribute('aria-checked', autOn()); };
 
   top.appendChild(search);
-  top.appendChild(aut);
   top.appendChild(filters);
-  top.appendChild(count);
+  const row = el('div', 'rc-row'); row.appendChild(count); row.appendChild(aut);
+  top.appendChild(row);
   view.appendChild(top);
 
   const list = el('div', 'recipe-list');
