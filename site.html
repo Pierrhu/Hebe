@@ -135,6 +135,30 @@ em{font-style:italic;color:var(--sage)}
   .gear{grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center;padding:90px 48px 120px}
 }
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ── v2 : blocs de couleur, la palette des familles de l'app ── */
+.wall-sec{background:#E3ECE4}
+.wall-sec .veil{background:linear-gradient(180deg,rgba(227,236,228,.35) 0%,rgba(227,236,228,0) 24%,rgba(227,236,228,.55) 40%,rgba(227,236,228,.96) 58%,#E3ECE4 76%)}
+.blk{margin:10px;border-radius:38px;overflow:clip}
+.sort{background:#FBF0DD}
+.sort .chip{box-shadow:none}
+.duo{background:#FAE9E0}
+.duo .lab .kc{background:#fff}
+.why-w{background:#7C9885;color:#fff;padding:0}
+.why-w .why{color:#fff}
+.why-w .k{color:#FBF0DD}
+.why-w .line{border-top-color:rgba(255,255,255,.28)}
+.why-w .line small{color:rgba(255,255,255,.78)}
+.why-w .line.us{color:#FBF0DD}
+.why-w .line.us small{color:#fff}
+.gear-w{background:#E3EFF5}
+.gear-w .rw-s{background:#F4F8FA}
+.end{background:#E3ECE4;margin:10px;border-radius:38px}
+.end .veil{background:radial-gradient(ellipse at center,rgba(227,236,228,.97) 0%,rgba(227,236,228,.92) 38%,rgba(227,236,228,.4) 72%,rgba(227,236,228,.12) 100%)}
+@media (min-width:900px){
+  .blk,.end{margin:16px;border-radius:44px}
+  .wall-sec .veil{background:linear-gradient(90deg,rgba(227,236,228,.98) 0%,rgba(227,236,228,.93) 34%,rgba(227,236,228,.3) 62%,rgba(227,236,228,.05) 100%)}
+}
 </style>
 </head>
 <body>
@@ -158,7 +182,7 @@ em{font-style:italic;color:var(--sage)}
 </header>
 
 <!-- 2. Dix plats se rangent dans la semaine -->
-<section class="sort" data-sort aria-label="Ta semaine se range toute seule">
+<section class="sort blk" data-sort aria-label="Ta semaine se range toute seule">
   <div class="stick">
     <div class="sort-h"><p class="k">Dimanche, 14 h</p><h2>Deux heures de cuisine. <em>Dix repas au frigo.</em></h2></div>
     <div class="stage" data-stage></div>
@@ -167,7 +191,7 @@ em{font-style:italic;color:var(--sage)}
 </section>
 
 <!-- 3. Le même plat, deux assiettes -->
-<section class="duo" data-duo aria-label="La portion de chacun">
+<section class="duo blk" data-duo aria-label="La portion de chacun">
   <div class="stick">
     <div class="duo-h"><p class="k">Jeudi soir, carbonade</p><h2 style="margin-top:8px">Le même plat. <em>Pas la même assiette.</em></h2><p data-duop>Hébé calcule la portion de chaque personne du foyer selon son poids, son activité et son objectif. Au gramme près.</p></div>
     <div class="db" data-db1><img src="img/dishes/W107.webp" alt="Carbonade flamande, portion de Lui"></div>
@@ -179,15 +203,16 @@ em{font-style:italic;color:var(--sage)}
 </section>
 
 <!-- 4. Pourquoi nous -->
-<section class="why" aria-label="Pourquoi Hébé">
+<div class="blk why-w"><section class="why" aria-label="Pourquoi Hébé">
   <p class="k rv">Pourquoi Hébé</p>
   <div class="line rv"><span>Les applis de batch cooking ne comptent pas.</span><small>Même portion pour tout le monde, ni calories ni protéines. Et souvent 5 à 10 € par mois.</small></div>
   <div class="line rv"><span>Les applis de nutrition ne cuisinent pas.</span><small>Elles calculent pour une seule personne, puis te laissent seul devant tes casseroles.</small></div>
   <div class="line us rv"><span>Hébé fait les deux. Gratuitement.</span><small>Ta semaine, tes courses, une session guidée et la portion de chacun. Valeurs de la table Ciqual de l'Anses, calculs sourcés, sans compte : tes données restent sur ton téléphone.</small></div>
 </section>
 
+</div>
 <!-- 5. Ta cuisine -->
-<section class="gear" aria-label="Recettes adaptées à ton matériel">
+<div class="blk gear-w"><section class="gear" aria-label="Recettes adaptées à ton matériel">
   <div class="rv">
     <h2>Pas d'autocuiseur ? <em>La recette se réécrit.</em></h2>
     <p>Autocuiseur, cocotte, air fryer ou four : dis ce que tu as, et chaque étape change, temps et températures compris. Essaie.</p>
@@ -199,6 +224,7 @@ em{font-style:italic;color:var(--sage)}
   </div>
 </section>
 
+</div>
 <!-- 6. Fin -->
 <section class="end">
   <div class="wall" aria-hidden="true" data-wall></div>
