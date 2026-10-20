@@ -65,15 +65,17 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 .ph-txt{position:absolute;left:22px;right:22px;top:calc(74px + env(safe-area-inset-top));z-index:2}
 .ph-txt h2{font-size:clamp(34px,9vw,60px);line-height:1;margin-top:8px;max-width:13ch}
 .ph-txt p{color:var(--text-2);max-width:34ch;margin-top:12px;font-size:16.5px}
-.phone{position:absolute;left:50%;top:calc(var(--top,43%));width:min(300px,72vw);aspect-ratio:390/844;margin-left:calc(min(300px,72vw) / -2);border-radius:48px;background:#26332B;padding:9px;box-shadow:0 50px 80px -40px rgba(42,58,48,.55),inset 0 0 0 1.5px #3A4A40;transform:translateY(60px);opacity:0;transition:transform 1s cubic-bezier(.2,.8,.2,1) .3s,opacity .6s .3s}
+.phone{position:absolute;left:50%;top:calc(var(--top,43%));width:min(300px,72vw);margin-left:calc(min(300px,72vw) / -2);border-radius:48px;background:#26332B;padding:9px;box-shadow:0 50px 80px -40px rgba(42,58,48,.55),inset 0 0 0 1.5px #3A4A40;transform:translateY(60px);opacity:0;transition:transform 1s cubic-bezier(.2,.8,.2,1) .3s,opacity .6s .3s}
 .scene.on .phone{transform:none;opacity:1}
-.screen{position:relative;width:100%;height:100%;border-radius:39px;overflow:hidden;background:#F4F6F1}
-.screen img{width:100%;transform:translateY(0)}
-.screen video{display:block;width:100%;height:100%;object-fit:cover;object-position:top;background:#F4F6F1}
+.screen{position:relative;width:100%;aspect-ratio:390/844;height:auto;border-radius:39px;overflow:hidden;background:#F4F6F1}
+.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .7s ease}
+.screen img.on,.screen>img:only-of-type{opacity:1}
+.tapring{position:absolute;z-index:3;border-radius:12px;margin:-4px 0 0 -4px;padding:4px;box-sizing:content-box;box-shadow:0 0 0 3px #E0A95E,0 0 0 9px rgba(224,169,94,.22);opacity:0;transform:scale(1.08);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.tapring.on{opacity:1;transform:none}
+.stepcap{min-height:3.1em;transition:opacity .35s}
+.dots{display:flex;gap:6px;margin-top:12px}.dots i{width:22px;height:4px;border-radius:2px;background:rgba(42,58,48,.15);transition:background .3s}.dots i.on{background:var(--sage)}
 
-@media (prefers-reduced-motion:no-preference){.scene.on .screen img{transition:transform 7s cubic-bezier(.45,0,.25,1) 2.2s;transform:translateY(var(--scroll,0))}}
-.cap{position:absolute;z-index:4;left:50%;top:40px;transform:translate(-50%,-8px);width:max-content;max-width:88%;padding:9px 14px;border-radius:16px;background:rgba(42,58,48,.92);color:#fff;font:600 13.5px/1.3 var(--sans);text-align:center;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);opacity:0;transition:opacity .35s,transform .35s}
-.cap.on{opacity:1;transform:translate(-50%,0)}
+
 .notch{position:absolute;left:50%;top:8px;width:34%;height:22px;margin-left:-17%;border-radius:12px;background:#26332B;z-index:2}
 .call{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:18px;background:#fff;box-shadow:0 18px 34px -16px rgba(42,58,48,.5);font-size:13.5px;line-height:1.3;color:var(--text-2);max-width:230px}
 .call b{display:block;font:600 14px var(--sans);color:var(--text)}
@@ -136,9 +138,9 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   .s1 h1{font-size:clamp(56px,6.4vw,84px)}
   .ph-txt,.head{left:max(56px,calc(50% - 520px));right:auto;top:50%;transform:translateY(-50%);max-width:440px}
   .ph-txt h2{font-size:clamp(44px,4.6vw,62px)}
-  .phone{--top:50%;left:auto;right:max(120px,calc(50% - 460px));margin:0;width:min(320px,34vh);top:50%;translate:0 -50%}
-  .call.c-l{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(320px,34vh) + 24px)}
-  .call.c-r{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(320px,34vh) + 24px)}
+  .phone{--top:50%;left:auto;right:max(120px,calc(50% - 460px));margin:0;width:min(340px,39vh);top:50%;translate:0 -50%}
+  .call.c-l{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(340px,39vh) + 24px)}
+  .call.c-r{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(340px,39vh) + 24px)}
   .fine{left:auto;right:56px;max-width:520px;text-align:right}
   .venn{width:860px;height:410px}
   .ring{top:50%;width:400px;transform:translate(-50%,-50%);padding:0 50px}
@@ -149,9 +151,13 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   .ring b{font-size:23px}.ring span{font-size:15px}
   .core{width:150px;height:150px;margin:-75px 0 0 -75px}
 }
-@media (max-width:899px){.call{display:none!important}}
+@media (max-width:899px){.call{display:none!important}
+  .ph-s .phone{top:auto;bottom:calc(18px + env(safe-area-inset-bottom));width:min(66vw,calc((100svh - 310px) / 2.16));margin-left:calc(min(66vw,calc((100svh - 310px) / 2.16)) / -2);border-radius:38px;padding:7px}
+  .ph-s .screen{border-radius:31px}
+  .ph-txt h2{font-size:clamp(30px,8.4vw,44px)}
+  .ph-txt p{font-size:15.5px;margin-top:8px}}
 @media (max-height:720px) and (max-width:899px){.ph-txt p{display:none}.proofs{display:none}}
-@media (prefers-reduced-motion:reduce){.scene,.in,.ring,.core,.phone{transition:none}}
+@media (prefers-reduced-motion:reduce){.scene,.in,.ring,.core,.phone,.tapring,.screen img{transition:none}}
 </style>
 </head>
 <body>
@@ -170,12 +176,16 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     </div>
   </section>
 
-  <!-- 2. Changer un plat (vidéo de l'app) -->
-  <section class="scene ph-s" aria-label="Changer un plat">
-    <div class="ph-txt"><p class="k in">Ta semaine</p><h2 class="in d1">Un plat ne te dit rien ? <em>Tu le changes.</em></h2><p class="in d2">Trois plats au choix. Les portions et la liste de courses se recalculent toutes seules.</p></div>
-    <div class="phone"><span class="notch"></span><div class="screen"><span class="cap" aria-hidden="true"></span><video data-vid data-caps='[[0.0, "Le plat du soir ne te dit rien ?"], [2.17, "Tu touches « Changer »"], [4.58, "Trois plats au choix"], [6.08, "Tu choisis, c&#39;est remplacé"], [9.03, "Portions et courses suivent"]]' poster="img/landing/swap-poster.webp" muted playsinline preload="metadata" aria-label="Démonstration : changer un plat dans l'app"><source src="img/landing/swap.webm" type="video/webm"><source src="img/landing/swap.mp4" type="video/mp4"></video></div></div>
+  <!-- 2. Pour toi -->
+  <section class="scene ph-s" aria-label="Calculé pour toi">
+    <div class="ph-txt"><p class="k in">Pour toi</p><h2 class="in d1">Tes besoins. <em>Et ceux de chacun.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
+    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/you-pierre.webp", "ring": [51.03, 9.24, 42.82, 4.74], "cap": "Hébé calcule tes besoins : 2 514 kcal et 129 g de protéines par jour."}, {"img": "img/landing/you-lea.webp", "ring": null, "cap": "Et ceux de chaque personne du foyer : 1 828 kcal pour Léa."}]' aria-label="Le profil de Pierre, puis celui de Léa"><img src="img/landing/you-pierre.webp" alt="" class="on" loading="eager"><img src="img/landing/you-lea.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
   </section>
-
+  <!-- 3. Changer un plat -->
+  <section class="scene ph-s alt" aria-label="Changer un plat">
+    <div class="ph-txt"><p class="k in">Ta semaine</p><h2 class="in d1">Un plat ne te dit rien ? <em>Tu le changes.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
+    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/swap-detail.webp", "ring": [52.31, 70.06, 20.9, 4.13], "cap": "Un plat ne te dit rien ? Touche « Changer »."}, {"img": "img/landing/swap-choix.webp", "ring": [5.13, 56.66, 89.74, 9.48], "cap": "Hébé te propose trois plats."}, {"img": "img/landing/swap-fait.webp", "ring": null, "cap": "C&#39;est remplacé. Portions et courses suivent."}]' aria-label="Changer un plat en trois touches"><img src="img/landing/swap-detail.webp" alt="" class="on" loading="eager"><img src="img/landing/swap-choix.webp" alt="" class="" loading="lazy"><img src="img/landing/swap-fait.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
+  </section>
   <!-- 3. Deux assiettes -->
   <section class="scene s3" data-s3 aria-label="La portion de chacun">
     <div class="head"><p class="k in">Pour chacun sa portion</p><h2 class="in d1">Le même plat. <em>Pas la même assiette.</em></h2><p data-s3p style="opacity:0">Hébé calcule la portion de chaque personne du foyer selon son poids, son activité et son objectif. Au gramme près.</p></div>
@@ -188,30 +198,21 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 
   <!-- 4. Cuisiner -->
   <section class="scene ph-s alt" aria-label="Une session guidée">
-    <div class="ph-txt"><p class="k in">Le dimanche</p><h2 class="in d1">Une session, <em>étape par étape.</em></h2><p class="in d2">Tout est dans le bon ordre : ce qui cuit seul pendant que tu prépares la suite, puis la mise en boîtes.</p></div>
-    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/cook.webp" alt="L'écran Cuisiner de Hébé" style="--scroll:-38%"></div></div>
-    <div class="call c-r in d4" style="top:57%"><i></i><span><b>Moins de 2 h, 20 boîtes</b>Pour deux, toute la semaine.</span></div>
+    <div class="ph-txt"><p class="k in">Le dimanche</p><h2 class="in d1">Une session, <em>étape par étape.</em></h2><p class="in d2">Tout est dans le bon ordre : ce qui cuit seul pendant que tu prépares la suite, puis la mise en boîtes. Moins de 2 h pour 20 boîtes.</p></div>
+    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/cook.webp" alt="L'écran Cuisiner de Hébé"></div></div>
     
   </section>
 
-  <!-- Matériel (vidéo) -->
-  <section class="scene ph-s" aria-label="La recette s'adapte à ton matériel">
-    <div class="ph-txt"><p class="k in">Ta cuisine</p><h2 class="in d1">Pas d'autocuiseur ? <em>La recette se réécrit.</em></h2><p class="in d2">Tu dis ce que tu as. Chaque étape change : ustensile, temps de cuisson, quantité d'eau.</p></div>
-    <div class="phone"><span class="notch"></span><div class="screen"><span class="cap" aria-hidden="true"></span><video data-vid data-caps='[[0.0, "Avec un autocuiseur"], [2.33, "Tu décoches l&#39;autocuiseur"], [6.29, "L&#39;étape est réécrite pour la cocotte"]]' poster="img/landing/gear-poster.webp" muted playsinline preload="metadata" aria-label="Démonstration : la recette change quand on retire l'autocuiseur"><source src="img/landing/gear.webm" type="video/webm"><source src="img/landing/gear.mp4" type="video/mp4"></video></div></div>
-  </section>
-
-  <!-- Courses (vidéo) -->
+  <!-- Courses -->
   <section class="scene ph-s alt" aria-label="Les courses">
-    <div class="ph-txt"><p class="k in">Les courses</p><h2 class="in d1">Tu coches, <em>c'est rangé.</em></h2><p class="in d2">Par rayon, au format du magasin : 3 barquettes de 500 g, pas « 1 437 g de poulet ».</p></div>
-    <div class="phone"><span class="notch"></span><div class="screen"><span class="cap" aria-hidden="true"></span><video data-vid data-caps='[[0.0, "Ta liste, rangée par rayon"], [1.31, "Tu coches, ça se barre"], [3.75, "Le compteur avance"]]' poster="img/landing/shop-poster.webp" muted playsinline preload="metadata" aria-label="Démonstration : cocher la liste de courses"><source src="img/landing/shop.webm" type="video/webm"><source src="img/landing/shop.mp4" type="video/mp4"></video></div></div>
+    <div class="ph-txt"><p class="k in">Les courses</p><h2 class="in d1">Tu coches, <em>c'est rangé.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
+    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/shop-liste.webp", "ring": [9.23, 24.25, 81.54, 8.13], "cap": "Ta liste, rangée par rayon, au format du magasin."}, {"img": "img/landing/shop-coche.webp", "ring": null, "cap": "Tu coches, c&#39;est barré. Le compteur avance."}]' aria-label="La liste de courses"><img src="img/landing/shop-liste.webp" alt="" class="on" loading="eager"><img src="img/landing/shop-coche.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
   </section>
-
-  <!-- Suivi (vidéo) -->
+  <!-- Suivi -->
   <section class="scene ph-s" aria-label="Tes progrès">
-    <div class="ph-txt"><p class="k in">Tes progrès</p><h2 class="in d1">Tu te pèses, <em>elle s'ajuste.</em></h2><p class="in d2">Poids, tour de taille et une photo par mois. Hébé recale ton objectif au fil des pesées, et rien ne quitte ton téléphone.</p></div>
-    <div class="phone"><span class="notch"></span><div class="screen"><span class="cap" aria-hidden="true"></span><video data-vid data-caps='[[0.01, "Ta pesée du matin"], [1.52, "Tu ajustes, tu enregistres"], [5.96, "Hébé recale ton objectif"]]' poster="img/landing/weight-poster.webp" muted playsinline preload="metadata" aria-label="Démonstration : enregistrer son poids et son tour de taille"><source src="img/landing/weight.webm" type="video/webm"><source src="img/landing/weight.mp4" type="video/mp4"></video></div></div>
+    <div class="ph-txt"><p class="k in">Tes progrès</p><h2 class="in d1">Tu te pèses, <em>elle s'ajuste.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
+    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/weight-avant.webp", "ring": [8.72, 46.6, 12.31, 5.69], "cap": "Ta pesée du matin."}, {"img": "img/landing/weight-ajuste.webp", "ring": [5.13, 56.14, 89.74, 5.98], "cap": "Tu ajustes, puis tu enregistres."}, {"img": "img/landing/weight-fait.webp", "ring": null, "cap": "Hébé recale ton objectif."}]' aria-label="La pesée"><img src="img/landing/weight-avant.webp" alt="" class="on" loading="eager"><img src="img/landing/weight-ajuste.webp" alt="" class="" loading="lazy"><img src="img/landing/weight-fait.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
   </section>
-
   <!-- 7. Pourquoi Hébé -->
   <section class="scene s7" aria-label="Pourquoi Hébé">
     <p class="k in">Pourquoi Hébé</p>
@@ -264,12 +265,17 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     p3.style.display=(!desk&&H<760)?'none':'';
   }
 
-  document.querySelectorAll('[data-vid]').forEach(function(v){var caps=JSON.parse(v.dataset.caps||'[]'),cap=v.parentNode.querySelector('.cap'),last=-1;
-    function upd(){var k=-1;for(var j=0;j<caps.length;j++)if(v.currentTime+.15>=caps[j][0])k=j;if(k!==last){last=k;cap.classList.remove('on');if(k>=0){setTimeout(function(){cap.textContent=caps[k][1];cap.classList.add('on')},k?180:0)}}}
-    v.addEventListener('timeupdate',upd);v.addEventListener('seeked',upd);v.addEventListener('play',function(){last=-2;upd()})});
+  // séquences d'écrans : on montre l'endroit touché, puis l'écran suivant
+  var STEP=2900;
+  function runSeq(sc){var scr=sc.querySelector('[data-seq]');if(!scr)return 0;var steps=JSON.parse(scr.dataset.seq),imgs=scr.querySelectorAll('img'),ring=scr.querySelector('.tapring'),cap=sc.querySelector('.stepcap'),dots=sc.querySelector('.dots');
+    dots.innerHTML=steps.map(function(){return '<i></i>'}).join('');var di=dots.querySelectorAll('i');
+    function show(k){imgs.forEach(function(im,j){im.classList.toggle('on',j===k)});di.forEach(function(d,j){d.classList.toggle('on',j<=k)});cap.style.opacity=0;
+      timers.push(setTimeout(function(){cap.textContent=steps[k].cap;cap.style.opacity=1},150));ring.classList.remove('on');
+      var r=steps[k].ring;if(r){ring.style.left=r[0]+'%';ring.style.top=r[1]+'%';ring.style.width=r[2]+'%';ring.style.height=r[3]+'%';timers.push(setTimeout(function(){ring.classList.add('on')},reduce?0:1100))}
+      if(k<steps.length-1)timers.push(setTimeout(function(){show(k+1)},STEP))}
+    show(0);return steps.length*STEP+1200}
   // le déroulé, comme des stories
-  var scenes=[].slice.call(document.querySelectorAll('.scene')),DUR=scenes.map(function(sc,i){if(i===scenes.length-1)return 0;if(sc.querySelector('[data-vid]'))return 15000;if(sc.classList.contains('s1'))return 6000;return 7500});
-  scenes.forEach(function(sc,i){var v=sc.querySelector('[data-vid]');if(v)v.addEventListener('loadedmetadata',function(){DUR[i]=Math.round((v.duration+1.1)*1000)})});
+  var scenes=[].slice.call(document.querySelectorAll('.scene')),DUR=scenes.map(function(sc,i){if(i===scenes.length-1)return 0;if(sc.querySelector('[data-seq]'))return JSON.parse(sc.querySelector('[data-seq]').dataset.seq).length*2900+1400;if(sc.classList.contains('s1'))return 6000;return 7000});
   var bars=document.querySelector('[data-bars]'),hint=document.querySelector('[data-hint]');
   bars.innerHTML=scenes.map(function(){return '<span><i></i></span>'}).join('');
   var fills=bars.querySelectorAll('i'),cur=-1,raf=0,timers=[];
@@ -280,9 +286,7 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     fills.forEach(function(f,k){f.style.width=k<i?'100%':'0'});
     hint.style.opacity=i===scenes.length-1?0:1;
     if(scenes[i]===s3){drawDuo(0);timers.push(setTimeout(function(){anim(3200,drawDuo)},1600))}
-    document.querySelectorAll('[data-vid]').forEach(function(v){v.pause()});
-    var vv=scenes[i].querySelector('[data-vid]');if(vv){vv.currentTime=0;if(!vv.preload||vv.preload!=='auto')vv.preload='auto';timers.push(setTimeout(function(){var pr=vv.play();if(pr&&pr.catch)pr.catch(function(){})},reduce?0:900))}
-    var nx=scenes[i+1]&&scenes[i+1].querySelector('[data-vid]');if(nx)nx.preload='auto';
+    runSeq(scenes[i]);
     var start=performance.now();cancelAnimationFrame(raf);
     if(DUR[i])(function tick(now){var p=clamp((now-start)/DUR[i]);fills[i].style.width=(p*100)+'%';if(p<1)raf=requestAnimationFrame(tick);else enter(i+1)})(start);
     else fills[i].style.width='100%';
