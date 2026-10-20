@@ -239,7 +239,7 @@ exports.mains = [
      "Pendant ce temps, dans la poêle, fais dorer les oignons 8 minutes dans l'huile, puis ajoute l'ail et le poulet et fais-le cuire 6 à 7 minutes, jusqu'à ce qu'il ne soit plus rose au centre.",
      "Hors du feu, ajoute les crozets, la crème et l'eau de cuisson gardée, et mélange : les crozets doivent être bien enrobés.",
      "Mise en boîtes : les crozets au poulet, les lamelles de reblochon posées dessus.",
-     "Au moment de manger : fais gratiner 6 minutes à l'air fryer à 190 °C, jusqu'à ce que le reblochon soit fondu et doré (ou réchauffe 3 minutes au micro-ondes, le fromage fondra sans dorer)."],
+     "Au moment de manger : réchauffe 2 minutes 30 au micro-ondes pour que ce soit chaud au cœur, puis fais gratiner 4 minutes à l'air fryer à 200 °C, jusqu'à ce que le reblochon soit fondu et doré."],
     "Les crozets cuits un peu fermes finissent de s'attendrir dans la crème : ils ne deviennent pas pâteux au réchauffage.", ['français', 'gourmand', 'poêle', 'batch']),
 
   R('W104', 'Pâtes au Boursin, poulet et champignons', 'dinner', '🍝', 10, 20,
@@ -255,7 +255,7 @@ exports.mains = [
   R('W105', 'Poulet à la crème de maroilles, frites de patate douce', 'dinner', '🧀', 15, 25,
     [['poulet', 170], ['maroilles', 30], ['creme', 20], ['lait', 40], ['patate_douce', 280], ['oignon', 40], ['epices', 1], ['huile', 10]],
     ["Coupe la patate douce en frites de 1 cm avec la peau. Mélange-les avec la moitié de l'huile, le paprika et une pincée de sel.",
-     "Fais-les cuire 18 minutes à l'air fryer à 200 °C, en secouant le panier toutes les 6 minutes, jusqu'à ce qu'elles soient dorées.",
+     "Étale-les en une seule couche dans le panier et fais-les cuire 18 minutes à l'air fryer à 200 °C, en secouant le panier toutes les 6 minutes, jusqu'à ce qu'elles soient dorées.",
      "Pendant ce temps, coupe le poulet en morceaux de 3 cm et émince l'oignon. Dans la poêle, fais dorer l'oignon 3 minutes dans le reste de l'huile, puis le poulet 6 à 7 minutes, jusqu'à ce qu'il ne soit plus rose au centre.",
      "Ajoute le lait, la crème et le maroilles coupé en dés, sans la croûte. Laisse fondre 3 minutes à feu doux en remuant, jusqu'à ce que la sauce soit lisse et nappante.",
      "Mise en boîtes : le poulet et sa sauce d'un côté, les frites de patate douce de l'autre.",
@@ -269,7 +269,7 @@ exports.mains = [
      "Dans la poêle, fais dorer le poulet 6 à 7 minutes dans le reste de l'huile, jusqu'à ce qu'il ne soit plus rose au centre. Ajoute les gnocchis et 2 cuillères à soupe d'eau par portion, couvre et laisse 4 minutes : ils doivent être tendres.",
      "Verse la sauce au potimarron dans la poêle et mélange.",
      "Mise en boîtes : les gnocchis au poulet, la mozzarella en dés dans un petit pot à part.",
-     "Au moment de manger : parsème la mozzarella sur les gnocchis et fais gratiner 6 minutes à l'air fryer à 190 °C (ou réchauffe 3 minutes au micro-ondes, la mozzarella fondra sans dorer)."],
+     "Au moment de manger : réchauffe les gnocchis 2 minutes 30 au micro-ondes pour qu'ils soient chauds au cœur, parsème la mozzarella, puis fais gratiner 4 minutes à l'air fryer à 200 °C, jusqu'à ce qu'elle soit fondue et dorée."],
     "La peau du potimarron se mange : inutile de l'éplucher, elle fond à la cuisson.", ['italien', 'gourmand', 'autocuiseur', 'poêle', 'batch']),
 
   R('W107', 'Carbonade flamande : bœuf à la bière et au pain d\'épices, purée', 'dinner', '🍺', 20, 45,
@@ -289,7 +289,7 @@ exports.mains = [
      "Mets les pommes de terre et le potimarron dans l'autocuiseur avec 100 ml d'eau froide par portion et une pincée de sel. Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression. Égoutte et écrase à la fourchette avec le lait chaud, du sel et du poivre : c'est la purée.",
      "Dans la poêle, fais revenir l'oignon et la carotte 4 minutes dans l'huile, puis ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant, jusqu'à ce qu'il ne soit plus rose. Ajoute le concentré, le thym, le bouillon cube émietté et 50 ml d'eau par portion, et laisse réduire 3 minutes.",
      "Mise en boîtes : le bœuf au fond, la purée par-dessus, le comté râpé sur le dessus. Il se congèle très bien.",
-     "Au moment de manger : fais gratiner 8 minutes à l'air fryer à 180 °C, jusqu'à ce que ce soit chaud au cœur et doré dessus (ou réchauffe 3 minutes 30 au micro-ondes)."],
+     "Au moment de manger : réchauffe 3 minutes au micro-ondes pour que ce soit chaud au cœur, puis fais gratiner 4 minutes à l'air fryer à 200 °C, jusqu'à ce que le dessus soit doré."],
     "Le potimarron rend la purée plus douce et plus orange, sans changer le goût du parmentier.", ['français', 'gourmand', 'autocuiseur', 'poêle', 'batch']),
 
   R('W109', 'Pâtes au ragù de bœuf effiloché, parmesan', 'dinner', '🍝', 15, 50,
@@ -323,7 +323,7 @@ exports.mains = [
      "Délaye la fécule dans le lait froid et verse-le sur les poireaux avec la crème et la muscade. Laisse épaissir 2 minutes en remuant, puis ajoute les crevettes et laisse 2 minutes : elles doivent juste devenir roses.",
      PATES_AC + " Mélange-les à la sauce avec l'eau de cuisson gardée.",
      "Mise en boîtes : les coquillettes aux crevettes, l'emmental râpé par-dessus.",
-     "Au moment de manger : fais gratiner 6 minutes à l'air fryer à 190 °C (ou réchauffe 3 minutes au micro-ondes, le fromage fondra sans dorer)."],
+     "Au moment de manger : réchauffe 2 minutes 30 au micro-ondes pour que ce soit chaud au cœur, puis fais gratiner 4 minutes à l'air fryer à 200 °C, jusqu'à ce que le fromage soit fondu et doré."],
     "Les poireaux fondus à couvert deviennent doux et sucrés : ils font la moitié de la sauce.", ['français', 'gourmand', 'poêle', 'autocuiseur', 'batch']),
 
   R('W112', 'Brandade parmentière de colin, gratinée', 'dinner', '🐟', 15, 15,
@@ -333,7 +333,7 @@ exports.mains = [
      "Émiette le poisson à la fourchette en retirant les arêtes éventuelles. Égoutte les pommes de terre et l'ail, et écrase-les avec le lait chaud et l'huile d'olive.",
      "Mélange le poisson à la purée avec le persil haché, du sel et du poivre : la brandade doit être moelleuse.",
      "Mise en boîtes : la brandade, l'emmental râpé par-dessus. Elle se congèle bien.",
-     "Au moment de manger : fais gratiner 8 minutes à l'air fryer à 180 °C, jusqu'à ce que ce soit chaud au cœur et doré dessus (ou réchauffe 3 minutes au micro-ondes)."],
+     "Au moment de manger : réchauffe 3 minutes au micro-ondes pour que ce soit chaud au cœur, puis fais gratiner 4 minutes à l'air fryer à 200 °C, jusqu'à ce que le dessus soit doré."],
     "L'ail cuit avec les pommes de terre devient doux : il parfume la brandade sans piquer.", ['français', 'gourmand', 'autocuiseur', 'batch']),
 
   R('W113', 'Tagliatelles au saumon et aux poireaux, crème au citron', 'dinner', '🐟', 10, 20,
@@ -363,7 +363,7 @@ exports.mains = [
      "Ajoute le lait, le beurre, la muscade et les deux tiers du comté, et écrase au presse-purée jusqu'à obtenir une sauce lisse et orange. Verse-la dans un plat et rince la cuve.",
      PATES_AC + " Mélange-les à la sauce avec l'eau de cuisson gardée.",
      "Mise en boîtes : les coquillettes, le reste du comté par-dessus. Elles se congèlent bien.",
-     "Au moment de manger : fais gratiner 6 minutes à l'air fryer à 190 °C (ou réchauffe 3 minutes au micro-ondes)."],
+     "Au moment de manger : réchauffe 2 minutes 30 au micro-ondes pour que ce soit chaud au cœur, puis fais gratiner 4 minutes à l'air fryer à 200 °C, jusqu'à ce que le comté soit doré."],
     "Le potimarron remplace une bonne partie du fromage : la sauce reste onctueuse, avec moins de gras.", ['américain', 'végé', 'gourmand', 'autocuiseur', 'batch']),
 
   R('W116', 'Tortellini ricotta-épinards, crème de potimarron et sauge', 'dinner', '🥟', 10, 20,

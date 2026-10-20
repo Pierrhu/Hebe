@@ -168,6 +168,9 @@ export function adaptStep(st, eq = eqOr(), r = null) {
     s = s.replace(/Une fois la pression tombée, /g, 'En fin de cuisson, ');
     s = s.replace(/Ne remplis pas la cuve à plus de la moitié : le lait mousse en cuisant\./g, 'Remue de temps en temps : le lait attache facilement.');
     s = s.replace(/Rince la cuve/g, 'Rince la cocotte');
+    s = s.replace(/ Verse-la dans un plat et rince la cuve\./g, ' Verse-la dans un plat.');
+    s = s.replace(/ Verse ([^.]*?) dans un plat et rince la cuve\./g, ' Garde $1 au chaud, à couvert.');
+    s = s.replace(/rince la cuve/g, 'rince la cocotte').replace(/dans la cuve/g, 'dans la cocotte');
     s = s.replace(/(?:dans |à )l'autocuiseur/gi, m => (m[0] === 'à' || m[0] === 'À' ? 'dans la cocotte' : 'dans la cocotte'));
     s = s.replace(/l'autocuiseur/g, 'la cocotte');
   }
