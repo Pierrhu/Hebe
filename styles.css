@@ -2030,3 +2030,14 @@ button.wl-ch:disabled { cursor: default; }
 .aut-banner.on .aut-pill i { background: #C9733F; }
 .aut-banner.on .aut-pill i::after { transform: translateX(14px); }
 @media (prefers-reduced-motion: reduce) { .aut-img, .aut-pill i, .aut-pill i::after { transition: none; } }
+
+/* v287 : bandeau « Recettes d'automne » dans Recettes */
+.rc-aut { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 12px; padding: 8px 10px 8px 8px; border: 0; border-radius: 20px; text-align: left; color: #FFF4E6; background: linear-gradient(95deg, #6E3A1E, #9A5530 60%, #B8643E); cursor: pointer; }
+.rc-aut img { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; flex-shrink: 0; }
+.rc-aut-t { flex: 1; min-width: 0; }
+.rc-aut-t b { display: block; font-family: var(--serif); font-weight: 500; font-size: 18px; line-height: 1.15; }
+.rc-aut-t small { display: block; font-size: 12px; opacity: .85; margin-top: 2px; }
+.rc-aut .aut-pill { margin-top: 0; flex-shrink: 0; }
+.rc-aut.on .aut-pill { background: #FFF4E6; color: #7A3E1F; box-shadow: none; }
+.rc-aut.on .aut-pill i { background: #C9733F; }
+.rc-aut.on .aut-pill i::after { transform: translateX(14px); }

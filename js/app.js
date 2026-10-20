@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-20T11:02:19.457Z
+// 2026-10-20T11:06:49.761Z
 
 
 // ──────────────────────────────────────────────
@@ -6375,6 +6375,7 @@ const FILTERS = [
   { key: 'breakfast', label: 'Petits-déjeuners' },
   { key: 'sweet',  label: 'Collations'  },
   { key: 'side',   label: 'Compléments' },
+  { key: 'automne', label: 'Automne' },
 ];
 
 const PROT_FILTERS = [
@@ -6419,11 +6420,24 @@ function renderRecipes() {
   filters.querySelectorAll('select').forEach(sel => sel.addEventListener('change', () => {
     setState(sel.dataset.f === 'cat' ? { filterCategory: sel.value } : sel.dataset.f === 'taste' ? { filterTaste: sel.value } : { filterProtein: sel.value });
     sel.closest('.rc-select').classList.toggle('on', sel.value !== 'all');
-    renderList(search.value);
+    syncAut(); renderList(search.value);
   }));
   const count = el('div', 'rc-count');
+  // v287 : bandeau d'automne, comme sur la Semaine
+  const autOn = () => (state.filterCategory || 'all') === 'automne';
+  const autN = RECIPES.filter(r => (r.tags || []).includes('automne') && !r.retired && !soupHidden(r)).length;
+  const aut = el('button', 'rc-aut' + (autOn() ? ' on' : ''), `<img src="img/dishes/W107.webp" alt="" loading="lazy"><span class="rc-aut-t"><b>Recettes d'automne</b><small>${autN} plats de saison</small></span><span class="aut-pill"><i aria-hidden="true"></i><em>${autOn() ? 'Affichées' : 'Afficher'}</em></span>`);
+  aut.setAttribute('role', 'switch'); aut.setAttribute('aria-checked', autOn());
+  aut.addEventListener('click', () => {
+    const on = !autOn();
+    setState({ filterCategory: on ? 'automne' : 'all' });
+    const sel = filters.querySelector('select[data-f="cat"]'); sel.value = on ? 'automne' : 'all'; sel.closest('.rc-select').classList.toggle('on', on);
+    syncAut(); renderList(search.value);
+  });
+  const syncAut = () => { aut.classList.toggle('on', autOn()); aut.setAttribute('aria-checked', autOn()); aut.querySelector('em').textContent = autOn() ? 'Affichées' : 'Afficher'; };
 
   top.appendChild(search);
+  top.appendChild(aut);
   top.appendChild(filters);
   top.appendChild(count);
   view.appendChild(top);
@@ -6440,7 +6454,7 @@ function renderRecipes() {
       if (r.retired || r.category === 'extra' || soupHidden(r) || (r.tags || []).includes('cantine')) return false;
       if (noWhey ? hasWhey(r) : (r.tags || []).includes('sans-whey')) return false;
       if (!dietOk(r, getActiveMember().lactose || 0, getActiveMember().gluten || 0)) return false;
-      const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
+      const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || (cat === 'automne' && (r.tags || []).includes('automne')) || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
       const matchProt = prot === 'all' || recipeProtein(r) === prot;
       const sweet = (r.tags || []).includes('sucré');
       const taste = state.filterTaste || 'all';
