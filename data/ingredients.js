@@ -218,6 +218,19 @@ const RAW = {
   chataignes:    ['Châtaignes cuites (sous vide)', 'g',  165, 2.5,  34,  1.5, 'carb', 10,  'E', { pack: 200 }],
   beurre:        ['Beurre',                     'g',     740, 0.7,  0.6, 82,  'fat', 9,    'L', { pantry: true }],
   noix:          ['Noix (cerneaux)',            'g',     690, 15,   7,   65,  'fat', 14,  'E', { pack: 200 }],
+  // v281 : plats d'automne gourmands
+  reblochon:     ['Reblochon',                  'g',     330, 20,   0.5, 28,  'dairy', 15, 'L', { lv: 'P', min: 25, max: 60, pack: 240 }],
+  maroilles:     ['Maroilles',                  'g',     330, 20,   0.5, 28,  'dairy', 16, 'L', { lv: 'P', min: 20, max: 50, pack: 200 }],
+  boursin:       ['Boursin ail et fines herbes','g',     405, 7,    2.5, 41,  'dairy', 20, 'L', { lv: 'P', min: 20, max: 45, pack: 150 }],
+  gorgonzola:    ['Gorgonzola',                 'g',     350, 19,   0.5, 30,  'dairy', 18, 'L', { lv: 'P', min: 20, max: 50, pack: 200 }],
+  comte:         ['Comté râpé',                 'g',     410, 27,   0.5, 34,  'dairy', 18, 'L', { lv: 'P', min: 15, max: 45, pack: 150 }],
+  mozzarella:    ['Mozzarella',                 'g',     250, 18,   1,   19,  'dairy', 10, 'L', { lv: 'P', min: 30, max: 80, pack: 125 }],
+  crozets:       ['Crozets de Savoie',          'g',     355, 12,   70,  2,   'carb', 6,   'S', { cook: 2.4, lv: 'P', min: 60, max: 180, minP: 90, pack: 400 }],
+  tortellini:    ['Tortellini ricotta-épinards (frais)', 'g', 280, 11, 40, 8, 'carb', 9,  'S', { lv: 'P', min: 125, max: 320, minP: 180, pack: 250 }],
+  biere:         ['Bière brune',                'ml',    45,  0.4,  3.6, 0,   'flavor', 3, 'E', { pack: 330 }],
+  pain_epices:   ["Pain d'épices",              'g',     320, 4,    72,  1.5, 'flavor', 8, 'E', { pack: 300 }],
+  potimarron:    ['Potimarron',                 'g',     35,  1,    7,   0.2, 'veg', 2.5,  'F', { buy: 1200 }],
+  poire:         ['Poire',                      'g',     50,  0.4,  11,  0.2, 'fruit', 3,  'F', { buy: 180 }],
 };
 
 export const INGREDIENTS = {};

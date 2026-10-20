@@ -10,12 +10,12 @@ import { getMembers } from '../data/household.js';
 import { getEquipment } from './adapt.js';
 import { applyStaples } from './staples.js';
 
-export const LACTOSE_OUT = ['fromage_blanc', 'fromage_frais', 'carre_frais', 'whey', 'cottage'];
+export const LACTOSE_OUT = ['fromage_blanc', 'fromage_frais', 'carre_frais', 'whey', 'cottage', 'boursin', 'mozzarella'];
 const SUB1 = { yaourt_grec: 'yaourt_sl', lait: 'boisson_avoine', creme: 'creme_coco', beurre: 'huile' };
 const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental' };
 
 // Gluten : « Sensibilité » (1) ou « Strict » (2)
-export const GLUTEN_OUT1 = ['chapelure', 'gnocchis', 'boudoirs'];                // écartées dans les deux niveaux
+export const GLUTEN_OUT1 = ['chapelure', 'gnocchis', 'boudoirs', 'crozets', 'tortellini', 'pain_epices', 'biere', 'orzo'];                // écartées dans les deux niveaux
 export const GLUTEN_OUT2 = ['flocons', 'granola', 'cornflakes'];     // en plus, en strict (risque de traces)
 const GSUB1 = { semoule: 'riz', boulghour: 'riz', pates: 'pates_sg', nouilles_oeufs: 'pates_sg', pain: 'pain_sg', baguette: 'pain_sg', pain_burger: 'pain_sg', pita: 'wrap_sg', tortilla: 'wrap_sg' };
 const GSUB2 = { ...GSUB1, soja: 'tamari' };
