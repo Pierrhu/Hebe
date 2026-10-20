@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hébé : tout ça, cuisiné en une seule fois</title>
 <meta name="description" content="Hébé compose ta semaine de repas, calcule la portion de chaque personne du foyer et te guide pour tout cuisiner en une session. Gratuit, sans compte.">
-<meta name="theme-color" content="#F4F6F1">
+<meta name="theme-color" content="#F7F3EB">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <style>
@@ -15,13 +15,13 @@
 @font-face{font-family:Outfit;font-weight:500;font-display:swap;src:url(fonts/outfit-500.woff2) format('woff2')}
 @font-face{font-family:Outfit;font-weight:600;font-display:swap;src:url(fonts/outfit-600.woff2) format('woff2')}
 :root{
-  --ink:#F4F6F1;--ink-2:#FFFFFF;--ink-3:#E2E7DC;--cream:#2A3A30;--cream-2:#5A6B60;--cream-3:#7A8A80;
+  --ink:#F7F3EB;--ink-2:#FFFDF8;--ink-3:#E3D9C7;--cream:#2A3A30;--cream-2:#5A6B60;--cream-3:#7A8A80;
   --sage:#7C9885;--accent:#5E7A67;--sage-t:#E8F0E9;--sage-l:#A9C2B2;--honey:#E0A95E;--honey-t:#FBF0DD;--honey-d:#A8712A;
   --shadow:0 16px 30px -16px rgba(42,58,48,.38);
   --serif:Fraunces,Georgia,serif;--sans:Outfit,-apple-system,'Segoe UI',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--ink)}
-body{background:radial-gradient(120% 60% at 100% 0%,rgba(169,194,178,.18) 0%,transparent 50%),radial-gradient(90% 50% at 0% 100%,rgba(124,152,133,.10) 0%,transparent 55%),var(--ink);color:var(--cream);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:#F7F3EB;color:var(--cream);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--honey);outline-offset:4px;border-radius:12px}
@@ -136,28 +136,29 @@ em{font-style:italic;color:var(--sage)}
 }
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 
-/* ── v2 : blocs de couleur, la palette des familles de l'app ── */
-.wall-sec{background:#E3ECE4}
-.wall-sec .veil{background:linear-gradient(180deg,rgba(227,236,228,.35) 0%,rgba(227,236,228,0) 24%,rgba(227,236,228,.55) 40%,rgba(227,236,228,.96) 58%,#E3ECE4 76%)}
+/* ── v3 : blanc cassé et beige clair ── */
+html,body{background:#F7F3EB}
+body{background:#F7F3EB}
+.wall-sec{background:#F7F3EB}
+.wall-sec .veil{background:linear-gradient(180deg,rgba(247,243,235,.35) 0%,rgba(247,243,235,0) 24%,rgba(247,243,235,.55) 40%,rgba(247,243,235,.96) 58%,#F7F3EB 76%)}
 .blk{margin:10px;border-radius:38px;overflow:clip}
-.sort{background:#FBF0DD}
-.sort .chip{box-shadow:none}
-.duo{background:#FAE9E0}
-.duo .lab .kc{background:#fff}
-.why-w{background:#7C9885;color:#fff;padding:0}
-.why-w .why{color:#fff}
-.why-w .k{color:#FBF0DD}
-.why-w .line{border-top-color:rgba(255,255,255,.28)}
-.why-w .line small{color:rgba(255,255,255,.78)}
-.why-w .line.us{color:#FBF0DD}
-.why-w .line.us small{color:#fff}
-.gear-w{background:#E3EFF5}
-.gear-w .rw-s{background:#F4F8FA}
-.end{background:#E3ECE4;margin:10px;border-radius:38px}
-.end .veil{background:radial-gradient(ellipse at center,rgba(227,236,228,.97) 0%,rgba(227,236,228,.92) 38%,rgba(227,236,228,.4) 72%,rgba(227,236,228,.12) 100%)}
+.sort{background:#EFE7D8}
+.sort .chip{box-shadow:none;background:#F7F3EB}
+.duo{background:#F7F3EB}
+.duo .lab .kc{background:#EFE7D8}
+.why-w{background:#EFE7D8;padding:0}
+.why-w .line{border-top-color:#DDD2BE}
+.gear-w{background:#F7F3EB}
+.gear-w .rw{box-shadow:inset 0 0 0 1px #E6DCCB,0 30px 60px -40px rgba(90,70,40,.35)}
+.gear-w .rw-s{background:#F7F3EB}
+.gear-w .seg{background:#F7F3EB;box-shadow:inset 0 0 0 1px #E6DCCB}
+.pill{background:rgba(255,253,248,.85)}
+.end{background:#EFE7D8;margin:10px;border-radius:38px}
+.end .veil{background:radial-gradient(ellipse at center,rgba(239,231,216,.97) 0%,rgba(239,231,216,.92) 38%,rgba(239,231,216,.4) 72%,rgba(239,231,216,.12) 100%)}
+.foot{border-top-color:#E6DCCB}
 @media (min-width:900px){
   .blk,.end{margin:16px;border-radius:44px}
-  .wall-sec .veil{background:linear-gradient(90deg,rgba(227,236,228,.98) 0%,rgba(227,236,228,.93) 34%,rgba(227,236,228,.3) 62%,rgba(227,236,228,.05) 100%)}
+  .wall-sec .veil{background:linear-gradient(90deg,rgba(247,243,235,.98) 0%,rgba(247,243,235,.93) 34%,rgba(247,243,235,.3) 62%,rgba(247,243,235,.05) 100%)}
 }
 </style>
 </head>
