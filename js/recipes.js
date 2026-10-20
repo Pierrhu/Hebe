@@ -15,6 +15,7 @@ const FILTERS = [
   { key: 'breakfast', label: 'Petits-déjeuners' },
   { key: 'sweet',  label: 'Collations'  },
   { key: 'side',   label: 'Compléments' },
+  { key: 'automne', label: 'Automne' },
 ];
 
 const PROT_FILTERS = [
@@ -80,7 +81,7 @@ export function renderRecipes() {
       if (r.retired || r.category === 'extra' || soupHidden(r) || (r.tags || []).includes('cantine')) return false;
       if (noWhey ? hasWhey(r) : (r.tags || []).includes('sans-whey')) return false;
       if (!dietOk(r, getActiveMember().lactose || 0, getActiveMember().gluten || 0)) return false;
-      const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
+      const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || (cat === 'automne' && (r.tags || []).includes('automne')) || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
       const matchProt = prot === 'all' || recipeProtein(r) === prot;
       const sweet = (r.tags || []).includes('sucré');
       const taste = state.filterTaste || 'all';
