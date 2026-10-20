@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v284';
+const CACHE = 'hebe-v285';
 const ASSETS = [
   './',
   './index.html',
@@ -187,6 +187,7 @@ const ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './icon-192-maskable.png',
+  './apple-touch-icon.png',
   './icon-512-maskable.png',
 ];
 
