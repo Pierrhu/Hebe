@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-20T11:08:30.487Z
+// 2026-10-20T11:10:30.569Z
 
 
 // ──────────────────────────────────────────────
@@ -6420,26 +6420,13 @@ function renderRecipes() {
   filters.querySelectorAll('select').forEach(sel => sel.addEventListener('change', () => {
     setState(sel.dataset.f === 'cat' ? { filterCategory: sel.value } : sel.dataset.f === 'taste' ? { filterTaste: sel.value } : { filterProtein: sel.value });
     sel.closest('.rc-select').classList.toggle('on', sel.value !== 'all');
-    syncAut(); renderList(search.value);
+    renderList(search.value);
   }));
   const count = el('div', 'rc-count');
-  // v287 : bandeau d'automne, comme sur la Semaine
-  const autOn = () => (state.filterCategory || 'all') === 'automne';
-  const autN = RECIPES.filter(r => (r.tags || []).includes('automne') && !r.retired && !soupHidden(r)).length;
-  const aut = el('button', 'rc-aut' + (autOn() ? ' on' : ''), `<i aria-hidden="true"></i><em>Automne</em><small>${autN}</small>`);
-  aut.setAttribute('role', 'switch'); aut.setAttribute('aria-checked', autOn());
-  aut.addEventListener('click', () => {
-    const on = !autOn();
-    setState({ filterCategory: on ? 'automne' : 'all' });
-    const sel = filters.querySelector('select[data-f="cat"]'); sel.value = on ? 'automne' : 'all'; sel.closest('.rc-select').classList.toggle('on', on);
-    syncAut(); renderList(search.value);
-  });
-  const syncAut = () => { aut.classList.toggle('on', autOn()); aut.setAttribute('aria-checked', autOn()); };
 
   top.appendChild(search);
   top.appendChild(filters);
-  const row = el('div', 'rc-row'); row.appendChild(count); row.appendChild(aut);
-  top.appendChild(row);
+  top.appendChild(count);
   view.appendChild(top);
 
   const list = el('div', 'recipe-list');

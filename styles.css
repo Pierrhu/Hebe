@@ -2031,15 +2031,3 @@ button.wl-ch:disabled { cursor: default; }
 .aut-banner.on .aut-pill i::after { transform: translateX(14px); }
 @media (prefers-reduced-motion: reduce) { .aut-img, .aut-pill i, .aut-pill i::after { transition: none; } }
 
-/* v287 : interrupteur discret « Automne » à côté du nombre de recettes */
-.rc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
-.rc-row .rc-count { margin: 0 4px; }
-.rc-aut { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 7px; border: 0; border-radius: 999px; background: rgba(255,255,255,.85); box-shadow: inset 0 0 0 1.5px var(--line-2); font: 600 13px var(--sans); color: var(--text-2); cursor: pointer; }
-.rc-aut i { position: relative; width: 30px; height: 18px; border-radius: 9px; background: var(--line-2); flex-shrink: 0; transition: background .2s; }
-.rc-aut i::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.15); transition: transform .2s; }
-.rc-aut em { font-style: normal; }
-.rc-aut small { font-size: 12px; font-weight: 600; color: var(--muted); }
-.rc-aut.on { background: var(--sage-t); box-shadow: inset 0 0 0 1.5px var(--sage); color: var(--text); }
-.rc-aut.on i { background: var(--sage); }
-.rc-aut.on i::after { transform: translateX(12px); }
-@media (prefers-reduced-motion: reduce) { .rc-aut i, .rc-aut i::after { transition: none; } }
