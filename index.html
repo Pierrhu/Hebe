@@ -36,62 +36,65 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 .show{position:fixed;inset:0;overflow:hidden}
 .scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s .9s}
 .scene.on{opacity:1;visibility:visible;transition:opacity .9s ease,visibility 0s}
-
-/* barre de progression, comme des stories */
-.bars{position:fixed;z-index:30;left:16px;right:16px;top:calc(12px + env(safe-area-inset-top));display:flex;gap:5px}
+.bars{position:fixed;z-index:30;left:16px;right:16px;top:calc(10px + env(safe-area-inset-top));display:flex;gap:5px}
 .bars span{flex:1;height:3px;border-radius:2px;background:rgba(42,58,48,.15);overflow:hidden}
 .bars i{display:block;height:100%;width:0;background:var(--text);border-radius:2px}
 .word{position:fixed;z-index:30;left:14px;top:calc(22px + env(safe-area-inset-top));font:400 24px var(--serif);letter-spacing:-.02em;padding:4px 12px 6px;border-radius:18px;background:rgba(247,243,235,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .word i{color:var(--sage)}
 .hint{position:fixed;z-index:30;right:14px;top:calc(25px + env(safe-area-inset-top));font-size:13px;color:var(--muted);transition:opacity .4s;padding:6px 12px;border-radius:16px;background:rgba(247,243,235,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-
-/* entrées de texte dans chaque scène */
 .in{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
 .scene.on .in{opacity:1;transform:none}
-.scene.on .d1{transition-delay:.25s}.scene.on .d2{transition-delay:.5s}.scene.on .d3{transition-delay:.75s}
+.scene.on .d1{transition-delay:.25s}.scene.on .d2{transition-delay:.5s}.scene.on .d3{transition-delay:.9s}.scene.on .d4{transition-delay:1.6s}.scene.on .d5{transition-delay:2.4s}
 
-/* 1. mur de plats */
+/* ── 1. mur de plats ── */
 .wall{position:absolute;left:50%;top:50%;width:135vmax;height:150vmax;transform:translate(-50%,-56%) rotate(-9deg);display:grid;grid-template-columns:repeat(var(--cols,6),1fr);gap:12px}
 .colw{display:flex;flex-direction:column;gap:12px}
 .colw img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;box-shadow:var(--shadow)}
 @media (prefers-reduced-motion:no-preference){
-  .colw{animation:up 70s linear infinite}
-  .colw:nth-child(2n){animation-name:down;animation-duration:85s}
-  @keyframes up{to{transform:translateY(-50%)}}
-  @keyframes down{from{transform:translateY(-50%)}to{transform:none}}
+  .colw{animation:up 70s linear infinite}.colw:nth-child(2n){animation-name:down;animation-duration:85s}
+  @keyframes up{to{transform:translateY(-50%)}}@keyframes down{from{transform:translateY(-50%)}to{transform:none}}
 }
 .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,243,235,.4) 0%,rgba(247,243,235,0) 22%,rgba(247,243,235,.55) 40%,rgba(247,243,235,.96) 58%,var(--bg) 74%)}
 .s1 .txt{position:absolute;left:22px;right:22px;bottom:calc(64px + env(safe-area-inset-bottom));max-width:680px}
 .s1 h1{font-size:clamp(50px,13.5vw,96px);line-height:.94;letter-spacing:-.04em}
 .s1 p{color:var(--text-2);font-size:clamp(17px,4.4vw,21px);max-width:30ch;margin-top:18px}
 
-/* 2. rangement */
-.s2{background:var(--beige)}
-.head{position:absolute;left:22px;right:22px;top:calc(84px + env(safe-area-inset-top));z-index:2}
-.head h2{font-size:clamp(36px,9.5vw,64px);line-height:1;margin-top:8px;max-width:14ch}
-.head p{color:var(--text-2);max-width:34ch;margin-top:14px}
-.stage{position:absolute;inset:0}
-.sb{position:absolute;left:0;top:0;border-radius:50%;overflow:hidden;box-shadow:var(--shadow);will-change:transform}
-.sb img{width:100%;height:100%;object-fit:cover}
-.dl{position:absolute;left:0;top:0;font:600 12.5px var(--sans);letter-spacing:.06em;color:var(--muted);text-align:center;opacity:0}
-.chips{position:absolute;left:22px;right:22px;bottom:calc(46px + env(safe-area-inset-bottom));display:flex;gap:8px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:18px;background:var(--bg);font-size:14px;color:var(--text-2)}
-.chip i{width:8px;height:8px;border-radius:50%;background:var(--honey)}
+/* ── scènes « écran de l'app » ── */
+.ph-s{background:var(--bg)}
+.ph-s.alt{background:var(--beige)}
+.ph-txt{position:absolute;left:22px;right:22px;top:calc(74px + env(safe-area-inset-top));z-index:2}
+.ph-txt h2{font-size:clamp(34px,9vw,60px);line-height:1;margin-top:8px;max-width:13ch}
+.ph-txt p{color:var(--text-2);max-width:34ch;margin-top:12px;font-size:16.5px}
+.phone{position:absolute;left:50%;top:calc(var(--top,46%));width:min(300px,72vw);aspect-ratio:390/844;margin-left:calc(min(300px,72vw) / -2);border-radius:48px;background:#26332B;padding:9px;box-shadow:0 50px 80px -40px rgba(42,58,48,.55),inset 0 0 0 1.5px #3A4A40;transform:translateY(60px);opacity:0;transition:transform 1s cubic-bezier(.2,.8,.2,1) .3s,opacity .6s .3s}
+.scene.on .phone{transform:none;opacity:1}
+.screen{position:relative;width:100%;height:100%;border-radius:39px;overflow:hidden;background:#F4F6F1}
+.screen img{width:100%;transform:translateY(0)}
+@media (prefers-reduced-motion:no-preference){.scene.on .screen img{transition:transform 4.6s cubic-bezier(.45,0,.25,1) 1.4s;transform:translateY(var(--scroll,0))}}
+.notch{position:absolute;left:50%;top:8px;width:34%;height:22px;margin-left:-17%;border-radius:12px;background:#26332B;z-index:2}
+.call{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:18px;background:#fff;box-shadow:0 18px 34px -16px rgba(42,58,48,.5);font-size:13.5px;line-height:1.3;color:var(--text-2);max-width:230px}
+.call b{display:block;font:600 14px var(--sans);color:var(--text)}
+.call i{flex:0 0 10px;height:10px;border-radius:50%;background:var(--honey);align-self:flex-start;margin-top:5px}
+.call.c-l i{background:var(--sage)}
+.call.c-l{left:14px}.call.c-r{right:14px}
 
-/* 3. deux assiettes */
+/* ── 3. deux assiettes ── */
+.s3{background:var(--beige)}
+.head{position:absolute;left:22px;right:22px;top:calc(74px + env(safe-area-inset-top));z-index:2}
+.head h2{font-size:clamp(36px,9.5vw,64px);line-height:1;margin-top:8px;max-width:14ch}
+.head p{color:var(--text-2);max-width:34ch;margin-top:12px}
 .db{position:absolute;left:0;top:0;border-radius:50%;overflow:hidden;box-shadow:0 30px 50px -24px rgba(42,58,48,.5);will-change:transform}
 .db img{width:100%;height:100%;object-fit:cover}
 .lab{position:absolute;opacity:0;text-align:center;width:170px;margin-left:-85px}
 .lab b{display:block;font:400 26px var(--serif)}
 .lab span{display:block;font-size:13px;color:var(--muted)}
-.lab .kc{display:inline-block;margin-top:10px;padding:6px 14px;border-radius:15px;background:var(--beige);color:#8A5A1E;font:600 15px var(--sans);font-variant-numeric:tabular-nums}
+.lab .kc{display:inline-block;margin-top:10px;padding:6px 14px;border-radius:15px;background:var(--bg);color:#8A5A1E;font:600 15px var(--sans);font-variant-numeric:tabular-nums}
 .lab .g{display:block;margin-top:8px;font-size:13.5px;color:var(--text-2);line-height:1.35}
-.fine{position:absolute;left:22px;right:22px;bottom:calc(46px + env(safe-area-inset-bottom));font-size:12.5px;color:var(--muted);text-align:center;opacity:0}
+.fine{position:absolute;left:22px;right:22px;bottom:calc(40px + env(safe-area-inset-bottom));font-size:12.5px;color:var(--muted);text-align:center;opacity:0}
 
-/* 4. pourquoi Hébé */
-.s4{background:var(--beige);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 22px 40px}
-.s4 h2{font-size:clamp(32px,8.4vw,58px);line-height:1.02;max-width:15ch;margin-top:8px}
-.venn{position:relative;width:min(340px,86vw);height:min(470px,52svh);margin-top:22px}
+/* ── 7. pourquoi Hébé ── */
+.s7{background:var(--beige);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 22px 40px}
+.s7 h2{font-size:clamp(32px,8.4vw,58px);line-height:1.02;max-width:15ch;margin-top:8px}
+.venn{position:relative;width:min(340px,86vw);height:min(470px,50svh);margin-top:22px}
 .ring{position:absolute;left:50%;width:min(250px,64vw);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 30px;transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
 .ring b{font:400 19px/1.15 var(--serif)}
 .ring span{font-size:13.5px;line-height:1.38;color:var(--text-2);margin-top:6px}
@@ -101,64 +104,49 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 .core img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .cw{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);padding:5px 14px;border-radius:16px;background:#fff;font:400 20px/1 var(--serif);letter-spacing:-.02em;box-shadow:0 8px 18px -8px rgba(90,70,40,.4);white-space:nowrap}
 .cw i{color:var(--sage)}
-.s4:not(.on) .r1{transform:translate(-50%,-50px)}
-.s4:not(.on) .r2{transform:translate(-50%,50px)}
-.s4:not(.on) .core{transform:scale(.4);opacity:0}
-.proofs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:30px}
+.s7:not(.on) .r1{transform:translate(-50%,-50px)}
+.s7:not(.on) .r2{transform:translate(-50%,50px)}
+.s7:not(.on) .core{transform:scale(.4);opacity:0}
+.proofs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:28px;max-width:560px}
 .proofs span{padding:9px 15px;border-radius:18px;background:var(--bg);font:400 17px var(--serif)}
 .proofs small{font:400 13px var(--sans);color:var(--muted);margin-left:6px}
 
-/* 5. la recette se réécrit */
-.s5 .wrap5{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:70px 22px 40px;max-width:1100px;margin-inline:auto}
-.s5 h2{font-size:clamp(34px,8.6vw,58px);line-height:1.02}
-.s5 .intro{color:var(--text-2);max-width:40ch;margin-top:14px}
-.rw{background:#fff;border-radius:26px;padding:18px;margin-top:26px;box-shadow:inset 0 0 0 1px var(--line),0 30px 60px -40px rgba(90,70,40,.35)}
-.seg{display:inline-flex;padding:4px;border-radius:22px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}
-.seg span{font:600 14.5px var(--sans);color:var(--muted);padding:9px 16px;border-radius:18px;transition:background .35s,color .35s}
-.seg span.on{background:var(--sage);color:#fff}
-.rw-d{display:flex;align-items:center;gap:12px;margin-top:16px}
-.rw-d img{width:46px;height:46px;border-radius:50%;object-fit:cover}
-.rw-d b{font:400 18px var(--serif)}
-.rw-d small{display:block;font-size:13px;color:var(--muted)}
-.rw-s{margin-top:12px;padding:15px 17px;border-radius:18px;background:var(--bg);font-size:15.5px;line-height:1.6;color:var(--text-2);min-height:9.6em;transition:opacity .35s}
-.rw-s mark{background:var(--honey-t);color:#8A5A1E;border-radius:6px;padding:1px 4px}
-
-/* 6. fin */
-.s6{background:var(--beige)}
-.s6 .wall{transform:translate(-50%,-50%) rotate(9deg)}
-.s6 .veil{background:radial-gradient(ellipse at center,rgba(239,231,216,.97) 0%,rgba(239,231,216,.92) 40%,rgba(239,231,216,.4) 72%,rgba(239,231,216,.12) 100%)}
-.s6 .end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 22px}
-.s6 h2{font-size:clamp(44px,11vw,88px);line-height:.96;letter-spacing:-.04em;max-width:11ch}
-.s6 p{color:var(--text-2);max-width:32ch;margin:18px auto 28px}
+/* ── 8. fin ── */
+.s8{background:var(--beige)}
+.s8 .wall{transform:translate(-50%,-50%) rotate(9deg)}
+.s8 .veil{background:radial-gradient(ellipse at center,rgba(239,231,216,.97) 0%,rgba(239,231,216,.92) 40%,rgba(239,231,216,.4) 72%,rgba(239,231,216,.12) 100%)}
+.s8 .end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 22px}
+.s8 h2{font-size:clamp(44px,11vw,88px);line-height:.96;letter-spacing:-.04em;max-width:11ch}
+.s8 p{color:var(--text-2);max-width:32ch;margin:18px auto 28px}
 .btn{display:inline-flex;align-items:center;justify-content:center;height:60px;padding-inline:36px;border-radius:30px;background:var(--sage);color:#fff;font:600 17.5px var(--sans);text-decoration:none;box-shadow:0 12px 26px -10px rgba(94,122,103,.6);transition:background .15s,transform .15s}
 .btn:hover{background:var(--accent)}.btn:active{transform:scale(.98)}
 .btn:focus-visible{outline:3px solid var(--honey);outline-offset:4px}
-.note{font-size:14px;color:var(--muted);margin-top:14px}
 .again{margin-top:18px;border:0;background:none;font:500 14px var(--sans);color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 @media (min-width:900px){
   .wall{--cols:8}
-  .bars{left:50%;right:auto;width:420px;margin-left:-210px}
-  .word{left:32px}.hint{right:32px}
+  .bars{left:50%;right:auto;width:440px;margin-left:-220px}
+  .word{left:28px}.hint{right:28px}
   .s1 .veil{background:linear-gradient(90deg,rgba(247,243,235,.98) 0%,rgba(247,243,235,.93) 34%,rgba(247,243,235,.3) 62%,rgba(247,243,235,.05) 100%)}
   .s1 .txt{left:56px;bottom:auto;top:50%;transform:translateY(-50%);max-width:600px}
   .s1 h1{font-size:clamp(56px,6.4vw,84px)}
-  .head{left:56px;right:auto;top:50%;transform:translateY(-50%);max-width:440px}
-  .chips{left:56px;right:auto}
+  .ph-txt,.head{left:max(56px,calc(50% - 520px));right:auto;top:50%;transform:translateY(-50%);max-width:440px}
+  .ph-txt h2{font-size:clamp(44px,4.6vw,62px)}
+  .phone{--top:50%;left:auto;right:max(120px,calc(50% - 460px));margin:0;width:min(320px,34vh);top:50%;translate:0 -50%}
+  .call.c-l{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(320px,34vh) - 40px)}
+  .call.c-r{right:max(40px,calc(50% - 560px))}
   .fine{left:auto;right:56px;max-width:520px;text-align:right}
   .venn{width:860px;height:410px}
   .ring{top:50%;width:400px;transform:translate(-50%,-50%);padding:0 50px}
   .r1{transform:translate(calc(-50% - 150px),-50%);padding:0 160px 0 48px;bottom:auto}
   .r2{transform:translate(calc(-50% + 150px),-50%);padding:0 48px 0 160px;bottom:auto}
-  .s4:not(.on) .r1{transform:translate(calc(-50% - 210px),-50%)}
-  .s4:not(.on) .r2{transform:translate(calc(-50% + 210px),-50%)}
+  .s7:not(.on) .r1{transform:translate(calc(-50% - 210px),-50%)}
+  .s7:not(.on) .r2{transform:translate(calc(-50% + 210px),-50%)}
   .ring b{font-size:23px}.ring span{font-size:15px}
   .core{width:150px;height:150px;margin:-75px 0 0 -75px}
-  .s5 .wrap5{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center;padding:0 56px}
-  .rw{margin-top:0}
 }
-@media (max-height:700px){.proofs{display:none}.venn{height:48svh}}
-@media (prefers-reduced-motion:reduce){.scene,.in,.ring,.core{transition:none}}
+@media (max-height:720px) and (max-width:899px){.ph-txt p{display:none}.proofs{display:none}}
+@media (prefers-reduced-motion:reduce){.scene,.in,.ring,.core,.phone{transition:none}}
 </style>
 </head>
 <body>
@@ -167,35 +155,60 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 <div class="hint" data-hint aria-hidden="true">Touche pour avancer</div>
 
 <main class="show" data-show aria-live="polite">
-  <!-- 1 -->
+  <!-- 1. Le mur -->
   <section class="scene s1" aria-label="Tout ça, cuisiné en une seule fois">
     <div class="wall" data-wall aria-hidden="true"></div>
     <div class="veil"></div>
     <div class="txt">
       <h1 class="in">Tout ça, cuisiné <em>en une seule fois.</em></h1>
-      <p class="in d1">Une session le dimanche, et ta semaine est au frigo. Avec la bonne portion pour chacun.</p>
+      <p class="in d1">Plus de 90 plats du monde. Une session le dimanche, et ta semaine est au frigo, avec la bonne portion pour chacun.</p>
     </div>
   </section>
 
-  <!-- 2 -->
-  <section class="scene s2" data-s2 aria-label="Dix repas au frigo">
-    <div class="head"><p class="k in">Dimanche, 14 h</p><h2 class="in d1">Deux heures de cuisine. <em>Dix repas au frigo.</em></h2></div>
-    <div class="stage" data-stage></div>
-    <div class="chips" data-chips style="opacity:0"><span class="chip"><i></i>Midi et soir, du lundi au vendredi</span><span class="chip"><i style="background:var(--sage)"></i>Liste de courses toute prête</span></div>
+  <!-- 2. La semaine -->
+  <section class="scene ph-s" aria-label="Ta semaine prête en un geste">
+    <div class="ph-txt"><p class="k in">Ta semaine</p><h2 class="in d1">Prête en <em>un seul geste.</em></h2><p class="in d2">Déjeuners, dîners, petits-déjeuners et collations, choisis pour tes goûts et ta saison.</p></div>
+    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/week.webp" alt="L'écran Semaine de Hébé" style="--scroll:-28%"></div></div>
+    <div class="call c-r in d4" style="top:58%"><i></i><span><b>Un plat ne te dit rien ?</b>« Changer » t'en propose trois autres.</span></div>
+    <div class="call c-l in d5" style="top:76%"><i></i><span><b>Semaine d'automne</b>Que des recettes de saison, si tu veux.</span></div>
   </section>
 
-  <!-- 3 -->
+  <!-- 3. Deux assiettes -->
   <section class="scene s3" data-s3 aria-label="La portion de chacun">
-    <div class="head"><p class="k in">Jeudi soir, carbonade</p><h2 class="in d1">Le même plat. <em>Pas la même assiette.</em></h2><p data-s3p style="opacity:0">Hébé calcule la portion de chaque personne du foyer selon son poids, son activité et son objectif. Au gramme près.</p></div>
+    <div class="head"><p class="k in">Pour chacun sa portion</p><h2 class="in d1">Le même plat. <em>Pas la même assiette.</em></h2><p data-s3p style="opacity:0">Hébé calcule la portion de chaque personne du foyer selon son poids, son activité et son objectif. Au gramme près.</p></div>
     <div class="db" data-db1><img src="img/dishes/W107.webp" alt="Carbonade flamande, portion de Lui"></div>
     <div class="db" data-db2><img src="img/dishes/W107.webp" alt="Carbonade flamande, portion d'Elle"></div>
     <div class="lab" data-lb1><b>Lui</b><span>82 kg, garde son poids</span><span class="kc">1 010 kcal</span><span class="g">233 g de bœuf<br>400 g de pommes de terre</span></div>
     <div class="lab" data-lb2><b>Elle</b><span>60 kg, garde son poids</span><span class="kc">755 kcal</span><span class="g">142 g de bœuf<br>300 g de pommes de terre</span></div>
-    <p class="fine" data-fine>Portions calculées par Hébé pour un couple actif de 28 ans. Grammes crus.</p>
+    <p class="fine" data-fine>Carbonade flamande, portions calculées par Hébé pour un couple actif de 28 ans. Grammes crus.</p>
   </section>
 
-  <!-- 4 -->
-  <section class="scene s4" data-s4 aria-label="Pourquoi Hébé">
+  <!-- 4. Cuisiner -->
+  <section class="scene ph-s alt" aria-label="Une session guidée">
+    <div class="ph-txt"><p class="k in">Le dimanche</p><h2 class="in d1">Une session, <em>étape par étape.</em></h2><p class="in d2">Tout est dans le bon ordre : ce qui cuit seul pendant que tu prépares la suite, puis la mise en boîtes.</p></div>
+    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/cook.webp" alt="L'écran Cuisiner de Hébé" style="--scroll:-38%"></div></div>
+    <div class="call c-r in d4" style="top:57%"><i></i><span><b>Moins de 2 h, 20 boîtes</b>Pour deux, toute la semaine.</span></div>
+    <div class="call c-l in d5" style="top:75%"><i></i><span><b>Pas d'autocuiseur ?</b>Les étapes se réécrivent pour ta cuisine.</span></div>
+  </section>
+
+  <!-- 5. Courses -->
+  <section class="scene ph-s" aria-label="Des courses au format magasin">
+    <div class="ph-txt"><p class="k in">Les courses</p><h2 class="in d1">Les quantités <em>du magasin.</em></h2><p class="in d2">Rangées par rayon, en barquettes et paquets entiers. Tu coches au fur et à mesure.</p></div>
+    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/shopping.webp" alt="L'écran Courses de Hébé" style="--scroll:-30%"></div></div>
+    <div class="call c-r in d4" style="top:57%"><i></i><span><b>3 barquettes de 500 g</b>Pas « 1 437 g de poulet ».</span></div>
+    <div class="call c-l in d5" style="top:75%"><i></i><span><b>Envoie la liste</b>À la personne qui fait les courses.</span></div>
+  </section>
+
+  <!-- 6. Suivi -->
+  <section class="scene ph-s alt" aria-label="Tes progrès">
+    <div class="ph-txt"><p class="k in">Tes progrès</p><h2 class="in d1">Elle s'ajuste <em>à tes pesées.</em></h2><p class="in d2">Poids, tour de taille et une photo par mois. Hébé recale ton objectif au fil des semaines.</p></div>
+    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/weight.webp" alt="L'écran Poids de Hébé" style="--scroll:-20%"></div></div>
+    <div class="call c-r in d4" style="top:57%"><i></i><span><b>Le tour de taille</b>Il baisse même quand le poids stagne.</span></div>
+    <div class="call c-l in d5" style="top:75%"><i></i><span><b>Rien ne quitte ton téléphone</b>Ni tes mesures, ni tes photos.</span></div>
+  </section>
+
+  <!-- 7. Pourquoi Hébé -->
+  <section class="scene s7" aria-label="Pourquoi Hébé">
     <p class="k in">Pourquoi Hébé</p>
     <h2 class="in d1">Les autres choisissent. <em>Nous, on fait les deux.</em></h2>
     <div class="venn">
@@ -203,28 +216,16 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
       <div class="ring r2"><b>Les applis de nutrition</b><span>Elles comptent tes calories. Mais te laissent seul devant tes casseroles.</span></div>
       <div class="core"><img src="img/dishes/W107.webp" alt=""><span class="cw">Héb<i>é</i></span></div>
     </div>
-    <div class="proofs in d3"><span>Gratuit<small>sans abonnement</small></span><span>Sans compte<small>tes données chez toi</small></span><span>Sourcé<small>Ciqual, Anses</small></span></div>
+    <div class="proofs in d3"><span>Gratuit<small>sans abonnement</small></span><span>Sans compte<small>tes données chez toi</small></span><span>Sourcé<small>table Ciqual de l'Anses</small></span></div>
   </section>
 
-  <!-- 5 -->
-  <section class="scene s5" data-s5 aria-label="Les recettes s'adaptent à ta cuisine">
-    <div class="wrap5">
-      <div><h2 class="in">Pas d'autocuiseur ? <em>La recette se réécrit.</em></h2><p class="intro in d1">Autocuiseur, cocotte, air fryer ou four : dis ce que tu as, et chaque étape change, temps et températures compris.</p></div>
-      <div class="rw in d2">
-        <div class="seg"><span data-k="auto" class="on">Autocuiseur</span><span data-k="cocotte">Cocotte</span></div>
-        <div class="rw-d"><img src="img/dishes/W102.webp" alt=""><div><b>Blanquette de poulet</b><small>Étape 2 de la recette</small></div></div>
-        <p class="rw-s" data-rw></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6 -->
-  <section class="scene s6" aria-label="Ta semaine commence dimanche">
+  <!-- 8. Fin -->
+  <section class="scene s8" aria-label="Ta semaine commence dimanche">
     <div class="wall" data-wall aria-hidden="true"></div>
     <div class="veil"></div>
     <div class="end">
       <h2 class="in">Ta semaine commence <em>dimanche.</em></h2>
-      <p class="in d1">Gratuit, sans compte, sans publicité. Ajoute Hébé à ton écran d'accueil : elle marche comme une app, même hors connexion.</p>
+      <p class="in d1">Deux minutes pour faire connaissance, et ta première semaine est prête. Gratuit, sans compte, même hors connexion.</p>
       <a class="btn in d2" href="app.html">Préparer ma semaine</a>
       <button class="again in d3" type="button" data-again>Revoir la présentation</button>
     </div>
@@ -237,8 +238,6 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   function clamp(x){return Math.max(0,Math.min(1,x))}
   function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
   var ALL=['W20','W14','W25','W84','W22','W03','W89','W18','W107','W98','W10','W66','W40','W90','W78','W74','SO10','W09','W109','W81','W110','W05','W36','W93','W01','W105','W114','W60','W46','W82','W24','W62','W63','W97'];
-
-  // murs de plats
   document.querySelectorAll('[data-wall]').forEach(function(w,wi){
     var cols=innerWidth>=900?8:6,per=7,html='';
     for(var c=0;c<cols;c++){var ids=[];for(var r=0;r<per;r++)ids.push(ALL[(c*per+r*3+wi*11)%ALL.length]);
@@ -246,34 +245,12 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     w.innerHTML=html;
   });
 
-  // scène 2 : les dix plats se rangent
-  var WEEK=[['W20','W03'],['W14','W89'],['W25','W18'],['W84','W107'],['W22','W98']],DAYS=['LUN','MAR','MER','JEU','VEN'];
-  var stage=document.querySelector('[data-stage]'),chips=document.querySelector('[data-chips]'),items=[],labels=[];
-  WEEK.forEach(function(d,i){d.forEach(function(id,j){var e=document.createElement('div');e.className='sb';e.innerHTML='<img src="img/dishes/'+id+'.webp" alt="">';stage.appendChild(e);items.push({e:e,c:i,r:j,id:id})})});
-  DAYS.forEach(function(t){var l=document.createElement('div');l.className='dl';l.textContent=t;stage.appendChild(l);labels.push(l)});
-  var SCAT=[[.05,.50,1.5,-14],[.60,.44,1.3,10],[.28,.66,1.6,6],[.78,.70,1.2,-8],[.10,.88,1.3,12],[.48,.90,1.5,-6],[.84,.50,1.1,16],[.38,.46,1.2,-10],[.70,.96,1.4,8],[.00,.70,1.1,-4]];
-  function drawSort(t){
-    var W=innerWidth,H=innerHeight,desk=W>=900;t=ease(t);
-    var gw=desk?Math.min(640,W*.5):W-44,gap=desk?16:10,size=(gw-gap*4)/5;
-    var gx=desk?W-56-gw:22,gy=desk?(H-(size*2+gap))/2-14:Math.max(H*.36,210);
-    items.forEach(function(it,k){
-      var fx=gx+it.c*(size+gap),fy=gy+28+it.r*(size+gap),s0=SCAT[k],sz0=size*s0[2]*1.3;
-      var x0=(desk?W*.5+s0[0]*W*.46:s0[0]*W)-sz0*.2,y0=(desk?.12+s0[1]*.85:s0[1])*H-sz0/2;
-      var sz=sz0+(size-sz0)*t;
-      it.e.style.width=it.e.style.height=sz+'px';
-      it.e.style.transform='translate('+(x0+(fx-x0)*t)+'px,'+(y0+(fy-y0)*t)+'px) rotate('+(s0[3]*(1-t))+'deg)';
-      it.e.style.boxShadow=(it.id==='W107'&&t>.95)?'0 16px 30px -16px rgba(42,58,48,.38),0 0 0 3px #E0A95E':'';
-    });
-    labels.forEach(function(l,i){l.style.width=size+'px';l.style.transform='translate('+(gx+i*(size+gap))+'px,'+gy+'px)';l.style.opacity=clamp((t-.75)/.25)});
-    chips.style.opacity=clamp((t-.85)/.15);
-  }
-
-  // scène 3 : une assiette se dédouble
+  // assiettes qui se dédoublent
   var s3=document.querySelector('[data-s3]'),b1=s3.querySelector('[data-db1]'),b2=s3.querySelector('[data-db2]'),l1=s3.querySelector('[data-lb1]'),l2=s3.querySelector('[data-lb2]'),p3=s3.querySelector('[data-s3p]'),fine=s3.querySelector('[data-fine]');
   function drawDuo(t){
     var W=innerWidth,H=innerHeight,desk=W>=900;t=ease(t);
     var big=desk?Math.min(300,H*.38):Math.min(W*.44,H*.22);
-    var cx=desk?W*.72:W/2,cy=desk?H*.42:H*.6,spread=desk?big*.72:W*.25;
+    var cx=desk?W*.7:W/2,cy=desk?H*.42:H*.6,spread=desk?big*.72:W*.25;
     var s1=big*(1.5-.5*t),s2=s1*(1-.22*t),x1=cx-spread*t,x2=cx+spread*t,base=cy+s1/2;
     b1.style.width=b1.style.height=s1+'px';b1.style.transform='translate('+(x1-s1/2)+'px,'+(base-s1)+'px)';
     b2.style.width=b2.style.height=s2+'px';b2.style.transform='translate('+(x2-s2/2)+'px,'+(base-s2)+'px)';
@@ -282,36 +259,26 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     p3.style.display=(!desk&&H<760)?'none':'';
   }
 
-  // scène 5 : la recette se réécrit d'elle-même
-  var T={auto:"<mark>Mets l'autocuiseur en mode dorer</mark> et fais revenir l'oignon et les champignons 4 minutes dans le beurre, sans les colorer. Ajoute le poulet, les carottes, le thym, le laurier, le bouillon cube émietté et <mark>120 ml d'eau froide</mark> par portion. <mark>Ferme et laisse cuire 8 minutes sous pression</mark>, puis fais tomber la pression.",
-    cocotte:"<mark>Dans une cocotte à feu moyen</mark>, fais revenir l'oignon et les champignons 4 minutes dans le beurre, sans les colorer. Ajoute le poulet, les carottes, le thym, le laurier, le bouillon cube émietté et <mark>200 ml d'eau froide</mark> par portion. <mark>Couvre et laisse mijoter 25 minutes à feu doux</mark>, jusqu'à ce que le poulet soit tendre."};
-  var rw=document.querySelector('[data-rw]'),segs=document.querySelectorAll('.seg span');
-  function setRw(k){rw.style.opacity=0;setTimeout(function(){rw.innerHTML=T[k];rw.style.opacity=1},reduce?0:300);segs.forEach(function(s){s.classList.toggle('on',s.dataset.k===k)})}
-
-  // le déroulé
-  var scenes=[].slice.call(document.querySelectorAll('.scene')),DUR=[4600,5200,5600,6200,6800,0];
+  // le déroulé, comme des stories
+  var scenes=[].slice.call(document.querySelectorAll('.scene')),DUR=[4800,6400,5800,6400,6200,6200,6400,0];
   var bars=document.querySelector('[data-bars]'),hint=document.querySelector('[data-hint]');
   bars.innerHTML=scenes.map(function(){return '<span><i></i></span>'}).join('');
-  var fills=bars.querySelectorAll('i'),cur=-1,start=0,raf=0,timers=[];
+  var fills=bars.querySelectorAll('i'),cur=-1,raf=0,timers=[];
   function anim(dur,draw){var t0=performance.now();(function f(now){var t=reduce?1:clamp((now-t0)/dur);draw(t);if(t<1)timers.push(requestAnimationFrame(f))})(t0)}
   function enter(i){
     timers.forEach(function(id){cancelAnimationFrame(id);clearTimeout(id)});timers=[];
     cur=i;scenes.forEach(function(s,k){s.classList.toggle('on',k===i)});
     fills.forEach(function(f,k){f.style.width=k<i?'100%':'0'});
     hint.style.opacity=i===scenes.length-1?0:1;
-    if(i===1){drawSort(0);timers.push(setTimeout(function(){anim(2600,drawSort)},700))}
-    if(i===2){drawDuo(0);timers.push(setTimeout(function(){anim(2200,drawDuo)},900))}
-    if(i===3){scenes[3].classList.remove('on');void scenes[3].offsetWidth;scenes[3].classList.add('on')}
-    if(i===4){setRw('auto');timers.push(setTimeout(function(){setRw('cocotte')},3200))}
-    start=performance.now();cancelAnimationFrame(raf);
+    if(scenes[i]===s3){drawDuo(0);timers.push(setTimeout(function(){anim(2200,drawDuo)},900))}
+    var start=performance.now();cancelAnimationFrame(raf);
     if(DUR[i])(function tick(now){var p=clamp((now-start)/DUR[i]);fills[i].style.width=(p*100)+'%';if(p<1)raf=requestAnimationFrame(tick);else enter(i+1)})(start);
     else fills[i].style.width='100%';
   }
-  // toucher ou flèche : scène suivante (jusqu'à la fin)
   document.querySelector('[data-show]').addEventListener('click',function(e){if(e.target.closest('a,button'))return;if(cur<scenes.length-1)enter(cur+1)});
   addEventListener('keydown',function(e){if((e.key==='ArrowRight'||e.key===' ')&&cur<scenes.length-1){e.preventDefault();enter(cur+1)}if(e.key==='ArrowLeft'&&cur>0)enter(cur-1)});
   document.querySelector('[data-again]').addEventListener('click',function(){enter(0)});
-  addEventListener('resize',function(){if(cur===1)drawSort(1);if(cur===2)drawDuo(1)});
+  addEventListener('resize',function(){if(scenes[cur]===s3)drawDuo(1)});
   enter(0);
 })();
 </script>
