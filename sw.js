@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v286';
+const CACHE = 'hebe-v287';
 const ASSETS = [
   './',
   './index.html',
@@ -205,10 +205,13 @@ async function cachePhotos() {
   for (const u of PHOTOS) { try { if (!(await c.match(u))) await c.add(u); } catch {} }
 }
 
+// Activate : ne supprime que les anciens caches d'Hébé. Ponos est sur le même
+// site (pierrhu.github.io) et partage le stockage des caches : ne pas toucher
+// aux siens (ponos-…).
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k.startsWith('hebe-') && k !== CACHE).map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
   setTimeout(() => { cachePhotos(); }, 8000); // photos en arrière-plan, une fois l'app ouverte
