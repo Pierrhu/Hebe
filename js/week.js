@@ -4,9 +4,9 @@
 import { localYMD } from '../data/log.js';
 import { getEntry, saveEntry, getNextWeekDates, getWeekDates, getTodayDate } from '../data/log.js';
 import { USER, getTargetsFor } from '../data/user.js';
-import { getMembers, getActiveMember, updateMember } from '../data/household.js';
+import { getMembers, getActiveMember, updateMember, getSoups } from '../data/household.js';
 import { whoSwitch, bindWho, avatar } from './profileUi.js';
-import { getById, proteinFamily, isFreshFish, isSoup } from '../data/recipes.js';
+import { getById, proteinFamily, isFreshFish, isSoup, getMains } from '../data/recipes.js';
 import { INGREDIENTS, humanQty } from '../data/ingredients.js';
 import { el, computeDayMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
 import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, planMembers, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
@@ -329,9 +329,18 @@ function freeKcalHTML(m) {
         ${adj ? `<div class="fk-adj"><button data-mid="${m.id}" data-fkstep="-1" aria-label="100 kcal de moins">−</button><b>${val}<small>kcal</small></b><button data-mid="${m.id}" data-fkstep="1" aria-label="100 kcal de plus">+</button></div><span class="fk-note">Par défaut : la taille de l'un de tes plats</span>` : ''}
       </div>`;
 }
+// v278 : semaine d'automne, bandeau photo en tête de « Prépare ta semaine »
+const autumnCount = () => getMains().filter(r => (r.tags || []).includes('automne')).length;
+const autumnBanner = () => `<button class="aut-banner ${novelty ? 'on' : ''}" data-nov role="switch" aria-checked="${novelty}">
+      <img class="aut-img" src="img/dishes/W93.webp" alt="" loading="lazy">
+      <span class="aut-txt"><small>Nouveautés de saison</small><b>Semaine d'automne</b>
+        <span>${autumnCount()} recettes : courge, châtaigne, champignons${getSoups() ? ', soupes' : ''}.</span>
+        <span class="aut-pill"><i aria-hidden="true"></i><em>${novelty ? 'Activée' : 'Activer'}</em></span></span>
+    </button>`;
 function generatorHTML(plan) {
   const next = defaultNextWeek(plan);
   return `
+    ${autumnBanner()}
     <div class="hb-field">
       <div class="hb-label">Pour quelle semaine ?</div>
       ${thisWeekOk() ? `<div class="hb-seg">
@@ -355,11 +364,6 @@ function generatorHTML(plan) {
         ${PROTEINS.map(p => `<button class="prot-chip ${selProteins.includes(p.id) ? 'on' : ''}" data-p="${p.id}"><span class="prot-emoji"><img src="img/art/prot-${p.id}.webp" alt=""></span>${p.label}</button>`).join('')}
       </div>
     </div>
-    <button class="nov-toggle ${novelty ? 'on' : ''}" data-nov role="switch" aria-checked="${novelty}">
-      <span class="nov-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19 13 11"/></svg></span>
-      <span class="nov-txt"><b>Mode nouveautés</b><span>Uniquement les recettes d'automne cette semaine</span></span>
-      <span class="nov-sw" aria-hidden="true"></span>
-    </button>
     <button class="hb-btn hb-btn-primary hb-generate">Générer ma semaine</button>`;
 }
 function bindGenerator(root, onDone) {
@@ -401,6 +405,7 @@ function bindGenerator(root, onDone) {
     novelty = !novelty;
     try { localStorage.setItem('hebe_novelty', novelty ? '1' : '0'); } catch {}
     e.currentTarget.classList.toggle('on', novelty); e.currentTarget.setAttribute('aria-checked', novelty);
+    e.currentTarget.querySelector('.aut-pill em').textContent = novelty ? 'Activée' : 'Activer';
   });
   root.querySelectorAll('.prot-chip').forEach(b => b.addEventListener('click', () => {
     const p = b.dataset.p;
