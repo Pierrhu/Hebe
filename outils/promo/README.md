@@ -16,3 +16,5 @@ Version 4, menu avec l app plus visible (42 s) : `python3 render.py hebe-promo-m
 Version 5, en deux temps (carte puis app dans le téléphone, 45 s) : `python3 render.py hebe-promo-menu-v3.mp4 promo5.html 45`.
 
 Version 6, cadence lente (71 s) : `python3 render.py hebe-promo-menu-v4.mp4 promo6.html 71`.
+
+Vidéo d accueil (boucle 16 s, 1080x1350) : `hero.html`, rendu `python3 hrender.py hebe-video-accueil.mp4`. Storyboard : `board.html`.
