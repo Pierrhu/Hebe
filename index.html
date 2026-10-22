@@ -29,16 +29,19 @@ html,body{height:100%;background:var(--bg);overflow:hidden}
 body{color:var(--text);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;user-select:none}
 img{display:block;max-width:100%}
 em{font-style:italic;color:var(--sage)}
-.k{font:600 15px var(--sans);color:var(--honey-d)}
+.k{display:inline-block;font:600 13.5px var(--sans);color:#6B4A1E;background:var(--honey-t);padding:5px 12px;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(224,169,94,.45)}
 h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 
 /* ── le film ── */
 .show{position:fixed;inset:0;overflow:hidden}
-.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s .9s}
-.scene.on{opacity:1;visibility:visible;transition:opacity .9s ease,visibility 0s}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transform:scale(1.04);transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1),visibility 0s .8s}
+.scene.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.w{display:inline-block;opacity:0;transform:translateY(.55em) rotate(4deg);transition:opacity .5s ease,transform .7s cubic-bezier(.3,1.5,.4,1);transition-delay:calc(.15s + var(--i) * 70ms)}
+.scene.on .w{opacity:1;transform:none}
+h1.in,h2.in{opacity:1!important;transform:none!important}
 .bars{position:fixed;z-index:30;left:16px;right:16px;top:calc(10px + env(safe-area-inset-top));display:flex;gap:5px}
 .bars span{flex:1;height:3px;border-radius:2px;background:rgba(42,58,48,.15);overflow:hidden}
-.bars i{display:block;height:100%;width:0;background:var(--text);border-radius:2px}
+.bars i{display:block;height:100%;width:0;background:var(--sage);border-radius:2px}
 .word{position:fixed;z-index:30;left:14px;top:calc(22px + env(safe-area-inset-top));font:400 24px var(--serif);letter-spacing:-.02em;padding:4px 12px 6px;border-radius:18px;background:rgba(247,243,235,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .word i{color:var(--sage)}
 .hint{position:fixed;z-index:30;right:14px;top:calc(25px + env(safe-area-inset-top));font-size:13px;color:var(--muted);transition:opacity .4s;padding:6px 12px;border-radius:16px;background:rgba(247,243,235,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
@@ -60,13 +63,28 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 .s1 p{color:var(--text-2);font-size:clamp(17px,4.4vw,21px);max-width:30ch;margin-top:18px}
 
 /* ── scènes « écran de l'app » ── */
-.ph-s{background:var(--bg)}
-.ph-s.alt{background:var(--beige)}
+.ph-s{background:radial-gradient(60% 45% at 85% 80%,rgba(224,169,94,.20),transparent 70%),radial-gradient(50% 40% at 10% 15%,rgba(124,152,133,.16),transparent 70%),var(--bg)}
+.ph-s.alt{background:radial-gradient(60% 45% at 85% 80%,rgba(124,152,133,.22),transparent 70%),radial-gradient(50% 40% at 10% 15%,rgba(217,142,107,.16),transparent 70%),var(--beige)}
 .ph-txt{position:absolute;left:22px;right:22px;top:calc(74px + env(safe-area-inset-top));z-index:2}
 .ph-txt h2{font-size:clamp(34px,9vw,60px);line-height:1;margin-top:8px;max-width:13ch}
 .ph-txt p{color:var(--text-2);max-width:34ch;margin-top:12px;font-size:16.5px}
-.phone{position:absolute;left:50%;top:calc(var(--top,43%));width:min(300px,72vw);margin-left:calc(min(300px,72vw) / -2);border-radius:48px;background:#26332B;padding:9px;box-shadow:0 50px 80px -40px rgba(42,58,48,.55),inset 0 0 0 1.5px #3A4A40;transform:translateY(60px);opacity:0;transition:transform 1s cubic-bezier(.2,.8,.2,1) .3s,opacity .6s .3s}
-.scene.on .phone{transform:none;opacity:1}
+.rig{position:absolute;left:50%;top:43%;width:min(300px,72vw);margin-left:calc(min(300px,72vw) / -2)}
+.phone{position:relative;width:100%;border-radius:48px;background:#26332B;padding:9px;box-shadow:0 50px 80px -40px rgba(42,58,48,.55),inset 0 0 0 1.5px #3A4A40;transform:translateY(80px) rotate(-6deg);opacity:0;transition:transform 1.1s cubic-bezier(.3,1.45,.4,1) .25s,opacity .5s .25s}
+.scene.on .phone{transform:rotate(-2deg);opacity:1}
+@media (prefers-reduced-motion:no-preference){.scene.on .phone{animation:bob 6s ease-in-out 1.4s infinite}@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -8px}}}
+.orb{position:absolute;z-index:-1;width:150%;aspect-ratio:1;left:10%;top:34%;border-radius:50%;overflow:hidden;box-shadow:0 40px 70px -30px rgba(90,70,40,.45);opacity:0;transform:scale(.6) rotate(-40deg);transition:transform 1.4s cubic-bezier(.2,.9,.2,1) .1s,opacity .6s .1s}
+.orb img{width:100%;height:100%;object-fit:cover}
+.scene.on .orb{opacity:1;transform:none}
+@media (prefers-reduced-motion:no-preference){.scene.on .orb img{animation:spin 60s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}}
+.blob{position:absolute;z-index:-2;border-radius:50%;filter:blur(2px);opacity:.9}
+.stk{position:absolute;z-index:5;display:flex;flex-direction:column;padding:10px 15px 11px;border-radius:20px;background:#fff;color:var(--text);box-shadow:0 18px 30px -14px rgba(42,58,48,.45);white-space:nowrap;opacity:0;transform:scale(.4) rotate(var(--r,-6deg));transition:opacity .3s,transform .55s cubic-bezier(.3,1.6,.4,1)}
+.stk b{font:400 clamp(20px,5vw,30px)/1 var(--serif);letter-spacing:-.02em}
+.stk span{font:600 12px/1.2 var(--sans);color:var(--muted);margin-top:4px}
+.stk.honey{background:var(--honey);color:#3B2A12}.stk.honey span{color:#6B4A1E}
+.stk.sage{background:var(--sage);color:#fff}.stk.sage span{color:#E6EFE7}
+.stk.on{opacity:1;transform:rotate(var(--r,-6deg))}
+.stk.a{left:-30%;top:14%;--r:-7deg}.stk.b{right:-28%;top:52%;--r:5deg}
+@media (max-width:899px){.orb{width:130%;left:22%;top:30%}.stk.a{left:-14%;top:5%}.stk.b{right:-12%;top:42%}.stk{padding:8px 12px 9px;border-radius:16px}.stk span{font-size:11px}}
 .screen{position:relative;width:100%;aspect-ratio:390/844;height:auto;border-radius:39px;overflow:hidden;background:#F4F6F1}
 .screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .7s ease}
 .screen img.on,.screen>img:only-of-type{opacity:1}
@@ -104,8 +122,8 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
 .ring{position:absolute;left:50%;width:min(250px,64vw);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 30px;transition:transform 1.6s cubic-bezier(.2,.8,.2,1) 1s}
 .ring b{font:400 19px/1.15 var(--serif)}
 .ring span{font-size:13.5px;line-height:1.38;color:var(--text-2);margin-top:6px}
-.r1{top:0;background:rgba(224,169,94,.22);box-shadow:inset 0 0 0 1.5px rgba(224,169,94,.55);padding-bottom:80px}
-.r2{bottom:0;background:rgba(124,152,133,.22);box-shadow:inset 0 0 0 1.5px rgba(124,152,133,.55);padding-top:80px}
+.r1{top:0;background:rgba(224,169,94,.38);box-shadow:inset 0 0 0 2px rgba(224,169,94,.8);padding-bottom:80px}
+.r2{bottom:0;background:rgba(124,152,133,.34);box-shadow:inset 0 0 0 2px rgba(124,152,133,.8);padding-top:80px}
 .core{position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;box-shadow:0 22px 40px -18px rgba(90,70,40,.55),0 0 0 6px var(--beige);transition:transform .9s 2.2s cubic-bezier(.2,.8,.2,1.3),opacity .6s 2.2s}
 .core img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .cw{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);padding:5px 14px;border-radius:16px;background:#fff;font:400 20px/1 var(--serif);letter-spacing:-.02em;box-shadow:0 8px 18px -8px rgba(90,70,40,.4);white-space:nowrap}
@@ -138,7 +156,7 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   .s1 h1{font-size:clamp(56px,6.4vw,84px)}
   .ph-txt,.head{left:max(56px,calc(50% - 520px));right:auto;top:50%;transform:translateY(-50%);max-width:440px}
   .ph-txt h2{font-size:clamp(44px,4.6vw,62px)}
-  .phone{--top:50%;left:auto;right:max(120px,calc(50% - 460px));margin:0;width:min(340px,39vh);top:50%;translate:0 -50%}
+  .rig{left:auto;right:max(160px,calc(50% - 440px));margin:0;width:min(330px,38vh);top:50%;translate:0 -50%}
   .call.c-l{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(340px,39vh) + 24px)}
   .call.c-r{left:auto;right:calc(max(120px,calc(50% - 460px)) + min(340px,39vh) + 24px)}
   .fine{left:auto;right:56px;max-width:520px;text-align:right}
@@ -152,12 +170,13 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   .core{width:150px;height:150px;margin:-75px 0 0 -75px}
 }
 @media (max-width:899px){.call{display:none!important}
-  .ph-s .phone{top:auto;bottom:calc(18px + env(safe-area-inset-bottom));width:min(66vw,calc((100svh - 310px) / 2.16));margin-left:calc(min(66vw,calc((100svh - 310px) / 2.16)) / -2);border-radius:38px;padding:7px}
+  .ph-s .rig{top:auto;bottom:calc(18px + env(safe-area-inset-bottom));width:min(60vw,calc((100svh - 320px) / 2.16));margin-left:calc(min(60vw,calc((100svh - 320px) / 2.16)) / -2)}
+  .ph-s .phone{border-radius:36px;padding:7px}
   .ph-s .screen{border-radius:31px}
   .ph-txt h2{font-size:clamp(30px,8.4vw,44px)}
   .ph-txt p{font-size:15.5px;margin-top:8px}}
 @media (max-height:720px) and (max-width:899px){.ph-txt p{display:none}.proofs{display:none}}
-@media (prefers-reduced-motion:reduce){.scene,.in,.ring,.core,.phone,.tapring,.screen img{transition:none}}
+@media (prefers-reduced-motion:reduce){.scene,.in,.ring,.core,.phone,.tapring,.screen img,.orb,.stk,.w{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -179,39 +198,28 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   <!-- 2. Pour toi -->
   <section class="scene ph-s" aria-label="Calculé pour toi">
     <div class="ph-txt"><p class="k in">Pour toi</p><h2 class="in d1">Tes besoins. <em>Et ceux de chacun.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
-    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/you-pierre.webp", "ring": [51.03, 9.24, 42.82, 4.74], "cap": "Hébé calcule tes besoins : 2 514 kcal et 129 g de protéines par jour."}, {"img": "img/landing/you-lea.webp", "ring": null, "cap": "Et ceux de chaque personne du foyer : 1 828 kcal pour Léa."}]' aria-label="Le profil de Pierre, puis celui de Léa"><img src="img/landing/you-pierre.webp" alt="" class="on" loading="eager"><img src="img/landing/you-lea.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
+    <div class="rig"><div class="orb" aria-hidden="true"><img src="img/dishes/W20.webp" alt=""></div><div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/you-pierre.webp", "ring": [51.03, 9.24, 42.82, 4.74], "cap": "Hébé calcule tes besoins : 2 514 kcal et 129 g de protéines par jour."}, {"img": "img/landing/you-lea.webp", "ring": null, "cap": "Et ceux de chaque personne du foyer : 1 828 kcal pour Léa."}]' aria-label="Le profil de Pierre, puis celui de Léa"><img src="img/landing/you-pierre.webp" alt="" class="on" loading="eager"><img src="img/landing/you-lea.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div><div class="stk honey a" data-at="0"><b>2 514 kcal</b><span>pour Pierre, chaque jour</span></div><div class="stk sage b" data-at="1"><b>1 828 kcal</b><span>pour Léa</span></div></div>
   </section>
   <!-- 3. Changer un plat -->
   <section class="scene ph-s alt" aria-label="Changer un plat">
     <div class="ph-txt"><p class="k in">Ta semaine</p><h2 class="in d1">Un plat ne te dit rien ? <em>Tu le changes.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
-    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/swap-detail.webp", "ring": [52.31, 70.06, 20.9, 4.13], "cap": "Un plat ne te dit rien ? Touche « Changer »."}, {"img": "img/landing/swap-choix.webp", "ring": [5.13, 56.66, 89.74, 9.48], "cap": "Hébé te propose trois plats."}, {"img": "img/landing/swap-fait.webp", "ring": null, "cap": "C&#39;est remplacé. Portions et courses suivent."}]' aria-label="Changer un plat en trois touches"><img src="img/landing/swap-detail.webp" alt="" class="on" loading="eager"><img src="img/landing/swap-choix.webp" alt="" class="" loading="lazy"><img src="img/landing/swap-fait.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
+    <div class="rig"><div class="orb" aria-hidden="true"><img src="img/dishes/W14.webp" alt=""></div><div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/swap-detail.webp", "ring": [52.31, 70.06, 20.9, 4.13], "cap": "Un plat ne te dit rien ? Touche « Changer »."}, {"img": "img/landing/swap-choix.webp", "ring": [5.13, 56.66, 89.74, 9.48], "cap": "Hébé te propose trois plats."}, {"img": "img/landing/swap-fait.webp", "ring": null, "cap": "C&#39;est remplacé. Portions et courses suivent."}]' aria-label="Changer un plat en trois touches"><img src="img/landing/swap-detail.webp" alt="" class="on" loading="eager"><img src="img/landing/swap-choix.webp" alt="" class="" loading="lazy"><img src="img/landing/swap-fait.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div><div class="stk a" data-at="1"><b>3 idées</b><span>au choix, de saison</span></div><div class="stk honey b" data-at="2"><b>Recalculé</b><span>portions et courses</span></div></div>
   </section>
-  <!-- 3. Deux assiettes -->
-  <section class="scene s3" data-s3 aria-label="La portion de chacun">
-    <div class="head"><p class="k in">Pour chacun sa portion</p><h2 class="in d1">Le même plat. <em>Pas la même assiette.</em></h2><p data-s3p style="opacity:0">Hébé calcule la portion de chaque personne du foyer selon son poids, son activité et son objectif. Au gramme près.</p></div>
-    <div class="db" data-db1><img src="img/dishes/W107.webp" alt="Carbonade flamande, portion de Lui"></div>
-    <div class="db" data-db2><img src="img/dishes/W107.webp" alt="Carbonade flamande, portion d'Elle"></div>
-    <div class="lab" data-lb1><b>Lui</b><span>82 kg, garde son poids</span><span class="kc">1 010 kcal</span><span class="g">233 g de bœuf<br>400 g de pommes de terre</span></div>
-    <div class="lab" data-lb2><b>Elle</b><span>60 kg, garde son poids</span><span class="kc">755 kcal</span><span class="g">142 g de bœuf<br>300 g de pommes de terre</span></div>
-    <p class="fine" data-fine>Carbonade flamande, portions calculées par Hébé pour un couple actif de 28 ans. Grammes crus.</p>
-  </section>
-
   <!-- 4. Cuisiner -->
   <section class="scene ph-s alt" aria-label="Une session guidée">
     <div class="ph-txt"><p class="k in">Le dimanche</p><h2 class="in d1">Une session, <em>étape par étape.</em></h2><p class="in d2">Tout est dans le bon ordre : ce qui cuit seul pendant que tu prépares la suite, puis la mise en boîtes. Moins de 2 h pour 20 boîtes.</p></div>
-    <div class="phone" style="--top:43%"><span class="notch"></span><div class="screen"><img src="img/landing/cook.webp" alt="L'écran Cuisiner de Hébé"></div></div>
-    
+    <div class="rig"><div class="orb" aria-hidden="true"><img src="img/dishes/W84.webp" alt=""></div><div class="phone"><span class="notch"></span><div class="screen"><img src="img/landing/cook.webp" alt="L'écran Cuisiner de Hébé"></div></div><div class="stk honey a" data-at="0" style="--d:1.2s"><b>&lt; 2 h</b><span>de cuisine le dimanche</span></div><div class="stk sage b" data-at="0" style="--d:2.2s"><b>20 boîtes</b><span>pour deux, toute la semaine</span></div></div>
   </section>
 
   <!-- Courses -->
   <section class="scene ph-s alt" aria-label="Les courses">
     <div class="ph-txt"><p class="k in">Les courses</p><h2 class="in d1">Tu coches, <em>c'est rangé.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
-    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/shop-liste.webp", "ring": [9.23, 24.25, 81.54, 8.13], "cap": "Ta liste, rangée par rayon, au format du magasin."}, {"img": "img/landing/shop-coche.webp", "ring": null, "cap": "Tu coches, c&#39;est barré. Le compteur avance."}]' aria-label="La liste de courses"><img src="img/landing/shop-liste.webp" alt="" class="on" loading="eager"><img src="img/landing/shop-coche.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
+    <div class="rig"><div class="orb" aria-hidden="true"><img src="img/dishes/W22.webp" alt=""></div><div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/shop-liste.webp", "ring": [9.23, 24.25, 81.54, 8.13], "cap": "Ta liste, rangée par rayon, au format du magasin."}, {"img": "img/landing/shop-coche.webp", "ring": null, "cap": "Tu coches, c&#39;est barré. Le compteur avance."}]' aria-label="La liste de courses"><img src="img/landing/shop-liste.webp" alt="" class="on" loading="eager"><img src="img/landing/shop-coche.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div><div class="stk a" data-at="0"><b>Par rayon</b><span>au format du magasin</span></div><div class="stk sage b" data-at="1"><b>3 / 45</b><span>déjà dans le panier</span></div></div>
   </section>
   <!-- Suivi -->
   <section class="scene ph-s" aria-label="Tes progrès">
     <div class="ph-txt"><p class="k in">Tes progrès</p><h2 class="in d1">Tu te pèses, <em>elle s'ajuste.</em></h2><p class="stepcap in d2" aria-live="polite"></p><div class="dots in d2"></div></div>
-    <div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/weight-avant.webp", "ring": [8.72, 46.6, 12.31, 5.69], "cap": "Ta pesée du matin."}, {"img": "img/landing/weight-ajuste.webp", "ring": [5.13, 56.14, 89.74, 5.98], "cap": "Tu ajustes, puis tu enregistres."}, {"img": "img/landing/weight-fait.webp", "ring": null, "cap": "Hébé recale ton objectif."}]' aria-label="La pesée"><img src="img/landing/weight-avant.webp" alt="" class="on" loading="eager"><img src="img/landing/weight-ajuste.webp" alt="" class="" loading="lazy"><img src="img/landing/weight-fait.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div>
+    <div class="rig"><div class="orb" aria-hidden="true"><img src="img/dishes/W25.webp" alt=""></div><div class="phone"><span class="notch"></span><div class="screen" data-seq='[{"img": "img/landing/weight-avant.webp", "ring": [8.72, 46.6, 12.31, 5.69], "cap": "Ta pesée du matin."}, {"img": "img/landing/weight-ajuste.webp", "ring": [5.13, 56.14, 89.74, 5.98], "cap": "Tu ajustes, puis tu enregistres."}, {"img": "img/landing/weight-fait.webp", "ring": null, "cap": "Hébé recale ton objectif."}]' aria-label="La pesée"><img src="img/landing/weight-avant.webp" alt="" class="on" loading="eager"><img src="img/landing/weight-ajuste.webp" alt="" class="" loading="lazy"><img src="img/landing/weight-fait.webp" alt="" class="" loading="lazy"><span class="tapring"></span></div></div><div class="stk a" data-at="1"><b>−0,3 kg</b><span>pesée du matin</span></div><div class="stk honey b" data-at="2"><b>Objectif</b><span>recalé tout seul</span></div></div>
   </section>
   <!-- 7. Pourquoi Hébé -->
   <section class="scene s7" aria-label="Pourquoi Hébé">
@@ -251,25 +259,14 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     w.innerHTML=html;
   });
 
-  // assiettes qui se dédoublent
-  var s3=document.querySelector('[data-s3]'),b1=s3.querySelector('[data-db1]'),b2=s3.querySelector('[data-db2]'),l1=s3.querySelector('[data-lb1]'),l2=s3.querySelector('[data-lb2]'),p3=s3.querySelector('[data-s3p]'),fine=s3.querySelector('[data-fine]');
-  function drawDuo(t){
-    var W=innerWidth,H=innerHeight,desk=W>=900;t=ease(t);
-    var big=desk?Math.min(300,H*.38):Math.min(W*.44,H*.22);
-    var cx=desk?W*.7:W/2,cy=desk?H*.42:H*.6,spread=desk?big*.72:W*.25;
-    var s1=big*(1.5-.5*t),s2=s1*(1-.22*t),x1=cx-spread*t,x2=cx+spread*t,base=cy+s1/2;
-    b1.style.width=b1.style.height=s1+'px';b1.style.transform='translate('+(x1-s1/2)+'px,'+(base-s1)+'px)';
-    b2.style.width=b2.style.height=s2+'px';b2.style.transform='translate('+(x2-s2/2)+'px,'+(base-s2)+'px)';
-    l1.style.left=x1+'px';l1.style.top=(base+14)+'px';l2.style.left=x2+'px';l2.style.top=(base+14)+'px';
-    var o=clamp((t-.7)/.3);l1.style.opacity=l2.style.opacity=fine.style.opacity=o;p3.style.opacity=clamp((t-.35)/.4);
-    p3.style.display=(!desk&&H<760)?'none':'';
-  }
-
+  // titres découpés en mots (arrivée mot à mot)
+  document.querySelectorAll('.scene h1, .scene h2').forEach(function(h){var n=0;(function walk(el){[].slice.call(el.childNodes).forEach(function(c){if(c.nodeType===3){var f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(function(t){if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(t));return}var sp=document.createElement('span');sp.className='w';sp.style.setProperty('--i',n++);sp.textContent=t;f.appendChild(sp)});c.replaceWith(f)}else if(c.nodeType===1)walk(c)})})(h)});
+  function stickers(sc,k){sc.querySelectorAll('.stk').forEach(function(st){var at=+st.dataset.at;if(at===k){var d=parseFloat(getComputedStyle(st).getPropertyValue('--d'))||1.6;timers.push(setTimeout(function(){st.classList.add('on')},reduce?0:d*1000))}else if(at>k)st.classList.remove('on')})}
   // séquences d'écrans : on montre l'endroit touché, puis l'écran suivant
   var STEP=2900;
-  function runSeq(sc){var scr=sc.querySelector('[data-seq]');if(!scr)return 0;var steps=JSON.parse(scr.dataset.seq),imgs=scr.querySelectorAll('img'),ring=scr.querySelector('.tapring'),cap=sc.querySelector('.stepcap'),dots=sc.querySelector('.dots');
+  function runSeq(sc){sc.querySelectorAll('.stk').forEach(function(st){st.classList.remove('on')});var scr=sc.querySelector('[data-seq]');if(!scr){stickers(sc,0);return 0}var steps=JSON.parse(scr.dataset.seq),imgs=scr.querySelectorAll('img'),ring=scr.querySelector('.tapring'),cap=sc.querySelector('.stepcap'),dots=sc.querySelector('.dots');
     dots.innerHTML=steps.map(function(){return '<i></i>'}).join('');var di=dots.querySelectorAll('i');
-    function show(k){imgs.forEach(function(im,j){im.classList.toggle('on',j===k)});di.forEach(function(d,j){d.classList.toggle('on',j<=k)});cap.style.opacity=0;
+    function show(k){stickers(sc,k);imgs.forEach(function(im,j){im.classList.toggle('on',j===k)});di.forEach(function(d,j){d.classList.toggle('on',j<=k)});cap.style.opacity=0;
       timers.push(setTimeout(function(){cap.textContent=steps[k].cap;cap.style.opacity=1},150));ring.classList.remove('on');
       var r=steps[k].ring;if(r){ring.style.left=r[0]+'%';ring.style.top=r[1]+'%';ring.style.width=r[2]+'%';ring.style.height=r[3]+'%';timers.push(setTimeout(function(){ring.classList.add('on')},reduce?0:1100))}
       if(k<steps.length-1)timers.push(setTimeout(function(){show(k+1)},STEP))}
@@ -285,7 +282,6 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
     cur=i;scenes.forEach(function(s,k){s.classList.toggle('on',k===i)});
     fills.forEach(function(f,k){f.style.width=k<i?'100%':'0'});
     hint.style.opacity=i===scenes.length-1?0:1;
-    if(scenes[i]===s3){drawDuo(0);timers.push(setTimeout(function(){anim(3200,drawDuo)},1600))}
     runSeq(scenes[i]);
     var start=performance.now();cancelAnimationFrame(raf);
     if(DUR[i])(function tick(now){var p=clamp((now-start)/DUR[i]);fills[i].style.width=(p*100)+'%';if(p<1)raf=requestAnimationFrame(tick);else enter(i+1)})(start);
@@ -294,7 +290,6 @@ h1,h2{font-weight:400;font-family:var(--serif);letter-spacing:-.035em}
   document.querySelector('[data-show]').addEventListener('click',function(e){if(e.target.closest('a,button'))return;if(cur<scenes.length-1)enter(cur+1)});
   addEventListener('keydown',function(e){if((e.key==='ArrowRight'||e.key===' ')&&cur<scenes.length-1){e.preventDefault();enter(cur+1)}if(e.key==='ArrowLeft'&&cur>0)enter(cur-1)});
   document.querySelector('[data-again]').addEventListener('click',function(){enter(0)});
-  addEventListener('resize',function(){if(scenes[cur]===s3)drawDuo(1)});
   enter(0);
 })();
 </script>
