@@ -1,0 +1,111 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>
+@font-face{font-family:Fraunces;font-weight:400;src:url(fonts/fraunces-400.woff2)}
+@font-face{font-family:Fraunces;font-weight:400;font-style:italic;src:url(fonts/fraunces-400-italic.woff2)}
+@font-face{font-family:Outfit;font-weight:500;src:url(fonts/outfit-500.woff2)}
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-600.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;overflow:hidden;-webkit-font-smoothing:antialiased;color:#22322A;font-family:Outfit}
+#st{position:relative;width:1080px;height:1350px;overflow:hidden;background:radial-gradient(90% 70% at 70% 40%,#FBF7EF 0%,#F3EDE2 60%,#EDE5D6 100%)}
+#st::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.18;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .35 0 0 0 0 .25 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.a{position:absolute}
+.h{font:400 88px/1 Fraunces;letter-spacing:-.04em}
+.h i{font-style:italic;color:#6F8C78}
+.m{overflow:hidden;padding-bottom:.16em;margin-bottom:-.16em}.m>span{display:block}
+.bw{position:absolute;border-radius:50%;overflow:hidden;box-shadow:0 30px 50px -26px rgba(80,60,30,.55)}
+.bw img{width:100%;height:100%;object-fit:cover}
+#ph{position:absolute;left:0;top:0;width:430px;border-radius:64px;background:#1F2A23;padding:12px;box-shadow:0 70px 100px -50px rgba(40,40,30,.55),0 0 0 2px #35443A inset;z-index:10}
+#ph .s{position:relative;width:406px;height:879px;border-radius:53px;overflow:hidden;background:#F4F6F1}
+#ph .iw{position:absolute;left:0;top:62px;width:406px;height:879px}
+#ph .iw img{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+#ph .nt{position:absolute;left:50%;top:22px;width:118px;height:32px;margin-left:-59px;border-radius:16px;background:#1F2A23;z-index:5}
+#ring{position:absolute;border-radius:12px;box-shadow:0 0 0 5px #E0A95E,0 0 0 14px rgba(224,169,94,.25);opacity:0;z-index:3}
+#dot{position:absolute;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:rgba(224,169,94,.5);opacity:0;z-index:4}
+.tag{display:inline-flex;align-items:center;gap:12px;font:600 30px Outfit;color:#5E7A67;background:#E6EFE7;padding:12px 22px;border-radius:30px}
+.tag i{width:10px;height:10px;border-radius:50%;background:#7C9885}
+.pc{position:absolute;display:flex;align-items:center;gap:22px;width:480px;background:#fff;border-radius:34px;padding:20px 30px 20px 20px;box-shadow:0 30px 50px -28px rgba(60,50,30,.45)}
+.pc .av{width:96px;height:96px;border-radius:50%;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.pc .av img{width:94%}
+.pc b{display:block;font:400 40px/1 Fraunces;white-space:nowrap;letter-spacing:-.02em}
+.pc span{display:block;white-space:nowrap;font:500 26px/1.3 Outfit;color:#5A6B60;margin-top:6px}
+.pc .k{margin-left:auto;padding-left:18px;font:400 58px/1 Fraunces;white-space:nowrap;letter-spacing:-.03em}
+.pc .k small{font:600 22px Outfit;color:#8A8F84;margin-left:4px}
+.stt b{display:block;font:400 150px/1 Fraunces;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.stt span{font:500 32px Outfit;color:#5A6B60}
+.logo{font:400 64px/1 Fraunces;letter-spacing:-.03em}.logo i{color:#7C9885}
+#veil{position:absolute;inset:0;z-index:40;background:radial-gradient(90% 70% at 70% 40%,#FBF7EF 0%,#F3EDE2 60%,#EDE5D6 100%);opacity:0}
+</style></head><body><div id="st">
+ <div class="a h" id="h1" style="left:80px;top:110px"><div class="m"><span>Ta semaine,</span></div><div class="m"><span><i>cuisinée en une fois.</i></span></div></div>
+ <div id="bowls"></div>
+ <div id="ph"><div class="s"><div class="nt"></div><div class="iw" id="iw"><div id="ring"></div><div id="dot"></div></div></div></div>
+ <div class="a" id="tag" style="left:0;right:0;top:1170px;text-align:center"><span class="tag"><i></i>Composée pour vous deux</span></div>
+ <div class="a h" id="h3" style="left:560px;top:220px;font-size:76px"><div class="m"><span>Même plat.</span></div><div class="m"><span><i>Chacun sa</i></span></div><div class="m"><span><i>portion.</i></span></div></div>
+ <div class="pc" id="c1" style="left:530px;top:640px"><div class="av" style="background:#E3ECE4"><img src="img/man.webp"></div><div><b>Toi</b><span>160 g de bœuf</span></div><div class="k"><span id="k1" style="font:inherit;color:inherit;margin:0;display:inline">832</span><small>kcal</small></div></div>
+ <div class="pc" id="c2" style="left:530px;top:820px"><div class="av" style="background:#F6E2D8"><img src="img/woman.webp"></div><div><b>Ta moitié</b><span>100 g de bœuf</span></div><div class="k"><span id="k2" style="font:inherit;color:inherit;margin:0;display:inline">620</span><small>kcal</small></div></div>
+ <div class="a stt" id="s1" style="left:80px;top:240px"><b id="n1">2 h 10</b><span>de cuisine le dimanche</span></div>
+ <div class="a stt" id="s2" style="left:80px;top:540px"><b id="n2">28</b><span>boîtes pour la semaine</span></div>
+ <div class="a stt" id="s3" style="left:80px;top:840px"><b style="color:#7C9885">0 €</b><span>sans compte, sans pub</span></div>
+ <div class="a logo" id="lg" style="left:80px;top:1170px">Héb<i>é</i></div>
+ <div id="veil"></div>
+</div>
+<script>
+const C=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),P=(t,a,b)=>C((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,4),eio=x=>x*x*x*(x*(x*6-15)+10),back=x=>{const c=1.3;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const L=(a,b,x)=>a+(b-a)*x,$=id=>document.getElementById(id);
+// bols : [image, x, y, taille] du plan 1, puis position au plan 2 (null = sort)
+const B=[['W107',470,420,470,null],['W20',120,440,330,[-140,300,360]],['W14',260,790,300,[-60,760,300]],['W22',600,900,260,null],['W25',60,1010,200,null],['W84',860,300,170,null]];
+const bowls=$('bowls');B.forEach(b=>{const d=document.createElement('div');d.className='bw';d.innerHTML=`<img src="img/${b[0]}.webp">`;bowls.appendChild(d);b.el=d});
+// écrans
+const SHOTS=['w-detail','w-choix','w-fait','rt-toi','rt-moitie','k-cook'];const iw=$('iw'),IM={};
+SHOTS.forEach(n=>{const i=document.createElement('img');i.src=`img/${n}.webp`;iw.insertBefore(i,$('ring'));IM[n]=i});
+// [écran, début du fondu]
+const SEQ=[['w-detail',0],['w-choix',6.15],['w-fait',7.25],['rt-toi',8.0],['rt-moitie',10.25],['k-cook',12.0]];
+const RINGS=[[52.31,67.69,20.9,4.13,5.3,6.15,5.95],[5.13,52.6,89.74,11.51,6.6,7.25,7.05]];
+const PH=[[325,150,4.0],[80,150,8.0],[570,150,12.0]]; // positions du téléphone, atteintes à ce temps
+const lines=el=>[...el.querySelectorAll('.m>span')];
+window.render0=function(t){
+  // plan 1 : titre et bols
+  lines($('h1')).forEach((s,j)=>{const i=eo(P(t,.2+j*.18,1.3+j*.18)),o=eio(P(t,3.3+j*.08,4.1+j*.08));s.style.transform=`translateY(${(1-i)*115-o*115}%)`});
+  B.forEach((b,k)=>{const [,x,y,s,to]=b;const i=back(P(t,.45+k*.13,1.45+k*.13));const drift=Math.sin((t+k)*0.9)*4;
+    let X=x,Y=y+drift,S=s,op=eio(P(t,.45+k*.13,.9+k*.13));
+    const m=eio(P(t,3.3,4.9));
+    if(to){X=L(x,to[0],m);Y=L(y,to[1],m)+drift;S=L(s,to[2],m);const out=eio(P(t,7.2,8.4));X-=out*520}
+    else{X=L(x,x+(x>400?900:-700),m);op*=1-m}
+    b.el.style.left=X+'px';b.el.style.top=Y+'px';b.el.style.width=b.el.style.height=S+'px';b.el.style.opacity=op;b.el.style.transform=`scale(${i})`});
+  // téléphone
+  const ph=$('ph');const pin=eo(P(t,3.7,5.0));let px=PH[0][0],py=PH[0][1];
+  for(let k=1;k<PH.length;k++){const m=eio(P(t,PH[k][2]-1.2,PH[k][2]+.2));px=L(px,PH[k][0],m)}
+  const pout=eio(P(t,15.0,15.8));
+  ph.style.transform=`translate(${px}px,${py+(1-pin)*1100}px)`;ph.style.opacity=C(P(t,3.7,4.0));
+  // écrans : fondu
+  SHOTS.forEach(n=>IM[n].style.opacity=0);let cur=0;SEQ.forEach((s,k)=>{if(t>=s[1])cur=k});
+  if(cur>0)IM[SEQ[cur-1][0]].style.opacity=1;IM[SEQ[cur][0]].style.opacity=cur===0?1:eio(P(t,SEQ[cur][1],SEQ[cur][1]+.55));
+  IM[SEQ[cur][0]].style.zIndex=2;if(cur>0)IM[SEQ[cur-1][0]].style.zIndex=1;
+  // anneau puis toucher
+  const rg=$('ring'),dt=$('dot');let on=0,tp=-1,rr=null;RINGS.forEach(r=>{if(t>=r[4]&&t<r[5]){rr=r;on=eio(P(t,r[4],r[4]+.4))*(1-eio(P(t,r[5]-.3,r[5])));tp=P(t,r[6],r[6]+.4)}});
+  if(rr){Object.assign(rg.style,{left:`calc(${rr[0]}% - 8px)`,top:`calc(${rr[1]}% - 8px)`,width:`calc(${rr[2]}% + 16px)`,height:`calc(${rr[3]}% + 16px)`});
+    dt.style.left=(rr[0]+rr[2]/2)+'%';dt.style.top=(rr[1]+rr[3]/2)+'%';dt.style.opacity=tp>0&&tp<1?1-tp:0;dt.style.transform=`scale(${.5+tp*1.4})`}else dt.style.opacity=0;
+  rg.style.opacity=on;rg.style.transform=`scale(${1.08-.08*on})`;
+  // pastille du plan 2
+  const tg=$('tag'),tv=eo(P(t,4.8,5.3))*(1-eio(P(t,7.4,7.9)));tg.style.opacity=tv;tg.style.transform=`translateY(${(1-tv)*20}px)`;
+  // plan 3
+  lines($('h3')).forEach((s,j)=>{const i=eo(P(t,8.0+j*.15,9.1+j*.15)),o=eio(P(t,11.2+j*.07,11.9+j*.07));s.style.transform=`translateY(${(1-i)*115-o*115}%)`});
+  [['c1',9.0],['c2',10.2]].forEach(([id,a],j)=>{const e=$(id),i=back(P(t,a,a+.75)),o=eio(P(t,11.2+j*.12,11.9+j*.12));e.style.opacity=eio(P(t,a,a+.35))*(1-o);e.style.transform=`translateX(${(1-C(i))*60+o*120}px) scale(${.92+.08*i})`});
+  $('k1').textContent=Math.round(832*eo(P(t,9.1,9.9)));$('k2').textContent=Math.round(620*eo(P(t,10.3,11.1)));
+  $('c1').style.filter=t>10.3?`saturate(${1-.5*eio(P(t,10.3,10.9))})`:'';
+  // plan 4
+  [['s1',12.4],['s2',12.9],['s3',13.4],['lg',14.0]].forEach(([id,a])=>{const e=$(id),v=eo(P(t,a,a+.9));e.style.opacity=v;e.style.transform=`translateY(${(1-v)*30}px)`});
+  const m1=Math.round(130*eo(P(t,12.45,13.3)));$('n1').textContent=`${Math.floor(m1/60)} h ${String(m1%60).padStart(2,'0')}`.replace(' h 00',' h');
+  $('n2').textContent=Math.round(28*eo(P(t,12.95,13.7)));
+  // bouclage : voile crème
+  $('veil').style.opacity=eio(P(t,14.9,16.0));
+};
+window.ready=Promise.all([...document.images].map(i=>i.decode().catch(()=>0))).then(()=>document.fonts.ready);
+render(0);
+</script><script>
+(function(){const K=[[0,0],[2.4,1.7],[5.4,3.3],[7.4,5.0],[9.8,5.3],[11.4,6.15],[13.6,6.6],[14.6,7.25],[16.6,7.4],[18.6,8.6],[20.2,9.8],[23.4,10.2],[24.6,11.0],[27.6,11.2],[29.0,12.4],[30.6,13.4],[31.6,14.3],[34.6,14.9],[36,16]];
+const n=K.length,h=[],d=[],m=[];for(let i=0;i<n-1;i++){h[i]=K[i+1][0]-K[i][0];d[i]=(K[i+1][1]-K[i][1])/h[i]}
+m[0]=d[0];m[n-1]=d[n-2];for(let i=1;i<n-1;i++){if(d[i-1]*d[i]<=0)m[i]=0;else{const w1=2*h[i]+h[i-1],w2=h[i]+2*h[i-1];m[i]=(w1+w2)/(w1/d[i-1]+w2/d[i])}}
+window.TMAP=T=>{if(T<=0)return 0;if(T>=K[n-1][0])return K[n-1][1];let i=0;while(T>K[i+1][0])i++;const x=(T-K[i][0])/h[i],x2=x*x,x3=x2*x;
+return (2*x3-3*x2+1)*K[i][1]+(x3-2*x2+x)*h[i]*m[i]+(-2*x3+3*x2)*K[i+1][1]+(x3-x2)*h[i]*m[i+1]};
+window.render=T=>window.render0(window.TMAP(T));})();
+</script></body></html>
