@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Fraunces;font-weight:400;src:url(fonts/fraunces-400.woff2)}
+@font-face{font-family:Fraunces;font-weight:400;font-style:italic;src:url(fonts/fraunces-400-italic.woff2)}
+@font-face{font-family:Outfit;font-weight:400;src:url(fonts/outfit-400.woff2)}
+@font-face{font-family:Outfit;font-weight:500;src:url(fonts/outfit-500.woff2)}
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-600.woff2)}
+:root{--ink:#22322A;--ink2:#5A6B60;--mut:#8A8F84;--sage:#7C9885;--honey:#E0A95E;--honeyd:#A8712A;--terra:#C97E5C;--paper:#F8F2E6}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden}
+body{-webkit-font-smoothing:antialiased;color:var(--ink);font-family:Outfit,sans-serif}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(120% 70% at 50% 30%,#E2D6C1 0%,#D3C3A8 70%,#C9B79A 100%)}
+#st::before{content:'';position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;background:repeating-linear-gradient(0deg,rgba(120,95,60,.10) 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,rgba(120,95,60,.08) 0 2px,transparent 2px 7px)}
+#host{position:absolute;inset:0}
+#cam{position:absolute;left:0;top:0;width:1080px}
+#card{position:relative;margin:0 70px;width:940px;background:var(--paper);border-radius:8px;box-shadow:0 60px 90px -50px rgba(70,50,25,.55);padding:0 50px}
+#card::before{content:'';position:absolute;inset:26px;border:2px solid rgba(124,152,133,.55);border-radius:4px;pointer-events:none}
+#card::after{content:'';position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:.2;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sec{position:relative;text-align:center;height:1920px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0}
+.lab{font:600 36px Outfit;color:var(--honeyd);letter-spacing:.06em}
+.orn{width:150px;height:2px;margin:30px auto;background:linear-gradient(90deg,transparent,var(--honey),transparent)}
+.big{font:400 190px/.95 Fraunces;letter-spacing:-.045em}
+.t2{font:400 96px/1.02 Fraunces;letter-spacing:-.035em}
+.it{font-style:italic}
+.sm{font:500 40px/1.4 Outfit;color:var(--ink2)}
+.fx{opacity:0}
+/* téléphone dans la carte */
+.ph{position:relative;width:430px;margin-top:40px;border-radius:62px;background:#1E2A23;padding:11px;box-shadow:0 40px 60px -28px rgba(40,40,30,.6)}
+.scr{position:relative;width:408px;aspect-ratio:390/844;border-radius:52px;overflow:hidden;background:#F4F6F1}
+.scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0}
+.scr img:first-child{opacity:1}
+.ring{position:absolute;border-radius:12px;box-shadow:0 0 0 5px #E0A95E,0 0 0 13px rgba(224,169,94,.25);opacity:0}
+/* convives */
+.guests{display:flex;justify-content:center;gap:50px;margin-top:26px}
+.g{width:300px;border-radius:30px;padding:14px 0 18px;transition:none}
+.g .med{width:170px;height:170px;margin:0 auto;border-radius:50%;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.g .med img{width:92%}
+.g b{display:block;font:400 58px/1 Fraunces;margin-top:14px;letter-spacing:-.03em}
+.g span{display:block;font:500 36px/1.35 Outfit;color:var(--ink2);margin-top:8px}
+/* carte */
+.dl{display:flex;align-items:center;gap:26px;text-align:left;width:800px;padding:12px 0;border-bottom:1.5px dashed rgba(124,152,133,.45)}
+.dl:last-child{border-bottom:0}
+.dl img{width:92px;height:92px;border-radius:50%;object-fit:cover;flex:0 0 92px;box-shadow:0 12px 20px -12px rgba(70,50,25,.55)}
+.dl .nm{position:relative;font:400 56px/1.05 Fraunces;letter-spacing:-.03em;white-space:nowrap}
+.dl .or{display:block;font:500 30px Outfit;color:var(--mut);margin-top:4px;letter-spacing:0}
+.dl svg{position:absolute;left:-8px;top:6px;overflow:visible}
+.rew{position:absolute;left:0;top:66px;font:400 italic 50px/1 Fraunces;color:var(--honeyd);white-space:nowrap}
+/* grammage */
+.gl{display:flex;align-items:center;gap:22px;width:800px;margin:12px auto 0;text-align:left;border-radius:28px;padding:14px 22px}
+.gl .av{width:96px;height:96px;flex:0 0 96px;border-radius:50%;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.gl .av img{width:94%}
+.gl b{display:block;font:400 56px/1 Fraunces;letter-spacing:-.03em}
+.gl span{display:block;font:500 34px/1.3 Outfit;color:var(--ink2);margin-top:6px}
+.gl .k{margin-left:auto;text-align:right;white-space:nowrap}
+.gl .k strong{display:block;font:400 84px/1 Fraunces;letter-spacing:-.04em}
+.gl .k small{font:600 26px Outfit;color:var(--mut)}
+/* marché */
+.ml{display:flex;align-items:baseline;width:800px;padding:12px 0;text-align:left;font:400 56px/1.1 Fraunces;letter-spacing:-.02em;white-space:nowrap}
+.ml i{flex:1;margin:0 18px;border-bottom:3px dotted rgba(124,152,133,.6);transform:translateY(-10px)}
+.ml span{font:500 36px Outfit;color:var(--ink2);letter-spacing:0}
+.ml .ck{width:46px;height:46px;flex:0 0 46px;border-radius:50%;margin-right:22px;align-self:center;border:3px solid var(--terra);display:grid;place-items:center}
+.ml .ck svg{width:26px;height:26px}
+/* addition */
+.tot{font:400 260px/1 Fraunces;letter-spacing:-.05em;margin-top:30px}
+.stamp{display:inline-block;margin-top:50px;font:600 46px Outfit;color:var(--sage);border:4px solid var(--sage);border-radius:16px;padding:14px 30px}
+/* révélation et fin */
+#frame{position:absolute;background:#1E2A23;box-shadow:0 80px 120px -60px rgba(40,40,30,.7);opacity:0}
+#end{position:absolute;left:0;right:0;top:330px;text-align:center}
+#end>*{opacity:0}
+#logo{font:400 200px/1 Fraunces;letter-spacing:-.045em;margin-top:110px}
+#logo i{color:var(--sage)}
+#url{display:inline-block;margin-top:40px;font:600 46px Outfit;color:#fff;background:var(--sage);padding:26px 56px;border-radius:60px}
+#free{font:500 36px Outfit;color:var(--ink2);margin-top:28px}
+</style></head>
+<body><div id="st">
+ <div id="frame"></div>
+ <div id="host"><div id="cam"><div id="card">
+
+  <section class="sec">
+   <div class="lab fx">Restaurant</div>
+   <div class="big it fx" style="margin-top:36px">Chez toi</div>
+   <div class="orn fx"></div>
+   <div class="t2 fx">Menu de la semaine</div>
+   <div class="sm fx" style="margin-top:30px">Composé par Hébé.<br>Cuisiné le dimanche. Servi toute la semaine.</div>
+  </section>
+
+  <section class="sec">
+   <div class="lab fx">Table pour deux</div>
+   <div class="guests">
+    <div class="g fx" id="g1"><div class="med" style="background:#E3ECE4"><img src="img/man.webp"></div><b>Toi</b><span>82 kg</span></div>
+    <div class="g fx" id="g2"><div class="med" style="background:#F6E2D8"><img src="img/woman.webp"></div><b>Ta moitié</b><span>60 kg</span></div>
+   </div>
+   <div class="sm fx" style="margin-top:20px">Hébé calcule les besoins de chacun.</div>
+   <div class="ph fx"><div class="scr" data-scr><img src="img/p-toi.webp"><img src="img/p-moitie.webp"><div class="ring"></div></div></div>
+  </section>
+
+  <section class="sec">
+   <div class="lab fx">À la carte</div>
+   <div style="margin-top:28px">
+    <div class="dl fx"><img src="img/W20.webp"><div class="nm">Bibimbap au bœuf<span class="or">Corée</span></div></div>
+    <div class="dl fx" style="padding-bottom:84px"><img src="img/W57.webp" id="swImg"><div class="nm"><span id="swTxt">Pâtes cajun au poulet</span><svg width="560" height="60" viewBox="0 0 560 60"><path id="strk" d="M4 34 C 90 24, 190 42, 280 31 S 470 26, 556 33" fill="none" stroke="#E0A95E" stroke-width="7" stroke-linecap="round"/></svg><span class="or" id="swOr">Louisiane</span><span class="rew" id="rew">Poulet crémeux aux châtaignes</span></div></div>
+    <div class="dl fx"><img src="img/W107.webp"><div class="nm">Carbonade flamande<span class="or">Belgique</span></div></div>
+   </div>
+   <div class="ph fx" style="margin-top:20px"><div class="scr" data-scr><img src="img/w-detail.webp"><img src="img/w-choix.webp"><img src="img/w-fait.webp"><div class="ring"></div></div></div>
+  </section>
+
+  <section class="sec">
+   <div class="lab fx">Le grammage</div>
+   <div class="t2 it fx" style="margin-top:16px;font-size:76px">Carbonade flamande</div>
+   <div class="gl fx" id="gl1"><div class="av" style="background:#E3ECE4"><img src="img/man.webp"></div><div><b>Toi</b><span>160 g de bœuf<br>325 g de pommes de terre</span></div><div class="k"><strong data-n="832">832</strong><small>kcal</small></div></div>
+   <div class="gl fx" id="gl2"><div class="av" style="background:#F6E2D8"><img src="img/woman.webp"></div><div><b>Ta moitié</b><span>100 g de bœuf<br>225 g de pommes de terre</span></div><div class="k"><strong data-n="620">620</strong><small>kcal</small></div></div>
+   <div class="ph fx" style="margin-top:26px"><div class="scr" data-scr><img src="img/r-toi.webp"><img src="img/r-moitie.webp"><div class="ring"></div></div></div>
+  </section>
+
+  <section class="sec">
+   <div class="lab fx">Le marché</div>
+   <div style="margin-top:24px">
+    <div class="ml fx"><div class="ck"><svg viewBox="0 0 26 26"><path d="M5 13.5l5 5L21 7" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Blanc de poulet<i></i><span>4 × 500 g</span></div>
+    <div class="ml fx"><div class="ck"><svg viewBox="0 0 26 26"><path d="M5 13.5l5 5L21 7" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Bœuf à émincer<i></i><span>2 × 500 g</span></div>
+    <div class="ml fx"><div class="ck"><svg viewBox="0 0 26 26"><path d="M5 13.5l5 5L21 7" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Crème fraîche<i></i><span>3 × 200 ml</span></div>
+   </div>
+   <div class="sm fx" style="margin-top:20px">Par rayon, au format du magasin.</div>
+   <div class="ph fx" style="margin-top:24px"><div class="scr" data-scr><img src="img/c0.webp"><img src="img/c1.webp"><img src="img/c2.webp"><img src="img/c3.webp"><div class="ring"></div></div></div>
+  </section>
+
+  <section class="sec">
+   <div class="lab fx">En cuisine</div>
+   <div class="t2 fx" style="margin-top:20px;font-size:84px">Service unique,<br><span class="it" style="color:var(--sage)">le dimanche.</span></div>
+   <div class="sm fx" style="margin-top:24px">Un peu plus de 2 heures. 28 boîtes.<br>Hébé te guide étape par étape.</div>
+   <div class="ph fx" style="margin-top:30px"><div class="scr" data-scr><img src="img/k-cook.webp"><div class="ring"></div></div></div>
+  </section>
+
+  <section class="sec">
+   <div class="lab fx">L'addition</div>
+   <div class="tot fx">0,00 €</div>
+   <div class="stamp fx" id="stamp">Gratuit, sans compte</div>
+  </section>
+
+ </div></div></div>
+ <div id="end"><div class="t2">Tu cuisines.</div><div class="t2 it" style="color:var(--sage)">Hébé fait les comptes.</div><div id="logo">Héb<i>é</i></div><div id="url">hebe-app.fr</div><div id="free">Gratuit, sans compte, sans publicité</div></div>
+</div>
+<script>
+const C=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),P=(t,a,b)=>C((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3),eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,back=x=>{const c=1.4;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const $=id=>document.getElementById(id),fr=n=>Math.round(n).toLocaleString('fr-FR').replace(/[  ]/g,' ');
+const cam=$('cam'),secs=[...document.querySelectorAll('.sec')],scrs=[...document.querySelectorAll('[data-scr]')];
+// arrivée de la caméra sur chaque section (le rythme du film)
+const ARR=[1.0,5.6,10.6,17.4,23.4,28.8,33.4],MOVE=.9;
+// écrans : [index écran, [[image, début]...], anneaux [[x,y,w,h,début,fin]...]]
+const SCR={
+ 0:{imgs:[[0,0],[1,8.4]],rings:[]},
+ 1:{imgs:[[0,0],[1,12.9],[2,14.4]],rings:[[52.31,67.69,20.9,4.13,12.0,12.9],[5.13,52.6,89.74,11.51,13.4,14.4]]},
+ 2:{imgs:[[0,0],[1,20.4]],rings:[]},
+ 3:{imgs:[[0,0],[1,25.0],[2,25.7],[3,26.4]],rings:[]},
+ 4:{imgs:[[0,0]],rings:[]},
+};
+let OFF=[];const measure=()=>{OFF=secs.map(s=>s.offsetTop)};
+function camY(t){if(t<ARR[0])return 1920*(1-eo(P(t,0,ARR[0])))-OFF[0];
+  for(let k=ARR.length-1;k>=1;k--){const a=ARR[k]-MOVE;if(t>=ARR[k])return -OFF[k];if(t>a)return -OFF[k-1]+(OFF[k-1]-OFF[k])*eio(P(t,a,ARR[k]))}return -OFF[0]}
+window.render=function(t){
+  if(!OFF.length)measure();
+  secs.forEach((s,k)=>{const a=ARR[k]-.3;[...s.querySelectorAll('.fx')].forEach((e,j)=>{const v=eo(P(t,a+j*.16,a+.6+j*.16));e.style.opacity=v;e.style.transform=`translateY(${(1-v)*28}px)`})});
+  // écrans du téléphone
+  scrs.forEach((sc,k)=>{const d=SCR[k];const im=sc.querySelectorAll('img');let cur=0;d.imgs.forEach(([i,a],j)=>{if(t>=a)cur=j});
+    im.forEach((m,j)=>{let o=0;if(j===d.imgs[cur][0])o=1;if(cur>0&&j===d.imgs[cur][0]){o=eo(P(t,d.imgs[cur][1],d.imgs[cur][1]+.35))}if(cur>0&&j===d.imgs[cur-1][0])o=1;m.style.opacity=o;m.style.zIndex=j===d.imgs[cur][0]?2:1});
+    const rg=sc.querySelector('.ring');let on=0;d.rings.forEach(r=>{if(t>=r[4]-.1&&t<r[5]){Object.assign(rg.style,{left:`calc(${r[0]}% - 6px)`,top:`calc(${r[1]}% - 6px)`,width:`calc(${r[2]}% + 12px)`,height:`calc(${r[3]}% + 12px)`});on=eo(P(t,r[4],r[4]+.35))*(1-P(t,r[5]-.15,r[5]))}});rg.style.opacity=on;rg.style.zIndex=3;rg.style.transform=`scale(${1.1-.1*on})`});
+  // convives : on éclaire Toi, puis Ta moitié (en même temps que l'écran)
+  const hl=(el,a,b,c)=>{const v=P(t,a,a+.3)*(1-P(t,b,b+.3));el.style.background=v>0?`rgba(${c},${.16*v})`:'transparent'};
+  hl($('g1'),6.9,8.3,'124,152,133');hl($('g2'),8.5,10.0,'201,126,92');
+  // carte : trait, réécriture, nouvelle photo
+  const path=$('strk'),L=path.getTotalLength();path.style.strokeDasharray=L;path.style.strokeDashoffset=L*(1-eo(P(t,14.1,14.6)));
+  $('swTxt').style.color=t>14.4?'#9AA195':'';$('swOr').style.opacity=1-P(t,14.4,14.7);
+  $('rew').style.clipPath=`inset(0 ${100-eo(P(t,14.6,15.5))*100}% 0 0)`;
+  const si=$('swImg');const want=t>14.8?'img/W85.webp':'img/W57.webp';if(!si.src.endsWith(want))si.src=want;si.style.transform=`scale(${t>14.8?back(P(t,14.8,15.3)):1})`;
+  // grammage : Toi puis Ta moitié, en même temps que l'écran
+  hl($('gl1'),18.4,20.2,'124,152,133');hl($('gl2'),20.4,22.6,'201,126,92');
+  document.querySelectorAll('[data-n]').forEach((e,j)=>{const a=j?20.5:18.5;e.textContent=fr(+e.dataset.n*eo(P(t,a,a+1.1)))});
+  // marché : coches en même temps que l'écran
+  document.querySelectorAll('.ml').forEach((m,j)=>{const a=25.0+j*.7;const v=P(t,a,a+.25),ck=m.querySelector('.ck');ck.style.background=v>0?'#C97E5C':'transparent';ck.querySelector('svg').style.opacity=v;ck.style.transform=`scale(${v>0?back(P(t,a,a+.4)):1})`;m.style.color=v>=1?'#9AA195':'';m.style.textDecoration=v>=1?'line-through rgba(154,161,149,.85)':''});
+  // tampon
+  const sp=$('stamp'),s2=P(t,34.4,34.8);sp.style.opacity=s2>0?1:0;sp.style.transform=`rotate(-6deg) scale(${s2>0?1.6-.6*eo(s2):1.6})`;
+  // caméra et révélation
+  const y=camY(t),r=eio(P(t,36.2,37.8)),sc=1-r*.55;
+  cam.style.transformOrigin=`540px ${960-y}px`;cam.style.transform=`translateY(${y}px) scale(${sc})`;
+  const w=1080*sc,h=1920*sc,x0=540-w/2,y0=960-h/2,rad=r*58;
+  const host=$('host');host.style.clipPath=r>0?`inset(${y0}px ${x0}px ${y0}px ${x0}px round ${rad}px)`:'none';host.style.background=r>0?'#E9DDC8':'';
+  const f=$('frame');Object.assign(f.style,{left:(x0-14)+'px',top:(y0-14)+'px',width:(w+28)+'px',height:(h+28)+'px',borderRadius:(rad+14)+'px'});
+  const e=eio(P(t,38.2,39.0));f.style.opacity=C(r*3)*(1-e);host.style.opacity=1-e;host.style.transform=f.style.transform=`translateY(${-e*140}px)`;
+  [...$('end').children].forEach((c,j)=>{const v=eo(P(t,38.9+j*.35,39.6+j*.35));c.style.opacity=v;c.style.transform=`translateY(${(1-v)*30}px)`});
+};
+window.ready=Promise.all([...document.images].map(i=>i.decode().catch(()=>0))).then(()=>document.fonts.ready).then(()=>{measure();render(0)});
+</script></body></html>

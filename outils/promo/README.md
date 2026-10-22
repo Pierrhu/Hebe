@@ -10,3 +10,5 @@ Les écrans dans `img/` sont des captures de l app (foyer test Pierre et Léa).
 Version 2 (« On mange quoi ce soir ? ») : `python3 render.py hebe-promo-v2.mp4 promo2.html`.
 
 Version 3, « Le menu de la semaine » (concept C, 42 s) : `python3 render.py hebe-promo-menu.mp4 promo3.html 42`.
+
+Version 4, menu avec l app plus visible (42 s) : `python3 render.py hebe-promo-menu-v2.mp4 promo4.html 42`. Captures faites avec le foyer nommé « Toi » et « Ta moitié ».
