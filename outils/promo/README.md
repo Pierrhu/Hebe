@@ -14,3 +14,5 @@ Version 3, « Le menu de la semaine » (concept C, 42 s) : `python3 render.py he
 Version 4, menu avec l app plus visible (42 s) : `python3 render.py hebe-promo-menu-v2.mp4 promo4.html 42`. Captures faites avec le foyer nommé « Toi » et « Ta moitié ».
 
 Version 5, en deux temps (carte puis app dans le téléphone, 45 s) : `python3 render.py hebe-promo-menu-v3.mp4 promo5.html 45`.
+
+Version 6, cadence lente (71 s) : `python3 render.py hebe-promo-menu-v4.mp4 promo6.html 71`.
