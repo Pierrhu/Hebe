@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Fraunces;font-weight:400;src:url(fonts/fraunces-400.woff2)}
+@font-face{font-family:Fraunces;font-weight:400;font-style:italic;src:url(fonts/fraunces-400-italic.woff2)}
+@font-face{font-family:Fraunces;font-weight:500;src:url(fonts/fraunces-500.woff2)}
+@font-face{font-family:Outfit;font-weight:400;src:url(fonts/outfit-400.woff2)}
+@font-face{font-family:Outfit;font-weight:500;src:url(fonts/outfit-500.woff2)}
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-600.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F7F3EB}
+body{font-family:Outfit,sans-serif;color:#22322A;-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F7F3EB}
+.abs{position:absolute}
+/* plan A : plein cadre */
+#hero{inset:0;overflow:hidden}
+#hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,26,22,0) 40%,rgba(20,26,22,.78) 100%)}
+.big{font:400 128px/1 Fraunces;letter-spacing:-.045em}
+.big i{font-style:italic}
+.mask{overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.mask>span{display:block;will-change:transform}
+#heroT{left:80px;right:80px;bottom:150px;color:#F7F3EB}
+/* plan B : la grille */
+#grid{inset:0}
+#grid .b{position:absolute;width:300px;height:300px;border-radius:50%;overflow:hidden;box-shadow:0 30px 50px -26px rgba(60,45,25,.55)}
+#grid .b img{width:100%;height:100%;object-fit:cover}
+#gridT{left:80px;right:80px;top:200px}
+/* plans téléphone */
+#head{left:80px;right:80px;top:190px;height:330px}
+.kick{font:600 30px Outfit;color:#8A5A1E;letter-spacing:.01em;margin-bottom:26px;display:inline-block;padding:10px 22px;border-radius:30px;background:#FBF0DD}
+.h2{font:400 96px/1.02 Fraunces;letter-spacing:-.04em}
+.h2 i{font-style:italic;color:#6F8C78}
+#phone{left:240px;top:590px;width:600px;border-radius:84px;background:#1E2A23;padding:13px;box-shadow:0 90px 120px -60px rgba(40,50,40,.55),inset 0 0 0 2px #34443A}
+#screen{position:relative;width:574px;height:1242px;border-radius:72px;overflow:hidden;background:#F4F6F1}
+#screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0}
+#ring{position:absolute;border-radius:22px;box-shadow:0 0 0 6px #E0A95E,0 0 0 18px rgba(224,169,94,.22);opacity:0}
+#dot{position:absolute;width:86px;height:86px;margin:-43px 0 0 -43px;border-radius:50%;background:rgba(224,169,94,.45);opacity:0}
+.pill{position:absolute;padding:26px 34px 28px;border-radius:40px;box-shadow:0 34px 60px -26px rgba(40,40,30,.5);white-space:nowrap;opacity:0}
+.pill b{display:block;font:400 76px/1 Fraunces;letter-spacing:-.03em}
+.pill span{display:block;font:600 27px/1.2 Outfit;margin-top:10px;opacity:.8}
+.honey{background:#E0A95E;color:#2E220F}
+.sage{background:#7C9885;color:#fff}
+.white{background:#fff;color:#22322A}
+/* fin */
+#end{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#logo{font:400 230px/1 Fraunces;letter-spacing:-.04em}
+#logo i{font-style:italic;color:#7C9885}
+#tag{font:500 40px Outfit;color:#5A6B60;margin-top:30px;letter-spacing:.01em}
+#url{margin-top:90px;font:600 44px Outfit;color:#fff;background:#7C9885;padding:28px 54px;border-radius:60px}
+#free{margin-top:30px;font:500 32px Outfit;color:#7A8A80}
+</style></head>
+<body><div id="stage">
+  <div id="grid" class="abs"></div>
+  <div id="gridT" class="abs"><div class="mask"><span class="big" id="g1">La semaine,</span></div><div class="mask"><span class="big" id="g2"><i style="color:#6F8C78">tu manges.</i></span></div></div>
+
+  <div id="head" class="abs"></div>
+  <div id="phone" class="abs"><div id="screen"></div></div>
+  <div id="pills"></div>
+
+  <div id="hero" class="abs"><img src="img/W20.webp"><div class="shade"></div>
+    <div id="heroT" class="abs"><div class="mask"><span class="big" id="h1">Le dimanche,</span></div><div class="mask"><span class="big" id="h2"><i>tu cuisines.</i></span></div></div></div>
+
+  <div id="end" class="abs"><div class="mask"><span id="logo">Héb<i>é</i></span></div><div id="tag">Bien manger sans y penser</div><div id="url">hebe-app.fr</div><div id="free">Gratuit, sans compte, sans publicité</div></div>
+</div>
+<script>
+// ─── outils ───
+const C=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,b)=>C((t-a)/(b-a));                 // progression 0..1 entre a et b
+const eo=x=>1-Math.pow(1-x,4);                     // easeOutQuart
+const eio=x=>x<.5?8*x*x*x*x:1-Math.pow(-2*x+2,4)/2; // easeInOutQuart
+const back=x=>{const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('fr-FR').replace(/ | /g,' ');
+
+// ─── plan B : grille de 10 bols ───
+const G=['W14','W25','W84','W22','W03','W89','W18','W107','W98','W90'];
+const grid=$('grid');
+G.forEach((id,k)=>{const d=document.createElement('div');d.className='b';d.innerHTML=`<img src="img/${id}.webp">`;grid.appendChild(d)});
+const gb=[...grid.children];
+const GP=[[75,570],[390,540],[705,570],[75,890],[390,860],[705,890],[75,1210],[390,1180],[705,1210],[390,1500]];
+
+// ─── écrans du téléphone (états réels de l'app) ───
+const SHOTS=['swap-detail','swap-choix','swap-fait','you-pierre','you-lea','shop0','shop1','shop2','shop3','cook','weight-avant','weight-ajuste','weight-fait'];
+const scr=$('screen');
+const IM={};SHOTS.forEach(n=>{const i=document.createElement('img');i.src=`img/${n}.webp`;scr.appendChild(i);IM[n]=i});
+const ring=document.createElement('div');ring.id='ring';scr.appendChild(ring);
+const dot=document.createElement('div');dot.id='dot';scr.appendChild(dot);
+
+// ─── titres des plans ───
+const HEADS=[
+ {t:[6.2,11.4], k:'Ta semaine', l:['Pas envie de ce plat ?','<i>Change-le.</i>']},
+ {t:[11.4,15.4],k:'Pour toi', l:['Calculé','<i>pour chacun.</i>']},
+ {t:[15.4,19.4],k:'Les courses',l:['Au format','<i>du magasin.</i>']},
+ {t:[19.4,22.6],k:'Le dimanche',l:['Une session.','<i>Vingt boîtes.</i>']},
+ {t:[22.6,26.4],k:'Tes progrès',l:['Elle s\'ajuste','<i>à tes pesées.</i>']},
+];
+const head=$('head');
+HEADS.forEach((h,k)=>{const d=document.createElement('div');d.className='abs';d.style.inset='0';d.innerHTML=`<div class="kick">${h.k}</div>`+h.l.map(x=>`<div class="mask"><span class="h2">${x}</span></div>`).join('');head.appendChild(d);h.el=d});
+
+// ─── séquence d'écrans : [nom, début, fin, anneau (début d'affichage), toucher] ───
+const SEQ=[
+ ['swap-detail',6.2,8.5,[52.31,70.06,20.9,4.13],8.1],
+ ['swap-choix',8.5,10.0,[5.13,56.66,89.74,9.48],9.6],
+ ['swap-fait',10.0,11.4],
+ ['you-pierre',11.4,13.5,[51.03,9.24,42.82,4.74],13.1],
+ ['you-lea',13.5,15.4],
+ ['shop0',15.4,16.6,[9.23,24.25,81.54,8.13],16.3],
+ ['shop1',16.6,17.4],['shop2',17.4,18.2],['shop3',18.2,19.4],
+ ['cook',19.4,22.6],
+ ['weight-avant',22.6,24.0,[8.72,46.6,12.31,5.69],23.7],
+ ['weight-ajuste',24.0,25.2,[5.13,56.14,89.74,5.98],24.9],
+ ['weight-fait',25.2,27.0],
+];
+// pastilles : [texte, sous-texte, classe, x, y, début, fin, rot, compteur]
+const PILLS=[
+ ['3 idées','au choix, de saison','white',600,1080,8.7,10.0,4],
+ ['Recalculé','portions et courses','honey',590,1250,10.2,11.3,-4],
+ ['2 514 kcal','par jour pour Pierre','honey',40,1080,11.9,13.6,-5,[0,2514]],
+ ['1 828 kcal','par jour pour Léa','sage',560,1250,13.8,15.3,4,[2514,1828]],
+ ['3 / 45','produits dans le panier','sage',600,1300,16.4,19.3,4,[0,3]],
+ ['< 2 h','de cuisine le dimanche','honey',30,1000,19.8,22.5,-5],
+ ['20 boîtes','pour deux, toute la semaine','sage',560,1350,20.4,22.5,4,[0,20]],
+ ['−0,3 kg','à la pesée du matin','white',30,1100,24.2,26.3,-4],
+ ['Objectif','recalé tout seul','honey',600,1380,25.4,26.3,4],
+];
+const pills=$('pills');
+PILLS.forEach(p=>{const d=document.createElement('div');d.className='pill '+p[2];d.style.left=p[3]+'px';d.style.top=p[4]+'px';d.innerHTML=`<b>${p[0]}</b><span>${p[1]}</span>`;pills.appendChild(d);p.el=d;p.b=d.querySelector('b')});
+
+// ─── rendu d'une image à l'instant t ───
+window.render=function(t){
+  // A. plein cadre (0 → 3,4 s)
+  const hero=$('hero'),aIn=eo(P(t,.2,1.2)),aOut=eio(P(t,2.9,3.5));
+  hero.style.opacity=1;hero.style.clipPath=`inset(0 0 ${aOut*100}% 0)`;
+  hero.querySelector('img').style.transform=`scale(${1.14-.1*eo(P(t,0,3.4))})`;
+  $('h1').style.transform=`translateY(${(1-eo(P(t,.25,1.15)))*110}%)`;
+  $('h2').style.transform=`translateY(${(1-eo(P(t,.45,1.35)))*110}%)`;
+  hero.style.display=t>3.6?'none':'';
+  // B. la grille (3,0 → 6,4 s)
+  const gOn=t>2.8&&t<6.6;grid.style.display=$('gridT').style.display=gOn?'':'none';
+  gb.forEach((b,k)=>{const s=back(P(t,3.0+k*.07,3.55+k*.07));const out=eio(P(t,5.7+k*.03,6.3+k*.03));
+    b.style.left=GP[k][0]+'px';b.style.top=(GP[k][1]+out*1300)+'px';b.style.transform=`scale(${s}) rotate(${(1-s)*-20}deg)`;b.style.opacity=C(s*1.4)});
+  $('g1').style.transform=`translateY(${(1-eo(P(t,3.3,4.1)))*110-eio(P(t,5.8,6.3))*110}%)`;
+  $('g2').style.transform=`translateY(${(1-eo(P(t,3.5,4.3)))*110-eio(P(t,5.85,6.35))*110}%)`;
+  // téléphone : entre à 6,1 s, sort à 26,6 s
+  const ph=$('phone'),pin=eo(P(t,6.0,7.0)),pout=eio(P(t,26.4,27.2));
+  ph.style.display=(t>5.9&&t<27.4)?'':'none';
+  ph.style.transform=`translateY(${(1-pin)*1400+pout*1500}px) rotate(${(1-pin)*8}deg)`;
+  // écrans : fondu croisé
+  SHOTS.forEach(n=>IM[n].style.opacity=0);
+  let rOn=0,rr=null,tap=null;
+  SEQ.forEach((s,k)=>{const [n,a,b,r,tp]=s;if(t>=a-.35&&t<b){const fin=C((t-(a-.35))/.35);IM[n].style.opacity=k===0?1:fin;
+      if(r&&t>=a){rr=r;rOn=eo(P(t,tp-.75,tp-.35))*(1-P(t,b-.25,b));tap=tp}}
+    if(t>=b-.35&&t<b+.001&&k<SEQ.length-1){} });
+  // l'image précédente reste dessous pendant le fondu
+  for(let k=1;k<SEQ.length;k++){const [n,a]=SEQ[k];if(t>=a-.35&&t<a){IM[SEQ[k-1][0]].style.opacity=1}}
+  if(rr){ring.style.left=`calc(${rr[0]}% - 10px)`;ring.style.top=`calc(${rr[1]}% - 10px)`;ring.style.width=`calc(${rr[2]}% + 20px)`;ring.style.height=`calc(${rr[3]}% + 20px)`;
+    ring.style.opacity=rOn;ring.style.transform=`scale(${1.08-.08*rOn})`;
+    const tp=P(t,tap,tap+.45);dot.style.left=(rr[0]+rr[2]/2)+'%';dot.style.top=(rr[1]+rr[3]/2)+'%';dot.style.opacity=tp>0&&tp<1?(1-tp):0;dot.style.transform=`scale(${.4+tp*1.3})`;
+  }else{ring.style.opacity=0;dot.style.opacity=0}
+  // titres
+  HEADS.forEach((h,k)=>{const [a,b]=h.t;const on=t>=a-.1&&t<b+.6;h.el.style.display=on?'':'none';if(!on)return;
+    const kin=eo(P(t,a+.05,a+.6)),kout=eio(P(t,b-.2,b+.25));const kk=h.el.querySelector('.kick');kk.style.opacity=kin*(1-kout);kk.style.transform=`translateY(${(1-kin)*20-kout*20}px)`;
+    h.el.querySelectorAll('.mask>span').forEach((sp,j)=>{const i=eo(P(t,a+.12+j*.12,a+.8+j*.12)),o=eio(P(t,b-.25+j*.05,b+.2+j*.05));sp.style.transform=`translateY(${(1-i)*115-o*115}%)`})});
+  // pastilles
+  PILLS.forEach(p=>{const [,, ,,,a,b,rot,cnt]=p;const i=back(P(t,a,a+.55)),o=eio(P(t,b-.25,b+.05));p.el.style.opacity=C(P(t,a,a+.2))*(1-o);
+    p.el.style.transform=`scale(${.5+.5*i-.15*o}) rotate(${rot*(i>0?1:0)+(1-i)*rot*2}deg)`;
+    if(cnt){const v=cnt[0]+(cnt[1]-cnt[0])*eo(P(t,a+.1,a+1.1));p.b.textContent=p[0].replace(/[\d\s]+/,m=>fmt(v)+(m.endsWith(' ')?' ':''))}});
+  // fin
+  const end=$('end'),ein=P(t,26.9,27.6);end.style.display=t>26.8?'':'none';
+  $('logo').style.transform=`translateY(${(1-eo(P(t,27.0,27.9)))*110}%)`;
+  [['tag',27.5],['url',27.9],['free',28.2]].forEach(([id,a])=>{const v=eo(P(t,a,a+.6));$(id).style.opacity=v;$(id).style.transform=`translateY(${(1-v)*30}px)`});
+};
+window.ready=Promise.all([...document.images].map(i=>i.decode().catch(()=>0))).then(()=>document.fonts.ready);
+render(0);
+</script></body></html>
