@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Fraunces;font-weight:400;src:url(fonts/fraunces-400.woff2)}
+@font-face{font-family:Fraunces;font-weight:400;font-style:italic;src:url(fonts/fraunces-400-italic.woff2)}
+@font-face{font-family:Fraunces;font-weight:500;src:url(fonts/fraunces-500.woff2)}
+@font-face{font-family:Outfit;font-weight:400;src:url(fonts/outfit-400.woff2)}
+@font-face{font-family:Outfit;font-weight:500;src:url(fonts/outfit-500.woff2)}
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-600.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden}
+body{font-family:Outfit,sans-serif;-webkit-font-smoothing:antialiased}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F7F3EB;color:#22322A}
+.L{position:absolute;inset:0;display:none}
+.a{position:absolute}
+.m{overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.m>span{display:block}
+.F{font-family:Fraunces;font-weight:400;letter-spacing:-.04em}
+i{font-style:italic}
+/* 1. les questions */
+.q{left:80px;font:500 78px/1.1 Outfit;letter-spacing:-.02em;white-space:nowrap}
+.q b{font-weight:600;color:#A8712A}
+/* 3. dimanche */
+#clock{left:0;right:0;top:250px;text-align:center;font:400 250px/1 Fraunces;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:#2E220F}
+#sun{left:0;right:0;top:170px;text-align:center;font:600 40px Outfit;color:#5A3E14;letter-spacing:.01em}
+.box{position:absolute;border-radius:30px;overflow:hidden;background:#fff;box-shadow:0 26px 40px -22px rgba(70,45,10,.6),inset 0 0 0 6px rgba(255,255,255,.75)}
+.box img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:cover;border-radius:24px}
+.box::after{content:'';position:absolute;inset:6px;border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.28),transparent 40%);pointer-events:none}
+#twenty{left:0;right:0;top:1700px;text-align:center}
+/* 4. la semaine */
+#wk{left:80px;right:80px;top:150px;font:600 34px Outfit;color:#7A8A80}
+.day{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.day .dn{position:absolute;left:80px;top:230px;font:400 200px/1 Fraunces;letter-spacing:-.05em}
+.day .dn i{color:#7C9885}
+.day .box{left:80px;top:520px;width:920px;height:760px;border-radius:48px}
+.day .box img{border-radius:40px;inset:10px;width:calc(100% - 20px);height:calc(100% - 20px)}
+.day .nm{position:absolute;left:80px;right:80px;top:1330px;font:400 58px/1.1 Fraunces;letter-spacing:-.03em}
+.tag{position:absolute;top:1480px;padding:22px 30px;border-radius:34px;font:600 32px Outfit;white-space:nowrap}
+.tag b{font:400 54px Fraunces;letter-spacing:-.02em;margin-left:12px}
+.t1{left:80px;background:#E0A95E;color:#2E220F}
+.t2{left:560px;background:#7C9885;color:#fff}
+#wkf{left:80px;right:80px;top:1660px;font:500 30px Outfit;color:#7A8A80}
+/* 5. l'app */
+#phone{left:250px;top:560px;width:580px;border-radius:82px;background:#1E2A23;padding:13px;box-shadow:0 80px 110px -55px rgba(30,40,30,.6),inset 0 0 0 2px #34443A}
+#scr{position:relative;width:554px;height:1199px;border-radius:70px;overflow:hidden;background:#F4F6F1}
+#scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+#capW{left:80px;right:80px;top:200px;height:300px}
+.cw{position:absolute;inset:0}
+.cw .F{font-size:150px;line-height:1}
+.cw small{display:block;font:500 36px Outfit;color:#5A6B60;margin-top:22px;letter-spacing:0}
+/* 6. engagements */
+.w3{left:0;right:0;text-align:center;font:400 150px/1 Fraunces;letter-spacing:-.045em;color:#F7F3EB}
+/* 7. fin */
+#e1{left:80px;right:80px;top:560px;text-align:center}
+#logo{left:0;right:0;top:1180px;text-align:center;font:400 190px/1 Fraunces;letter-spacing:-.04em}
+#logo i{color:#7C9885}
+#url{left:50%;top:1450px;transform:translateX(-50%);font:600 42px Outfit;color:#fff;background:#7C9885;padding:26px 52px;border-radius:60px;white-space:nowrap}
+#fr{left:0;right:0;top:1600px;text-align:center;font:500 32px Outfit;color:#7A8A80}
+</style></head>
+<body><div id="st">
+ <div class="L" id="L1"></div>
+ <div class="L" id="L2"><div class="a F" style="left:80px;right:80px;top:700px;font-size:120px;line-height:1.02;color:#F7F3EB"><div class="m"><span id="b1">Et si la question</span></div><div class="m"><span id="b2"><i>ne se posait plus ?</i></span></div></div></div>
+ <div class="L" id="L3"><div class="a" id="sun">Dimanche</div><div class="a" id="clock">14:00</div><div id="boxes"></div><div class="a F" id="twenty" style="font-size:96px;color:#2E220F"><div class="m"><span id="tw">Vingt boîtes. <i>Prêtes.</i></span></div></div></div>
+ <div class="L" id="L4"><div class="a" id="wk">Chaque jour, tu ouvres une boîte.</div><div id="days"></div><div class="a" id="wkf">Portions calculées par Hébé, pour Pierre et Léa.</div></div>
+ <div class="L" id="L5"><div class="a" id="capW"></div><div class="a" id="phone"><div id="scr"></div></div></div>
+ <div class="L" id="L6"><div class="a w3" id="w1" style="top:610px">Gratuit.</div><div class="a w3" id="w2" style="top:820px">Sans compte.</div><div class="a w3" id="w3" style="top:1030px"><i>Sourcé.</i></div><div class="a" id="w4" style="left:0;right:0;top:1290px;text-align:center;font:500 36px Outfit;color:#E6EFE7">Valeurs de la table Ciqual de l'Anses</div></div>
+ <div class="L" id="L7"><div class="a F" id="e1" style="font-size:112px;line-height:1.04"><div class="m"><span id="e1a">On mange quoi</span></div><div class="m"><span id="e1b">ce soir ?</span></div><div class="m" style="margin-top:30px"><span id="e1c"><i style="color:#7C9885">C'est déjà prêt.</i></span></div></div>
+  <div class="a" id="logo"><div class="m"><span id="lg">Héb<i>é</i></span></div></div><div class="a" id="url">hebe-app.fr</div><div class="a" id="fr">Gratuit, sans compte, sans publicité</div></div>
+</div>
+<script>
+const C=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),P=(t,a,b)=>C((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,4),eio=x=>x<.5?8*x**4:1-Math.pow(-2*x+2,4)/2,ex=x=>x===1?1:1-Math.pow(2,-10*x);
+const back=x=>{const c=1.6;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const $=id=>document.getElementById(id);
+const up=(el,t,a,d=.55)=>{el.style.transform=`translateY(${(1-eo(P(t,a,a+d)))*115}%)`};
+const fr=n=>Math.round(n).toLocaleString('fr-FR').replace(/[  ]/g,' ');
+
+// 1. les questions, de plus en plus vite
+const DAYS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const QT=[0.25,1.0,1.6,2.1,2.5,2.85,3.15];
+const L1=$('L1');
+DAYS.forEach((d,k)=>{const e=document.createElement('div');e.className='a q m';e.style.top=(330+k*190)+"px";e.innerHTML=`<span><b>${d}</b>, on mange quoi ?</span>`;L1.appendChild(e)});
+const strikes=DAYS.map((d,k)=>{const e=document.createElement('div');e.className='a';e.style.cssText=`left:72px;top:${330+k*190+45}px;height:10px;border-radius:5px;background:#E0A95E;transform-origin:left center;transform:scaleX(0)`;L1.appendChild(e);return e});
+const qs=[...L1.querySelectorAll('.q>span')];
+
+// 3. vingt boîtes
+const BX=['W20','W14','W25','W84','W22','W03','W89','W18','W107','W98','W10','W90','W40','W66','W78','W05','W20','W14','W84','W03'];
+const boxes=$('boxes');
+BX.forEach((id,k)=>{const b=document.createElement('div');b.className='box';const c=k%4,r=Math.floor(k/4);
+  Object.assign(b.style,{left:(80+c*236)+'px',top:(640+r*208)+'px',width:'212px',height:'184px'});b.innerHTML=`<img src="img/${id}.webp">`;boxes.appendChild(b)});
+const bxs=[...boxes.children];
+
+// 4. la semaine (portions réelles calculées par le moteur de l'app)
+const WEEK=[['Lundi','W20','Bibimbap au bœuf',1021,749],['Mardi','W14','Butter chicken, riz complet',1021,759],['Mercredi','W22','Saumon laqué miel-soja',993,749],['Jeudi','W84','Bœuf façon bourguignon, purée',1029,767],['Vendredi','W03','Gyudon, bœuf et oignons au soja',957,703]];
+const days=$('days');
+WEEK.forEach(w=>{const d=document.createElement('div');d.className='day';d.innerHTML=`<div class="dn"><span>${w[0]}</span><i>.</i></div><div class="box"><img src="img/${w[1]}.webp"></div><div class="nm">${w[2]}</div><div class="tag t1">Pierre<b>${fr(w[3])} kcal</b></div><div class="tag t2">Léa<b>${fr(w[4])} kcal</b></div>`;days.appendChild(d)});
+const dys=[...days.children];
+
+// 5. l'app
+const APP=[['swap-detail','Tes repas.','Un plat ne te dit rien ? Tu le changes.'],['shop3','Tes courses.','Rangées par rayon, au format du magasin.'],['cook','Ta session.','Étape par étape, dans le bon ordre.'],['you-pierre','Tes besoins.','Calculés pour chaque personne du foyer.']];
+const scr=$('scr'),capW=$('capW');
+APP.forEach(a=>{const i=document.createElement('img');i.src=`img/${a[0]}.webp`;scr.appendChild(i);a.img=i;
+  const c=document.createElement('div');c.className='cw';c.innerHTML=`<div class="m"><span class="F">${a[1]}</span></div><div class="m"><span><small>${a[2]}</small></span></div>`;capW.appendChild(c);a.cap=c});
+
+// segments : [début, fin, fond]
+const SEG=[['L1',0,4.0,'#F7F3EB'],['L2',4.0,6.0,'#7C9885'],['L3',6.0,10.6,'#E0A95E'],['L4',10.6,17.2,'#F7F3EB'],['L5',17.2,24.0,'#EFE7D8'],['L6',24.0,26.6,'#7C9885'],['L7',26.6,30.1,'#F7F3EB']];
+
+window.render=function(t){
+  let bg='#F7F3EB';
+  SEG.forEach(([id,a,b,c])=>{const on=t>=a&&t<b;$(id).style.display=on?'block':'none';if(on)bg=c});
+  $('st').style.background=bg;
+  // 1
+  qs.forEach((q,k)=>{up(q,t,QT[k],.38)});
+  strikes.forEach((e,k)=>{e.style.width=(qs[k].offsetWidth+16)+'px';e.style.transform=`scaleX(${eo(P(t,3.42+k*.045,3.62+k*.045))})`});
+  const fade=P(t,3.75,3.98);L1.style.opacity=1-fade;
+  // les lignes « montent » légèrement pendant qu'elles s'empilent
+  L1.style.transform=`translateY(${-eo(P(t,0,3.6))*60}px)`;
+  // 2
+  up($('b1'),t,4.08,.55);up($('b2'),t,4.25,.55);
+  $('L2').firstElementChild.style.transform=`scale(${1+P(t,4,6)*.04})`;
+  // 3
+  const cl=eio(P(t,6.35,8.6));const mins=Math.round(cl*120);$('clock').textContent=`${14+Math.floor(mins/60)}:${String(mins%60).padStart(2,'0')}`;
+  $('clock').style.transform=`translateY(${(1-eo(P(t,6.0,6.45)))*60}px)`;$('clock').style.opacity=eo(P(t,6.0,6.35));$('sun').style.opacity=eo(P(t,6.1,6.45));
+  bxs.forEach((b,k)=>{const s=back(P(t,6.55+k*.1,6.95+k*.1));b.style.transform=`scale(${s}) rotate(${(1-C(s))*-14}deg)`;b.style.opacity=C(s*1.5)});
+  up($('tw'),t,8.75,.55);
+  // 4 : poussée horizontale d'un jour au suivant
+  const D0=10.6,DD=1.32;
+  dys.forEach((d,k)=>{const a=D0+k*DD;const inn=k===0?1:eo(P(t,a-.2,a+.28)),out=k===dys.length-1?0:eo(P(t,a+DD-.2,a+DD+.28));
+    d.style.display=(t>=a-.2&&t<a+DD+.28)?'':'none';d.style.transform=`translateX(${(1-inn)*1080-out*1080}px)`;
+    const tg=d.querySelectorAll('.tag');tg.forEach((g,j)=>{const s=back(P(t,a+.25+j*.12,a+.6+j*.12));g.style.transform=`scale(${s})`;g.style.opacity=C(s*1.6)});
+    d.querySelector('.box img').style.transform=`scale(${1.12-.12*eo(P(t,a-.2,a+DD))})`});
+  $('wk').style.opacity=eo(P(t,10.7,11.1));$('wkf').style.opacity=eo(P(t,11.0,11.4));
+  // 5
+  const A0=17.2,AD=1.7;$('phone').style.transform=`translateY(${(1-eo(P(t,A0,A0+.6)))*1300}px)`;
+  APP.forEach((a,k)=>{const s=A0+k*AD,e=s+AD;const on=t>=s&&t<e;a.img.style.opacity=on?1:0;a.cap.style.display=on?'':'none';
+    if(on){const sp=a.cap.querySelectorAll('.m>span');up(sp[0],t,s+.05,.45);up(sp[1],t,s+.18,.45);
+      $('phone').style.scale=String(1.035-.035*eo(P(t,s,s+.35)))}});
+  // 6
+  [['w1',24.15],['w2',24.6],['w3',25.05],['w4',25.5]].forEach(([id,a])=>{const s=back(P(t,a,a+.45));$(id).style.transform=`scale(${s})`;$(id).style.opacity=C(s*1.5)});
+  // 7
+  up($('e1a'),t,26.7,.5);up($('e1b'),t,26.85,.5);up($('e1c'),t,27.45,.55);
+  const lift=eio(P(t,28.2,28.8));$('e1').style.transform=`translateY(${-lift*180}px)`;
+  up($('lg'),t,28.45,.6);const u=back(P(t,28.9,29.35));$('url').style.transform=`translateX(-50%) scale(${u})`;$('url').style.opacity=C(u*1.5);
+  $('fr').style.opacity=eo(P(t,29.2,29.6));$('logo').style.opacity=t>28.4?1:0;
+};
+window.ready=Promise.all([...document.images].map(i=>i.decode().catch(()=>0))).then(()=>document.fonts.ready);
+render(0);
+</script></body></html>

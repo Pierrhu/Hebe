@@ -6,3 +6,5 @@ Rendu : copier `fonts/` ici, puis `python3 render.py hebe-promo.mp4` (Playwright
 Aperçu : `python3 stills.py 1.5 7.9 12.3` (images aux secondes demandées).
 
 Les écrans dans `img/` sont des captures de l app (foyer test Pierre et Léa).
+
+Version 2 (« On mange quoi ce soir ? ») : `python3 render.py hebe-promo-v2.mp4 promo2.html`.
