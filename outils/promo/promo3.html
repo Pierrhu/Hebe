@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Fraunces;font-weight:400;src:url(fonts/fraunces-400.woff2)}
+@font-face{font-family:Fraunces;font-weight:400;font-style:italic;src:url(fonts/fraunces-400-italic.woff2)}
+@font-face{font-family:Fraunces;font-weight:500;src:url(fonts/fraunces-500.woff2)}
+@font-face{font-family:Outfit;font-weight:400;src:url(fonts/outfit-400.woff2)}
+@font-face{font-family:Outfit;font-weight:500;src:url(fonts/outfit-500.woff2)}
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-600.woff2)}
+:root{--ink:#22322A;--ink2:#5A6B60;--mut:#8A8F84;--sage:#7C9885;--honey:#E0A95E;--honeyd:#A8712A;--terra:#C97E5C;--paper:#F8F2E6}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden}
+body{-webkit-font-smoothing:antialiased;color:var(--ink);font-family:Outfit,sans-serif}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;
+  background:radial-gradient(120% 70% at 50% 30%,#E2D6C1 0%,#D3C3A8 70%,#C9B79A 100%)}
+/* lin de la nappe */
+#st::before{content:'';position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;
+  background:repeating-linear-gradient(0deg,rgba(120,95,60,.10) 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,rgba(120,95,60,.08) 0 2px,transparent 2px 7px)}
+#cam{position:absolute;left:0;top:0;width:1080px;transform-origin:540px 0}
+#card{position:relative;margin:0 80px;width:920px;background:var(--paper);border-radius:8px;
+  box-shadow:0 60px 90px -50px rgba(70,50,25,.55),0 2px 0 rgba(255,255,255,.6) inset;padding:0 60px}
+#card::before{content:'';position:absolute;inset:28px;border:2px solid rgba(124,152,133,.55);border-radius:4px;pointer-events:none}
+#card::after{content:'';position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sec{position:relative;text-align:center;height:1920px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding-bottom:120px}
+.lab{font:600 36px Outfit;color:var(--honeyd);letter-spacing:.08em}
+.orn{width:150px;height:2px;margin:34px auto;background:linear-gradient(90deg,transparent,var(--honey),transparent)}
+.big{font:400 190px/.95 Fraunces;letter-spacing:-.045em}
+.t2{font:400 100px/1.02 Fraunces;letter-spacing:-.035em}
+.it{font-style:italic}
+.sm{font:500 42px/1.4 Outfit;color:var(--ink2)}
+.fx{opacity:0}
+/* convives */
+.guests{display:flex;justify-content:center;gap:70px;margin-top:56px}
+.g{width:360px}
+.g .med{width:300px;height:300px;margin:0 auto;border-radius:50%;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.g .med img{width:92%}
+.g b{display:block;font:400 74px/1 Fraunces;margin-top:26px;letter-spacing:-.03em}
+.g span{display:block;font:500 40px/1.35 Outfit;color:var(--ink2);margin-top:10px}
+/* carte */
+.dl{display:flex;align-items:center;gap:34px;text-align:left;margin:0 auto;width:800px;padding:28px 0;border-bottom:1.5px dashed rgba(124,152,133,.45)}
+.dl:last-child{border-bottom:0}
+.dl img{width:140px;height:140px;border-radius:50%;object-fit:cover;flex:0 0 140px;box-shadow:0 14px 22px -12px rgba(70,50,25,.55)}
+.dl .nm{position:relative;font:400 64px/1.05 Fraunces;letter-spacing:-.03em}
+.dl .or{display:block;font:500 34px Outfit;color:var(--mut);margin-top:6px;letter-spacing:0}
+.dl svg{position:absolute;left:-10px;top:4px;overflow:visible}
+.rew{position:absolute;left:0;top:76px;font:400 italic 58px/1 Fraunces;color:var(--honeyd);white-space:nowrap}
+.note{margin-top:46px}
+/* grammage */
+.gl{display:flex;align-items:center;gap:26px;width:780px;margin:44px auto 0;text-align:left}
+.gl .av{width:130px;height:130px;flex:0 0 130px;border-radius:50%;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.gl .av img{width:94%}
+.gl b{display:block;font:400 64px/1 Fraunces;letter-spacing:-.03em}
+.gl span{display:block;font:500 38px/1.35 Outfit;color:var(--ink2);margin-top:8px}
+.gl .k{margin-left:auto;text-align:right;white-space:nowrap}
+.gl .k strong{display:block;font:400 84px/1 Fraunces;letter-spacing:-.04em}
+.gl .k small{font:600 26px Outfit;color:var(--mut)}
+/* marché */
+.ml{display:flex;align-items:baseline;width:780px;margin:0 auto;padding:26px 0;text-align:left;font:400 58px/1.1 Fraunces;white-space:nowrap;letter-spacing:-.02em}
+.ml i{flex:1;margin:0 18px;border-bottom:3px dotted rgba(124,152,133,.6);transform:translateY(-10px)}
+.ml span{font:500 38px Outfit;color:var(--ink2);letter-spacing:0;white-space:nowrap}
+.ml .ck{width:46px;height:46px;flex:0 0 46px;border-radius:50%;margin-right:22px;align-self:center;border:3px solid var(--terra);display:grid;place-items:center}
+.ml .ck svg{width:26px;height:26px}
+/* téléphone dans la carte */
+.ph{width:360px;margin:56px auto 0;border-radius:44px;background:#1E2A23;padding:8px;box-shadow:0 40px 60px -30px rgba(40,40,30,.55)}
+.ph img{display:block;width:100%;border-radius:37px}
+/* addition */
+.tot{font:400 260px/1 Fraunces;letter-spacing:-.05em;margin-top:30px}
+.stamp{display:inline-block;margin-top:50px;font:600 46px Outfit;color:var(--sage);border:4px solid var(--sage);border-radius:16px;padding:14px 30px;letter-spacing:.02em}
+/* révélation */
+#frame{position:absolute;border-radius:70px;background:#1E2A23;box-shadow:0 80px 120px -60px rgba(40,40,30,.7);opacity:0}
+#end{position:absolute;left:0;right:0;top:0;text-align:center;opacity:0}
+#end .t2{font-size:96px}
+#logo{font:400 200px/1 Fraunces;letter-spacing:-.045em}
+#logo i{color:var(--sage)}
+#url{display:inline-block;margin-top:40px;font:600 46px Outfit;color:#fff;background:var(--sage);padding:26px 56px;border-radius:60px}
+#free{font:500 34px Outfit;color:var(--ink2);margin-top:28px}
+</style></head>
+<body><div id="st">
+ <div id="frame"></div>
+ <div id="cam"><div id="card">
+  <section class="sec" id="s0">
+   <div class="lab fx">RESTAURANT</div>
+   <div class="big fx" style="margin-top:40px"><span class="it">Chez toi</span></div>
+   <div class="orn fx"></div>
+   <div class="t2 fx">Menu de la semaine</div>
+   <div class="sm fx" style="margin-top:34px">Cuisiné le dimanche.<br>Servi toute la semaine.</div>
+  </section>
+  <section class="sec" id="s1">
+   <div class="lab fx">TABLE POUR DEUX</div>
+   <div class="guests">
+    <div class="g fx"><div class="med" style="background:#E3ECE4"><img src="img/man.webp"></div><b>Toi</b><span>82 kg<br>Garder la forme</span></div>
+    <div class="g fx"><div class="med" style="background:#F6E2D8"><img src="img/woman.webp"></div><b>Ta moitié</b><span>60 kg<br>Garder la forme</span></div>
+   </div>
+  </section>
+  <section class="sec" id="s2">
+   <div class="lab fx">À LA CARTE</div>
+   <div style="margin-top:40px">
+    <div class="dl fx"><img src="img/W20.webp"><div><div class="nm">Bibimbap au bœuf<span class="or">Corée</span></div></div></div>
+    <div class="dl fx"><img src="img/W14.webp"><div><div class="nm">Butter chicken<span class="or">Inde</span></div></div></div>
+    <div class="dl fx" style="padding-bottom:96px"><img src="img/W22.webp" id="salImg"><div><div class="nm" id="sal"><span id="salTxt">Saumon laqué</span><svg id="strk" width="420" height="70" viewBox="0 0 420 70"><path d="M4 40 C 70 30, 140 46, 210 36 S 350 30, 414 38" fill="none" stroke="#E0A95E" stroke-width="7" stroke-linecap="round"/></svg><span class="or" id="salOr">Japon</span><span class="rew" id="rew">Gyudon, bœuf et oignons</span></div></div></div>
+    <div class="dl fx"><img src="img/W107.webp"><div><div class="nm">Carbonade flamande<span class="or">Belgique</span></div></div></div>
+   </div>
+   <div class="sm note fx" id="note">Pas envie ? Hébé te propose<br>trois autres plats.</div>
+  </section>
+  <section class="sec" id="s3">
+   <div class="lab fx">LE GRAMMAGE</div>
+   <div class="t2 it fx" style="margin-top:30px">Carbonade flamande</div>
+   <div class="gl fx"><div class="av" style="background:#E3ECE4"><img src="img/man.webp"></div><div><b>Toi</b><span>233 g de bœuf<br>400 g de pommes de terre</span></div><div class="k"><strong data-n="1010">1 010</strong><small>kcal</small></div></div>
+   <div class="gl fx"><div class="av" style="background:#F6E2D8"><img src="img/woman.webp"></div><div><b>Ta moitié</b><span>142 g de bœuf<br>300 g de pommes de terre</span></div><div class="k"><strong data-n="755">755</strong><small>kcal</small></div></div>
+   <div class="sm fx" style="margin-top:46px">Le même plat, au gramme près.<br>Calculé par Hébé.</div>
+  </section>
+  <section class="sec" id="s4">
+   <div class="lab fx">LE MARCHÉ</div>
+   <div style="margin-top:34px">
+    <div class="ml fx"><div class="ck"><svg viewBox="0 0 26 26"><path d="M5 13.5l5 5L21 7" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Poulet<i></i><span>2 barquettes</span></div>
+    <div class="ml fx"><div class="ck"><svg viewBox="0 0 26 26"><path d="M5 13.5l5 5L21 7" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Steak haché<i></i><span>2 barquettes</span></div>
+    <div class="ml fx"><div class="ck"><svg viewBox="0 0 26 26"><path d="M5 13.5l5 5L21 7" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Crème fraîche<i></i><span>1 pot</span></div>
+   </div>
+   <div class="sm fx" style="margin-top:36px">Rangé par rayon.<br>Au format du magasin.</div>
+  </section>
+  <section class="sec" id="s5">
+   <div class="lab fx">EN CUISINE</div>
+   <div class="t2 fx" style="margin-top:30px">Service unique,<br><span class="it" style="color:var(--sage)">le dimanche.</span></div>
+   <div class="sm fx" style="margin-top:30px">Moins de 2 heures. 20 boîtes.<br>Hébé te guide étape par étape.</div>
+   <div class="ph fx"><img src="img/cook.webp"></div>
+  </section>
+  <section class="sec" id="s6">
+   <div class="lab fx">L'ADDITION</div>
+   <div class="tot fx">0,00 €</div>
+   <div class="stamp fx" id="stamp">Gratuit, sans compte</div>
+  </section>
+ </div></div>
+ <div id="end"><div class="t2">Tu cuisines.</div><div class="t2 it" style="color:var(--sage)">Hébé fait les comptes.</div><div id="logo" style="margin-top:110px">Héb<i>é</i></div><div id="url">hebe-app.fr</div><div id="free">Gratuit, sans compte, sans publicité</div></div>
+</div>
+<script>
+const C=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),P=(t,a,b)=>C((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3),eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,
+      back=x=>{const c=1.4;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const $=id=>document.getElementById(id),fr=n=>Math.round(n).toLocaleString('fr-FR').replace(/[  ]/g,' ');
+const cam=$('cam'),card=$('card');
+// les libellés de section en petites capitales douces : on remet en casse normale lisible
+document.querySelectorAll('.lab').forEach(l=>{l.textContent=l.textContent.charAt(0)+l.textContent.slice(1).toLowerCase()});
+const ARR=[0.9,5.0,9.8,16.6,22.4,27.2,32.0]; // arrivée sur chaque section
+const MOVE=.8;
+let OFF=[];
+function measure(){OFF=[...document.querySelectorAll('.sec')].map(s=>s.offsetTop)}
+function camY(t){
+  // entrée de la carte depuis le bas, puis travelling avec arrêts
+  if(t<ARR[0]){return 1920*(1-eo(P(t,0,ARR[0])))-OFF[0]}
+  let y=-OFF[0];
+  for(let k=1;k<ARR.length;k++){const a=ARR[k]-MOVE,b=ARR[k];const from=-OFF[k-1],to=-OFF[k];
+    if(t>=b)y=to;else if(t>a){y=from+(to-from)*eio(P(t,a,b));break}else{y=from;break}}
+  return y}
+const secs=[...document.querySelectorAll('.sec')];
+window.render=function(t){
+  if(!OFF.length)measure();
+  // apparition échelonnée du contenu de chaque section à l'arrivée de la caméra
+  secs.forEach((s,k)=>{const a=ARR[k]-.35;[...s.querySelectorAll('.fx')].forEach((e,j)=>{const v=eo(P(t,a+j*.14,a+.55+j*.14));e.style.opacity=v;e.style.transform=`translateY(${(1-v)*26}px)`})});
+  // carte : trait sur le saumon, réécriture, photo qui change
+  const path=document.querySelector('#strk path');const L=path.getTotalLength();path.style.strokeDasharray=L;path.style.strokeDashoffset=L*(1-eo(P(t,12.5,13.1)));
+  $('salTxt').style.color=t>12.9?'#9AA195':'';$('salOr').style.opacity=1-P(t,13.0,13.3);
+  $('rew').style.clipPath=`inset(0 ${100-eo(P(t,13.3,14.2))*100}% 0 0)`;
+  const si=$('salImg');if(t>13.6&&!si.dataset.sw){si.src='img/W03.webp';si.dataset.sw=1}if(t<=13.6&&si.dataset.sw){si.src='img/W22.webp';delete si.dataset.sw}
+  si.style.transform=`scale(${t>13.6?back(P(t,13.6,14.1)):1})`;
+  const nt=$('note');const nv=eo(P(t,14.5,15.1));nt.style.opacity=nv;nt.style.transform=`translateY(${(1-nv)*26}px)`;
+  // grammage : compteurs
+  document.querySelectorAll('[data-n]').forEach((e,j)=>{const n=+e.dataset.n;e.textContent=fr(n*eo(P(t,17.3+j*.25,18.6+j*.25)))});
+  // marché : coches
+  document.querySelectorAll('.ml').forEach((m,j)=>{const a=23.6+j*.6;const v=P(t,a,a+.25);const ck=m.querySelector('.ck');ck.style.background=v>0?'#C97E5C':'transparent';
+    ck.querySelector('svg').style.opacity=v;ck.style.transform=`scale(${v>0?back(P(t,a,a+.4)):1})`;m.style.color=v>=1?'#9AA195':'';m.style.textDecoration=v>=1?'line-through':'';m.style.textDecorationColor='rgba(154,161,149,.8)'});
+  // addition : tampon
+  const sp=$('stamp');const s2=P(t,33.2,33.6);sp.style.opacity=s2>0?1:0;sp.style.transform=`rotate(-6deg) scale(${s2>0?1.6-.6*eo(s2):1.6})`;
+  // caméra
+  const y=camY(t);
+  // révélation : l'écran entier rétrécit et devient l'écran d'un téléphone
+  const r=eio(P(t,35.4,37.0)),sc=1-r*.55;
+  cam.style.transformOrigin=`540px ${960-y}px`;cam.style.transform=`translateY(${y}px) scale(${sc})`;
+  const w=1080*sc,h=1920*sc,x0=540-w/2,y0=960-h/2,rad=r*58;
+  $('cliphost').style.clipPath=r>0?`inset(${y0}px ${x0}px ${y0}px ${x0}px round ${rad}px)`:'none';
+  $('cliphost').style.background=r>0?'#F8F2E6':'';
+  const fr_=$('frame');fr_.style.left=(x0-14)+'px';fr_.style.top=(y0-14)+'px';fr_.style.width=(w+28)+'px';fr_.style.height=(h+28)+'px';fr_.style.borderRadius=(rad+14)+'px';fr_.style.opacity=C(r*3);
+  $('st').style.setProperty('--x','0');
+  // fin : le téléphone monte et s'efface, la signature arrive
+  const e=eio(P(t,37.6,38.4));$('cliphost').style.opacity=1-e;fr_.style.opacity=C(r*3)*(1-e);$('cliphost').style.transform=fr_.style.transform=`translateY(${-e*120}px)`;
+  const end=$('end');end.style.top='300px';end.style.opacity=eo(P(t,38.3,38.9));
+  [...end.children].forEach((c,j)=>{const v=eo(P(t,38.35+j*.3,39.05+j*.3));c.style.opacity=v;c.style.transform=`translateY(${(1-v)*30}px)`});
+};
+// hôte de découpe autour de la caméra
+const host=document.createElement('div');host.id='cliphost';host.style.cssText='position:absolute;inset:0';cam.parentNode.insertBefore(host,cam);host.appendChild(cam);
+window.ready=Promise.all([...document.images].map(i=>i.decode().catch(()=>0))).then(()=>document.fonts.ready).then(()=>{measure();render(0)});
+</script></body></html>

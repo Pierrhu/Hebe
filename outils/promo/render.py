@@ -1,7 +1,7 @@
 import subprocess,sys
 from playwright.sync_api import sync_playwright
 import os; P=os.path.dirname(os.path.abspath(__file__))+'/'
-FPS=30; DUR=30.0; out=sys.argv[1]
+FPS=30; DUR=float(sys.argv[3]) if len(sys.argv)>3 else 30.0; out=sys.argv[1]
 ff=subprocess.Popen(['ffmpeg','-y','-loglevel','error','-f','image2pipe','-framerate',str(FPS),'-c:v','mjpeg','-i','-','-c:v','libx264','-preset','slow','-crf','18','-pix_fmt','yuv420p','-movflags','+faststart',out],stdin=subprocess.PIPE)
 with sync_playwright() as p:
     b=p.chromium.launch(); pg=b.new_page(viewport={'width':1080,'height':1920})
