@@ -312,6 +312,7 @@ export const PIECES = {
   tomates_cerise: { g: 250, one: 'barquette', many: 'barquettes', step: 0.5 },
   herbes:       { g: 30,   one: 'bouquet', many: 'bouquets' },
   gingembre:    { g: 5,    one: 'cm', many: 'cm', step: 1 },
+  ail:          { g: 1,    one: "gousse d'ail", many: "gousses d'ail", self: true, step: 1 },
 };
 const FRAC = { 0.25: '¼', 0.5: '½', 0.75: '¾' };
 // « ¼ », « 1 », « 2 ½ »

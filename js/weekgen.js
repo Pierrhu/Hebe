@@ -23,7 +23,8 @@ import { weekMicros } from './micros.js';
 import { getWeekDates, getNextWeekDates, getTodayDate, getEntry, saveEntry, localYMD } from '../data/log.js';
 import { getRating } from '../data/prefs.js';
 import { USER } from '../data/user.js';
-import { isAvailable } from './adapt.js';
+import { isAvailable, getEquipment } from './adapt.js';
+import { ssEstimate } from './session.js';
 import { seasonal } from '../data/season.js';
 import { getActiveMember, getMembers, weekBudget, getMaxRepeat, getSoups } from '../data/household.js';
 
@@ -331,6 +332,8 @@ function weekUseOf(dates, getE, e) {
 // Bornes : min et max de l'ingrédient (ou ±20 % / +60 % s'il n'en a pas) ; une petite quantité ne baisse que de 20 %.
 // Produits comptés à l'unité (wraps, tranches, carrés) : ajustés par unités entières.
 // S'il reste encore un bon morceau, il va dans un complément qui l'utilise, à la place d'un autre (un jour qui le permet).
+// v299 : durée visée pour la session du dimanche (minutes simulées, hors mise en boîtes)
+export const SESSION_MAX = 110;
 export const FRESH_KEYS = ['poulet', 'poulet_hache', 'boeuf', 'saumon', 'haut_cuisse', 'boeuf_emince', 'tofu', 'poulet_tranches', 'jambon_blanc',
   'fromage_blanc', 'yaourt_grec', 'yaourt_sl', 'cottage', 'fromage_frais', 'carre_frais', 'feta', 'creme', 'creme_coco', 'houmous', 'lait',
   'tortilla', 'pita', 'pain_burger', 'baguette', 'pain', 'gnocchis',
@@ -670,6 +673,9 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
         k++;
       }
       if (!counts) continue;
+      // v299 : une session du dimanche faisable sans attendre : les premiers essais écartent les semaines trop longues
+      // (plats empilés sur le même appareil)
+      if (attempt < 14 && ssEstimate(plats, getEquipment() || undefined) > SESSION_MAX) continue;
       const tryPlaced = schedule(slots, plats, counts);
       // chaque plat reste dans sa fenêtre de fraîcheur
       // … et, dans les premiers essais, jamais le même plat midi et soir le même jour (sinon on tire d'autres plats)

@@ -1,0 +1,679 @@
+[
+ {
+  "id": "SO03",
+  "cuts": [
+   {
+    "ing": "tofu",
+    "verb": "Presse et coupe",
+    "form": "en dés de 2 cm"
+   },
+   {
+    "ing": "poireau",
+    "verb": "Coupe",
+    "form": "en rondelles, blanc et vert tendre, et rince"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir l'ail 1 minute dans l'huile, puis ajoute le curcuma et le gingembre, 30 secondes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le poireau et fais-le cuire 4 à 5 minutes, jusqu'à ce qu'il soit tendre, puis les champignons, 3 à 4 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 9,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le tofu et fais-le dorer légèrement 2 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Verse 400 ml d'eau froide par portion et porte à frémissement. Arrête le feu.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 6
+   },
+   {
+    "text": "Prélève une louche de bouillon dans un bol, délaye-y la pâte miso, puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "SO04",
+  "cuts": [
+   {
+    "ing": "pois_casses",
+    "verb": "Rince",
+    "form": "à l'eau froide"
+   },
+   {
+    "ing": "poireau",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "carotte",
+    "verb": "Coupe",
+    "form": "en rondelles"
+   },
+   {
+    "ing": "ail",
+    "verb": "Hache",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir les oignons et les poireaux 5 minutes dans l'huile, puis l'ail 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le cumin, le curcuma, la coriandre moulue et le poivre, et fais-les griller 30 secondes en remuant.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les pois cassés, les carottes, la feuille de laurier, le bouillon cube émietté et 250 ml d'eau froide par portion. Mélange et gratte bien le fond.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule 10 minutes : les pois cassés doivent être fondants et crémeux.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 30
+   },
+   {
+    "text": "Retire le laurier et goûte avant de saler.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "SO06",
+  "cuts": [
+   {
+    "ing": "butternut",
+    "verb": "Épluche, épépine et coupe",
+    "form": "en morceaux"
+   },
+   {
+    "ing": "carotte",
+    "verb": "Coupe",
+    "form": "en morceaux"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": "finement"
+   },
+   {
+    "ing": "ail",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et l'ail 3 à 4 minutes dans l'huile, en gardant un filet pour le service, sans coloration.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute la courge et les carottes, mélange 1 minute, puis le gingembre râpé, le bouillon cube émietté et 250 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression : les légumes doivent être bien tendres.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 11
+   },
+   {
+    "text": "Mixe au mixeur plongeant jusqu'à ce que ce soit lisse, puis ajoute le lait de coco.",
+    "kind": "cook",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute un peu d'eau si le velouté est trop épais. Sale très légèrement et poivre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Verse le velouté dans un plat et rince la cuve.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Pose les œufs sur le panier vapeur de l'autocuiseur avec 200 ml d'eau froide, ferme et laisse cuire 3 minutes sous pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 8
+   },
+   {
+    "text": "Fais tomber la pression et plonge les œufs dans de l'eau froide 5 minutes.",
+    "kind": "cook",
+    "app": null,
+    "min": 1,
+    "wait": 5
+   },
+   {
+    "text": "Écale les œufs délicatement.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "B01",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Prépare un bocal par matin : mélange les flocons, le cacao, la whey et le lait jusqu'à ce qu'il n'y ait plus de grumeaux.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Ferme les bocaux et range-les au frigo.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "B02",
+  "cuts": [
+   {
+    "ing": "pomme",
+    "verb": "Coupe",
+    "form": "en petits dés, sans l'éplucher"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Prépare un bocal par matin : mélange les flocons, le fromage blanc, le lait, le miel et la cannelle.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute la pomme, puis ferme les bocaux.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Range les bocaux au frigo.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "B05",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Fais chauffer les fruits rouges surgelés 2 minutes à la poêle, jusqu'à ce qu'ils frémissent.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Laisse refroidir les fruits rouges et range-les au frigo : c'est la recommandation sanitaire pour les petits fruits surgelés mangés sans cuisson.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "B06",
+  "cuts": [
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en petits dés"
+   },
+   {
+    "ing": "feta",
+    "verb": "Émiette",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Fais décongeler les épinards 2 minutes à la poêle, puis presse-les pour retirer l'eau.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Bats les œufs avec une pincée de sel, puis ajoute les épinards, le poivron et la feta.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Verse la préparation dans des moules à muffins en silicone (3 muffins par portion) et fais cuire 12 à 14 minutes à l'air fryer à 160 °C, jusqu'à ce qu'ils soient pris au centre.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 14
+   },
+   {
+    "text": "Laisse refroidir les muffins et range-les en boîte au frigo.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K06",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Écrase la banane à la fourchette, puis mélange-la avec les flocons, l'œuf, la whey et le lait.",
+    "kind": "prep",
+    "app": null,
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Fais chauffer la poêle à feu moyen avec quelques gouttes d'huile essuyées au papier absorbant.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Verse 2 cuillères à soupe de pâte par pancake et fais cuire 1 minute 30 de chaque côté.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Laisse refroidir les pancakes. Garde au frigo ceux des 3 premiers jours, et congèle les autres en les séparant avec du papier cuisson.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K08",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Fais tremper les dattes 30 minutes dans un bol d'eau froide pour les ramollir.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 30
+   },
+   {
+    "text": "Égoutte les dattes, puis écrase-les à la fourchette avec les flocons, la whey, le beurre de cacahuète et le cacao, jusqu'à obtenir une pâte qui se tient.",
+    "kind": "prep",
+    "app": null,
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Forme 3 boules par portion.",
+    "kind": "prep",
+    "app": null,
+    "min": 5,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K15",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Fais fondre le chocolat noir au micro-ondes par tranches de 30 secondes, en remuant entre chaque, jusqu'à ce qu'il soit lisse.",
+    "kind": "cook",
+    "app": "micro",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le beurre de cacahuète et la whey au chocolat fondu, et mélange jusqu'à obtenir une pâte brillante.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les corn flakes et enrobe-les délicatement à la spatule, sans trop les écraser.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Forme de petits tas sur une feuille de papier cuisson, environ 3 par portion, et laisse-les durcir 30 minutes au frigo.",
+    "kind": "prep",
+    "app": null,
+    "min": 4,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K17",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Mixe les dattes avec une cuillère à soupe d'eau chaude, jusqu'à obtenir une pâte collante.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les flocons d'avoine, la whey et le cacao, et mixe quelques secondes seulement, pour garder des morceaux de flocons.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Incorpore les cacahuètes entières à la main : ce sont elles qui donnent le croquant.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Tasse le tout dans une petite boîte tapissée de papier cuisson, sur 1,5 cm d'épaisseur, et laisse prendre une heure au frigo.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K18",
+  "cuts": [
+   {
+    "ing": "cacahuetes",
+    "verb": "Concasse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mixe les dattes avec la whey et une cuillère à soupe d'eau chaude : c'est le « caramel ».",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Étale le caramel sur 1 cm dans une petite boîte tapissée de papier cuisson.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Étale le beurre de cacahuète par-dessus, puis parsème de cacahuètes en appuyant légèrement.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais fondre le chocolat noir au micro-ondes par tranches de 30 secondes et verse-le sur le dessus en une fine couche.",
+    "kind": "cook",
+    "app": "micro",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Laisse prendre une heure au congélateur, puis coupe en barres, une par portion.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K19",
+  "cuts": [],
+  "steps": [
+   {
+    "text": "Mélange la noix de coco râpée, le lait de coco, la whey et le miel jusqu'à obtenir une pâte qui se tient. Si elle colle trop, ajoute une pincée de coco.",
+    "kind": "prep",
+    "app": null,
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Forme de petites bouchées allongées, environ 3 par portion, pose-les sur du papier cuisson et laisse-les durcir 20 minutes au congélateur.",
+    "kind": "prep",
+    "app": null,
+    "min": 5,
+    "wait": 20
+   },
+   {
+    "text": "Fais fondre le chocolat noir au micro-ondes par tranches de 30 secondes, trempe chaque bouchée dedans et repose-la sur le papier.",
+    "kind": "cook",
+    "app": "micro",
+    "min": 5,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K20",
+  "cuts": [
+   {
+    "ing": "amandes",
+    "verb": "Concasse",
+    "form": "grossièrement"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les amandes avec les flocons d'avoine et la whey.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais tiédir le miel et le beurre de cacahuète 20 secondes au micro-ondes, puis verse-les sur les flocons et mélange bien, jusqu'à ce que tout soit enrobé.",
+    "kind": "cook",
+    "app": "micro",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Tasse la préparation sur 1,5 cm d'épaisseur sur une feuille de papier cuisson posée dans le panier de l'air fryer.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire 12 minutes à 160 °C, jusqu'à ce que ce soit doré.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 12
+   },
+   {
+    "text": "Laisse refroidir complètement avant de couper : les barres durcissent en refroidissant.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "K21",
+  "cuts": [
+   {
+    "ing": "chocolat",
+    "verb": "Hache",
+    "form": "en petits morceaux"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine et la whey.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le chocolat noir.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Forme 3 cookies par portion, aplatis-les à 1 cm et pose-les sur du papier cuisson dans le panier de l'air fryer.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les cookies 8 minutes à 170 °C : ils doivent être dorés sur les bords et encore moelleux au centre.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 8
+   },
+   {
+    "text": "Laisse refroidir les cookies 10 minutes, ils se raffermissent.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 10
+   }
+  ]
+ },
+ {
+  "id": "K22",
+  "cuts": [
+   {
+    "ing": "noix",
+    "verb": "Concasse",
+    "form": "grossièrement"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les noix avec les flocons d'avoine, la cannelle, le sirop d'érable et l'huile, jusqu'à ce que tout soit enrobé.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Étale le granola sur une feuille de papier cuisson dans le panier et fais-le cuire 12 à 15 minutes à l'air fryer à 150 °C, en remuant toutes les 5 minutes, jusqu'à ce qu'il soit doré.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 15
+   },
+   {
+    "text": "Laisse refroidir le granola : il durcit en refroidissant.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ }
+]

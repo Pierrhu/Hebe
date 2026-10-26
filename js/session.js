@@ -11,6 +11,9 @@
 // découpes pendant ce temps, puis les cuissons actives, et le riz quand l'autocuiseur est libre pour de bon.
 // Un plat garde son appareil du premier au dernier usage (« dans la même poêle »).
 
+import { SESSION_STEPS } from '../data/sessionSteps.js';
+import { PIECES, INGREDIENTS } from '../data/ingredients.js';
+
 const SS_HEAT = /poêle|autocuiseur|air fryer|\bfour\b|casserole|cocotte|\bfeu\b|dorer|revenir|fais sauter|saisis|cuire|cuisson|mijoter|bouillir|ébullition|pression|chauffe|fondre|micro-ondes|enfourne|grille|rôti|°C/i;
 const SS_CUT = /^(Coupe|Émince|Hache|Épluche|Râpe|Taille|Détaille|Lave|Pèle|Retire la peau|Égoutte et rince|Égoutte les (pois|haricots|lentilles|tomates|olives|cornichons|poivrons)|Rince et égoutte|Presse|Écrase l'ail|Zeste|Effeuille|Cisèle|Épépine|Ouvre|Sors|Prépare la (sauce|marinade|garniture|pâte)|Mélange .*(marinade|épices|sauce)|Laisse mariner|Fouette les œufs)/i;
 const SS_COOKED = /\bcuit|cuite|refroidi|tiède|tiédi|effiloch|la cuisson|égoutte les pâtes|une fois|vérifier|plus (être )?rose|^Au moment de manger/i;
@@ -286,3 +289,252 @@ export function ssPhases(sched, nameOf) {
 }
 export const ssResName = k => SS_RES_NAME[k] || '';
 const SS_AT = { autocuiseur: "à l'autocuiseur", airfryer: "à l'air fryer", four: 'au four', cocotte: 'en cocotte', casserole: 'en casserole', casserole2: 'en casserole', poele: 'à la poêle' };
+
+// ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+// v299 : session construite à partir des recettes structurées (data/sessionSteps.js), plus de devinette.
+//   1. « Lancer » : ce qui cuit longtemps tout seul part d'abord (au plus un plat par appareil), avec ses
+//      découpes (et la même découpe pour les autres plats, faite d'un coup).
+//   2. « Tout découper » : la mise en place commune, regroupée par produit (« Émince 4 oignons finement :
+//      2 pour…, 2 pour… »), puis les marinades et sauces froides.
+//   3. « Cuire » : les cuissons, planifiées avec une paire de mains et un exemplaire de chaque appareil.
+// ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+
+// Minutes au couteau pour une quantité donnée (ordre de grandeur, pour le planning)
+const SS_CUT_MIN = { oignon: 1.5, carotte: 1, poivron: 1.5, courgette: 1, aubergine: 1.5, tomate: 1, concombre: 1.5, patate_douce: 2,
+  poireau: 1.5, butternut: 6, potimarron: 5, chou: 4, pomme: 1, poire: 1, banane: 0.5, citron: 0.5, citron_vert: 0.5, champignons: 3,
+  herbes: 2, gingembre: 0.3, ail: 0.5, salade: 3, tomates_cerise: 2, fruit_saison: 1 };
+function ssCutMinutes(key, qty, verb) {
+  if (/^Rince|^Lave et essore|^Concasse|^Presse/i.test(verb || '')) return 1 + (key === 'salade' ? 2 : 0);
+  const P = PIECES[key];
+  if (P && SS_CUT_MIN[key]) return 1 + SS_CUT_MIN[key] * Math.max(0.5, qty / P.g);
+  if (/poulet|boeuf|saumon|haut_cuisse|tofu|poisson|crevettes/.test(key)) return 1 + 2 * qty / 250;
+  if (key === 'pdt') return 1 + qty / 150;
+  return 1 + qty / 200;
+}
+const SS_APP_FOR = (app, eq) => (app === 'autocuiseur' && eq && eq.autocuiseur === false ? 'cocotte' : app === 'airfryer' && eq && eq.airfryer === false && eq.four ? 'four' : app);
+// minutes écrites dans un texte (version adaptée à l'équipement : cocotte, four)
+const ssTextMinutes = t => { let m = 0; t.replace(/(toutes les |tous les )?(\d+)(?:\s*à\s*(\d+))?\s*(?:minutes|min)\b/g, (_, e, a, b) => { if (!e) m += +(b || a); return _; }); return m; };
+
+// Une session prête à afficher.
+// dishes : [{ r, tot, kind: 'dish' | 'extra', qty?: phrase des quantités (extras) }]
+// opt : { eq, adapt(text, r), rice: [actions du riz], name(r), qtyText(key, qty, unit, name) }
+export function ssBuild(dishes, opt = {}) {
+  const eq = opt.eq || { autocuiseur: true, airfryer: true };
+  const name = opt.name || (r => r.short || r.name);
+  const qtyText = opt.qtyText || ((k, q) => `${Math.round(q)} g`);
+  const adapt = opt.adapt || (t => t);
+  const T = []; // tâches
+  const add = t => { T.push({ deps: [], ...t }); return T.length - 1; };
+  const ds = dishes.map(x => {
+    const data = SESSION_STEPS[x.r.id];
+    const qtyOf = key => x.r.ingredients.reduce((a, g, i) => a + (g.key === key ? (x.tot?.[i] || 0) : 0), 0);
+    const unitOf = key => x.r.ingredients.find(g => g.key === key)?.unit || 'g';
+    const nameOf = key => x.r.ingredients.find(g => g.key === key)?.name || INGREDIENTS[key]?.name || key;
+    let cuts = [], steps = [];
+    if (data) {
+      cuts = data.cuts.filter(c => qtyOf(c.ing) > 0 || !x.tot).map(c => ({ ...c, qty: qtyOf(c.ing), unit: unitOf(c.ing), nm: nameOf(c.ing) }));
+      steps = data.steps.map((s, k) => {
+        const text = adapt(s.text, x.r);
+        const app = SS_APP_FOR(s.app, eq);
+        let wait = s.wait;
+        if (text !== s.text && wait) { const m = ssTextMinutes(text); if (m) wait = m + (/sous pression/.test(text) ? 5 : 0); }
+        return { text, kind: s.kind, app, min: Math.max(1, s.min), wait, after: s.after ?? (k ? [k - 1] : []) };
+      });
+    } else {
+      // recette pas encore structurée : l'ancienne lecture du texte
+      const acts = ssActions(x.r, x.steps || x.r.steps.filter(st => !/^(Riz : |Mise en boîtes : |Au moment de manger : )/.test(st)), x.r.id);
+      steps = acts.map(a => ({ text: a.text, kind: a.kind, app: a.res, min: Math.max(a.kind === 'prep' ? 0 : 1, a.active), wait: a.passive, after: a.deps }));
+    }
+    if (x.qty) steps.unshift({ text: x.qty, kind: 'prep', app: null, min: 0, wait: 0, after: [], head: true }) && steps.forEach((s, k) => { if (k) s.after = s.after.map(d => d + 1); if (k === 1 && !s.after.length) s.after = [0]; });
+    return { ...x, cuts, steps, ids: [], cutIds: [] };
+  });
+
+  // ── 1. plats à lancer : un long temps de cuisson tout seul (≥ 15 min) atteint en ≤ 25 min de gestes ──
+  const leadOf = d => {
+    let hands = 0;
+    for (let k = 0; k < d.steps.length; k++) {
+      const s = d.steps[k];
+      if (s.kind === 'prep' && !s.head) return null; // une marinade d'abord : pas un lancement immédiat
+      hands += s.min;
+      if (s.wait >= 15) return hands <= 25 ? { k, wait: s.wait, app: s.app } : null;
+      if (hands > 25) return null;
+    }
+    return null;
+  };
+  const launches = [];
+  ds.filter(d => d.kind === 'dish').map(d => ({ d, L: leadOf(d) })).filter(x => x.L).sort((a, b) => b.L.wait - a.L.wait)
+    .forEach(x => { if (launches.length < 2 && !launches.some(y => y.L.app === x.L.app)) launches.push(x); });
+  const isLaunch = d => launches.some(x => x.d === d);
+
+  // ── 2. découpes, regroupées par produit et par geste ──
+  const groups = [];
+  ds.forEach(d => d.cuts.forEach(c => {
+    const key = `${c.ing}|${c.verb}|${c.form}`;
+    let g = groups.find(x => x.key === key);
+    if (!g) groups.push(g = { key, ing: c.ing, verb: c.verb, form: c.form, unit: c.unit, nm: c.nm, parts: [] });
+    g.parts.push({ d, qty: c.qty });
+  }));
+  const cutText = g => {
+    const total = g.parts.reduce((a, p) => a + p.qty, 0);
+    const what = total > 0 ? qtyText(g.ing, total, g.unit, g.nm) : g.nm.toLowerCase();
+    const base = `${g.verb} ${what}${g.form ? ' ' + g.form : ''}`;
+    if (g.parts.length < 2) return `${base}.`;
+    return `${base} : ${g.parts.map(p => `${qtyText(g.ing, p.qty, g.unit, g.nm).replace(/ (de |d')?[^ ]+.*$/, m => (PIECES[g.ing]?.self ? '' : m))} pour ${name(p.d.r)}`).join(', ')}.`;
+  };
+  // les groupes d'un plat à lancer passent dans son lancement (pour tous les plats d'un coup)
+  const launchGroups = new Map(launches.map(x => [x.d, groups.filter(g => g.parts.some(p => p.d === x.d))]));
+  const usedG = new Set();
+  let prevLaunchEnd = null;
+  launches.forEach(({ d }) => {
+    const gs = launchGroups.get(d).filter(g => !usedG.has(g));
+    const ids = gs.map(g => { usedG.add(g); return add({ text: cutText(g), kind: 'cut', app: null, min: Math.round(g.parts.reduce((a, p) => a + ssCutMinutes(g.ing, p.qty, g.verb), 0)), wait: 0, phase: 'launch', chain: d, group: g, prio: 6000 }); });
+    gs.forEach((g, k) => { g.task = ids[k]; });
+    d.cutIds = gs.map(g => g.task);
+    if (prevLaunchEnd != null) ids.forEach(i => T[i].deps.push(prevLaunchEnd));
+    // ses étapes jusqu'au lancement
+    const L = leadOf(d);
+    d.steps.forEach((s, k) => {
+      const i = add({ text: s.text, kind: s.kind === 'prep' ? 'prep' : 'cook', app: s.app, min: s.min, wait: s.wait, phase: k <= L.k ? 'launch' : 'cook', chain: d, prio: k <= L.k ? 6000 : 0 });
+      d.ids[k] = i;
+    });
+    d.steps.forEach((s, k) => { T[d.ids[k]].deps.push(...s.after.map(a => d.ids[a]), ...(k <= L.k || !s.after.length ? launchGroups.get(d).map(g => g.task) : [])); });
+    prevLaunchEnd = d.ids[L.k];
+  });
+  // mise en place commune : le reste des découpes
+  const mep = groups.filter(g => !usedG.has(g)).sort((a, b) => a.ing.localeCompare(b.ing));
+  mep.forEach(g => { g.task = add({ text: cutText(g), kind: 'cut', app: null, min: Math.round(g.parts.reduce((a, p) => a + ssCutMinutes(g.ing, p.qty, g.verb), 0)), wait: 0, phase: 'mep', group: g, chain: g.parts.length === 1 ? g.parts[0].d : null, prio: 1000, deps: prevLaunchEnd != null ? [prevLaunchEnd] : [] }); });
+  // les autres plats : leurs gestes attendent leurs découpes ; marinades et sauces froides avec la mise en place
+  ds.filter(d => !isLaunch(d)).forEach(d => {
+    const myCuts = groups.filter(g => g.parts.some(p => p.d === d)).map(g => g.task);
+    d.steps.forEach((s, k) => {
+      const prep = s.kind === 'prep';
+      d.ids[k] = add({ text: s.text, kind: prep ? 'prep' : 'cook', app: s.app, min: s.min, wait: s.wait, phase: prep ? 'mep' : 'cook', chain: d, prio: prep ? 900 : 0, head: s.head });
+    });
+    d.steps.forEach((s, k) => { T[d.ids[k]].deps.push(...s.after.map(a => d.ids[a]), ...myCuts, ...(prevLaunchEnd != null ? [prevLaunchEnd] : [])); });
+  });
+  // riz de la session
+  if (opt.rice && opt.rice.length) {
+    let prev = null;
+    opt.rice.forEach(a => { const i = add({ ...a, kind: 'cook', min: a.active, wait: a.passive, phase: 'cook', chain: 'riz', rice: true, prio: 0 }); if (prev != null) T[i].deps.push(prev); prev = i; });
+  }
+
+  // ── 3. planning ──
+  T.forEach((t, i) => { t.deps = [...new Set(t.deps)].filter(d => d != null && d !== i); t.succ = []; });
+  T.forEach((t, i) => t.deps.forEach(d => T[d].succ.push(i)));
+  const tail = new Array(T.length).fill(0);
+  const order = ssTopo(T);
+  for (let n = order.length - 1; n >= 0; n--) { const i = order[n]; tail[i] = T[i].min + T[i].wait + Math.max(0, ...T[i].succ.map(j => tail[j])); }
+  const lock = {};
+  const out = [];
+  let t = 0, hands = 0, prev = null, guard = 0;
+  const done = new Array(T.length).fill(false), end = new Array(T.length).fill(0);
+  const ready = i => T[i].deps.every(d => done[d]) && Math.max(0, ...T[i].deps.map(d => end[d])) <= t;
+  const free = i => {
+    const r = T[i].app;
+    if (!r || r === 'micro') return true;
+    const L = lock[r];
+    if (L && L.freeAt > t) return false;
+    if (L && L.owner && L.owner !== T[i].chain) return false;
+    if (T[i].rice && T.some((o, j) => !done[j] && !o.rice && o.app === r)) return false; // le riz attend que plus personne n'ait besoin de l'appareil
+    return true;
+  };
+  const score = i => {
+    const x = T[i];
+    if (x.prio) return x.prio + tail[i] - i * 0.01; // lancements dans l'ordre, puis mise en place
+    if (x.rice) return 2000 + tail[i];
+    if (x.deps.some(d => T[d].chain === x.chain && T[d].kind === 'cook' && T[d].app && T[d].app === x.app)) return 3000 + tail[i]; // une cuisson commencée se poursuit
+    let act = 0, launch = false;
+    for (let j = i; j != null && T[j] && T[j].chain === x.chain; j = T[j].succ.find(s => T[s].chain === x.chain)) {
+      if (T[j].app && x.app && T[j].app !== x.app) break;
+      if (T[j].wait >= 10) { launch = act <= 25; break; }
+      act += T[j].min; if (act > 25) break;
+    }
+    return (launch ? 2000 : 0) + tail[i] + (prev === x.chain ? 50 : 0);
+  };
+  while (done.some(v => !v) && guard++ < 5000) {
+    t = Math.max(t, hands);
+    const cands = T.map((_, i) => i).filter(i => !done[i] && ready(i) && free(i));
+    if (!cands.length) {
+      const times = [...end.filter((e, i) => done[i]), ...Object.values(lock).map(L => L.freeAt)].filter(v => v > t);
+      if (!times.length) {
+        if (Object.values(lock).some(L => L.owner)) { Object.values(lock).forEach(L => { L.owner = null; }); continue; }
+        break;
+      }
+      const next = Math.min(...times);
+      out.push({ wait: true, start: t, end: next });
+      t = hands = next;
+      continue;
+    }
+    const i = cands.reduce((a, b) => (score(b) > score(a) ? b : a));
+    const x = T[i];
+    const start = t, he = t + x.min, e = he + x.wait;
+    if (x.app && x.app !== 'micro') lock[x.app] = { owner: x.succ.some(j => T[j].app === x.app && T[j].chain === x.chain) ? x.chain : null, freeAt: e };
+    out.push({ ...x, i, start, handsEnd: he, end: e });
+    done[i] = true; end[i] = e; hands = he; prev = x.chain;
+  }
+  const total = Math.max(0, ...out.map(a => a.end || 0));
+
+  // ── 4. phases ──
+  const chainName = c => (!c ? '' : c === 'riz' ? 'riz' : name(c.r));
+  const bg = (time, self) => {
+    const run = out.filter(x => !x.wait && x.wait !== true && x.kind === 'cook' && (x.wait || 0) >= 5 && x.handsEnd <= time && x.end > time && x.chain !== self);
+    const by = [...new Set(run.map(x => x.chain))].map(c => {
+      const xs = run.filter(x => x.chain === c), left = Math.max(...xs.map(x => x.end)) - time;
+      return `${chainName(c)} ${SS_AT[xs[0].app] || ''} (${left >= 5 ? `encore ≈ ${Math.round(left / 5) * 5} min` : 'presque prêt'})`;
+    });
+    return by.join(' · ');
+  };
+  const steps = out.map(x => {
+    if (x.wait === true) {
+      const mins = Math.round(x.end - x.start);
+      if (mins < 3) return null;
+      const lastOne = !out.some(y => y.wait !== true && y.start >= x.end && y.min > 2);
+      const what = bg(x.start + 0.5, null);
+      return { kind: 'wait', start: x.start, text: lastOne
+        ? `Il reste environ ${mins} minutes de cuisson. Commence déjà la mise en boîtes des plats prêts : l'étape « Mettre en boîtes » te dit quoi mettre où.`
+        : `${mins >= 15 ? 'Pause' : 'Petite pause'} d'environ ${mins} minutes, le temps que la cuisson se termine${what ? ` (${what.replace(/ \(.*?\)/g, '')})` : ''}. Profites-en pour laver ce qui traîne.` };
+    }
+    return { kind: x.kind, phase: x.phase, start: x.start, text: x.text, chain: x.chain, group: x.group, bg: bg(x.start + 0.01, x.chain), head: x.head };
+  }).filter(Boolean);
+  // fenêtre de la mise en place : tout ce qui se passe entre sa première et sa dernière découpe y reste
+  const firstMep = steps.findIndex(s => s.phase === 'mep'), lastMep = steps.map(s => s.phase === 'mep').lastIndexOf(true);
+  const lastLaunch = steps.map(s => s.phase === 'launch').lastIndexOf(true);
+  const phases = [];
+  let cur = null;
+  steps.forEach((s, k) => {
+    let key;
+    if (k <= lastLaunch && s.phase === 'launch' && s.chain && s.chain !== 'riz') key = 'launch:' + s.chain.r.id;
+    else if (firstMep >= 0 && k >= firstMep && k <= lastMep) key = 'mep';
+    else if (k < firstMep && cur) key = cur.key;
+    else key = 'cook';
+    if (!cur || cur.key !== key || (key === 'cook' && cur.steps.length >= 9 && s.chain !== cur.steps[cur.steps.length - 1].chain && steps.length - k > 2)) {
+      cur = { key, steps: [] }; phases.push(cur);
+    }
+    cur.steps.push(s);
+  });
+  let cookN = 0;
+  const outPhases = phases.map(p => {
+    const dishesIn = [...new Set(p.steps.map(s => s.chain).filter(c => c && c !== 'riz'))];
+    if (p.key.startsWith('launch:')) {
+      const d = launches.find(x => 'launch:' + x.d.r.id === p.key)?.d;
+      return { title: `Lancer : ${name(d.r)}`, hint: "Ensuite ça cuit tout seul : tu avances sur le reste pendant ce temps", steps: p.steps };
+    }
+    if (p.key === 'mep') return { title: 'Tout découper', hint: 'Toute la mise en place, plat par plat dans des bols : ensuite il ne reste que les cuissons', steps: p.steps };
+    cookN++;
+    return { title: cookN > 1 ? 'Cuire (suite)' : 'Cuire', hint: ssList(dishesIn.map(c => name(c.r))), steps: p.steps };
+  });
+  return { phases: outPhases, total, launches: launches.map(x => x.d.r.id) };
+}
+// ordre topologique (les dépendances d'abord)
+function ssTopo(T) {
+  const seen = new Array(T.length).fill(0), out = [];
+  const visit = i => { if (seen[i]) return; seen[i] = 1; T[i].deps.forEach(visit); out.push(i); };
+  T.forEach((_, i) => visit(i));
+  return out;
+}
+// Durée estimée d'une session pour une liste de plats (génération de la semaine) : 6 boîtes par plat
+export function ssEstimate(recipes, eq) {
+  const rice = recipes.some(r => r.steps.some(st => /^Riz : /.test(st)));
+  const dishes = recipes.map(r => ({ r, kind: 'dish', tot: r.ingredients.map(g => g.qty * 6) }));
+  return ssBuild(dishes, { eq, rice: rice ? [{ text: '', app: eq && !eq.autocuiseur ? 'casserole' : 'autocuiseur', active: 3, passive: 0 }, { text: '', app: eq && !eq.autocuiseur ? 'casserole' : 'autocuiseur', active: 1, passive: eq && !eq.autocuiseur ? 45 : 35 }] : null }).total;
+}
