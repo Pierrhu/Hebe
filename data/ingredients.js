@@ -296,7 +296,6 @@ export const PIECES = {
   aubergine:    { g: 300,  one: 'aubergine', many: 'aubergines', self: true, snap: true },
   tomate:       { g: 120,  one: 'tomate', many: 'tomates', self: true, snap: true },
   concombre:    { g: 350,  one: 'concombre', many: 'concombres', self: true, snap: true, half: true },
-  pdt:          { g: 150,  one: 'pomme de terre', many: 'pommes de terre', self: true, snap: true },
   patate_douce: { g: 300,  one: 'patate douce', many: 'patates douces', self: true, snap: true },
   poireau:      { g: 200,  one: 'poireau', many: 'poireaux', self: true, snap: true },
   butternut:    { g: 1000, one: 'courge butternut', many: 'courges butternut', self: true, snap: true, half: true },

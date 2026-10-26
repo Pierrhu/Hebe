@@ -283,7 +283,6 @@ const SHOP_PIECES = {
   fruit_saison: [150, 'fruit', 'fruits', 'Fruits de saison', true],
   radis: [250, 'botte', 'bottes', 'Radis'],
   // v297 : comme dans les recettes, à la pièce
-  pdt: [150, 'pomme de terre', 'pommes de terre', 'Pommes de terre', true],
   patate_douce: [300, 'patate douce', 'patates douces', 'Patates douces', true],
   poireau: [200, 'poireau', 'poireaux', 'Poireaux'],
   butternut: [1000, 'courge butternut', 'courges butternut', 'Courge butternut', true],
