@@ -12,6 +12,6 @@ fs.readdirSync(dir).filter(f => /^lot_\d+\.json$/.test(f)).sort().forEach(f => {
 const out = `// sessionSteps.js — GÉNÉRÉ par outils/recettes/session/construire.js, ne pas modifier à la main.\n` +
   `// Pour chaque recette cuisinée pendant la session : ses découpes (cuts : ingrédient, verbe, forme) et ses étapes\n` +
   `// (steps : texte, prep/cook, appareil, minutes de gestes, minutes où ça cuit tout seul, dépendances).\n` +
-  `export const SESSION_STEPS = ${JSON.stringify(all, null, 1)};\n`;
+  `export const SESSION_STEPS = {\n${Object.entries(all).map(([k, v]) => `  ${k}: ${JSON.stringify(v)},`).join('\n')}\n};\n`;
 fs.writeFileSync(path.join(dir, '../../../data/sessionSteps.js'), out);
 console.log(Object.keys(all).length, 'recettes');

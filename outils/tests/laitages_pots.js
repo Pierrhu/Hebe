@@ -1,7 +1,7 @@
 // Laitages en pots entiers (v189) : part de ce qui est acheté qui est vraiment consommé.
 // Lancer : node outils/tests/laitages_pots.js
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','data/season.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','data/season.js','data/sessionSteps.js','js/session.js','js/weekgen.js'],`
 const KEYS=['fromage_blanc','yaourt_grec','cottage'];
 for (const [nom,P] of [['Toi',{sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P4',phase:0}],['Femme',{sex:'female',age:24,height:1.65,weight:60,bodyfat:27,activity:2,protocol:'P2',phase:0}]]) {
  updateActiveMember({...P,formula:'classique'});const MB=[{id:getActiveMember().id,targets:getTargets(),free:[],formula:'classique',breakfast:'mix',whey:true}];

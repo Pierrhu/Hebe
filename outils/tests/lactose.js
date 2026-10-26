@@ -1,6 +1,6 @@
 // Régime sans lactose : recettes écartées, remplacements, précision, foyer mixte.
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','data/sessionSteps.js','js/session.js','js/weekgen.js'],`
 const OUT=['fromage_blanc','fromage_frais','carre_frais','whey'], SUBST=['yaourt_grec','lait','creme'], STRICT=['cheddar','feta'];
 function run(label, levels, weeks=25){
   setMemberCount(levels.length);

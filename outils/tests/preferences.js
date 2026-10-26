@@ -1,6 +1,6 @@
 // Préférences de petit-déjeuner (sucré, salé, les deux) et option sans whey.
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','data/sessionSteps.js','js/session.js','js/weekgen.js'],`
 updateActiveMember({sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P4',phase:0});const T=getTargets();
 const cases=[['classique','sucre',true],['classique','sale',true],['classique','mix',true],['classique','mix',false],['jeune','mix',false]];
 for(const [formula,bk,whey] of cases){

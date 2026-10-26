@@ -333,7 +333,7 @@ function weekUseOf(dates, getE, e) {
 // Produits comptés à l'unité (wraps, tranches, carrés) : ajustés par unités entières.
 // S'il reste encore un bon morceau, il va dans un complément qui l'utilise, à la place d'un autre (un jour qui le permet).
 // v299 : durée visée pour la session du dimanche (minutes simulées, hors mise en boîtes)
-export const SESSION_MAX = 110;
+export const SESSION_MAX = 120;
 export const FRESH_KEYS = ['poulet', 'poulet_hache', 'boeuf', 'saumon', 'haut_cuisse', 'boeuf_emince', 'tofu', 'poulet_tranches', 'jambon_blanc',
   'fromage_blanc', 'yaourt_grec', 'yaourt_sl', 'cottage', 'fromage_frais', 'carre_frais', 'feta', 'creme', 'creme_coco', 'houmous', 'lait',
   'tortilla', 'pita', 'pain_burger', 'baguette', 'pain', 'gnocchis',
@@ -655,13 +655,16 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     const earlyMeals = slots.filter(sl => sl.dayIdx < FRIDGE_DAYS).length;
     // environ 3 à 4 portions par plat : 4 plats pour une semaine complète
     let plats = [], counts = null, placed = null;
+    const tooLong = new Set(); // v299 : plats écartés parce que la session serait trop longue
+    let tries = 0;
     for (let attempt = 0; attempt < 24 && !placed; attempt++) {
+      tries = attempt;
       let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / Math.min(4, maxRep)));
       plats = [];
       counts = null;
       for (let guard = 0; guard < 6; guard++) {
         while (plats.length < k) {
-          const p = pickMain(pool, [...chosen, ...plats], { allowFish: attempt < 20, served, earlySlots: early, fishSlots: fishEarly, extraKeys: leftKeys }); // derniers essais sans poisson frais, plus facile à placer
+          const p = pickMain(pool.length - tooLong.size >= 8 ? pool.filter(r => !tooLong.has(r.id)) : pool, [...chosen, ...plats], { allowFish: attempt < 20, served, earlySlots: early, fishSlots: fishEarly, extraKeys: leftKeys }); // derniers essais sans poisson frais, plus facile à placer
           if (!p) break;
           plats.push(p);
         }
@@ -675,7 +678,13 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
       if (!counts) continue;
       // v299 : une session du dimanche faisable sans attendre : les premiers essais écartent les semaines trop longues
       // (plats empilés sur le même appareil)
-      if (attempt < 14 && ssEstimate(plats, getEquipment() || undefined) > SESSION_MAX) continue;
+      // la limite s'assouplit à chaque essai : on garde la session la plus courte qu'on sache trouver
+      if (attempt < 14 && ssEstimate(plats, getEquipment() || undefined) > SESSION_MAX + 6 * attempt) {
+        // le tirage suit le tour de rôle : sans rien changer, il reprendrait les mêmes plats. On écarte le plus long.
+        const worst = plats.reduce((x, y) => (ssEstimate([y], getEquipment() || undefined) > ssEstimate([x], getEquipment() || undefined) ? y : x));
+        tooLong.add(worst.id);
+        continue;
+      }
       const tryPlaced = schedule(slots, plats, counts);
       // chaque plat reste dans sa fenêtre de fraîcheur
       // … et, dans les premiers essais, jamais le même plat midi et soir le même jour (sinon on tire d'autres plats)
@@ -699,7 +708,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
       });
     });
     sessions.push({
-      key: S.key, label: S.label,
+      key: S.key, label: S.label, tries,
       dates: S.days.map(i => dates[i]),
       recipes: plats.map(p => ({ id: p.id, portions: boxes[p.id] || 0, side: calibrate(0, p).side?.id || null })).filter(x => x.portions > 0),
     });

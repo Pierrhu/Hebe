@@ -1,5 +1,5 @@
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','data/sessionSteps.js','js/session.js','js/weekgen.js'],`
 function run(T,label){const days=[];
  for(let w=0;w<30;w++){const {entries,dates}=generateWeek({targets:T});dates.forEach(d=>days.push(computeDayMacros(entries[d])))}
  const avg=k=>Math.round(days.reduce((a,m)=>a+m[k],0)/days.length);

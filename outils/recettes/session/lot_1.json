@@ -1,0 +1,342 @@
+[
+{
+ "id": "W01",
+ "cuts": [
+  { "ing": "poulet", "verb": "Coupe", "form": "en dés de 2 cm" },
+  { "ing": "aubergine", "verb": "Coupe", "form": "en cubes de 2 cm" },
+  { "ing": "poivron", "verb": "Coupe", "form": "en lanières" },
+  { "ing": "oignon", "verb": "Coupe", "form": "en lamelles" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "gingembre", "verb": "Râpe", "form": "" }
+ ],
+ "steps": [
+  { "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile.", "kind": "cook", "app": "autocuiseur", "min": 3, "wait": 0 },
+  { "text": "Ajoute l'ail, le gingembre et le curry en poudre, et remue 1 minute pour que les épices dégagent leur parfum.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 },
+  { "text": "Ajoute le poulet, l'aubergine, le poivron, le lait de coco et la sauce soja, puis mélange.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 },
+  { "text": "Ferme et laisse cuire 5 minutes sous pression, puis fais tomber la pression : le poulet reste moelleux et l'aubergine devient fondante.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 10 }
+ ]
+},
+{
+ "id": "W02",
+ "cuts": [
+  { "ing": "haut_cuisse", "verb": "Retire la peau et coupe", "form": "en lanières" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "citron_vert", "verb": "Presse", "form": "" },
+  { "ing": "carotte", "verb": "Coupe", "form": "en fins bâtonnets" },
+  { "ing": "concombre", "verb": "Coupe", "form": "en demi-rondelles" },
+  { "ing": "salade", "verb": "Lave et coupe", "form": "en lanières" },
+  { "ing": "cacahuetes", "verb": "Concasse", "form": "" }
+ ],
+ "steps": [
+  { "text": "Mélange l'ail avec la moitié de la sauce soja, la moitié du jus de citron vert, le miel et l'huile, ajoute le poulet et laisse-le mariner 15 minutes au frigo.", "kind": "prep", "app": null, "min": 2, "wait": 15 },
+  { "text": "Fais cuire le poulet 14 à 16 minutes à l'air fryer à 200 °C, en le retournant à mi-cuisson, jusqu'à ce que le jus qui s'écoule soit clair.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 16 },
+  { "text": "Prépare la sauce : le reste de la sauce soja et du jus de citron vert, avec 2 cuillères à soupe d'eau.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W03",
+ "cuts": [
+  { "ing": "boeuf_emince", "verb": "Émince", "form": "en tranches très fines" },
+  { "ing": "oignon", "verb": "Émince", "form": "en fines lamelles" },
+  { "ing": "gingembre", "verb": "Râpe", "form": "" }
+ ],
+ "steps": [
+  { "text": "Dans la poêle, fais cuire l'oignon 6 minutes à feu moyen avec 100 ml d'eau par portion, la sauce soja, le miel, le vinaigre de cidre et le gingembre.", "kind": "cook", "app": "poele", "min": 6, "wait": 0 },
+  { "text": "Ajoute le bœuf et laisse cuire 2 à 3 minutes seulement, en remuant : il finira de cuire au réchauffage.", "kind": "cook", "app": "poele", "min": 3, "wait": 0 },
+  { "text": "Fais revenir les épinards 4 minutes dans la poêle avec l'huile.", "kind": "cook", "app": "poele", "min": 4, "wait": 0 }
+ ]
+},
+{
+ "id": "W04",
+ "cuts": [
+  { "ing": "poulet", "verb": "Coupe", "form": "en cubes de 3 cm" },
+  { "ing": "citron", "verb": "Presse", "form": "" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "concombre", "verb": "Râpe", "form": "" },
+  { "ing": "tomate", "verb": "Coupe", "form": "en dés" },
+  { "ing": "oignon", "verb": "Coupe", "form": "en fines lamelles" }
+ ],
+ "steps": [
+  { "text": "Mélange le poulet avec le jus de citron, l'origan, l'ail écrasé et l'huile, et laisse mariner 15 minutes, ou toute la nuit au frigo.", "kind": "prep", "app": null, "min": 2, "wait": 15 },
+  { "text": "Fais cuire le poulet 12 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 12 },
+  { "text": "Prépare le tzatziki : presse le concombre râpé dans tes mains pour retirer l'eau, puis mélange-le avec le yaourt et une pointe d'ail.", "kind": "prep", "app": null, "min": 3, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W05",
+ "cuts": [
+  { "ing": "oignon", "verb": "Râpe", "form": "" },
+  { "ing": "herbes", "verb": "Effeuille et hache", "form": "" },
+  { "ing": "concombre", "verb": "Coupe", "form": "en petits dés" }
+ ],
+ "steps": [
+  { "text": "Mélange l'oignon râpé et le persil haché avec le bœuf, le cumin, le paprika et une pincée de sel, puis forme des köfte allongées de la taille d'un doigt.", "kind": "prep", "app": null, "min": 8, "wait": 0 },
+  { "text": "Fais revenir le boulgour 2 minutes dans l'huile à l'autocuiseur en mode dorer.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 0, "after": [] },
+  { "text": "Ajoute les tomates, le concentré et 1,5 fois le volume du boulgour en eau, ferme et laisse cuire 4 minutes sous pression, puis laisse la pression retomber seule pendant 5 minutes.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 14 },
+  { "text": "Fais cuire les köfte 10 à 12 minutes à l'air fryer à 200 °C, en les retournant à mi-cuisson.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 12, "after": [0] },
+  { "text": "Prépare le cacık : concombre en petits dés et yaourt, avec une pincée de menthe séchée si tu en as.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W06",
+ "cuts": [
+  { "ing": "oignon", "verb": "Coupe", "form": "en fines lamelles" },
+  { "ing": "lentilles_vertes", "verb": "Rince et égoutte", "form": "" },
+  { "ing": "poulet", "verb": "Coupe", "form": "en dés de 2 cm" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "tomate", "verb": "Coupe", "form": "en dés" },
+  { "ing": "concombre", "verb": "Coupe", "form": "en dés" }
+ ],
+ "steps": [
+  { "text": "Mélange les oignons avec la moitié de l'huile.", "kind": "prep", "app": null, "min": 1, "wait": 0 },
+  { "text": "Fais dorer les oignons 15 à 18 minutes à l'air fryer à 180 °C, en remuant toutes les 5 minutes, jusqu'à ce qu'ils soient bien bruns et croustillants.", "kind": "cook", "app": "airfryer", "min": 2, "wait": 18 },
+  { "text": "Rince le riz, mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau, ferme et laisse cuire 14 minutes sous pression, puis fais tomber la pression : le riz complet a besoin d'une avance sur les lentilles.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 19, "after": [] },
+  { "text": "Ajoute les lentilles, 1 g de cumin, le reste de l'huile et 2 fois le poids des lentilles en eau.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 },
+  { "text": "Referme, laisse cuire 6 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes : tout finit de cuire ensemble sans que les lentilles se défassent.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 21 },
+  { "text": "Assaisonne le poulet avec le reste du cumin, du paprika et une pincée de sel.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] },
+  { "text": "Fais cuire le poulet 10 minutes à l'air fryer à 200 °C, jusqu'à ce qu'il ne soit plus rose au centre.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 10 },
+  { "text": "Prépare le yaourt à l'ail : mélange le yaourt et l'ail écrasé.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W07",
+ "cuts": [
+  { "ing": "poulet", "verb": "Coupe", "form": "en morceaux de 3 cm" },
+  { "ing": "oignon", "verb": "Coupe", "form": "en lamelles" },
+  { "ing": "carotte", "verb": "Coupe", "form": "en rondelles" },
+  { "ing": "courgette", "verb": "Coupe", "form": "en demi-rondelles épaisses" },
+  { "ing": "citron", "verb": "Râpe le zeste et presse", "form": "" }
+ ],
+ "steps": [
+  { "text": "Mets l'autocuiseur en mode dorer et fais revenir 5 minutes le poulet, l'oignon, l'huile et les épices (cumin, curcuma, gingembre en poudre et une pincée de cannelle).", "kind": "cook", "app": "autocuiseur", "min": 5, "wait": 0 },
+  { "text": "Ajoute les carottes, les courgettes, les olives et 100 ml d'eau par portion.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 },
+  { "text": "Ferme et laisse cuire 7 minutes sous pression, puis fais tomber la pression : au-delà, le blanc de poulet devient sec.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 12 },
+  { "text": "Hors du feu, ajoute le zeste et le jus de citron, et mélange.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 },
+  { "text": "Verse le tajine dans un plat, puis rince la cuve.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 0 },
+  { "text": "Fais chauffer dans la cuve le même volume d'eau que de semoule en mode dorer, couvercle ouvert, jusqu'à ébullition.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 4 },
+  { "text": "Verse l'eau bouillante sur la semoule dans un saladier, couvre 5 minutes, puis égrène à la fourchette.", "kind": "prep", "app": null, "min": 2, "wait": 5 }
+ ]
+},
+{
+ "id": "W08",
+ "cuts": [
+  { "ing": "oignon", "verb": "Coupe", "form": "en lamelles" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "poulet", "verb": "Coupe", "form": "en 2 ou 3 morceaux épais" },
+  { "ing": "haricots_rouges", "verb": "Rince et égoutte", "form": "" },
+  { "ing": "mais", "verb": "Rince et égoutte", "form": "" }
+ ],
+ "steps": [
+  { "text": "Mets le poulet dans l'autocuiseur avec les tomates, l'oignon, l'ail, le paprika fumé et une pincée de piment.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 },
+  { "text": "Ferme et laisse cuire 10 minutes sous pression, puis fais tomber la pression : le poulet doit se défaire facilement à la fourchette.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 15 },
+  { "text": "Effiloche le poulet avec deux fourchettes directement dans la sauce, puis fais réduire 3 minutes en mode dorer, couvercle ouvert.", "kind": "cook", "app": "autocuiseur", "min": 6, "wait": 0 }
+ ]
+},
+{
+ "id": "W09",
+ "cuts": [
+  { "ing": "haut_cuisse", "verb": "Retire la peau et coupe", "form": "en lanières" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "salade", "verb": "Lave et coupe", "form": "en lanières" },
+  { "ing": "tomate", "verb": "Coupe", "form": "en dés" },
+  { "ing": "oignon", "verb": "Coupe", "form": "en fines lamelles" }
+ ],
+ "steps": [
+  { "text": "Mélange le poulet avec la moitié du yaourt, le paprika, le cumin, l'origan, l'ail écrasé et l'huile.", "kind": "prep", "app": null, "min": 2, "wait": 0 },
+  { "text": "Fais cuire le poulet 15 minutes à l'air fryer à 200 °C.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 15 },
+  { "text": "Émince finement le poulet cuit, puis remets-le 2 minutes à l'air fryer pour griller les bords.", "kind": "cook", "app": "airfryer", "min": 3, "wait": 2 },
+  { "text": "Prépare la sauce blanche : le reste du yaourt, une pointe d'ail et les herbes hachées.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W10",
+ "cuts": [
+  { "ing": "patate_douce", "verb": "Coupe", "form": "en bâtonnets de 1 cm" },
+  { "ing": "oignon", "verb": "Émince", "form": "" },
+  { "ing": "cornichons", "verb": "Hache", "form": "" },
+  { "ing": "tomate", "verb": "Coupe", "form": "en rondelles" }
+ ],
+ "steps": [
+  { "text": "Mélange les patates douces avec l'huile et le paprika fumé.", "kind": "prep", "app": null, "min": 1, "wait": 0 },
+  { "text": "Fais cuire les patates douces 18 minutes à l'air fryer à 200 °C en secouant le panier deux fois.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 18 },
+  { "text": "Fais caraméliser les oignons émincés 10 minutes à la poêle à feu moyen avec 2 cuillères à soupe d'eau.", "kind": "cook", "app": "poele", "min": 10, "wait": 0, "after": [] },
+  { "text": "Prépare la sauce : yaourt, moutarde et cornichons hachés.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] },
+  { "text": "Divise la viande en boules (une par burger), emballe-les une par une dans du film alimentaire et mets-les au congélateur tout de suite : la viande hachée crue ne se garde pas plus d'un jour au frigo.", "kind": "prep", "app": null, "min": 3, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W11",
+ "cuts": [
+  { "ing": "haut_cuisse", "verb": "Retire la peau et coupe", "form": "en morceaux de 3 cm" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "concombre", "verb": "Écrase et coupe", "form": "en morceaux" }
+ ],
+ "steps": [
+  { "text": "Enrobe les morceaux de poulet de fécule.", "kind": "prep", "app": null, "min": 1, "wait": 0 },
+  { "text": "Fais cuire le poulet 18 à 20 minutes à l'air fryer à 200 °C, en secouant le panier deux fois, jusqu'à ce que le jus soit clair : les morceaux deviennent croustillants sans friture.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 20 },
+  { "text": "Dans la poêle, chauffe 1 minute le miel, la sauce soja, le ketchup, l'ail écrasé, une pincée de paprika fumé et une pincée de piment.", "kind": "cook", "app": "poele", "min": 1, "wait": 0 },
+  { "text": "Ajoute le poulet et mélange pour bien l'enrober.", "kind": "cook", "app": "poele", "min": 1, "wait": 0 },
+  { "text": "Assaisonne le concombre avec le vinaigre de cidre et les graines de sésame.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W12",
+ "cuts": [
+  { "ing": "oignon", "verb": "Coupe", "form": "en petits morceaux" },
+  { "ing": "carotte", "verb": "Coupe", "form": "en petits morceaux" },
+  { "ing": "pdt", "verb": "Épluche et coupe", "form": "en petits morceaux" },
+  { "ing": "poulet", "verb": "Aplatis", "form": "à 1 cm d'épaisseur" }
+ ],
+ "steps": [
+  { "text": "Mets l'oignon, la carotte et la pomme de terre dans l'autocuiseur avec le curry en poudre, le miel, la sauce soja et 200 ml d'eau par portion.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 0 },
+  { "text": "Ferme et laisse cuire 5 minutes sous pression.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 12 },
+  { "text": "Écrase la sauce à la fourchette ou au presse-purée.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 0 },
+  { "text": "Délaye la fécule dans 2 cuillères à soupe d'eau froide, ajoute-la et fais épaissir 2 minutes en mode dorer en remuant.", "kind": "cook", "app": "autocuiseur", "min": 3, "wait": 0 },
+  { "text": "Passe le poulet dans l'œuf battu puis dans la chapelure, et badigeonne-le d'huile.", "kind": "prep", "app": null, "min": 4, "wait": 0, "after": [] },
+  { "text": "Fais cuire le poulet 12 à 14 minutes à l'air fryer à 200 °C en le retournant à mi-cuisson.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 14 }
+ ]
+},
+{
+ "id": "W13",
+ "cuts": [
+  { "ing": "carotte", "verb": "Coupe", "form": "en fins bâtonnets" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "citron_vert", "verb": "Presse", "form": "" },
+  { "ing": "poulet", "verb": "Coupe", "form": "en lanières" },
+  { "ing": "concombre", "verb": "Coupe", "form": "en fines lamelles" }
+ ],
+ "steps": [
+  { "text": "Prépare les pickles : couvre la carotte de vinaigre de cidre avec une pincée de sel et laisse reposer au moins 30 minutes.", "kind": "prep", "app": null, "min": 2, "wait": 30 },
+  { "text": "Mélange l'ail avec le jus de citron vert, la sauce soja et le miel, ajoute le poulet et laisse-le mariner 15 minutes au frigo.", "kind": "prep", "app": null, "min": 2, "wait": 15, "after": [] },
+  { "text": "Fais cuire le poulet 12 à 14 minutes à l'air fryer à 200 °C, en le retournant à mi-cuisson, jusqu'à ce qu'il ne soit plus rose au centre.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 14 },
+  { "text": "Prépare la sauce : yaourt et une pincée de piment.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W14",
+ "cuts": [
+  { "ing": "poulet", "verb": "Coupe", "form": "en morceaux de 3 cm" },
+  { "ing": "oignon", "verb": "Hache", "form": "" },
+  { "ing": "ail", "verb": "Hache", "form": "" },
+  { "ing": "gingembre", "verb": "Hache", "form": "" }
+ ],
+ "steps": [
+  { "text": "Mélange le poulet avec le yaourt et la moitié des épices, et laisse mariner 10 minutes, ou toute la nuit au frigo.", "kind": "prep", "app": null, "min": 2, "wait": 10 },
+  { "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon, l'ail, le gingembre et le reste des épices 3 minutes, en remuant.", "kind": "cook", "app": "autocuiseur", "min": 3, "wait": 0, "after": [] },
+  { "text": "Ajoute les tomates, le concentré et le poulet avec sa marinade.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0, "after": [0, 1] },
+  { "text": "Ferme et laisse cuire 6 minutes sous pression.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 19 },
+  { "text": "Une fois la pression tombée, ajoute la crème et mélange.", "kind": "cook", "app": "autocuiseur", "min": 1, "wait": 0 }
+ ]
+},
+{
+ "id": "W15",
+ "cuts": [
+  { "ing": "haut_cuisse", "verb": "Retire la peau de", "form": "" },
+  { "ing": "ail", "verb": "Écrase", "form": "" },
+  { "ing": "citron_vert", "verb": "Presse", "form": "" },
+  { "ing": "pdt", "verb": "Coupe", "form": "en frites de 1 cm" },
+  { "ing": "herbes", "verb": "Effeuille et hache", "form": "très finement" },
+  { "ing": "tomate", "verb": "Coupe", "form": "en quartiers" },
+  { "ing": "salade", "verb": "Lave et essore", "form": "" }
+ ],
+ "steps": [
+  { "text": "Mélange le poulet avec le cumin, le paprika, l'origan, la sauce soja, le jus de citron vert et l'ail écrasé, et laisse mariner 15 minutes.", "kind": "prep", "app": null, "min": 2, "wait": 15 },
+  { "text": "Rince les frites, sèche-les bien dans un torchon et mélange-les avec l'huile.", "kind": "prep", "app": null, "min": 4, "wait": 0, "after": [] },
+  { "text": "Fais cuire le poulet 18 à 20 minutes à l'air fryer à 200 °C, en le retournant à mi-cuisson, jusqu'à ce que le jus qui s'écoule quand on le pique soit clair.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 20, "after": [0] },
+  { "text": "Réserve le poulet, puis fais cuire les frites 18 minutes à l'air fryer à 200 °C en secouant le panier deux fois.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 18, "after": [1, 2] },
+  { "text": "Prépare la salsa verde : herbes hachées très finement, yaourt, un filet de citron vert et une pincée de piment.", "kind": "prep", "app": null, "min": 2, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W16",
+ "cuts": [
+  { "ing": "tomate", "verb": "Hache", "form": "très finement" },
+  { "ing": "poivron", "verb": "Hache", "form": "très finement" },
+  { "ing": "oignon", "verb": "Hache", "form": "très finement" },
+  { "ing": "herbes", "verb": "Effeuille et hache", "form": "" },
+  { "ing": "salade", "verb": "Lave et coupe", "form": "en lanières" }
+ ],
+ "steps": [
+  { "text": "Fais revenir le bœuf 5 minutes à la poêle en l'émiettant, jusqu'à ce qu'il ne soit plus rose.", "kind": "cook", "app": "poele", "min": 5, "wait": 0 },
+  { "text": "Ajoute la tomate, le poivron, l'oignon, le concentré de tomate, le paprika, le cumin et le piment, et laisse cuire encore 5 minutes : c'est la garniture.", "kind": "cook", "app": "poele", "min": 5, "wait": 0 },
+  { "text": "Laisse tiédir la garniture, puis range-la au frigo : cuite, elle se garde 3 jours.", "kind": "prep", "app": null, "min": 1, "wait": 0 }
+ ]
+},
+{
+ "id": "W17",
+ "cuts": [
+  { "ing": "poulet", "verb": "Coupe", "form": "en petits dés" },
+  { "ing": "poivron", "verb": "Coupe", "form": "en lamelles" },
+  { "ing": "oignon", "verb": "Coupe", "form": "en lamelles" },
+  { "ing": "haricots_rouges", "verb": "Rince et égoutte", "form": "" },
+  { "ing": "mais", "verb": "Égoutte", "form": "" },
+  { "ing": "tomate", "verb": "Coupe", "form": "en petits dés" },
+  { "ing": "citron_vert", "verb": "Presse", "form": "" }
+ ],
+ "steps": [
+  { "text": "Fais revenir le poulet, le poivron et l'oignon 7 minutes à la poêle avec les épices, en remuant : c'est la garniture de la semaine.", "kind": "cook", "app": "poele", "min": 7, "wait": 0 },
+  { "text": "Écrase grossièrement les haricots rouges à la fourchette.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] },
+  { "text": "Prépare la salsa : tomate en petits dés et jus de citron vert.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W18",
+ "cuts": [
+  { "ing": "citron_vert", "verb": "Presse", "form": "" },
+  { "ing": "carotte", "verb": "Coupe", "form": "en fins bâtonnets" },
+  { "ing": "poivron", "verb": "Coupe", "form": "en fins bâtonnets" },
+  { "ing": "cacahuetes", "verb": "Concasse", "form": "" }
+ ],
+ "steps": [
+  { "text": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 7 },
+  { "text": "Fais tomber la pression, égoutte les nouilles et rince-les à l'eau froide.", "kind": "cook", "app": "autocuiseur", "min": 2, "wait": 0 },
+  { "text": "Prépare la sauce : sauce soja, miel et jus de citron vert.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] },
+  { "text": "Dans la poêle bien chaude avec l'huile, fais cuire les crevettes 2 minutes.", "kind": "cook", "app": "poele", "min": 2, "wait": 0, "after": [] },
+  { "text": "Ajoute l'œuf battu et la carotte, et remue 1 minute.", "kind": "cook", "app": "poele", "min": 1, "wait": 0 },
+  { "text": "Ajoute les nouilles, la sauce et le poivron, et mélange 2 minutes à feu vif : le poivron doit rester croquant.", "kind": "cook", "app": "poele", "min": 2, "wait": 0, "after": [1, 2, 4] }
+ ]
+},
+{
+ "id": "W19",
+ "cuts": [
+  { "ing": "oignon", "verb": "Hache", "form": "finement" },
+  { "ing": "cacahuetes", "verb": "Concasse", "form": "" },
+  { "ing": "citron_vert", "verb": "Presse", "form": "" },
+  { "ing": "concombre", "verb": "Coupe", "form": "en demi-rondelles" },
+  { "ing": "salade", "verb": "Lave et essore", "form": "" }
+ ],
+ "steps": [
+  { "text": "Fais cuire le poulet haché 6 à 7 minutes à la poêle, sans matière grasse, en l'émiettant avec une spatule, jusqu'à ce qu'il ne soit plus rose.", "kind": "cook", "app": "poele", "min": 7, "wait": 0 },
+  { "text": "Hors du feu, ajoute la sauce soja, le jus de citron vert, l'oignon et une pincée de piment, puis mélange.", "kind": "cook", "app": "poele", "min": 1, "wait": 0 }
+ ]
+},
+{
+ "id": "W20",
+ "cuts": [
+  { "ing": "boeuf_emince", "verb": "Émince", "form": "finement" },
+  { "ing": "carotte", "verb": "Coupe", "form": "en fins bâtonnets" },
+  { "ing": "courgette", "verb": "Coupe", "form": "en demi-rondelles" }
+ ],
+ "steps": [
+  { "text": "Mélange le bœuf avec 15 ml de sauce soja et laisse mariner 10 minutes au frigo.", "kind": "prep", "app": null, "min": 1, "wait": 10 },
+  { "text": "À la poêle, fais sauter ensemble la carotte, la courgette et les épinards 4 minutes avec l'huile, puis réserve-les.", "kind": "cook", "app": "poele", "min": 4, "wait": 0, "after": [] },
+  { "text": "Fais sauter le bœuf 3 minutes à feu vif.", "kind": "cook", "app": "poele", "min": 3, "wait": 0, "after": [0, 1] },
+  { "text": "Prépare la sauce : le miel, le ketchup, le reste de la sauce soja, une pincée de paprika fumé et une pincée de piment, dans un petit pot.", "kind": "prep", "app": null, "min": 1, "wait": 0, "after": [] }
+ ]
+},
+{
+ "id": "W21",
+ "cuts": [
+  { "ing": "tofu", "verb": "Coupe", "form": "en cubes de 2 cm" },
+  { "ing": "ail", "verb": "Hache", "form": "" },
+  { "ing": "gingembre", "verb": "Râpe", "form": "" }
+ ],
+ "steps": [
+  { "text": "Fais revenir le bœuf 4 minutes à la poêle avec l'huile, l'ail et le gingembre, en l'émiettant.", "kind": "cook", "app": "poele", "min": 4, "wait": 0 },
+  { "text": "Ajoute la sauce soja, le ketchup, le miel, une pincée de paprika fumé, une pincée de piment et 150 ml d'eau par portion, puis le tofu.", "kind": "cook", "app": "poele", "min": 1, "wait": 0 },
+  { "text": "Laisse mijoter 5 minutes à feu doux, sans trop remuer pour ne pas casser le tofu.", "kind": "cook", "app": "poele", "min": 1, "wait": 5 },
+  { "text": "Délaye la fécule dans 2 cuillères à soupe d'eau froide, ajoute-la et laisse épaissir 1 minute.", "kind": "cook", "app": "poele", "min": 2, "wait": 0 },
+  { "text": "Fais cuire le brocoli 10 minutes à l'air fryer à 200 °C.", "kind": "cook", "app": "airfryer", "min": 1, "wait": 10, "after": [] }
+ ]
+}
+]

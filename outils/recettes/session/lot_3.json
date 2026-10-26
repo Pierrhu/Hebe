@@ -1,0 +1,1521 @@
+[
+ {
+  "id": "W61",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Fais revenir l'oignon 3 minutes à la poêle avec l'huile, puis ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les champignons et laisse cuire 5 minutes, jusqu'à ce qu'ils aient rendu leur eau et qu'elle se soit évaporée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail écrasé, le paprika, la moutarde, la sauce soja et 80 ml d'eau par portion, et laisse mijoter 3 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 3
+   },
+   {
+    "text": "Hors du feu, ajoute la crème et le yaourt, et mélange : la sauce devient crémeuse.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 7,
+    "after": []
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les nouilles.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W62",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": "finement"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange le bœuf avec la moitié du parmesan, un quart de l'oignon haché, l'origan et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Forme des boulettes de la taille d'une noix.",
+    "kind": "prep",
+    "app": null,
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les boulettes 9 à 10 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 10
+   },
+   {
+    "text": "Fais revenir le reste de l'oignon haché 3 minutes à la poêle avec l'huile, puis l'ail 1 minute.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute le concentré, les tomates et une pincée de piment, et laisse mijoter 8 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 8
+   },
+   {
+    "text": "Hors du feu, ajoute la crème : la sauce devient rose et onctueuse, comme une sauce « alla vodka », sans vodka.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les boulettes à la sauce.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     2,
+     5
+    ]
+   },
+   {
+    "text": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10,
+    "after": []
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les pâtes, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mélange les pâtes à la sauce avec l'eau de cuisson gardée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     6,
+     8
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W63",
+  "cuts": [
+   {
+    "ing": "pdt",
+    "verb": "Épluche et coupe",
+    "form": "en gros morceaux"
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets les pommes de terre dans l'autocuiseur avec 250 ml d'eau et une pincée de sel.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 13
+   },
+   {
+    "text": "Égoutte les pommes de terre et écrase-les à la fourchette ou au presse-purée avec le lait chaud, du sel et du poivre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire le poulet 6 minutes à la poêle avec l'huile.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 6,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute l'oignon haché et les champignons émincés, et laisse cuire 5 minutes, jusqu'à ce qu'ils soient dorés.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail, le thym, la moutarde et 60 ml d'eau par portion, laisse mijoter 2 minutes, puis ajoute la crème hors du feu.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les haricots verts 6 minutes dans la poêle rincée avec un fond d'eau, à couvert.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 6
+   }
+  ]
+ },
+ {
+  "id": "W64",
+  "cuts": [
+   {
+    "ing": "haut_cuisse",
+    "verb": "Retire la peau et coupe",
+    "form": "en morceaux"
+   },
+   {
+    "ing": "pdt",
+    "verb": "Coupe",
+    "form": "en deux, sans éplucher"
+   },
+   {
+    "ing": "courgette",
+    "verb": "Coupe",
+    "form": "en demi-rondelles épaisses"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et hache",
+    "form": ""
+   },
+   {
+    "ing": "citron",
+    "verb": "Presse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les pommes de terre et la courgette avec la moitié de l'huile, les herbes de Provence et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pommes de terre 12 minutes à l'air fryer à 200 °C, puis ajoute la courgette et prolonge de 10 minutes, en secouant le panier à mi-cuisson.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 22
+   },
+   {
+    "text": "Fais cuire le poulet en morceaux 8 minutes à la poêle avec le reste de l'huile, jusqu'à ce qu'il soit bien doré.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Baisse le feu, ajoute l'ail écrasé, le persil haché et le jus de citron, et remue 1 minute sans laisser brûler l'ail.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W65",
+  "cuts": [
+   {
+    "ing": "pdt",
+    "verb": "Coupe",
+    "form": "en cubes de 2 cm, sans éplucher"
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 3 cm"
+   },
+   {
+    "ing": "herbes",
+    "verb": "Cisèle",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "carotte",
+    "verb": "Épluche et coupe",
+    "form": "en bâtonnets"
+   },
+   {
+    "ing": "concombre",
+    "verb": "Coupe",
+    "form": "en bâtonnets"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les pommes de terre avec 5 ml d'huile, le paprika et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pommes de terre 20 minutes à l'air fryer à 200 °C, en secouant toutes les 7 minutes.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 20
+   },
+   {
+    "text": "Fais cuire le poulet 6 à 7 minutes à la poêle avec le reste de l'huile.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Mélange la sriracha, le vinaigre de cidre et le miel, verse sur le poulet et remue 1 minute : c'est la sauce buffalo, piquante et acidulée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Prépare la sauce : le yaourt, la ciboulette ciselée, une demi-gousse d'ail écrasée, du sel et du poivre.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0,
+    "after": []
+   }
+  ]
+ },
+ {
+  "id": "W66",
+  "cuts": [
+   {
+    "ing": "pdt",
+    "verb": "Coupe",
+    "form": "en dés de 1,5 cm, sans éplucher"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et hache",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les pommes de terre avec 5 ml d'huile et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pommes de terre 18 minutes à l'air fryer à 200 °C, en secouant toutes les 6 minutes.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 18
+   },
+   {
+    "text": "Fais revenir l'oignon et les poivrons en dés 5 minutes à la poêle avec le reste de l'huile.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant, avec l'ail, le paprika fumé, le cumin et une pincée de sel.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les pommes de terre croustillantes et mélange 1 minute, puis le persil haché.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0,
+    "after": [
+     1,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W67",
+  "cuts": [
+   {
+    "ing": "pdt",
+    "verb": "Épluche et coupe",
+    "form": "en dés de 1,5 cm"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "poivron",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "olives",
+    "verb": "Coupe",
+    "form": "en rondelles"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans l'autocuiseur en mode dorer, fais revenir l'oignon et le poivron 3 minutes dans l'huile, puis ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail, le cumin, l'origan, le concentré, les tomates, les pommes de terre, les olives, le vinaigre et 60 ml d'eau par portion. Mélange.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 5 minutes sous pression, puis fais tomber la pression. Les pommes de terre doivent être tendres mais garder leur forme.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 10
+   }
+  ]
+ },
+ {
+  "id": "W68",
+  "cuts": [
+   {
+    "ing": "pdt",
+    "verb": "Épluche et coupe",
+    "form": "en dés de 1,5 cm"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Épluche et râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans l'autocuiseur en mode dorer, fais revenir l'oignon 4 minutes dans l'huile, puis l'ail, le gingembre, le garam masala, le cumin, le curcuma et une pincée de piment 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant, puis les tomates, les pommes de terre et 80 ml d'eau par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 5 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 10
+   },
+   {
+    "text": "Ajoute les petits pois et laisse-les cuire 3 minutes en mode dorer.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 3,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W69",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 3 cm"
+   },
+   {
+    "ing": "pois_chiches",
+    "verb": "Rince et égoutte",
+    "form": ""
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": "très finement"
+   },
+   {
+    "ing": "herbes",
+    "verb": "Cisèle",
+    "form": ""
+   },
+   {
+    "ing": "citron",
+    "verb": "Presse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange le poulet avec la moitié des épices (cumin, paprika, cannelle, gingembre en poudre), le miel, la moitié de l'huile et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mélange le chou-fleur et les pois chiches égouttés avec le reste des épices et de l'huile.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Fais cuire le chou-fleur et les pois chiches 15 minutes à l'air fryer à 200 °C, en secouant à mi-cuisson, puis réserve.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 15
+   },
+   {
+    "text": "Fais cuire le poulet 12 à 14 minutes à l'air fryer à 200 °C, en secouant à mi-cuisson, jusqu'à ce qu'il soit doré.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 14,
+    "after": [
+     0
+    ]
+   },
+   {
+    "text": "Verse la semoule dans un saladier avec le même volume d'eau bouillante, une pincée de sel et un filet de jus de citron. Couvre 5 minutes.",
+    "kind": "cook",
+    "app": null,
+    "min": 2,
+    "wait": 5,
+    "after": []
+   },
+   {
+    "text": "Égrène la semoule à la fourchette.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Prépare la sauce : le yaourt, la menthe ciselée, le reste du citron et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0,
+    "after": []
+   }
+  ]
+ },
+ {
+  "id": "W70",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "citron",
+    "verb": "Presse",
+    "form": ""
+   },
+   {
+    "ing": "tomate",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "concombre",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": "en fines lamelles"
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et hache",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange le poulet avec le cumin, le paprika, une pincée de cannelle et de curcuma, la moitié du citron, l'ail écrasé, l'huile et une pincée de sel. Laisse mariner 15 minutes, ou toute la nuit au frigo.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 15
+   },
+   {
+    "text": "Fais cuire le poulet 12 à 14 minutes à l'air fryer à 200 °C, en secouant à mi-cuisson, jusqu'à ce que les bords soient bien grillés.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 14
+   },
+   {
+    "text": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau et une pincée de sel : 4 minutes sous pression, puis 5 minutes de décompression naturelle.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 14,
+    "after": []
+   },
+   {
+    "text": "Égrène le boulgour à la fourchette.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Prépare la sauce : le tahini, le yaourt, le reste du citron, 2 cuillères à soupe d'eau et une pincée de sel, bien mélangés jusqu'à ce que ce soit lisse.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0,
+    "after": []
+   }
+  ]
+ },
+ {
+  "id": "W71",
+  "cuts": [
+   {
+    "ing": "quinoa",
+    "verb": "Rince et égoutte",
+    "form": "dans une passoire fine"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "haricots_rouges",
+    "verb": "Rince et égoutte",
+    "form": ""
+   },
+   {
+    "ing": "mais",
+    "verb": "Égoutte",
+    "form": ""
+   },
+   {
+    "ing": "citron_vert",
+    "verb": "Presse",
+    "form": ""
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et hache",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets le quinoa dans l'autocuiseur avec 1,7 fois son poids d'eau et une pincée de sel.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme, laisse cuire 1 minute sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 16
+   },
+   {
+    "text": "Égrène le quinoa à la fourchette.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Fais revenir l'oignon et le poivron en dés 4 minutes à la poêle avec l'huile.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail, le cumin, le paprika fumé, une pincée de piment, les tomates, les haricots rouges rincés et le maïs égoutté. Laisse mijoter 5 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 5
+   },
+   {
+    "text": "Ajoute le quinoa et mélange, puis le jus de citron vert et la coriandre hachée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0,
+    "after": [
+     2,
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W72",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Épluche et râpe",
+    "form": ""
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "pois_chiches",
+    "verb": "Rince et égoutte",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Pâte à naans : mélange la farine, la levure, une pincée de sel et la moitié du yaourt, puis pétris 2 minutes jusqu'à obtenir une boule souple. Laisse reposer 15 minutes sous un torchon.",
+    "kind": "prep",
+    "app": null,
+    "min": 5,
+    "wait": 15
+   },
+   {
+    "text": "Fais revenir l'oignon haché 4 minutes à la poêle avec l'huile, puis l'ail, le gingembre, le garam masala, le curry et le curcuma 1 minute.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute le poulet en dés et fais-le colorer 3 minutes, puis les tomates, les pois chiches égouttés et 60 ml d'eau par portion.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Laisse mijoter le curry 10 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 10
+   },
+   {
+    "text": "Ajoute les épinards 2 minutes, puis, hors du feu, le reste du yaourt.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Partage la pâte en deux par portion, aplatis chaque morceau, pose l'emmental au centre, referme et aplatis de nouveau en galette de 5 mm.",
+    "kind": "prep",
+    "app": null,
+    "min": 8,
+    "wait": 0,
+    "after": [
+     0
+    ]
+   },
+   {
+    "text": "Fais cuire les naans 2 minutes par face dans la poêle rincée, sans matière grasse, à feu moyen, jusqu'à ce qu'ils gonflent et dorent par endroits.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0,
+    "after": [
+     4,
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W73",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en dés"
+   },
+   {
+    "ing": "haricots_rouges",
+    "verb": "Rince et égoutte",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Fais revenir l'oignon et le poivron en dés 4 minutes à la poêle avec l'huile, puis ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 9,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le paprika fumé, le cumin, l'ail en poudre, le concentré, le miel, les haricots rouges rincés et 50 ml d'eau par portion. Laisse réduire 3 minutes, jusqu'à ce que ce soit bien enrobé.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Sur chaque wrap, dépose la garniture au bœuf et aux haricots, puis le cheddar. Replie les côtés, puis roule bien serré.",
+    "kind": "prep",
+    "app": null,
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Fais dorer les burritos 2 minutes par face à la poêle sans matière grasse, côté soudure en premier pour qu'ils restent fermés.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W74",
+  "cuts": [
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en tranches très fines, après 30 minutes au congélateur"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "poivron",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Fais revenir l'oignon, le poivron et les champignons émincés 8 minutes à la poêle avec l'huile, jusqu'à ce qu'ils soient fondants et dorés.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Monte le feu, ajoute le bœuf, la sauce soja et du poivre, et fais-le sauter 2 minutes seulement, pour qu'il reste tendre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W75",
+  "cuts": [
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en cubes de 3 cm"
+   },
+   {
+    "ing": "carotte",
+    "verb": "Épluche et coupe",
+    "form": "en rondelles épaisses"
+   },
+   {
+    "ing": "patate_douce",
+    "verb": "Épluche et coupe",
+    "form": "en gros cubes"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Épluche et râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans l'autocuiseur en mode dorer, fais dorer le bœuf 4 minutes dans l'huile, puis ajoute l'oignon 3 minutes, l'ail et le gingembre 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Délaye le beurre de cacahuète et le concentré dans 150 ml d'eau chaude par portion.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Verse le beurre de cacahuète délayé dans la cuve avec les tomates, la carotte, la patate douce, une pincée de piment et de sel.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     0,
+     1
+    ]
+   },
+   {
+    "text": "Ferme et laisse cuire 25 minutes sous pression, puis laisse la pression retomber seule.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 38
+   },
+   {
+    "text": "La viande doit être fondante et la sauce épaisse ; laisse réduire quelques minutes en mode dorer si besoin.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 3,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W76",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "courgette",
+    "verb": "Coupe",
+    "form": "en dés de 1 cm"
+   },
+   {
+    "ing": "riz",
+    "verb": "Rince et égoutte",
+    "form": "à l'eau froide"
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et hache",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Égoutte les crevettes décongelées et sèche-les bien dans un torchon.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais suer l'oignon et l'ail 3 minutes dans l'huile, puis ajoute le poivron et la courgette, 5 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 8,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute le riz et remue 1 minute pour bien l'enrober, puis saupoudre de curcuma et de paprika.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le bouillon cube émietté et 1,7 fois le poids du riz en eau froide (150 ml pour 90 g de riz).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme, laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 35
+   },
+   {
+    "text": "Ouvre, ajoute les crevettes et les petits pois surgelés et mélange 3 à 4 minutes en mode dorer, couvercle posé sans le fermer, jusqu'à ce que les crevettes soient bien roses. Poivre et parsème de persil.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 5,
+    "wait": 0,
+    "after": [
+     0,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W77",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en fines lanières"
+   },
+   {
+    "ing": "carotte",
+    "verb": "Épluche et coupe",
+    "form": "en rondelles fines"
+   },
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "courgette",
+    "verb": "Coupe",
+    "form": "en bâtonnets"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Épluche et râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Délaye le miso dans 50 ml d'eau froide par portion.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Fais chauffer de l'eau dans l'autocuiseur en mode dorer, couvercle ouvert, jusqu'à ébullition.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 8,
+    "after": []
+   },
+   {
+    "text": "Arrête le feu et plonge les nouilles de riz 4 à 5 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 5
+   },
+   {
+    "text": "Égoutte les nouilles et rince-les à l'eau froide pour qu'elles ne collent pas.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Dans la poêle très chaude avec l'huile, fais dorer le poulet 4 à 5 minutes en remuant, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le dans une assiette.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 6,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Dans la même poêle, fais revenir l'ail, le gingembre et le curcuma 30 secondes, puis les carottes et le poivron 3 minutes, et enfin les champignons et la courgette 2 minutes : les légumes doivent rester croquants.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Remets le poulet, verse le miso délayé et laisse réduire 2 minutes à feu moyen.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0,
+    "after": [
+     0,
+     5
+    ]
+   },
+   {
+    "text": "Arrête le feu, ajoute les nouilles et mélange 1 minute pour bien les enrober de sauce.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     3,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W78",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "poivron",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "ail",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "pois_chiches",
+    "verb": "Rince et égoutte",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans la poêle, fais revenir l'oignon 4 à 5 minutes dans l'huile, jusqu'à ce qu'il soit translucide, puis les poivrons 6 à 7 minutes en remuant.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 12,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail, le cumin, le paprika et la coriandre moulue, et fais griller 1 minute.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les tomates et laisse compoter 5 minutes à feu moyen, puis les pois chiches, 3 minutes. Goûte et sale légèrement.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 8
+   },
+   {
+    "text": "Creuse un petit puits par œuf dans la sauce, casse un œuf dans chacun et poivre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Couvre et laisse cuire 8 à 10 minutes à feu doux, jusqu'à ce que le blanc soit pris et le jaune cuit : il tiendra mieux au réchauffage.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 10
+   }
+  ]
+ },
+ {
+  "id": "W79",
+  "cuts": [
+   {
+    "ing": "lentilles_vertes",
+    "verb": "Rince et égoutte",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "betterave",
+    "verb": "Coupe",
+    "form": "en cubes de 2 cm"
+   },
+   {
+    "ing": "mais",
+    "verb": "Égoutte",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets les lentilles dans l'autocuiseur avec 3 fois leur poids d'eau froide, sans sel.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme, laisse cuire 8 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 23
+   },
+   {
+    "text": "Égoutte les lentilles et laisse-les refroidir.",
+    "kind": "cook",
+    "app": null,
+    "min": 2,
+    "wait": 15
+   },
+   {
+    "text": "Prépare la vinaigrette : l'huile d'olive, le vinaigre de cidre, le cumin, le gingembre en poudre, le paprika fumé, l'ail écrasé et du poivre.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Mélange les lentilles refroidies avec la vinaigrette, puis ajoute la betterave et le maïs égoutté.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0,
+    "after": [
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W80",
+  "cuts": [
+   {
+    "ing": "pdt",
+    "verb": "Coupe",
+    "form": "en cubes de 2 cm, sans éplucher"
+   },
+   {
+    "ing": "citron",
+    "verb": "Presse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide et une pincée de sel, ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 9
+   },
+   {
+    "text": "Égoutte les pommes de terre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Prépare la vinaigrette : la moutarde, le jus de citron, l'huile d'olive, du sel et du poivre.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Mélange la vinaigrette aux pommes de terre encore chaudes : elles s'en imprègnent.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0,
+    "after": [
+     1,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W81",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 3 cm"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "tomates_sechees",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "parmesan",
+    "verb": "Râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans la poêle, fais dorer les gnocchis 6 à 7 minutes avec la moitié de l'huile, en les retournant, jusqu'à ce qu'ils soient bien croustillants. Réserve-les dans un plat.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Dans la même poêle, fais cuire le poulet 6 à 7 minutes avec le reste de l'huile, l'origan et le paprika, jusqu'à ce qu'il soit doré et ne soit plus rose au centre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail et les tomates séchées, 1 minute, puis 60 ml d'eau par portion avec le bouillon cube émietté, et les épinards surgelés. Laisse cuire 4 minutes, jusqu'à ce que les épinards aient fondu.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 4
+   },
+   {
+    "text": "Hors du feu, ajoute la crème et le parmesan râpé, et remue jusqu'à ce que la sauce nappe la cuillère. Remets les gnocchis et mélange.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ }
+]

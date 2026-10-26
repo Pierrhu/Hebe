@@ -156,7 +156,7 @@ function buildPhases(list, extras = []) {
     ...list.map(x => ({ r: x.r, tot: x.tot, kind: 'dish' })),
     ...extras.map(x => ({ r: x.r, tot: x.tot, kind: 'extra', qty: x.qty, steps: x.steps })),
   ], {
-    eq: getEquipment() || { autocuiseur: true, airfryer: true }, adapt: (t, r) => adaptStep(t, getEquipment() || undefined, r), name: dishShort, qtyText: qtyWithName,
+    eq: getEquipment() || { autocuiseur: true, airfryer: true }, adapt: (t, r) => adaptStep(t, getEquipment() || undefined, r), name: dishShort, qtyText: qtyWithName, qtyShort,
     rice: riceActions.map(a => ({ text: a.text, app: a.res, active: a.active, passive: a.passive })),
   });
   const phases = built.phases.map(ph => ({ ...ph, steps: ph.steps.map(st => ({ text: st.text, r: st.chain && st.chain !== 'riz' ? st.chain.r : null, bg: st.bg || '',

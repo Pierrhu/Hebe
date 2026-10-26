@@ -9,7 +9,7 @@ function at(iso) {
 let bad = 0;
 for (const [label, iso] of [['octobre', '2026-10-12T10:00:00'], ['juillet', '2026-07-06T10:00:00']]) {
   at(iso);
-  const r = L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','data/photos.js','data/season.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','js/weekgen.js'], `
+  const r = L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','data/photos.js','data/season.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/micros.js','js/optimizer.js','data/sessionSteps.js','js/session.js','js/weekgen.js'], `
 updateActiveMember({sex:'male',age:24,height:1.85,weight:97,bodyfat:20,activity:2,protocol:'P4',phase:0,formula:'classique'});
 const MB=[{id:getActiveMember().id,targets:getTargets(),free:[],formula:'classique',breakfast:'mix',whey:true}];
 const cnt={}, off=new Set(); let ok=0, days=0;

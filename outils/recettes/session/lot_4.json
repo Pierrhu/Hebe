@@ -1,0 +1,1547 @@
+[
+ {
+  "id": "W82",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": "finement"
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 3 cm"
+   },
+   {
+    "ing": "pdt",
+    "verb": "Épluche et coupe",
+    "form": "en cubes de 3 cm"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans la poêle à feu moyen-doux, fais confire les oignons 20 minutes avec les deux tiers de l'huile et une pincée de sel, en remuant de temps en temps : ils doivent être bien dorés et fondants. Ajoute une cuillère d'eau s'ils accrochent.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 17
+   },
+   {
+    "text": "Pousse les oignons sur le côté et fais dorer le poulet 6 à 7 minutes avec le reste de l'huile et le thym, jusqu'à ce qu'il ne soit plus rose au centre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Délaye la fécule dans 80 ml d'eau froide par portion avec le bouillon cube émietté, verse dans la poêle et laisse épaissir 2 minutes en remuant : c'est le jus de la soupe à l'oignon.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide par portion et une pincée de sel, ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 13,
+    "after": []
+   },
+   {
+    "text": "Égoutte les pommes de terre et écrase-les à la fourchette avec le lait chaud, du sel et du poivre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 4,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W83",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange une gousse d'ail écrasée au yaourt avec une pincée de sel : c'est la sauce yaourt.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant, jusqu'à ce qu'il ne soit plus rose.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute l'autre gousse d'ail, le concentré, le cumin et 2 cuillères à soupe d'eau, et laisse cuire 2 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10,
+    "after": []
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les pâtes, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mélange les pâtes au bœuf avec l'eau de cuisson gardée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0,
+    "after": [
+     2,
+     4
+    ]
+   },
+   {
+    "text": "Fais fondre le beurre 1 minute dans une petite poêle avec le paprika et le piment, sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot.",
+    "kind": "cook",
+    "app": "casserole",
+    "min": 2,
+    "wait": 0,
+    "after": []
+   }
+  ]
+ },
+ {
+  "id": "W84",
+  "cuts": [
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en cubes de 3 cm"
+   },
+   {
+    "ing": "carotte",
+    "verb": "Coupe",
+    "form": "en rondelles épaisses"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Coupe",
+    "form": "en quartiers"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Coupe",
+    "form": "en deux"
+   },
+   {
+    "ing": "pdt",
+    "verb": "Épluche et coupe",
+    "form": "en cubes de 3 cm"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais dorer le bœuf en deux fois dans l'huile, 4 minutes par tournée : il doit être bien coloré sur toutes les faces. Réserve-le.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 9,
+    "wait": 0
+   },
+   {
+    "text": "Fais revenir l'oignon et les champignons 4 minutes, puis ajoute le concentré et remue 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Remets le bœuf, ajoute les carottes, le thym, le laurier, le bouillon cube émietté et 150 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes : le bœuf doit se couper à la fourchette.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 45
+   },
+   {
+    "text": "Délaye la fécule dans un peu d'eau froide, verse-la et laisse épaissir 2 minutes en mode dorer, en remuant.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Verse le bourguignon dans un plat et rince la cuve.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide par portion et une pincée de sel, ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 13
+   },
+   {
+    "text": "Égoutte les pommes de terre et écrase-les à la fourchette avec le lait chaud, du sel et du poivre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 4,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W85",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 3 cm"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "chataignes",
+    "verb": "Coupe",
+    "form": "en deux"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans la poêle, fais dorer le poulet 6 à 7 minutes dans l'huile, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Dans la même poêle, fais revenir l'oignon et les champignons 6 minutes à feu vif, jusqu'à ce qu'ils soient dorés, puis l'ail, le thym et les châtaignes, 2 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute 60 ml d'eau par portion avec le bouillon cube émietté, remets le poulet et laisse réduire 2 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Hors du feu, ajoute la crème et mélange.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10,
+    "after": []
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les pâtes, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mélange les pâtes à la sauce avec l'eau de cuisson gardée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0,
+    "after": [
+     3,
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W89",
+  "cuts": [
+   {
+    "ing": "patate_douce",
+    "verb": "Épluche et coupe",
+    "form": "en cubes de 2 cm"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "haricots_rouges",
+    "verb": "Rince et égoutte",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, puis le bœuf 5 minutes en l'émiettant, jusqu'à ce qu'il ne soit plus rose.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail, le cumin, le paprika fumé et le piment, 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute la patate douce, les tomates, les haricots et 60 ml d'eau froide par portion. Mélange et gratte bien le fond.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression : la patate douce doit être tendre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 11
+   },
+   {
+    "text": "Ajoute le chocolat noir en morceaux et remue jusqu'à ce qu'il fonde : il ne se sent pas, mais il donne une sauce profonde et ronde. Goûte et sale.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W90",
+  "cuts": [
+   {
+    "ing": "butternut",
+    "verb": "Épluche et coupe",
+    "form": "en cubes de 2 cm"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "gingembre",
+    "verb": "Râpe",
+    "form": ""
+   },
+   {
+    "ing": "citron_vert",
+    "verb": "Presse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Égoutte les crevettes décongelées et sèche-les bien dans un torchon.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis l'ail, le gingembre et la pâte de curry, 1 minute.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute la courge, le lait de coco et 80 ml d'eau par portion.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Couvre et laisse mijoter 12 à 15 minutes, jusqu'à ce que la courge soit tendre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 15
+   },
+   {
+    "text": "Écrase quelques morceaux de courge pour épaissir la sauce.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les épinards et les crevettes, et laisse cuire 3 à 4 minutes, jusqu'à ce que les crevettes soient bien roses.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0,
+    "after": [
+     0,
+     4
+    ]
+   },
+   {
+    "text": "Arrose de jus de citron vert.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W93",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en dés de 2 cm"
+   },
+   {
+    "ing": "butternut",
+    "verb": "Épluche et coupe",
+    "form": "en cubes de 1,5 cm"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "noix",
+    "verb": "Concasse",
+    "form": ""
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et cisèle",
+    "form": ""
+   },
+   {
+    "ing": "parmesan",
+    "verb": "Râpe",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais dorer le poulet 5 minutes dans la moitié de l'huile, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Fais revenir l'oignon et les champignons 4 minutes avec le reste de l'huile, puis la courge et l'ail, 2 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le riz sans le rincer et remue 1 minute, jusqu'à ce que les grains deviennent translucides sur les bords.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Verse 2,2 fois le poids du riz en eau froide (200 ml pour 90 g de riz) avec le bouillon cube émietté et la sauge ciselée.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 11
+   },
+   {
+    "text": "Remue énergiquement 1 minute : la courge fond et rend le risotto crémeux.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le parmesan râpé et le poulet, goûte et poivre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W94",
+  "cuts": [
+   {
+    "ing": "poireau",
+    "verb": "Coupe",
+    "form": "en fines rondelles, puis rince-les"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "saumon",
+    "verb": "Retire la peau de",
+    "form": ""
+   },
+   {
+    "ing": "citron",
+    "verb": "Presse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Sale légèrement le saumon, pose-le dans le panier et fais-le cuire 8 minutes à l'air fryer à 190 °C : le centre doit rester juste nacré.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 8
+   },
+   {
+    "text": "Laisse tiédir le saumon et défais-le en gros morceaux.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais fondre l'oignon et les poireaux 5 minutes dans l'huile, sans coloration. Ajoute le riz sans le rincer et remue 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Verse 2,2 fois le poids du riz en eau froide (200 ml pour 90 g de riz) avec le bouillon cube émietté.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 11
+   },
+   {
+    "text": "Remue énergiquement 1 minute, puis ajoute la crème, le parmesan et le jus de citron.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Pose le saumon par-dessus.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     1,
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W95",
+  "cuts": [
+   {
+    "ing": "haut_cuisse",
+    "verb": "Retire la peau et coupe",
+    "form": "en gros morceaux"
+   },
+   {
+    "ing": "pomme",
+    "verb": "Coupe",
+    "form": "en quartiers épais avec la peau"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "champignons",
+    "verb": "Coupe",
+    "form": "en deux"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans la poêle, fais dorer les quartiers de pomme 3 minutes avec un peu d'huile, sans les écraser. Réserve-les.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Dans la même poêle, fais dorer le poulet 6 minutes avec le reste de l'huile, puis ajoute l'oignon et les champignons, 4 minutes.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 10,
+    "wait": 0
+   },
+   {
+    "text": "Verse 100 ml d'eau par portion avec le bouillon cube émietté, le vinaigre de cidre et le thym.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Couvre et laisse mijoter 20 minutes à feu doux : le poulet doit être tendre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 20
+   },
+   {
+    "text": "Ajoute la crème et laisse réduire 2 minutes à découvert, jusqu'à ce que la sauce nappe.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Remets les pommes juste pour les réchauffer.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W97",
+  "cuts": [
+   {
+    "ing": "butternut",
+    "verb": "Épluche et coupe",
+    "form": "en cubes de 1,5 cm"
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "herbes",
+    "verb": "Effeuille et cisèle",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "noix",
+    "verb": "Concasse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les cubes de courge avec l'huile et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Fais rôtir les cubes de courge 18 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson, jusqu'à ce qu'ils soient dorés.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 18
+   },
+   {
+    "text": "Fais dorer le poulet 6 minutes à la poêle, sans matière grasse ajoutée si elle est antiadhésive, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Dans la même poêle à feu moyen, fais fondre le beurre avec la sauge ciselée et l'ail écrasé, 2 à 3 minutes, jusqu'à ce que le beurre devienne blond et sente la noisette. Arrête le feu aussitôt.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10,
+    "after": []
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les pâtes, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Mélange les pâtes au beurre noisette avec l'eau de cuisson gardée, la courge, le poulet et la muscade.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0,
+    "after": [
+     1,
+     3,
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "id": "W98",
+  "cuts": [
+   {
+    "ing": "patate_douce",
+    "verb": "Coupe",
+    "form": "en quartiers avec la peau"
+   },
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en tranches de 1 cm"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les quartiers de patate douce avec les deux tiers de l'huile, le paprika et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Fais rôtir les quartiers de patate douce 20 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 1,
+    "wait": 20
+   },
+   {
+    "text": "Fais cuire les haricots verts 6 minutes à la poêle avec un fond d'eau, à couvert, puis laisse l'eau s'évaporer. Réserve-les.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 6,
+    "after": []
+   },
+   {
+    "text": "Sale le bœuf et roule-le dans le poivre concassé.",
+    "kind": "prep",
+    "app": null,
+    "min": 2,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Dans la poêle très chaude avec le reste de l'huile, saisis le bœuf 1 minute de chaque côté : il doit rester rosé. Réserve-le.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 3,
+    "wait": 0,
+    "after": [
+     2,
+     3
+    ]
+   },
+   {
+    "text": "Dans la même poêle, verse 50 ml d'eau par portion avec le bouillon cube émietté et gratte les sucs.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute la crème et la moutarde, et laisse réduire 2 minutes, jusqu'à ce que la sauce nappe la cuillère.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W101",
+  "cuts": [
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Pose les œufs sur le panier vapeur de l'autocuiseur avec 200 ml d'eau froide, ferme et laisse cuire 3 minutes sous pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 8
+   },
+   {
+    "text": "Fais tomber la pression et plonge les œufs dans de l'eau froide 5 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 5
+   },
+   {
+    "text": "Écale les œufs délicatement.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Fais dorer les champignons 8 minutes à la poêle très chaude avec l'huile, sans remuer au début, puis ajoute l'ail, le thym et le beurre, 1 minute.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 9,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Dans l'autocuiseur rincé, en mode dorer, porte à frémissement le lait avec 2 fois le poids de la polenta en eau et une pincée de sel.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 4,
+    "after": [
+     1
+    ]
+   },
+   {
+    "text": "Verse la polenta en pluie en fouettant et laisse cuire le temps indiqué sur le paquet (souvent 5 minutes), en remuant sans arrêt.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Hors du feu, ajoute le parmesan.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "SO07",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Hache",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   },
+   {
+    "ing": "tomates_sechees",
+    "verb": "Coupe",
+    "form": "en lanières"
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en petits dés"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, puis le poulet 4 minutes, jusqu'à ce qu'il soit doré.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute l'ail, les tomates séchées, l'origan et le piment, 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les tomates concassées, le bouillon cube émietté et 250 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 5 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 10
+   },
+   {
+    "text": "Remets en mode dorer, ajoute les épinards et laisse-les fondre 3 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Arrête le feu, ajoute la crème et le parmesan, et remue : la soupe devient crémeuse et orangée.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Verse la soupe dans un plat et rince la cuve.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les pâtes, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "SO08",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": "en lamelles"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et les champignons 5 minutes dans l'huile, jusqu'à ce qu'ils soient dorés. Réserve quelques lamelles de champignons pour le dessus.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les châtaignes, le thym, le bouillon cube émietté, 300 ml d'eau froide par portion et le poulet entier.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : le poulet ne doit plus être rose au centre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 13
+   },
+   {
+    "text": "Sors le poulet et effiloche-le à la fourchette.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Mixe la soupe au mixeur plongeant jusqu'à ce qu'elle soit veloutée, puis ajoute la crème et remets le poulet.",
+    "kind": "cook",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "SO09",
+  "cuts": [
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": "finement"
+   },
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en 2 ou 3 gros morceaux"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais confire les oignons 20 minutes dans l'huile avec une pincée de sel, en remuant souvent, jusqu'à ce qu'ils soient bien bruns. Ajoute une cuillère d'eau s'ils accrochent.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 6,
+    "wait": 14
+   },
+   {
+    "text": "Ajoute le bœuf, le thym, le laurier, les bouillons cubes émiettés et 350 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 45
+   },
+   {
+    "text": "Sors le bœuf et effiloche-le à la fourchette.",
+    "kind": "prep",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Délaye la fécule dans un peu d'eau froide, verse-la dans la soupe et laisse épaissir 2 minutes en mode dorer.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 3,
+    "wait": 0,
+    "after": [
+     2
+    ]
+   },
+   {
+    "text": "Remets le bœuf effiloché dans la soupe.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     3,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "id": "SO10",
+  "cuts": [
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en cubes de 2 cm"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "chou",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "carotte",
+    "verb": "Râpe",
+    "form": ""
+   },
+   {
+    "ing": "betterave",
+    "verb": "Coupe",
+    "form": "en dés de 1,5 cm"
+   },
+   {
+    "ing": "pdt",
+    "verb": "Coupe",
+    "form": "en dés de 1,5 cm"
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais dorer le bœuf 4 minutes dans l'huile, puis l'oignon et les carottes, 3 minutes. Ajoute le concentré et l'ail, 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 8,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le bouillon cube émietté et 350 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 25 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 30
+   },
+   {
+    "text": "Ajoute le chou, les pommes de terre, la betterave et le vinaigre de cidre.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Referme et laisse cuire 5 minutes sous pression, puis fais tomber la pression : le chou et les pommes de terre doivent être tendres.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 10
+   },
+   {
+    "text": "Goûte et sale le bortsch.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "SO11",
+  "cuts": [
+   {
+    "ing": "boeuf_emince",
+    "verb": "Coupe",
+    "form": "en cubes de 2 cm"
+   },
+   {
+    "ing": "pdt",
+    "verb": "Coupe",
+    "form": "en cubes de 2 cm"
+   },
+   {
+    "ing": "carotte",
+    "verb": "Coupe",
+    "form": "en rondelles"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais fondre les oignons 6 minutes dans l'huile, jusqu'à ce qu'ils soient dorés. Ajoute le bœuf et fais-le dorer 4 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 10,
+    "wait": 0
+   },
+   {
+    "text": "Arrête le feu, ajoute le paprika doux, le cumin et l'ail, et remue 30 secondes : le paprika ne doit pas brûler, il deviendrait amer. Ajoute le concentré.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute la carotte, le bouillon cube émietté et 300 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 25 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 30
+   },
+   {
+    "text": "Ajoute les pommes de terre, referme et laisse cuire 5 minutes sous pression, puis fais tomber la pression : elles doivent être tendres et épaissir un peu la soupe.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10
+   }
+  ]
+ },
+ {
+  "id": "SO15",
+  "cuts": [
+   {
+    "ing": "lentilles_corail",
+    "verb": "Rince et égoutte",
+    "form": ""
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "carotte",
+    "verb": "Coupe",
+    "form": "en rondelles"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais fondre l'oignon et la carotte 4 minutes avec la moitié du beurre, puis ajoute le concentré et le cumin, 1 minute.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute les lentilles, le bouillon cube émietté et 350 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 8 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 23
+   },
+   {
+    "text": "Mixe la soupe au mixeur plongeant jusqu'à ce qu'elle soit bien lisse. Goûte et sale.",
+    "kind": "cook",
+    "app": null,
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Fais fondre le reste du beurre 1 minute avec le paprika et la menthe séchée, sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot.",
+    "kind": "cook",
+    "app": "casserole",
+    "min": 2,
+    "wait": 0,
+    "after": []
+   }
+  ]
+ },
+ {
+  "id": "W102",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 4 cm"
+   },
+   {
+    "ing": "carotte",
+    "verb": "Coupe",
+    "form": "en rondelles"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Coupe",
+    "form": "en quartiers"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Coupe",
+    "form": "en deux"
+   },
+   {
+    "ing": "citron",
+    "verb": "Presse",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et les champignons 4 minutes dans le beurre, sans les colorer.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 4,
+    "wait": 0
+   },
+   {
+    "text": "Ajoute le poulet, les carottes, le thym, le laurier, le bouillon cube émietté et 120 ml d'eau froide par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 13
+   },
+   {
+    "text": "Délaye la fécule dans un peu d'eau froide, verse-la et laisse épaissir 2 minutes en mode dorer, en remuant.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 3,
+    "wait": 0
+   },
+   {
+    "text": "Hors du feu, ajoute la crème et le jus de citron : la sauce doit napper la cuillère.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Verse la blanquette dans un plat et rince la cuve.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W104",
+  "cuts": [
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 2 cm"
+   },
+   {
+    "ing": "champignons",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "ail",
+    "verb": "Écrase",
+    "form": ""
+   }
+  ],
+  "steps": [
+   {
+    "text": "Dans la poêle, fais dorer le poulet 6 à 7 minutes dans l'huile, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 7,
+    "wait": 0
+   },
+   {
+    "text": "Fais dorer les champignons 5 minutes à feu vif avec l'ail.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 5,
+    "wait": 0
+   },
+   {
+    "text": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec une pincée de sel, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 10,
+    "after": []
+   },
+   {
+    "text": "Fais tomber la pression et égoutte les pâtes, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+    "kind": "cook",
+    "app": "autocuiseur",
+    "min": 2,
+    "wait": 0
+   },
+   {
+    "text": "Remets le poulet dans la poêle avec les pâtes, les épinards surgelés et l'eau de cuisson gardée.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 1,
+    "wait": 0,
+    "after": [
+     1,
+     3
+    ]
+   },
+   {
+    "text": "Laisse chauffer 3 minutes, puis ajoute le Boursin hors du feu et mélange jusqu'à ce qu'il fonde en sauce crémeuse.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0
+   }
+  ]
+ },
+ {
+  "id": "W105",
+  "cuts": [
+   {
+    "ing": "patate_douce",
+    "verb": "Coupe",
+    "form": "en frites de 1 cm avec la peau"
+   },
+   {
+    "ing": "poulet",
+    "verb": "Coupe",
+    "form": "en morceaux de 3 cm"
+   },
+   {
+    "ing": "oignon",
+    "verb": "Émince",
+    "form": ""
+   },
+   {
+    "ing": "maroilles",
+    "verb": "Retire la croûte et coupe",
+    "form": "en dés"
+   }
+  ],
+  "steps": [
+   {
+    "text": "Mélange les frites de patate douce avec la moitié de l'huile, le paprika et une pincée de sel.",
+    "kind": "prep",
+    "app": null,
+    "min": 1,
+    "wait": 0
+   },
+   {
+    "text": "Étale les frites de patate douce en une seule couche dans le panier et fais-les cuire 18 minutes à l'air fryer à 200 °C, en secouant le panier toutes les 6 minutes, jusqu'à ce qu'elles soient dorées.",
+    "kind": "cook",
+    "app": "airfryer",
+    "min": 2,
+    "wait": 18
+   },
+   {
+    "text": "Dans la poêle, fais dorer l'oignon 3 minutes dans le reste de l'huile, puis le poulet 6 à 7 minutes, jusqu'à ce qu'il ne soit plus rose au centre.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 10,
+    "wait": 0,
+    "after": []
+   },
+   {
+    "text": "Ajoute le lait, la crème et le maroilles. Laisse fondre 3 minutes à feu doux en remuant, jusqu'à ce que la sauce soit lisse et nappante.",
+    "kind": "cook",
+    "app": "poele",
+    "min": 4,
+    "wait": 0
+   }
+  ]
+ }
+]

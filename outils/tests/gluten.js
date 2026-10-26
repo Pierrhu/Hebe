@@ -1,6 +1,6 @@
 // Régime sans gluten (et cumul avec le sans lactose) : recettes écartées, remplacements, précision.
 const L=require('./charger.js');
-L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','js/weekgen.js'],`
+L(['data/ingredients.js','data/recipes.js','data/household.js','data/calculator.js','data/user.js','data/log.js','data/prefs.js','js/adapt.js','js/staples.js','js/diet.js','js/utils.js','js/optimizer.js','js/micros.js','data/season.js','data/sessionSteps.js','js/session.js','js/weekgen.js'],`
 const SUBK=['semoule','boulghour','pates','nouilles_oeufs','pain','baguette','pain_burger','pita','tortilla','oignons_frits'];
 const OUT1=['chapelure','gnocchis'], OUT2=['flocons','granola','cornflakes'];
 function run(label, glu, lac=[], weeks=25){
