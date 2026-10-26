@@ -2,7 +2,7 @@ import { artFor } from '../data/photos.js';
 import { spicesOf } from '../data/ingredients.js';
 import { proteinFamily, getExtras, setExtras } from '../data/recipes.js';
 import { rebalanceAfterRecipeChange, portionFor } from './weekgen.js';
-import { humanQty, INGREDIENTS, NATURAL_UNITS, ingMacros } from '../data/ingredients.js';
+import { humanQty, qtyShort, qtyWithName, INGREDIENTS, NATURAL_UNITS, ingMacros } from '../data/ingredients.js';
 import { getRating, setRating } from '../data/prefs.js';
 import { photoUrl, rateClass, ICON_HEART, ICON_NOPE } from '../data/photos.js';
 // recipeDetail.js — Détail recette avec ajustement des portions
@@ -109,7 +109,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
             ${recipe.ingredients.map((ing, k) => mine && !(qs[k] > 0) ? '' : `
               <div class="rd-ing ${ing.extra ? 'extra' : ''}">
                 <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spicesOf(recipe.id)}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
-                <span class="rd-ing-qty">${humanQty(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
+                <span class="rd-ing-qty">${qtyShort(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
                 ${ing.extra ? `<button class="rd-rm" data-rm="${ing.key}" aria-label="Retirer ${ing.name}">×</button>` : ''}
               </div>`).join('')}
           </div>
@@ -209,7 +209,7 @@ function openAddSheet(recipe, onDone) {
         setExtras(recipe.id, [...getExtras(recipe.id).filter(e => e.key !== key), { key, qty }]);
         const days = rebalanceAfterRecipeChange(recipe.id);
         closeSheet(); onDone();
-        const what = `${humanQty(key, qty, INGREDIENTS[key].unit)} ${INGREDIENTS[key].name.toLowerCase()}`;
+        const what = qtyWithName(key, qty, INGREDIENTS[key].unit);
         toast(days
           ? `${what} ajouté${qty > 1 && INGREDIENTS[key].unit === 'pièce' ? 's' : ''}. Tes collations ont été ajustées pour rester dans ton objectif.`
           : `${what} ajouté${qty > 1 && INGREDIENTS[key].unit === 'pièce' ? 's' : ''} à la recette (+${Math.round(m.kcal)} kcal).`);

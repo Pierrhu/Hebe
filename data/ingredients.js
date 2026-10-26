@@ -283,9 +283,81 @@ export const NATURAL_UNITS = {
   carre_frais:  { g: 25, one: 'carré',   many: 'carrés', box: 'boîte' },
 };
 
-// Quantité lisible : « 2 tranches », « 3 œufs », « 150 g »
+// v297 : fruits et légumes comptés comme on les achète (« 2 oignons », pas « 140 g d'oignon »).
+//   g : poids utilisé d'une pièce (ou ml de jus pour les citrons)
+//   self : l'unité est le produit lui-même (« 2 oignons ») ; sinon « ½ barquette de champignons »
+//   snap : chaque plat cuisiné en session utilise des pièces entières (weekgen.snapPieces) ;
+//   half : les très gros légumes peuvent aller à la demi-pièce ; step : arrondi d'affichage (0,25 par défaut)
+export const PIECES = {
+  oignon:       { g: 120,  one: 'oignon', many: 'oignons', self: true, snap: true },
+  carotte:      { g: 100,  one: 'carotte', many: 'carottes', self: true, snap: true },
+  poivron:      { g: 180,  one: 'poivron', many: 'poivrons', self: true, snap: true },
+  courgette:    { g: 250,  one: 'courgette', many: 'courgettes', self: true, snap: true },
+  aubergine:    { g: 300,  one: 'aubergine', many: 'aubergines', self: true, snap: true },
+  tomate:       { g: 120,  one: 'tomate', many: 'tomates', self: true, snap: true },
+  concombre:    { g: 350,  one: 'concombre', many: 'concombres', self: true, snap: true, half: true },
+  pdt:          { g: 150,  one: 'pomme de terre', many: 'pommes de terre', self: true, snap: true },
+  patate_douce: { g: 300,  one: 'patate douce', many: 'patates douces', self: true, snap: true },
+  poireau:      { g: 200,  one: 'poireau', many: 'poireaux', self: true, snap: true },
+  butternut:    { g: 1000, one: 'courge butternut', many: 'courges butternut', self: true, snap: true, half: true },
+  potimarron:   { g: 1200, one: 'potimarron', many: 'potimarrons', self: true, snap: true, half: true },
+  chou:         { g: 1000, one: 'chou blanc', many: 'choux blancs', self: true, snap: true, half: true },
+  pomme:        { g: 150,  one: 'pomme', many: 'pommes', self: true, snap: true },
+  poire:        { g: 180,  one: 'poire', many: 'poires', self: true, snap: true },
+  banane:       { g: 120,  one: 'banane', many: 'bananes', self: true, snap: true },
+  citron:       { g: 35,   one: 'citron', many: 'citrons', self: true, snap: true, juice: true },
+  citron_vert:  { g: 25,   one: 'citron vert', many: 'citrons verts', self: true, snap: true, juice: true },
+  champignons:  { g: 250,  one: 'barquette', many: 'barquettes', snap: true, half: true },
+  fruit_saison: { g: 150,  one: 'fruit de saison', many: 'fruits de saison', self: true },
+  salade:       { g: 250,  one: 'salade', many: 'salades', self: true },
+  tomates_cerise: { g: 250, one: 'barquette', many: 'barquettes', step: 0.5 },
+  herbes:       { g: 30,   one: 'bouquet', many: 'bouquets' },
+  gingembre:    { g: 5,    one: 'cm', many: 'cm', step: 1 },
+};
+const FRAC = { 0.25: '¼', 0.5: '½', 0.75: '¾' };
+// « ¼ », « 1 », « 2 ½ »
+function fracText(n) {
+  const w = Math.floor(n + 1e-9), f = Math.round((n - w) * 4) / 4;
+  if (!f) return String(w);
+  return w ? `${w} ${FRAC[f]}` : FRAC[f];
+}
+// Nombre de pièces arrondi (au quart, à la demi-pièce ou à l'unité), jamais zéro
+export function pieceCount(key, qty) {
+  const P = PIECES[key]; if (!P) return null;
+  const step = P.step || 0.25;
+  return Math.max(step, Math.round(qty / P.g / step) * step);
+}
+// Texte d'une quantité en pièces : « 2 oignons », « ½ barquette », « 3 cm »
+function pieceText(key, qty) {
+  const P = PIECES[key], n = pieceCount(key, qty);
+  return `${fracText(n)} ${n >= 2 ? P.many : P.one}`;
+}
+// Quantité seule, à côté du nom du produit dans une liste (« Oignons · 2 », « Champignons · ½ barquette »)
+export function qtyShort(key, qty, unit, opts = {}) {
+  const P = PIECES[key];
+  if (P && qty > 0) return P.self ? fracText(pieceCount(key, qty)) : pieceText(key, qty);
+  return humanQty(key, qty, unit, opts);
+}
+// Quantité suivie du produit, pour une phrase : « 2 oignons », « ½ barquette de champignons de Paris »,
+// « 150 g de riz complet »
+export function qtyWithName(key, qty, unit, name) {
+  const P = PIECES[key];
+  const nm0 = (name || INGREDIENTS[key]?.name || '').split(' (')[0];
+  const nm = nm0.charAt(0).toLowerCase() + nm0.slice(1); // « champignons de Paris »
+  if (P && qty > 0) {
+    if (P.self) return pieceText(key, qty);
+    return `${pieceText(key, qty)} ${/^[aeiouhéèêâîôûœ]/i.test(nm) ? "d'" : 'de '}${nm}`;
+  }
+  const q = humanQty(key, qty, unit);
+  if (NATURAL_UNITS[key]) return new RegExp(NATURAL_UNITS[key].one, 'i').test(nm) ? q : `${q} ${/^[aeiouhéèêâîôûœ]/i.test(nm) ? "d'" : 'de '}${nm}`;
+  if (unit === 'pièce') return `${q} ${nm}`;
+  return `${q} ${/^[aeiouhéèêâîôûœ]/i.test(nm) ? "d'" : 'de '}${nm}`;
+}
+
+// Quantité lisible : « 2 tranches », « 3 œufs », « 150 g », « 2 oignons »
 export function humanQty(key, qty, unit, opts = {}) {
   const db = INGREDIENTS[key];
+  if (PIECES[key] && qty > 0) return pieceText(key, qty);
   if (opts.cooked && db && db.cook && qty > 0) {
     return `${Math.round(qty)} g (≈ ${Math.round(qty * db.cook / 10) * 10} g cuit)`;
   }

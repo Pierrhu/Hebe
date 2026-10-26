@@ -9,7 +9,8 @@
 //  4. Ce qu'une assiette ne peut pas absorber est donné aux collations — pas au riz.
 
 import { getById, isCantine } from '../data/recipes.js';
-import { INGREDIENTS, isCountableUnit, ingCost, NATURAL_UNITS } from '../data/ingredients.js';
+import { INGREDIENTS, isCountableUnit, ingCost, NATURAL_UNITS, PIECES } from '../data/ingredients.js';
+const WHOLE_FRUIT = ['banane', 'pomme', 'poire', 'fruit_saison'];
 
 const MACROS = ['kcal', 'protein', 'carbs', 'fat'];
 
@@ -36,6 +37,8 @@ export function snapQty(q, countable, key) {
   if (countable) return Math.max(0, Math.round(q));
   const db = key ? INGREDIENTS[key] : null;
   if (key && NATURAL_UNITS[key]) { const g = NATURAL_UNITS[key].g; return Math.max(g, Math.round(q / g) * g); } // tranche entière
+  // v297 : un fruit se mange entier (1 banane, 1 pomme), pas 90 g
+  if (key && WHOLE_FRUIT.includes(key)) { const g = PIECES[key].g, u = q >= g * 0.75 ? g : g / 2; return q > 0 ? Math.max(u, Math.round(q / u) * u) : 0; } // petite quantité : ½ fruit
   if (db) {
     if (key === 'huile' || key === 'huile_sesame') return Math.round(q);
     if (['whey', 'beurre_cacahuete', 'amandes'].includes(key)) return Math.round(q / 5) * 5;

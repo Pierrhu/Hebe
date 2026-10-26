@@ -2030,3 +2030,9 @@ button.wl-ch:disabled { cursor: default; }
 .aut-banner.on .aut-pill i { background: #C9733F; }
 .aut-banner.on .aut-pill i::after { transform: translateX(14px); }
 @media (prefers-reduced-motion: reduce) { .aut-img, .aut-pill i, .aut-pill i::after { transition: none; } }
+
+/* v297 : session planifiée, chaque étape dit pour quel plat elle est */
+.ck-step-dish { display: flex; align-items: center; gap: 0; margin: 2px 0 8px; font-size: 13px; font-weight: 600; color: var(--c, var(--text)); }
+.ck-step-dish .dish-ph.mini { width: 26px; height: 26px; object-fit: cover; }
+.ck-bg { margin-top: 12px; padding: 9px 12px; border-radius: 14px; background: var(--sage-t, #EEF3EE); font-size: 13.5px; line-height: 1.4; color: var(--text); }
+.ck-bg span { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 700; color: var(--sage, #5E7A67); }

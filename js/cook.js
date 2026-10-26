@@ -4,7 +4,7 @@
 
 import { getEntry, getTodayDate } from '../data/log.js';
 import { getById } from '../data/recipes.js';
-import { INGREDIENTS, humanQty, NATURAL_UNITS, spicesOf } from '../data/ingredients.js';
+import { INGREDIENTS, humanQty, qtyShort, qtyWithName, NATURAL_UNITS, spicesOf } from '../data/ingredients.js';
 const NATURAL_UNITS_KEYS = Object.keys(NATURAL_UNITS);
 import { el } from './utils.js';
 import { getActivePlan, planMembers, FRESH_ONLY, sessionDate, sessionWhen } from './weekgen.js';
@@ -15,6 +15,7 @@ import { toast } from './utils.js';
 import { itemQuantities } from './optimizer.js';
 import { renderRecipeDetail } from './recipeDetail.js';
 import { dishThumb, dishThumbRated } from '../data/photos.js';
+import { ssActions, ssSchedule, ssPhases } from './session.js';
 
 // « a, b et c »
 const listFr = a => (a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} et ${a[a.length - 1]}`);
@@ -107,18 +108,13 @@ function splitSteps(r) {
 }
 const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
 
-// Phases de la session, dans l'ordre réel. Il n'y a qu'un autocuiseur :
-//   1. le plat qui cuit sous pression est lancé d'abord ; les plats à la poêle et à l'air fryer se font pendant sa cuisson
-//   2. les autres plats à l'autocuiseur suivent, une fois la cuve libre
-//   3. le riz de toute la session cuit en une fois (au début s'il n'y a aucun plat à l'autocuiseur)
-function buildPhases(list) {
+// Phases de la session, dans l'ordre réel (v297, js/session.js) : chaque plat est découpé en préparations
+// et en cuissons ; on lance d'abord ce qui cuit longtemps tout seul, toutes les découpes se font pendant ce
+// temps, puis les cuissons actives (une seule poêle, un seul autocuiseur, un seul air fryer), et le riz quand
+// l'autocuiseur est libre pour de bon. extras = petits-déjeuners et collations préparés pendant la session.
+function buildPhases(list, extras = []) {
   const recipes = list.map(x => x.r);
   const parts = new Map(recipes.map(r => [r, splitSteps(r)]));
-  const P = (title, hint, r, steps) => ({ title, hint, r, idx: r ? recipes.indexOf(r) : -1, steps });
-  const usesCooker = r => parts.get(r).core.some(st => /autocuiseur/i.test(st));
-  const pressure = r => parts.get(r).core.findIndex(st => /sous pression/i.test(st));
-  const cooker = recipes.filter(usesCooker);
-  const others = recipes.filter(r => !usesCooker(r));
   // riz de la session
   const riceList = list.filter(x => parts.get(x.r).rice);
   const eq = getEquipment() || { autocuiseur: true };
@@ -136,36 +132,37 @@ function buildPhases(list) {
     const g = Math.round(riceList.reduce((a, x) => a + riceOf(x, k), 0) / 5) * 5;
     return { k, g, water: Math.round(g * RICE[k].ratio / 10) * 10, dishes: riceList.filter(x => riceOf(x, k) > 0) };
   }).filter(b => b.g > 0);
+  const R1 = eq.autocuiseur ? 'autocuiseur' : 'casserole', R2 = eq.autocuiseur ? 'autocuiseur' : 'casserole2';
   const where = eq.autocuiseur ? "l'autocuiseur" : 'une grande casserole';
-  const ricePhase = batches.length === 1 ? [
-    `Rince ${batches[0].g} g de ${RICE[batches[0].k].name} à l'eau froide, puis mets-le dans ${where} avec ${batches[0].water} ml d'eau.`,
-    RICE[batches[0].k].cook,
-    `Ce riz accompagne : ${listFr(batches[0].dishes.map(x => dishShort(x.r)))}. Égrène-le à la fourchette avant de le répartir.`]
+  const act = (text, res, active, passive = 0) => ({ chain: 'riz', kind: 'cook', text, res, active, passive });
+  const cookMin = t => { let m = 0; t.replace(/(\d+) minutes/g, (_, a) => { m += +a; return _; }); return m + (/sous pression/.test(t) ? 5 : 0); };
+  const riceActions = batches.length === 1 ? [
+    act(`Rince ${batches[0].g} g de ${RICE[batches[0].k].name} à l'eau froide, puis mets-le dans ${where} avec ${batches[0].water} ml d'eau.`, R1, 3),
+    act(RICE[batches[0].k].cook, R1, 1, cookMin(RICE[batches[0].k].cook)),
+    act(`Ce riz accompagne : ${listFr(batches[0].dishes.map(x => dishShort(x.r)))}. Égrène-le à la fourchette avant de le répartir.`, null, 1)]
   : batches.length === 2 ? [
-    `Commence par le riz complet, plus long à cuire : rince ${batches[0].g} g de riz complet à l'eau froide, puis mets-le dans ${where} avec ${batches[0].water} ml d'eau.`,
-    RICE.riz.cook,
-    eq.autocuiseur ? `Verse le riz complet dans un grand plat, puis rince ${batches[1].g} g de riz blanc et mets-le dans l'autocuiseur avec ${batches[1].water} ml d'eau.`
-      : `Pendant ce temps, rince ${batches[1].g} g de riz blanc et mets-le dans une deuxième casserole avec ${batches[1].water} ml d'eau.`,
-    RICE.riz_blanc.cook,
-    `Le riz complet accompagne : ${listFr(batches[0].dishes.map(x => dishShort(x.r)))}. Le riz blanc accompagne : ${listFr(batches[1].dishes.map(x => dishShort(x.r)))}. Égrène-les à la fourchette avant de les répartir.`]
-  : null;
+    act(`Commence par le riz complet, plus long à cuire : rince ${batches[0].g} g de riz complet à l'eau froide, puis mets-le dans ${where} avec ${batches[0].water} ml d'eau.`, R1, 3),
+    act(RICE.riz.cook, R1, 1, cookMin(RICE.riz.cook)),
+    act(eq.autocuiseur ? `Verse le riz complet dans un grand plat, puis rince ${batches[1].g} g de riz blanc et mets-le dans l'autocuiseur avec ${batches[1].water} ml d'eau.`
+      : `Rince ${batches[1].g} g de riz blanc et mets-le dans une deuxième casserole avec ${batches[1].water} ml d'eau.`, R2, 3),
+    act(RICE.riz_blanc.cook, R2, 1, cookMin(RICE.riz_blanc.cook)),
+    act(`Le riz complet accompagne : ${listFr(batches[0].dishes.map(x => dishShort(x.r)))}. Le riz blanc accompagne : ${listFr(batches[1].dishes.map(x => dishShort(x.r)))}. Égrène-les à la fourchette avant de les répartir.`, null, 1)]
+  : [];
+  // sans autocuiseur, le riz complet et le riz blanc cuisent en même temps dans deux casseroles
+  if (batches.length === 2 && !eq.autocuiseur) { riceActions[2].text = `Pendant ce temps, r${riceActions[2].text.slice(1)}`; }
 
-  const out = [];
-  const first = cooker.filter(r => pressure(r) >= 0).sort((a, b) => b.cookTime - a.cookTime)[0];
-  if (first) {
-    const core = parts.get(first).core, cut = pressure(first);
-    const solo = recipes.length === 1 && !ricePhase;
-    out.push(P(solo ? `Cuisiner : ${dishShort(first)}` : `Lancer : ${dishShort(first)}`, solo ? '' : 'Il cuit tout seul pendant la suite', first, solo ? core : core.slice(0, cut + 1)));
-    others.forEach(r => out.push(P(`Pendant la cuisson : ${dishShort(r)}`, '', r, parts.get(r).core)));
-    if (!solo && cut + 1 < core.length) out.push(P(`Terminer : ${dishShort(first)}`, '', first, core.slice(cut + 1)));
-    cooker.filter(r => r !== first).forEach(r => out.push(P(`Cuisiner : ${dishShort(r)}`, "L'autocuiseur est de nouveau libre", r, parts.get(r).core)));
-    if (ricePhase) out.push(P('Cuire le riz', eq.autocuiseur ? 'Pendant les 10 minutes de repos, commence la mise en boîtes' : 'Il cuit tout seul pendant que tu commences la mise en boîtes', null, ricePhase));
-  } else {
-    cooker.forEach(r => out.push(P(`Préparer : ${dishShort(r)}`, '', r, parts.get(r).core)));
-    if (ricePhase) out.push(P('Lancer le riz', 'Il cuit tout seul pendant la suite', null, ricePhase));
-    others.forEach(r => out.push(P(`${ricePhase ? 'Pendant la cuisson' : 'Préparer'} : ${dishShort(r)}`, '', r, parts.get(r).core)));
-  }
-  return { phases: out, boxes: recipes.map(r => ({ r, steps: parts.get(r).box })), meals: recipes.map(r => ({ r, steps: parts.get(r).meal })).filter(x => x.steps.length) };
+  const chains = [
+    ...list.map(x => ({ id: x.r.id, r: x.r, kind: 'dish', actions: ssActions(x.r, parts.get(x.r).core, x.r.id) })),
+    ...extras.map(x => ({ id: 'x' + x.r.id, r: x.r, kind: 'extra', actions: [
+      { chain: x.r.id, kind: 'prep', text: x.qty, res: null, active: 0, passive: 0, deps: [] },
+      // les quantités passent en tête : les dépendances se décalent d'un cran
+      ...ssActions(x.r, x.steps, x.r.id).map(a => ({ ...a, deps: a.deps.length ? a.deps.map(d => d + 1) : [0] }))] })),
+    ...(riceActions.length ? [{ id: 'riz', r: null, kind: 'rice', actions: riceActions }] : []),
+  ].filter(c => c.actions.length);
+  const sched = ssSchedule(chains);
+  const nameOf = c => (!c ? '' : c.kind === 'rice' ? 'riz' : dishShort(c.r));
+  const phases = ssPhases(sched, nameOf).map(ph => ({ ...ph, steps: ph.steps.map(st => ({ text: st.text, r: st.chain?.r || null, bg: st.bg || '', chainKind: st.chain?.kind || (st.wait ? 'wait' : null) })) }));
+  return { phases, total: sched.total, boxes: recipes.map(r => ({ r, steps: parts.get(r).box })), meals: recipes.map(r => ({ r, steps: parts.get(r).meal })).filter(x => x.steps.length) };
 }
 
 // ── v195 : quantités de l'étape et minuteurs ──
@@ -207,7 +204,7 @@ function stepQty(text, x) {
     const db = INGREDIENTS[g.key];
     if (!rx || !db || db.pantry || seen.has(g.key) || !(x.tot[i] > 0) || !rx.test(t)) return;
     seen.add(g.key);
-    chips.push(`<span class="ck-qty-chip"><b>${humanQty(g.key, x.tot[i], g.unit)}</b> ${g.name.split(' (')[0].toLowerCase()}</span>`);
+    chips.push(`<span class="ck-qty-chip">${qtyWithName(g.key, x.tot[i], g.unit, g.name).replace(/^(\S+(?: [¼½¾])?)/, '<b>$1</b>')}</span>`);
   });
   return chips.length ? `<div class="ck-qty">${chips.join('')}</div>` : '';
 }
@@ -301,8 +298,6 @@ export function renderCook() {
   const mids = planMembers(plan);
   const list = S.recipes.map(x => totals(x.id, S.dates, mids)).filter(x => x.portions);
   const recipes = list.map(x => x.r);
-  const plan2 = recipes.length ? buildPhases(list) : { phases: [], boxes: [], meals: [] };
-  const phases = plan2.phases;
 
   // Petits-déjeuners, collations et compléments des jours de la session
   const extraIds = [...new Set(mids.flatMap(mid => S.dates.flatMap(d => {
@@ -314,20 +309,21 @@ export function renderCook() {
   // tout ce qui suit la première étape « Le matin » ou « Au moment de manger » se fait plus tard
   const cutAt = r => { const k = r.steps.findIndex(isLater); return k < 0 ? r.steps.length : k; };
   const kindOf = r => (r.category === 'breakfast' ? 'petit-déjeuner' : 'collation');
-  const de = n => (/^[aeiouyhéèêâîôûœ]/i.test(n) ? `d'${n}` : `de ${n}`);
-  const qtyLine = x => `Pour ${x.portions} ${x.portions > 1 ? 'portions' : 'portion'} : ${x.r.ingredients.map((g, i) => `${humanQty(g.key, x.tot[i], g.unit)} ${g.unit === 'pièce' ? g.name.toLowerCase() : de(g.name.toLowerCase())}`).join(', ')}.`;
-  // à préparer pendant la session : de vraies phases, avec les quantités totales
-  extras.filter(x => x.r.batch).forEach(x => {
-    const steps = x.r.steps.slice(0, cutAt(x.r)).map(st => st.replace(/^Pendant la session de cuisine, /, '').replace(/^./, c => c.toUpperCase()));
-    phases.push({ title: `Préparer : ${dishShort(x.r)}`, hint: `${cap(kindOf(x.r))} à préparer maintenant`, r: x.r, idx: -2, steps: [qtyLine(x), ...steps] });
-  });
+  const de = n => (/^[aeiouhéèêâîôûœ]/i.test(n) ? `d'${n}` : `de ${n}`);
+  const qtyLine = x => `Pour ${x.portions} ${x.portions > 1 ? 'portions' : 'portion'} : ${x.r.ingredients.map((g, i) => (x.tot[i] > 0 ? qtyWithName(g.key, x.tot[i], g.unit, g.name) : '')).filter(Boolean).join(', ')}.`;
+  // à préparer pendant la session : planifiés avec les plats (v297), avec les quantités totales en tête
+  const batchSteps = extras.filter(x => x.r.batch).map(x => ({ r: x.r, qty: qtyLine(x),
+    steps: x.r.steps.slice(0, cutAt(x.r)).map(st => st.replace(/^Pendant la session de cuisine, /, '').replace(/^./, c => c.toUpperCase())) }));
+  const plan2 = recipes.length || batchSteps.length ? buildPhases(list, batchSteps) : { phases: [], boxes: [], meals: [], total: 0 };
+  const phases = plan2.phases;
   // à faire au moment : ce qu'il reste à faire, sans cuisson d'avance
   const later = extras.map(x => {
     const steps = x.r.batch ? x.r.steps.slice(cutAt(x.r)) : x.r.steps;
     return steps.length ? { x, text: steps.join(' ').replace(/^Le matin, /, '').replace(/^Au moment de manger : /, '') } : null;
   }).filter(Boolean);
   const fries = [...new Set(S.recipes.map(x => x.side).filter(Boolean))].map(getById).filter(Boolean);
-  const minutes = Math.round((recipes.reduce((a, r) => a + r.prepTime, 0) + extras.filter(x => x.r.batch).reduce((a, x) => a + x.r.prepTime, 0) + Math.max(0, ...recipes.map(r => r.cookTime)) + 10) / 5) * 5;
+  // durée simulée de la session (découpes, cuissons en parallèle), plus la mise en boîtes
+  const minutes = Math.round((plan2.total + 10) / 5) * 5;
   const boxes = list.reduce((a, x) => a + x.portions, 0);
   // v195 : collations et petits-déjeuners préparés pendant la session, montrés en haut avec les plats
   const batchExtras = extras.filter(x => x.r.batch);
@@ -342,7 +338,9 @@ export function renderCook() {
 
   // numérotation continue des étapes cochables
   let n = 0;
-  const phaseSteps = phases.map(ph => ph.steps.map(text => ({ text, i: n++ })));
+  const phaseSteps = phases.map(ph => ph.steps.map(st => ({ text: st.text, r: st.r, bg: st.bg, kind: st.chainKind, i: n++ })));
+  // couleur d'un plat (la même que sa fiche dans « Sortir les ingrédients »)
+  const colorOf = r => { if (!r) return 'ck-phase-rice'; const k = list.findIndex(x => x.r === r); return k >= 0 ? `dish-${k % 12}` : `ck-phase-extra dish-${(list.length + batchExtras.findIndex(x => x.r === r)) % 12}`; };
   const boxIdx = n++;
   // Rangement de chaque plat : frigo pour lundi à mercredi, congélateur au-delà (avec le jour prévu)
   const DAYN = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
@@ -372,7 +370,7 @@ export function renderCook() {
   const keptLine = r => {
     const later = mealOnlyKeys(r); if (!later.size) return '';
     const x = list.find(y => y.r === r); if (!x) return '';
-    const items = r.ingredients.map((g, i) => later.has(g.key) && x.tot[i] > 0 ? `${humanQty(g.key, x.tot[i], g.unit)} ${g.unit === 'pièce' ? g.name.toLowerCase() : de(g.name.split(' (')[0].toLowerCase())}` : '').filter(Boolean);
+    const items = r.ingredients.map((g, i) => later.has(g.key) && x.tot[i] > 0 ? qtyWithName(g.key, x.tot[i], g.unit, g.name) : '').filter(Boolean);
     return items.length ? ` À garder pour le jour du repas, sans les cuisiner aujourd'hui : ${andList(items)} (la fiche de la recette dit quoi faire ce jour-là).` : '';
   };
   const boxSteps = plan2.boxes.map(b => ({ r: b.r, text: `${dishShort(b.r)} : ${storage(b.r)}${b.steps.length ? ` Dans les boîtes : ${b.steps.join(' ')}` : ''}${keptLine(b.r)}`, i: n++ }));
@@ -394,21 +392,26 @@ export function renderCook() {
   // Une étape à la fois : la phase en cours en grand, les autres repliées
   const endText = `Prépare ${andList(list.map(x => `${x.portions} ${x.portions > 1 ? 'boîtes' : 'boîte'} de ${dishShort(x.r)}`))}, et écris sur chaque boîte le jour où elle sera mangée.${hasFrozen ? " Les boîtes à congeler vont au congélateur aujourd'hui même, une fois tièdes : la veille du jour prévu, l'onglet Semaine te rappelle de les sortir et de les mettre au frigo." : ''}`;
   const allPhases = [
-    ...phases.map((ph, k) => ({ num: k + 2, title: ph.title, hint: ph.hint, r: ph.r, cls: ph.idx === -2 ? `ck-phase-extra dish-${(list.length + batchExtras.findIndex(x => x.r === ph.r)) % 12}` : ph.r ? `dish-${ph.idx % 12}` : 'ck-phase-rice', steps: phaseSteps[k] })),
-    { num: phases.length + 2, title: 'Mettre en boîtes', hint: 'Laisse tiédir 20 minutes au plus, ferme les boîtes et range-les au frigo', r: null, cls: 'ck-phase-end', steps: [{ text: endText, i: boxIdx }, ...boxSteps] },
+    ...phases.map((ph, k) => ({ num: k + 2, title: ph.title, hint: ph.hint, steps: phaseSteps[k] })),
+    { num: phases.length + 2, title: 'Mettre en boîtes', hint: 'Laisse tiédir 20 minutes au plus, ferme les boîtes et range-les au frigo', cls: 'ck-phase-end', end: true, steps: [{ text: endText, i: boxIdx }, ...boxSteps] },
   ];
   const phaseHTML = P => {
     const ids = P.steps.map(st => st.i);
     if (ids.every(i => done.includes(i))) return `<button class="ck-row done" data-reopen="${ids[ids.length - 1]}"><span>${P.num} · ${P.title}</span><span class="ck-row-ok">✓ fait</span></button>`;
     const cur = P.steps.find(st => st.i === current);
     if (!cur) return `<div class="ck-row"><span>${P.num} · ${P.title}</span><span class="ck-row-n">${ids.length} étape${ids.length > 1 ? 's' : ''}</span></div>`;
-    return `<div class="ck-cur ${P.cls}" id="ck-current">
-      <div class="ck-phase-hd"><span class="ck-phase-num">${P.num}</span>${P.r ? dishThumb(P.r, 'phase') : ''}<div class="ck-phase-txt"><div class="ck-phase-title">${P.title}</div>${P.hint ? `<div class="ck-phase-hint">${P.hint}</div>` : ''}</div></div>
-      <div class="ck-cur-step"><div class="ck-cur-k">Étape ${P.steps.indexOf(cur) + 1} sur ${ids.length}</div>${cur.text}
-        ${P.r && !P.cls.includes('ck-phase-extra') ? stepQty(cur.text, list.find(x => x.r === P.r) || extras.find(x => x.r === P.r)) : ''}
+    const R = P.end ? null : cur.r, cls = P.end ? P.cls : cur.kind === 'wait' ? 'ck-phase-rice' : colorOf(R);
+    const label = R ? dishShort(R) : 'Riz';
+    const x = R && list.find(y => y.r === R);
+    return `<div class="ck-cur ${cls}" id="ck-current">
+      <div class="ck-phase-hd"><span class="ck-phase-num">${P.num}</span><div class="ck-phase-txt"><div class="ck-phase-title">${P.title}</div>${P.hint ? `<div class="ck-phase-hint">${P.hint}</div>` : ''}</div></div>
+      <div class="ck-cur-step"><div class="ck-cur-k">Étape ${P.steps.indexOf(cur) + 1} sur ${ids.length}</div>
+        ${!P.end && cur.kind !== 'wait' ? `<div class="ck-step-dish">${R ? dishThumb(R, 'mini') : ''}<span>${label}</span></div>` : ''}${cur.text}
+        ${x ? stepQty(cur.text, x) : ''}
+        ${cur.bg ? `<div class="ck-bg"><span>En fond</span>${cur.bg}</div>` : ''}
         ${stepMinutes(cur.text) ? `<div class="tm-box" data-tm-step="${cur.i}">
-          <button class="tm-start" data-timer="${stepMinutes(cur.text)}" data-tstep="${cur.i}" data-tlabel="${P.r ? dishShort(P.r) : 'Riz'}">${ICON_TM_CLOCK}<span>Lancer le minuteur</span><b>${stepMinutes(cur.text)} min</b></button>
-          <div class="tm-live"><span class="tm-ring-wrap"></span><div class="tm-txt"><span class="tm-left"></span><small>Minuteur · ${P.r ? dishShort(P.r) : 'Riz'}</small></div><button class="tm-x" data-tstop-step="${cur.i}" aria-label="Arrêter le minuteur">${ICON_X}</button></div>
+          <button class="tm-start" data-timer="${stepMinutes(cur.text)}" data-tstep="${cur.i}" data-tlabel="${label}">${ICON_TM_CLOCK}<span>Lancer le minuteur</span><b>${stepMinutes(cur.text)} min</b></button>
+          <div class="tm-live"><span class="tm-ring-wrap"></span><div class="tm-txt"><span class="tm-left"></span><small>Minuteur · ${label}</small></div><button class="tm-x" data-tstop-step="${cur.i}" aria-label="Arrêter le minuteur">${ICON_X}</button></div>
         </div>` : ''}
       </div>
       <div class="ck-cur-nav"><button class="ck-prev" ${doneCount ? '' : 'disabled'}>Retour</button><button class="ck-next">${current === total - 1 ? 'Terminer' : 'Étape suivante'}</button></div>
@@ -438,7 +441,7 @@ export function renderCook() {
           </button>
           ${(() => {
             const later = mealOnlyKeys(x.r);
-            const row = (g, i) => `<div class="ck-ing"><span>${g.name}${g.key === 'epices' && spicesOf(x.r.id) ? `<small>${spicesOf(x.r.id)}</small>` : ''}</span><span>${humanQty(g.key, x.tot[i], g.unit)}</span></div>`;
+            const row = (g, i) => `<div class="ck-ing"><span>${g.name}${g.key === 'epices' && spicesOf(x.r.id) ? `<small>${spicesOf(x.r.id)}</small>` : ''}</span><span>${qtyShort(g.key, x.tot[i], g.unit)}</span></div>`;
             const now = x.r.ingredients.map((g, i) => x.tot[i] > 0 && !later.has(g.key) ? row(g, i) : '').join('');
             const kept = x.r.ingredients.map((g, i) => x.tot[i] > 0 && later.has(g.key) ? row(g, i) : '').join('');
             const mealTxt = x.r.steps.filter(st => /^Au moment de manger : /.test(st)).map(st => cap(st.replace(/^Au moment de manger : /, ''))).join(' ');

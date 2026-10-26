@@ -262,7 +262,7 @@ function buildList(dates) {
 
 // v195 : fruits et légumes comptés comme au magasin (pièces, bouquets, barquettes) au lieu de grammes.
 // clé : [grammes (ou ml de jus) par pièce, singulier, pluriel, nom affiché, montrer le poids ≈]
-const PIECES = {
+const SHOP_PIECES = {
   courgette: [250, 'courgette', 'courgettes', 'Courgettes'],
   poivron: [180, 'poivron', 'poivrons', 'Poivrons'],
   oignon: [120, 'oignon', 'oignons', 'Oignons', true],
@@ -282,14 +282,22 @@ const PIECES = {
   chou_chinois: [800, 'chou chinois', 'choux chinois', 'Chou chinois'],
   fruit_saison: [150, 'fruit', 'fruits', 'Fruits de saison', true],
   radis: [250, 'botte', 'bottes', 'Radis'],
+  // v297 : comme dans les recettes, à la pièce
+  pdt: [150, 'pomme de terre', 'pommes de terre', 'Pommes de terre', true],
+  patate_douce: [300, 'patate douce', 'patates douces', 'Patates douces', true],
+  poireau: [200, 'poireau', 'poireaux', 'Poireaux'],
+  butternut: [1000, 'courge butternut', 'courges butternut', 'Courge butternut', true],
+  potimarron: [1200, 'potimarron', 'potimarrons', 'Potimarron', true],
+  chou: [1000, 'chou blanc', 'choux blancs', 'Chou blanc'],
+  poire: [180, 'poire', 'poires', 'Poires'],
 };
 
 // Quantité à acheter, arrondie au format du commerce.
 function toPurchase(item) {
   const db = item._db ? { ...item._db, edible: 1 } : item.dbKey ? INGREDIENTS[item.dbKey] : null;
   const q = item.qty;
-  if (db && PIECES[db.key]) {
-    const [g, one, many, label, approx] = PIECES[db.key];
+  if (db && SHOP_PIECES[db.key]) {
+    const [g, one, many, label, approx] = SHOP_PIECES[db.key];
     const n = Math.max(1, Math.ceil(q / g - 0.15));
     const w = Math.round(q / 50) * 50;
     return { qty: n, unit: `${n > 1 ? many : one}${approx && w >= 100 ? ` · ≈ ${w >= 1000 ? String(Math.round(w / 100) / 10).replace('.', ',') + ' kg' : w + ' g'}` : ''}`, name: label };

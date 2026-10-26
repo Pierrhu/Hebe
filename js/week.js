@@ -7,7 +7,7 @@ import { USER, getTargetsFor } from '../data/user.js';
 import { getMembers, getActiveMember, updateMember, getSoups } from '../data/household.js';
 import { whoSwitch, bindWho, avatar } from './profileUi.js';
 import { getById, proteinFamily, isFreshFish, isSoup, getMains } from '../data/recipes.js';
-import { INGREDIENTS, humanQty } from '../data/ingredients.js';
+import { INGREDIENTS, humanQty, PIECES, qtyWithName } from '../data/ingredients.js';
 import { el, computeDayMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
 import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, planMembers, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
 import { itemQuantities, plateTarget, PLATE_SHARE } from './optimizer.js';
@@ -454,7 +454,7 @@ function openDaySheet(date) {
         const qs = itemQuantities(it);
         const ings = r.ingredients.map((g, i) => ({ g, q: qs[i] }))
           .filter(x => x.q > 0 && !INGREDIENTS[x.g.key]?.pantry)
-          .map(x => `${x.g.name.split(' (')[0].toLowerCase()} ${humanQty(x.g.key, x.q, x.g.unit, { cooked: true })}`);
+          .map(x => PIECES[x.g.key] ? qtyWithName(x.g.key, x.q, x.g.unit, x.g.name) : `${x.g.name.split(' (')[0].toLowerCase()} ${humanQty(x.g.key, x.q, x.g.unit, { cooked: true })}`);
         return `<div class="ds-item"><div class="ds-item-hd"><span>${r.name}</span></div><div class="ds-ings">${ings.join(' · ')}</div></div>`;
       }).join('')}
     </div>` : '';

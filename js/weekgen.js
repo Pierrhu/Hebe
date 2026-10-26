@@ -17,7 +17,7 @@
 
 import { dietOk, householdLactose, householdGluten, lactoseOf, glutenOf, applyDiet, proteinBoost } from './diet.js';
 import { getMains, getSweets, getBreakfasts, getById, hasWhey, proteinFamily, isFreshFish, mainStarch, setSoupsOn, isSoup, getAllSoups } from '../data/recipes.js';
-import { INGREDIENTS, ingCost, NATURAL_UNITS } from '../data/ingredients.js';
+import { INGREDIENTS, ingCost, NATURAL_UNITS, PIECES } from '../data/ingredients.js';
 import { optimizeRecipe, calibratePlate, plateTarget, portionScale, plateFloor, mainProteinIdx, PLATE_SHARE, breakfastTarget, computeMealMacros, subtractMacros, fillRemainder, itemQuantities, CHARC_MAX, CHARC_KEYS, charcOfEntry, charcGrams, RED_MEAT_KEYS, calciumPer100kcal } from './optimizer.js';
 import { weekMicros } from './micros.js';
 import { getWeekDates, getNextWeekDates, getTodayDate, getEntry, saveEntry, localYMD } from '../data/log.js';
@@ -441,6 +441,32 @@ function snapFresh(entries, canTake = () => true, phase = 'collations') {
     }
   });
 }
+// v297 : fruits et légumes en pièces entières, plat par plat. Toutes les boîtes d'un plat sont cuisinées
+// ensemble pendant la session : leur total d'oignons, de carottes, de pommes de terre… tombe sur des pièces
+// entières (demi-pièce pour courge, chou, concombre), réparti entre les portions au prorata.
+// Petits-déjeuners préparés à l'avance aussi. Les collations recalées ensuite compensent les calories.
+export function snapPieces(lists, dates) {
+  const groups = {}; // id → key → [{ item, idx, q }]
+  lists.forEach(ent => dates.forEach(d => ['breakfast', 'starter', 'lunch', 'dinner'].forEach(slot => (ent?.[d]?.meals?.[slot] || []).forEach(item => {
+    const r = getById(item.id);
+    if (!r || (slot === 'breakfast' && !r.batch) || (r.tags || []).includes('cantine')) return;
+    const qs = itemQuantities(item);
+    r.ingredients.forEach((ing, idx) => {
+      const P = PIECES[ing.key];
+      if (!P?.snap || !(qs[idx] > 0)) return;
+      ((groups[r.id] ||= {})[ing.key] ||= []).push({ item, idx, q: qs[idx] });
+    });
+  }))));
+  Object.values(groups).forEach(byKey => Object.entries(byKey).forEach(([key, uses]) => {
+    const P = PIECES[key], u = P.half ? P.g / 2 : P.g;
+    const total = uses.reduce((a, x) => a + x.q, 0);
+    const target = Math.max(1, Math.round(total / u)) * u;
+    const f = target / total;
+    if (Math.abs(f - 1) < 1e-3) return;
+    uses.forEach(x => { x.item.overrides = { ...(x.item.overrides || {}), [x.idx]: Math.round(x.q * f * 10) / 10 }; });
+  }));
+}
+
 // Rééquilibrage après le calage des produits frais : retire les compléments ou collations sans produit frais
 // (fruit, amandes, collation de placard) tant que la journée dépasse sa cible de plus de 3 %
 function trimOver(e, T) {
@@ -705,6 +731,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
   snapToPacks(byMember, dates, scales, pts, bts);
   // produits frais des repas en paquets entiers, avant les collations (qui compenseront les calories)
   snapFresh(byMember.flatMap(entries => dates.map(d => entries[d])), () => false, 'repas');
+  snapPieces(byMember, dates); // v297 : oignons, carottes, pommes de terre… en pièces entières, plat par plat
 
   // Repas libres, puis collations recalées chaque jour sur ce qu'il manque à chacun
   // collations : favorise celles qui partagent un produit des plats ou petits-déjeuners de la semaine (ou un reste reporté)
@@ -1061,6 +1088,7 @@ export function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
   }));
   // barquettes entières pour le foyer, puis collations recalées jour par jour
   snapToPacks(all, plan.dates, mids.map(mid => portionScale(ptOf(mid).kcal)), mids.map(ptOf), mids.map(mid => breakfastTarget(planTargets(plan, mid))));
+  snapPieces(all, plan.dates);
   mids.forEach((mid, mi) => plan.dates.forEach((d, dayIdx) => {
     const e = all[mi][d];
     e.meals.sweet = [];
@@ -1123,6 +1151,7 @@ export function recalcPortions(targetsBy) {
     r.ingredients.forEach((ing, i) => { if (INGREDIENTS[ing.key]?.snap) base[ing.key] = (base[ing.key] || 0) + qs[i]; });
   }))));
   snapToPacks(all, dates, scales, pts, bts, base);
+  snapPieces(all, dates);
   // collations recalées sur les nouveaux objectifs (sans reporter les jours passés, mangés avec les anciens)
   mids.forEach((mid, mi) => dates.forEach((d, k) => {
     const e = all[mi][d];

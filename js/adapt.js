@@ -164,8 +164,9 @@ export function adaptStep(st, eq = eqOr(), r = null) {
     s = s.replace(/ Verse-la dans un plat et rince la cuve\./g, ' Verse-la dans un plat.');
     s = s.replace(/ Verse ([^.]*?) dans un plat et rince la cuve\./g, ' Garde $1 au chaud, à couvert.');
     s = s.replace(/rince la cuve/g, 'rince la cocotte').replace(/dans la cuve/g, 'dans la cocotte');
-    s = s.replace(/(?:dans |à )l'autocuiseur/gi, m => (m[0] === 'à' || m[0] === 'À' ? 'dans la cocotte' : 'dans la cocotte'));
-    s = s.replace(/l'autocuiseur/g, 'la cocotte');
+    // v297 : majuscule gardée en début de phrase, et accord (« la cocotte rincée »)
+    s = s.replace(/(?:dans |à )l'autocuiseur/gi, m => (m[0] === 'D' || m[0] === 'À' ? 'Dans la cocotte' : 'dans la cocotte'));
+    s = s.replace(/l'autocuiseur/g, 'la cocotte').replace(/la cocotte rincé\b/g, 'la cocotte rincée');
   }
   // ── Pas de micro-ondes : réchauffage à la poêle ──
   if (!eq.microondes) {

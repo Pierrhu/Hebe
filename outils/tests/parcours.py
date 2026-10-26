@@ -40,12 +40,13 @@ async def run(p, label, equipment):
             await pg.wait_for_timeout(2000)
         await pg.evaluate("window._nav('cook')"); await pg.wait_for_timeout(600)
         cook = await pg.inner_text('body')
-        if 'g de riz' in cook:
+        # v297 : l'étape du riz vient plus tard ; on repère un plat au riz dans les fiches « Sortir les ingrédients »
+        if 'Riz complet' in await pg.content() or 'g de riz' in cook:
             rice_weeks += 1
             # les étapes s'affichent une par une : on avance dans la phase du riz jusqu'au temps de cuisson
             want = '20 minutes sous pression' if equipment['autocuiseur'] else '35 minutes'
             ok = want in cook
-            for _ in range(2):
+            for _ in range(80):  # v297 : le riz arrive quand l'autocuiseur est libre pour de bon
                 if ok: break
                 nxt = await pg.query_selector('text=Étape suivante')
                 if not nxt: break
