@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-27T09:18:44.782Z
+// 2026-10-27T09:24:49.810Z
 
 
 // ──────────────────────────────────────────────
@@ -4406,6 +4406,8 @@ function generateWeek(opts = {}) {
     localStorage.setItem(LEFT_KEY, JSON.stringify(left));
   } catch {}
   saveWeekPlan(cand.plan);
+  // v301 : les plats demandés qui ont trouvé leur place ne le sont plus
+  setWishes(getWishes().filter(id => !cand.mains.some(m => m.id === id)));
   return cand;
 }
 
@@ -4493,11 +4495,13 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     // environ 3 à 4 portions par plat : 4 plats pour une semaine complète
     let plats = [], counts = null, placed = null;
     const tooLong = new Set(); // v299 : plats écartés parce que la session serait trop longue
+    // v301 : plats demandés (« Je veux ce plat ») : d'office dans la semaine, tant que c'est possible
+    const wished = getWishes().map(getById).filter(r => r && r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !chosen.some(c => c.id === r.id));
     let tries = 0;
     for (let attempt = 0; attempt < 24 && !placed; attempt++) {
       tries = attempt;
       let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / Math.min(4, maxRep)));
-      plats = [];
+      plats = attempt < 20 ? wished.slice(0, k) : [];
       counts = null;
       for (let guard = 0; guard < 6; guard++) {
         while (plats.length < k) {
@@ -4518,7 +4522,8 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
       // la limite s'assouplit à chaque essai : on garde la session la plus courte qu'on sache trouver
       if (attempt < 14 && ssEstimate(plats, getEquipment() || undefined) > SESSION_MAX + 6 * attempt) {
         // le tirage suit le tour de rôle : sans rien changer, il reprendrait les mêmes plats. On écarte le plus long.
-        const worst = plats.reduce((x, y) => (ssEstimate([y], getEquipment() || undefined) > ssEstimate([x], getEquipment() || undefined) ? y : x));
+        const cand = plats.filter(r => !wished.includes(r));
+        const worst = (cand.length ? cand : plats).reduce((x, y) => (ssEstimate([y], getEquipment() || undefined) > ssEstimate([x], getEquipment() || undefined) ? y : x));
         tooLong.add(worst.id);
         continue;
       }
@@ -4861,7 +4866,7 @@ function replaceOptions(oldId, n = 3, { soup = false, seen = [] } = {}) {
   return out;
 }
 // v270 : soup = true ne propose que des soupes (même si les soupes sont désactivées dans les réglages)
-function replacePool(oldId, { soup = false } = {}) {
+function replacePool(oldId, { soup = false, free = false, keepShort = false } = {}) {
   const plan = getActivePlan();
   if (!plan) return null;
   const old = getById(oldId);
@@ -4870,6 +4875,13 @@ function replacePool(oldId, { soup = false } = {}) {
   const inPlan = new Set(plan.sessions.flatMap(s => s.recipes.map(r => r.id)));
   const sessIdx = plan.sessions.indexOf(sess);
   const fishOk = sessIdx === 0 && !plan.sessions.some(s => s.recipes.some(r => r.id !== oldId && isFreshFish(getById(r.id))));
+  // v301 : choix libre (« Choisir moi-même ») : tous les plats et soupes qu'on peut cuisiner, sans tirage ni saison
+  if (free) {
+    const all = [...new Map([...getMains(), ...getAllSoups()].map(r => [r.id, r])).values()]
+      .filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && (fishOk || !isFreshFish(r)));
+    const lastDayF = Math.max(...plan.dates.map((d, i) => (planMembers(plan).some(mid => ['lunch', 'dinner'].some(m => (getEntry(d, mid).meals[m] || []).some(it => it.id === oldId))) ? i : -1)));
+    return keepShort ? all.map(r => ({ r, ok: deadlineOf(r) >= lastDayF })) : all.filter(r => deadlineOf(r) >= lastDayF);
+  }
   let pool = (soup ? getAllSoups() : getMains()).filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && getRating(r.id) >= 0 && (fishOk || !isFreshFish(r)));
   pool = seasonal(pool, plan.dates?.[0], 8); // v226 : plats de saison
   const mids = planMembers(plan);
@@ -4894,7 +4906,16 @@ function replacePool(oldId, { soup = false } = {}) {
   if (same.length) pool = same;
   return pool;
 }
-function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
+// v301 : tous les plats qu'on peut mettre à la place d'un plat de la semaine, choisis explicitement.
+// ok = false : il ne se garderait pas jusqu'au dernier jour où l'ancien plat est mangé
+function freeChoices(oldId) { return replacePool(oldId, { free: true, keepShort: true }) || []; }
+// Plats demandés pour la semaine prochaine (fiche recette, « Je veux ce plat ») : placés d'office à la génération
+const WISH_KEY = 'hebe_wishes';
+const getWishes = () => { try { const a = JSON.parse(localStorage.getItem(WISH_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch { return []; } };
+const setWishes = a => { try { localStorage.setItem(WISH_KEY, JSON.stringify(a)); } catch {} };
+const addWish = id => setWishes([...getWishes().filter(x => x !== id), id]);
+const removeWish = id => setWishes(getWishes().filter(x => x !== id));
+function replaceDish(oldId, chosenId = null, { soup = false, free = false } = {}) {
   const plan = getActivePlan();
   if (!plan) return null;
   const old = getById(oldId);
@@ -4902,7 +4923,7 @@ function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
   if (!old || !sess) return null;
   const mids = planMembers(plan);
   const ptOf = mid => plateTarget(planTargets(plan, mid), planShare(plan, mid), proteinBoost(mid));
-  const pool = replacePool(oldId, { soup });
+  const pool = replacePool(oldId, { soup, free });
   if (!pool || !pool.length) return null;
   let next = chosenId && pool.find(r => r.id === chosenId);
   if (!next) {
@@ -5892,6 +5913,42 @@ function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
   app.insertBefore(view, app.querySelector('#nav'));
   window.scrollTo(0, 0);
 
+  // v301 : « Je veux ce plat » : à la place d'un plat de cette semaine (session pas encore faite), ou la semaine prochaine
+  const wantable = ['lunch', 'dinner'].includes(recipe.category) && recipe.batch;
+  const inPlan = () => !!getActivePlan()?.sessions.some(S => S.recipes.some(x => x.id === recipe.id));
+  function wantBtn() {
+    if (!wantable) return '';
+    if (inPlan()) return '<div class="rd-want on">Dans ta semaine</div>';
+    if (getWishes().includes(recipe.id)) return '<button class="rd-want on" data-want>Prévu pour ta prochaine semaine · Retirer</button>';
+    return '<button class="rd-want" data-want>Je veux ce plat</button>';
+  }
+  function openWant() {
+    if (getWishes().includes(recipe.id)) { removeWish(recipe.id); toast(`${recipe.short || recipe.name} retiré de ta prochaine semaine`); render(); return; }
+    const plan = getActivePlan();
+    const now = plan && sessionDate(plan) >= getTodayDate();
+    // les plats de la semaine qu'il peut remplacer (il se garde assez longtemps)
+    const olds = now ? plan.sessions.flatMap(S => S.recipes).map(x => x.id).filter(old => freeChoices(old).some(c => c.r.id === recipe.id && c.ok)) : [];
+    openSheet(`
+      <div class="sheet-handle"></div>
+      <div class="hb-sheet-pad">
+        <div class="hb-h2">${recipe.short || recipe.name}</div>
+        ${olds.length ? `<p class="sw-sub">Cette semaine, à la place de :</p>
+        <div class="sw-list">${olds.map(id => { const r = getById(id); return `<button class="sw-opt" data-old="${id}">${dishThumb(r, 'sw-img')}<span class="sw-txt"><b>${r.name}</b><small>${plan.sessions.flatMap(S => S.recipes).find(x => x.id === id)?.portions || 0} boîtes</small></span><span class="hb-chev">›</span></button>`; }).join('')}</div>` : ''}
+        <button class="hb-btn hb-btn-primary rd-next-week">${olds.length ? 'Plutôt la semaine prochaine' : 'Dans ma prochaine semaine'}</button>
+        <button class="out-cancel rd-want-cancel">Annuler</button>
+      </div>`);
+    const sh = document.querySelector('.sheet') || document;
+    sh.querySelector('.rd-want-cancel')?.addEventListener('click', closeSheet);
+    sh.querySelector('.rd-next-week')?.addEventListener('click', () => { addWish(recipe.id); closeSheet(); render(); toast(`${recipe.short || recipe.name} sera dans ta prochaine semaine`); });
+    sh.querySelectorAll('[data-old]').forEach(b => b.addEventListener('click', () => {
+      const next = replaceDish(b.dataset.old, recipe.id, { free: true });
+      closeSheet();
+      if (!next) { toast('Ce plat ne peut pas remplacer celui-ci', 'warn'); return; }
+      render();
+      toast(`${getById(b.dataset.old)?.short || 'Le plat'} remplacé par ${recipe.short || recipe.name} pour toute la session`);
+    }));
+  }
+
   function render() {
     // v195 : toujours ce que tu manges vraiment (portion de la semaine, sinon calculée pour toi)
     const pf = item && item.id === recipe.id ? { item, date: null, given: true } : portionFor(recipe.id);
@@ -5921,6 +5978,7 @@ function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
         </div>
         <h1 class="rd-title">${recipe.name}</h1>
         <div class="rate-hint">${rateHint(getRating(recipe.id))}</div>
+        ${wantBtn()}
 
         <div class="rd-nutri">
           <div class="rd-kcal"><b>${m.kcal}</b><span>kcal</span></div>
@@ -5957,6 +6015,7 @@ function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
     `;
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
+    view.querySelector('[data-want]')?.addEventListener('click', openWant);
     view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {
       setDishStaple(recipe.id, b.dataset.staple); applyEquipment(); applyDiet();
       const y = window.scrollY; render(); window.scrollTo(0, y);
@@ -6644,12 +6703,14 @@ function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {})
       ${nChecked ? `<div class="sw-warn">Tu as déjà coché ${nChecked} produit${nChecked > 1 ? 's' : ''} dans ta liste de courses : la liste va changer pour ce plat, tes coches sont gardées.</div>` : ''}
       <div class="sw-list">${opts.map(card).join('')}</div>
       <button class="hb-btn sw-more">${soup ? 'Autres soupes' : 'Autres idées'}</button>
+      <button class="hb-btn sw-free">Choisir moi-même</button>
       ${canSoup ? `<button class="hb-btn sw-soup">${isSoup(old) ? 'Une autre soupe' : 'Plutôt une soupe'}</button>` : ''}
       <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
     </div>`);
   const sh = document.querySelector('.sheet') || document;
   sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup, seen: seenNext }); });
   sh.querySelector('.sw-soup')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup: true }); });
+  sh.querySelector('.sw-free')?.addEventListener('click', () => { closeSheet(); openFreePick(oldId, date, { meal }); });
   sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
   sh.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {
     const kept = localStorage.getItem(ckKey);
@@ -6659,6 +6720,46 @@ function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {})
     if (kept) localStorage.setItem('diet_shopping_checked_' + getActivePlan().generatedAt, kept);
     closeSheet(); renderWeek(); openDaySheet(date);
     toast(`${shortName(old.id)} remplacé par ${shortName(next.id)} pour toute la session`);
+  }));
+}
+
+// v301 : « Choisir moi-même » : tous les plats possibles, avec une recherche. Ceux qui ne se garderaient pas
+// jusqu'au dernier jour prévu sont montrés grisés, avec la raison.
+function openFreePick(oldId, date, { meal = '' } = {}) {
+  const plan = getActivePlan();
+  const list = freeChoices(oldId).sort((a, b) => (b.ok - a.ok) || a.r.name.localeCompare(b.r.name, 'fr'));
+  if (!list.length) { toast('Aucun autre plat disponible pour le moment', 'warn'); return; }
+  const portions = plan.sessions.flatMap(s => s.recipes).find(r => r.id === oldId)?.portions || 0;
+  const row = ({ r, ok }) => `<button class="sw-opt ${ok ? '' : 'sw-off'}" data-free="${r.id}" ${ok ? '' : 'aria-disabled="true"'} data-q="${(r.name + ' ' + (r.short || '') + ' ' + proteinLabel(r)).toLowerCase()}">
+      ${dishThumb(r, 'sw-img')}
+      <span class="sw-txt"><b>${r.name}</b><small>${ok ? [(r.tags || []).map(t => CUISINES[t]).find(Boolean), proteinLabel(r)].filter(Boolean).join(' · ') : 'Ne se garde pas jusqu\'au dernier jour prévu'}</small></span>
+      ${ok ? '<span class="hb-chev">›</span>' : ''}
+    </button>`;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="hb-sheet-pad">
+      <div class="hb-h2">Ton plat à la place de ${shortName(oldId)}</div>
+      <p class="sw-sub">Il remplace les ${portions} boîtes de la session. Portions et courses se recalculent.</p>
+      <input class="search-bar sw-search" placeholder="Chercher un plat, une viande, une cuisine…" autocomplete="off">
+      <div class="sw-list sw-all">${list.map(row).join('')}</div>
+      <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
+    </div>`);
+  const sh = document.querySelector('.sheet') || document;
+  const search = sh.querySelector('.sw-search');
+  search?.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    sh.querySelectorAll('[data-free]').forEach(b => { b.hidden = !!q && !b.dataset.q.includes(q); });
+  });
+  sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); if (date) openDaySheet(date); });
+  sh.querySelectorAll('[data-free]').forEach(b => b.addEventListener('click', () => {
+    if (b.getAttribute('aria-disabled')) { toast('Ce plat ne se garderait pas jusqu\'au dernier jour prévu : choisis-en un autre', 'warn'); return; }
+    const ckKey = 'diet_shopping_checked_' + (plan?.generatedAt || 'x');
+    const kept = localStorage.getItem(ckKey);
+    const next = replaceDish(oldId, b.dataset.free, { free: true });
+    if (!next) { toast('Ce plat ne peut pas remplacer celui-ci', 'warn'); return; }
+    if (kept) localStorage.setItem('diet_shopping_checked_' + getActivePlan().generatedAt, kept);
+    closeSheet(); renderWeek(); if (date) openDaySheet(date);
+    toast(`${shortName(oldId)} remplacé par ${shortName(next.id)} pour toute la session`);
   }));
 }
 

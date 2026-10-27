@@ -1,7 +1,9 @@
 import { artFor } from '../data/photos.js';
 import { spicesOf } from '../data/ingredients.js';
-import { proteinFamily, getExtras, setExtras } from '../data/recipes.js';
-import { rebalanceAfterRecipeChange, portionFor } from './weekgen.js';
+import { proteinFamily, getExtras, setExtras, getById } from '../data/recipes.js';
+import { rebalanceAfterRecipeChange, portionFor, getActivePlan, getWishes, addWish, removeWish, freeChoices, replaceDish, sessionDate } from './weekgen.js';
+import { getTodayDate } from '../data/log.js';
+import { dishThumb } from '../data/photos.js';
 import { humanQty, qtyShort, qtyWithName, INGREDIENTS, NATURAL_UNITS, ingMacros } from '../data/ingredients.js';
 import { getRating, setRating } from '../data/prefs.js';
 import { photoUrl, rateClass, ICON_HEART, ICON_NOPE } from '../data/photos.js';
@@ -63,6 +65,42 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
   app.insertBefore(view, app.querySelector('#nav'));
   window.scrollTo(0, 0);
 
+  // v301 : « Je veux ce plat » : à la place d'un plat de cette semaine (session pas encore faite), ou la semaine prochaine
+  const wantable = ['lunch', 'dinner'].includes(recipe.category) && recipe.batch;
+  const inPlan = () => !!getActivePlan()?.sessions.some(S => S.recipes.some(x => x.id === recipe.id));
+  function wantBtn() {
+    if (!wantable) return '';
+    if (inPlan()) return '<div class="rd-want on">Dans ta semaine</div>';
+    if (getWishes().includes(recipe.id)) return '<button class="rd-want on" data-want>Prévu pour ta prochaine semaine · Retirer</button>';
+    return '<button class="rd-want" data-want>Je veux ce plat</button>';
+  }
+  function openWant() {
+    if (getWishes().includes(recipe.id)) { removeWish(recipe.id); toast(`${recipe.short || recipe.name} retiré de ta prochaine semaine`); render(); return; }
+    const plan = getActivePlan();
+    const now = plan && sessionDate(plan) >= getTodayDate();
+    // les plats de la semaine qu'il peut remplacer (il se garde assez longtemps)
+    const olds = now ? plan.sessions.flatMap(S => S.recipes).map(x => x.id).filter(old => freeChoices(old).some(c => c.r.id === recipe.id && c.ok)) : [];
+    openSheet(`
+      <div class="sheet-handle"></div>
+      <div class="hb-sheet-pad">
+        <div class="hb-h2">${recipe.short || recipe.name}</div>
+        ${olds.length ? `<p class="sw-sub">Cette semaine, à la place de :</p>
+        <div class="sw-list">${olds.map(id => { const r = getById(id); return `<button class="sw-opt" data-old="${id}">${dishThumb(r, 'sw-img')}<span class="sw-txt"><b>${r.name}</b><small>${plan.sessions.flatMap(S => S.recipes).find(x => x.id === id)?.portions || 0} boîtes</small></span><span class="hb-chev">›</span></button>`; }).join('')}</div>` : ''}
+        <button class="hb-btn hb-btn-primary rd-next-week">${olds.length ? 'Plutôt la semaine prochaine' : 'Dans ma prochaine semaine'}</button>
+        <button class="out-cancel rd-want-cancel">Annuler</button>
+      </div>`);
+    const sh = document.querySelector('.sheet') || document;
+    sh.querySelector('.rd-want-cancel')?.addEventListener('click', closeSheet);
+    sh.querySelector('.rd-next-week')?.addEventListener('click', () => { addWish(recipe.id); closeSheet(); render(); toast(`${recipe.short || recipe.name} sera dans ta prochaine semaine`); });
+    sh.querySelectorAll('[data-old]').forEach(b => b.addEventListener('click', () => {
+      const next = replaceDish(b.dataset.old, recipe.id, { free: true });
+      closeSheet();
+      if (!next) { toast('Ce plat ne peut pas remplacer celui-ci', 'warn'); return; }
+      render();
+      toast(`${getById(b.dataset.old)?.short || 'Le plat'} remplacé par ${recipe.short || recipe.name} pour toute la session`);
+    }));
+  }
+
   function render() {
     // v195 : toujours ce que tu manges vraiment (portion de la semaine, sinon calculée pour toi)
     const pf = item && item.id === recipe.id ? { item, date: null, given: true } : portionFor(recipe.id);
@@ -92,6 +130,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
         </div>
         <h1 class="rd-title">${recipe.name}</h1>
         <div class="rate-hint">${rateHint(getRating(recipe.id))}</div>
+        ${wantBtn()}
 
         <div class="rd-nutri">
           <div class="rd-kcal"><b>${m.kcal}</b><span>kcal</span></div>
@@ -128,6 +167,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
     `;
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
+    view.querySelector('[data-want]')?.addEventListener('click', openWant);
     view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {
       setDishStaple(recipe.id, b.dataset.staple); applyEquipment(); applyDiet();
       const y = window.scrollY; render(); window.scrollTo(0, y);

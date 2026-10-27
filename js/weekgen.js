@@ -569,6 +569,8 @@ export function generateWeek(opts = {}) {
     localStorage.setItem(LEFT_KEY, JSON.stringify(left));
   } catch {}
   saveWeekPlan(cand.plan);
+  // v301 : les plats demandés qui ont trouvé leur place ne le sont plus
+  setWishes(getWishes().filter(id => !cand.mains.some(m => m.id === id)));
   return cand;
 }
 
@@ -656,11 +658,13 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     // environ 3 à 4 portions par plat : 4 plats pour une semaine complète
     let plats = [], counts = null, placed = null;
     const tooLong = new Set(); // v299 : plats écartés parce que la session serait trop longue
+    // v301 : plats demandés (« Je veux ce plat ») : d'office dans la semaine, tant que c'est possible
+    const wished = getWishes().map(getById).filter(r => r && r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !chosen.some(c => c.id === r.id));
     let tries = 0;
     for (let attempt = 0; attempt < 24 && !placed; attempt++) {
       tries = attempt;
       let k = Math.max(n >= 3 ? 2 : 1, Math.ceil(n / Math.min(4, maxRep)));
-      plats = [];
+      plats = attempt < 20 ? wished.slice(0, k) : [];
       counts = null;
       for (let guard = 0; guard < 6; guard++) {
         while (plats.length < k) {
@@ -681,7 +685,8 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
       // la limite s'assouplit à chaque essai : on garde la session la plus courte qu'on sache trouver
       if (attempt < 14 && ssEstimate(plats, getEquipment() || undefined) > SESSION_MAX + 6 * attempt) {
         // le tirage suit le tour de rôle : sans rien changer, il reprendrait les mêmes plats. On écarte le plus long.
-        const worst = plats.reduce((x, y) => (ssEstimate([y], getEquipment() || undefined) > ssEstimate([x], getEquipment() || undefined) ? y : x));
+        const cand = plats.filter(r => !wished.includes(r));
+        const worst = (cand.length ? cand : plats).reduce((x, y) => (ssEstimate([y], getEquipment() || undefined) > ssEstimate([x], getEquipment() || undefined) ? y : x));
         tooLong.add(worst.id);
         continue;
       }
@@ -1024,7 +1029,7 @@ export function replaceOptions(oldId, n = 3, { soup = false, seen = [] } = {}) {
   return out;
 }
 // v270 : soup = true ne propose que des soupes (même si les soupes sont désactivées dans les réglages)
-function replacePool(oldId, { soup = false } = {}) {
+function replacePool(oldId, { soup = false, free = false, keepShort = false } = {}) {
   const plan = getActivePlan();
   if (!plan) return null;
   const old = getById(oldId);
@@ -1033,6 +1038,13 @@ function replacePool(oldId, { soup = false } = {}) {
   const inPlan = new Set(plan.sessions.flatMap(s => s.recipes.map(r => r.id)));
   const sessIdx = plan.sessions.indexOf(sess);
   const fishOk = sessIdx === 0 && !plan.sessions.some(s => s.recipes.some(r => r.id !== oldId && isFreshFish(getById(r.id))));
+  // v301 : choix libre (« Choisir moi-même ») : tous les plats et soupes qu'on peut cuisiner, sans tirage ni saison
+  if (free) {
+    const all = [...new Map([...getMains(), ...getAllSoups()].map(r => [r.id, r])).values()]
+      .filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && (fishOk || !isFreshFish(r)));
+    const lastDayF = Math.max(...plan.dates.map((d, i) => (planMembers(plan).some(mid => ['lunch', 'dinner'].some(m => (getEntry(d, mid).meals[m] || []).some(it => it.id === oldId))) ? i : -1)));
+    return keepShort ? all.map(r => ({ r, ok: deadlineOf(r) >= lastDayF })) : all.filter(r => deadlineOf(r) >= lastDayF);
+  }
   let pool = (soup ? getAllSoups() : getMains()).filter(r => r.batch && isAvailable(r) && dietOk(r, householdLactose(), householdGluten()) && !inPlan.has(r.id) && getRating(r.id) >= 0 && (fishOk || !isFreshFish(r)));
   pool = seasonal(pool, plan.dates?.[0], 8); // v226 : plats de saison
   const mids = planMembers(plan);
@@ -1057,7 +1069,16 @@ function replacePool(oldId, { soup = false } = {}) {
   if (same.length) pool = same;
   return pool;
 }
-export function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
+// v301 : tous les plats qu'on peut mettre à la place d'un plat de la semaine, choisis explicitement.
+// ok = false : il ne se garderait pas jusqu'au dernier jour où l'ancien plat est mangé
+export function freeChoices(oldId) { return replacePool(oldId, { free: true, keepShort: true }) || []; }
+// Plats demandés pour la semaine prochaine (fiche recette, « Je veux ce plat ») : placés d'office à la génération
+const WISH_KEY = 'hebe_wishes';
+export const getWishes = () => { try { const a = JSON.parse(localStorage.getItem(WISH_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch { return []; } };
+const setWishes = a => { try { localStorage.setItem(WISH_KEY, JSON.stringify(a)); } catch {} };
+export const addWish = id => setWishes([...getWishes().filter(x => x !== id), id]);
+export const removeWish = id => setWishes(getWishes().filter(x => x !== id));
+export function replaceDish(oldId, chosenId = null, { soup = false, free = false } = {}) {
   const plan = getActivePlan();
   if (!plan) return null;
   const old = getById(oldId);
@@ -1065,7 +1086,7 @@ export function replaceDish(oldId, chosenId = null, { soup = false } = {}) {
   if (!old || !sess) return null;
   const mids = planMembers(plan);
   const ptOf = mid => plateTarget(planTargets(plan, mid), planShare(plan, mid), proteinBoost(mid));
-  const pool = replacePool(oldId, { soup });
+  const pool = replacePool(oldId, { soup, free });
   if (!pool || !pool.length) return null;
   let next = chosenId && pool.find(r => r.id === chosenId);
   if (!next) {

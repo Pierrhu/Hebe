@@ -9,7 +9,7 @@ import { whoSwitch, bindWho, avatar } from './profileUi.js';
 import { getById, proteinFamily, isFreshFish, isSoup, getMains } from '../data/recipes.js';
 import { INGREDIENTS, humanQty, PIECES, qtyWithName } from '../data/ingredients.js';
 import { el, computeDayMacros, itemMacros, openSheet, closeSheet, toast } from './utils.js';
-import { sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, planMembers, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
+import { freeChoices, sessionDate, sessionWhen, replaceOptions, generateWeek, getActivePlan, planMembers, replaceDish, logOutsideMeal, undoOutsideMeal, OUTSIDE_LEVELS, planTargets, recalcPortions, refreshExtras, snackChoices, breakfastChoices, pinSnack, setBreakfast } from './weekgen.js';
 import { itemQuantities, plateTarget, PLATE_SHARE } from './optimizer.js';
 import { proteinBoost } from './diet.js';
 import { dishThumb, dishThumbRated, rateClass, ICON_HEART } from '../data/photos.js';
@@ -603,12 +603,14 @@ function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {})
       ${nChecked ? `<div class="sw-warn">Tu as déjà coché ${nChecked} produit${nChecked > 1 ? 's' : ''} dans ta liste de courses : la liste va changer pour ce plat, tes coches sont gardées.</div>` : ''}
       <div class="sw-list">${opts.map(card).join('')}</div>
       <button class="hb-btn sw-more">${soup ? 'Autres soupes' : 'Autres idées'}</button>
+      <button class="hb-btn sw-free">Choisir moi-même</button>
       ${canSoup ? `<button class="hb-btn sw-soup">${isSoup(old) ? 'Une autre soupe' : 'Plutôt une soupe'}</button>` : ''}
       <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
     </div>`);
   const sh = document.querySelector('.sheet') || document;
   sh.querySelector('.sw-more')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup, seen: seenNext }); });
   sh.querySelector('.sw-soup')?.addEventListener('click', () => { closeSheet(); openSwapSheet(oldId, date, { meal, soup: true }); });
+  sh.querySelector('.sw-free')?.addEventListener('click', () => { closeSheet(); openFreePick(oldId, date, { meal }); });
   sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); openDaySheet(date); });
   sh.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {
     const kept = localStorage.getItem(ckKey);
@@ -618,6 +620,46 @@ function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {})
     if (kept) localStorage.setItem('diet_shopping_checked_' + getActivePlan().generatedAt, kept);
     closeSheet(); renderWeek(); openDaySheet(date);
     toast(`${shortName(old.id)} remplacé par ${shortName(next.id)} pour toute la session`);
+  }));
+}
+
+// v301 : « Choisir moi-même » : tous les plats possibles, avec une recherche. Ceux qui ne se garderaient pas
+// jusqu'au dernier jour prévu sont montrés grisés, avec la raison.
+export function openFreePick(oldId, date, { meal = '' } = {}) {
+  const plan = getActivePlan();
+  const list = freeChoices(oldId).sort((a, b) => (b.ok - a.ok) || a.r.name.localeCompare(b.r.name, 'fr'));
+  if (!list.length) { toast('Aucun autre plat disponible pour le moment', 'warn'); return; }
+  const portions = plan.sessions.flatMap(s => s.recipes).find(r => r.id === oldId)?.portions || 0;
+  const row = ({ r, ok }) => `<button class="sw-opt ${ok ? '' : 'sw-off'}" data-free="${r.id}" ${ok ? '' : 'aria-disabled="true"'} data-q="${(r.name + ' ' + (r.short || '') + ' ' + proteinLabel(r)).toLowerCase()}">
+      ${dishThumb(r, 'sw-img')}
+      <span class="sw-txt"><b>${r.name}</b><small>${ok ? [(r.tags || []).map(t => CUISINES[t]).find(Boolean), proteinLabel(r)].filter(Boolean).join(' · ') : 'Ne se garde pas jusqu\'au dernier jour prévu'}</small></span>
+      ${ok ? '<span class="hb-chev">›</span>' : ''}
+    </button>`;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="hb-sheet-pad">
+      <div class="hb-h2">Ton plat à la place de ${shortName(oldId)}</div>
+      <p class="sw-sub">Il remplace les ${portions} boîtes de la session. Portions et courses se recalculent.</p>
+      <input class="search-bar sw-search" placeholder="Chercher un plat, une viande, une cuisine…" autocomplete="off">
+      <div class="sw-list sw-all">${list.map(row).join('')}</div>
+      <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
+    </div>`);
+  const sh = document.querySelector('.sheet') || document;
+  const search = sh.querySelector('.sw-search');
+  search?.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    sh.querySelectorAll('[data-free]').forEach(b => { b.hidden = !!q && !b.dataset.q.includes(q); });
+  });
+  sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); if (date) openDaySheet(date); });
+  sh.querySelectorAll('[data-free]').forEach(b => b.addEventListener('click', () => {
+    if (b.getAttribute('aria-disabled')) { toast('Ce plat ne se garderait pas jusqu\'au dernier jour prévu : choisis-en un autre', 'warn'); return; }
+    const ckKey = 'diet_shopping_checked_' + (plan?.generatedAt || 'x');
+    const kept = localStorage.getItem(ckKey);
+    const next = replaceDish(oldId, b.dataset.free, { free: true });
+    if (!next) { toast('Ce plat ne peut pas remplacer celui-ci', 'warn'); return; }
+    if (kept) localStorage.setItem('diet_shopping_checked_' + getActivePlan().generatedAt, kept);
+    closeSheet(); renderWeek(); if (date) openDaySheet(date);
+    toast(`${shortName(oldId)} remplacé par ${shortName(next.id)} pour toute la session`);
   }));
 }
 

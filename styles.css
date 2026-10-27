@@ -2036,3 +2036,11 @@ button.wl-ch:disabled { cursor: default; }
 .ck-step-dish .dish-ph.mini { width: 26px; height: 26px; object-fit: cover; }
 .ck-bg { margin-top: 12px; padding: 9px 12px; border-radius: 14px; background: var(--sage-t, #EEF3EE); font-size: 13.5px; line-height: 1.4; color: var(--text); }
 .ck-bg span { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 700; color: var(--sage, #5E7A67); }
+
+/* v301 : choisir un plat soi-même */
+.sw-opt[hidden] { display: none; }
+.sw-opt.sw-off { opacity: .45; }
+.sw-search { margin: 4px 0 10px; }
+.sw-free { margin-top: 8px; }
+.rd-want { display: inline-block; margin: 10px 0 2px; padding: 10px 18px; border-radius: 999px; background: var(--sage, #7C9885); color: #fff; font: 700 14px var(--sans); }
+.rd-want.on { background: var(--sage-t, #E6EFE7); color: var(--sage-d, #4F6B58); }
