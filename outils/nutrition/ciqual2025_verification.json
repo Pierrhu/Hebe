@@ -1,0 +1,3533 @@
+[
+ {
+  "key": "poulet",
+  "verdict": "ok",
+  "code": "36017",
+  "nom_ciqual": "Poulet, filet sans peau cru",
+  "ciqual": {
+   "kcal": 110.0,
+   "protein": 23.4,
+   "carbs": 0.0,
+   "fat": 1.5,
+   "fib": 0.0,
+   "sel": 0.1,
+   "ags": 0.4
+  },
+  "propose": {
+   "kcal": 110.0,
+   "protein": 23.4,
+   "carbs": 0.0,
+   "fat": 1.5
+  },
+  "note": "Filet sans peau cru, correspondance exacte."
+ },
+ {
+  "key": "poulet_hache",
+  "verdict": "a_corriger",
+  "code": "36003",
+  "nom_ciqual": "Poulet, viande crue",
+  "ciqual": {
+   "kcal": 109.0,
+   "protein": 20.9,
+   "carbs": 0.0,
+   "fat": 2.9,
+   "fib": 0.0,
+   "sel": 0.2,
+   "ags": 0.7
+  },
+  "propose": {
+   "kcal": 109.0,
+   "protein": 20.9,
+   "carbs": 0.0,
+   "fat": 2.9
+  },
+  "note": "Pas de poulet haché nature dans Ciqual : « Poulet, viande crue » retenu (le « Haché de volaille » 28927 est une préparation salée avec 3,5 g de glucides). Écart sur : kcal, fat."
+ },
+ {
+  "key": "poulet_tranches",
+  "verdict": "a_corriger",
+  "code": "28963",
+  "nom_ciqual": "Jambon de poulet ou blanc de poulet en tranche",
+  "ciqual": {
+   "kcal": 105.0,
+   "protein": 20.7,
+   "carbs": 1.4,
+   "fat": 1.8,
+   "fib": 0.5,
+   "sel": 1.9,
+   "ags": 0.5
+  },
+  "propose": {
+   "kcal": 105.0,
+   "protein": 20.7,
+   "carbs": 1.4,
+   "fat": 1.8
+  },
+  "note": "Blanc de poulet en tranches (charcuterie) ; sel 1,86 g/100 g. Écart sur : kcal, protein."
+ },
+ {
+  "key": "boeuf",
+  "verdict": "a_corriger",
+  "code": "6250",
+  "nom_ciqual": "Boeuf, steak haché 5% MG cru",
+  "ciqual": {
+   "kcal": 130.0,
+   "protein": 21.9,
+   "carbs": 0.3,
+   "fat": 4.6,
+   "fib": 0.0,
+   "sel": 0.1,
+   "ags": 1.6
+  },
+  "propose": {
+   "kcal": 130.0,
+   "protein": 21.9,
+   "carbs": 0.3,
+   "fat": 4.6
+  },
+  "note": "Steak haché 5 % MG cru (l'app pèse cru). Écart sur : kcal."
+ },
+ {
+  "key": "saumon",
+  "verdict": "a_corriger",
+  "code": "26036",
+  "nom_ciqual": "Saumon, élevage, cru",
+  "ciqual": {
+   "kcal": 193.0,
+   "protein": 20.5,
+   "carbs": 0.0,
+   "fat": 12.4,
+   "fib": 0.1,
+   "sel": 0.2,
+   "ags": 2.2
+  },
+  "propose": {
+   "kcal": 193.0,
+   "protein": 20.5,
+   "carbs": 0.0,
+   "fat": 12.4
+  },
+  "note": "Saumon d'élevage cru (le plus courant en magasin) ; le sauvage cru fait 166 kcal. Écart sur : kcal, fat."
+ },
+ {
+  "key": "poisson_blanc",
+  "verdict": "a_corriger",
+  "code": "26048+26233",
+  "nom_ciqual": "Moyenne : Merlu, filet, surgelé, cru + Merlu blanc du Cap, surgelé, cru",
+  "ciqual": {
+   "kcal": 83.4,
+   "protein": 15.6,
+   "carbs": 0.9,
+   "fat": 2.0,
+   "fib": 0.0,
+   "sel": 0.4,
+   "ags": 0.6
+  },
+  "propose": {
+   "kcal": 83.4,
+   "protein": 15.6,
+   "carbs": 0.9,
+   "fat": 2.0
+  },
+  "note": "Moyenne des deux merlus surgelés crus de Ciqual (filet surgelé cru 88,8 kcal ; merlu blanc du Cap surgelé cru 78 kcal) ; le lieu jaune/colin cru frais fait 75,5 kcal. Écart sur : kcal, protein, carbs, fat."
+ },
+ {
+  "key": "crevettes",
+  "verdict": "a_corriger",
+  "code": "10038",
+  "nom_ciqual": "Crevette, crue",
+  "ciqual": {
+   "kcal": 92.5,
+   "protein": 18.3,
+   "carbs": 2.6,
+   "fat": 1.0,
+   "fib": 0.1,
+   "sel": 1.8,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 105,
+   "protein": 23.4,
+   "carbs": 0.5,
+   "fat": 1.2
+  },
+  "note": "Crevettes crues surgelées décortiquées (les recettes les cuisent jusqu'à ce qu'elles rosissent) : Ciqual 10038."
+ },
+ {
+  "key": "thon",
+  "verdict": "a_corriger",
+  "code": "26039",
+  "nom_ciqual": "Thon, au naturel, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 143.0,
+   "protein": 26.8,
+   "carbs": 0.0,
+   "fat": 3.9,
+   "fib": 0.0,
+   "sel": 0.7,
+   "ags": 1.0
+  },
+  "propose": {
+   "kcal": 143.0,
+   "protein": 26.8,
+   "carbs": 0.0,
+   "fat": 3.9
+  },
+  "note": "Thon au naturel appertisé égoutté (aliment générique) ; le thon albacore au naturel égoutté (26181) fait 127 kcal. Écart sur : kcal, fat. Arbitrage : thon albacore au naturel, égoutté (plus proche des boîtes du commerce)."
+ },
+ {
+  "key": "oeuf",
+  "verdict": "ok",
+  "code": "22000",
+  "nom_ciqual": "Oeuf cru",
+  "ciqual": {
+   "kcal": 77.0,
+   "protein": 7.0,
+   "carbs": 0.0,
+   "fat": 5.4,
+   "fib": 0.0,
+   "sel": 0.2,
+   "ags": 1.5
+  },
+  "propose": {
+   "kcal": 77.0,
+   "protein": 7.0,
+   "carbs": 0.0,
+   "fat": 5.4
+  },
+  "note": "Œuf cru × 55 g (calibre moyen sans coquille)."
+ },
+ {
+  "key": "tofu",
+  "verdict": "a_corriger",
+  "code": "20904",
+  "nom_ciqual": "Tofu nature, préemballé",
+  "ciqual": {
+   "kcal": 147.0,
+   "protein": 13.4,
+   "carbs": 2.9,
+   "fat": 8.5,
+   "fib": 0.3,
+   "sel": 0.0,
+   "ags": 1.4
+  },
+  "propose": {
+   "kcal": 147.0,
+   "protein": 13.4,
+   "carbs": 2.9,
+   "fat": 8.5
+  },
+  "note": "Tofu nature préemballé (pas de distinction ferme/nature dans Ciqual). Écart sur : kcal, carbs, fat."
+ },
+ {
+  "key": "riz",
+  "verdict": "ok",
+  "code": "9102",
+  "nom_ciqual": "Riz complet, cru",
+  "ciqual": {
+   "kcal": 350.0,
+   "protein": 7.0,
+   "carbs": 71.4,
+   "fat": 2.8,
+   "fib": 5.0,
+   "sel": 0.0,
+   "ags": 0.6
+  },
+  "propose": {
+   "kcal": 350.0,
+   "protein": 7.0,
+   "carbs": 71.4,
+   "fat": 2.8
+  },
+  "note": "Riz complet cru (cook 2,5 confirme le poids sec)."
+ },
+ {
+  "key": "pates",
+  "verdict": "ok",
+  "code": "9870",
+  "nom_ciqual": "Pâtes sèches, au blé complet, crues",
+  "ciqual": {
+   "kcal": 353.0,
+   "protein": 11.8,
+   "carbs": 67.6,
+   "fat": 2.2,
+   "fib": 6.1,
+   "sel": 0.0,
+   "ags": 0.4
+  },
+  "propose": {
+   "kcal": 353.0,
+   "protein": 11.8,
+   "carbs": 67.6,
+   "fat": 2.2
+  },
+  "note": "Pâtes sèches au blé complet, crues."
+ },
+ {
+  "key": "riz_blanc",
+  "verdict": "ok",
+  "code": "9100",
+  "nom_ciqual": "Riz blanc, cru",
+  "ciqual": {
+   "kcal": 350.0,
+   "protein": 7.0,
+   "carbs": 77.5,
+   "fat": 0.8,
+   "fib": 1.5,
+   "sel": 0.0,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 350.0,
+   "protein": 7.0,
+   "carbs": 77.5,
+   "fat": 0.8
+  },
+  "note": "Riz blanc cru."
+ },
+ {
+  "key": "pates_classiques",
+  "verdict": "ok",
+  "code": "9810",
+  "nom_ciqual": "Pâtes sèches, standard, crues",
+  "ciqual": {
+   "kcal": 364.0,
+   "protein": 12.0,
+   "carbs": 72.7,
+   "fat": 1.6,
+   "fib": 2.9,
+   "sel": 0.0,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 364.0,
+   "protein": 12.0,
+   "carbs": 72.7,
+   "fat": 1.6
+  },
+  "note": "Pâtes sèches standard, crues."
+ },
+ {
+  "key": "nouilles_riz",
+  "verdict": "a_corriger",
+  "code": "9900",
+  "nom_ciqual": "Vermicelles de riz sèches, crues",
+  "ciqual": {
+   "kcal": 365.0,
+   "protein": 7.4,
+   "carbs": 80.5,
+   "fat": 1.0,
+   "fib": 1.2,
+   "sel": 0.0,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 365.0,
+   "protein": 7.4,
+   "carbs": 80.5,
+   "fat": 1.0
+  },
+  "note": "Vermicelles de riz sèches, crues. Écart sur : protein."
+ },
+ {
+  "key": "boulghour",
+  "verdict": "a_corriger",
+  "code": "9690",
+  "nom_ciqual": "Boulgour de blé, cru",
+  "ciqual": {
+   "kcal": 347.0,
+   "protein": 11.7,
+   "carbs": 65.8,
+   "fat": 1.4,
+   "fib": 10.5,
+   "sel": 0.0,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 347.0,
+   "protein": 11.7,
+   "carbs": 65.8,
+   "fat": 1.4
+  },
+  "note": "Boulgour de blé cru. Écart sur : protein, carbs."
+ },
+ {
+  "key": "quinoa",
+  "verdict": "a_corriger",
+  "code": "9340",
+  "nom_ciqual": "Quinoa, cru",
+  "ciqual": {
+   "kcal": 358.0,
+   "protein": 13.2,
+   "carbs": 58.1,
+   "fat": 6.1,
+   "fib": 7.0,
+   "sel": 0.0,
+   "ags": 0.7
+  },
+  "propose": {
+   "kcal": 358.0,
+   "protein": 13.2,
+   "carbs": 58.1,
+   "fat": 6.1
+  },
+  "note": "Quinoa cru. Écart sur : kcal, protein, carbs."
+ },
+ {
+  "key": "semoule",
+  "verdict": "ok",
+  "code": "9681",
+  "nom_ciqual": "Graine de couscous (semoule de blé dur précuite), à cuire",
+  "ciqual": {
+   "kcal": 366.0,
+   "protein": 12.3,
+   "carbs": 72.7,
+   "fat": 1.3,
+   "fib": 4.5,
+   "sel": 0.0,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 366.0,
+   "protein": 12.3,
+   "carbs": 72.7,
+   "fat": 1.3
+  },
+  "note": "Graine de couscous (semoule précuite) à cuire ; la semoule de blé dur crue 9610 (350 kcal) donnerait aussi ok."
+ },
+ {
+  "key": "pdt",
+  "verdict": "ok",
+  "code": "4008",
+  "nom_ciqual": "Pomme de terre, sans peau, crue",
+  "ciqual": {
+   "kcal": 80.0,
+   "protein": 2.0,
+   "carbs": 16.2,
+   "fat": 0.1,
+   "fib": 2.2,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 80.0,
+   "protein": 2.0,
+   "carbs": 16.2,
+   "fat": 0.1
+  },
+  "note": "Pomme de terre sans peau, crue."
+ },
+ {
+  "key": "patate_douce",
+  "verdict": "a_corriger",
+  "code": "4101",
+  "nom_ciqual": "Patate douce, crue",
+  "ciqual": {
+   "kcal": 81.2,
+   "protein": 1.6,
+   "carbs": 17.1,
+   "fat": 0.1,
+   "fib": 3.0,
+   "sel": 0.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 81.2,
+   "protein": 1.6,
+   "carbs": 17.1,
+   "fat": 0.1
+  },
+  "note": "Patate douce crue. Écart sur : kcal, carbs."
+ },
+ {
+  "key": "pain",
+  "verdict": "a_corriger",
+  "code": "7110",
+  "nom_ciqual": "Pain complet ou intégral (à la farine T150)",
+  "ciqual": {
+   "kcal": 234.0,
+   "protein": 8.7,
+   "carbs": 41.2,
+   "fat": 1.7,
+   "fib": 7.3,
+   "sel": 1.2,
+   "ags": 0.6
+  },
+  "propose": {
+   "kcal": 234.0,
+   "protein": 8.7,
+   "carbs": 41.2,
+   "fat": 1.7
+  },
+  "note": "Pain complet ou intégral (farine T150). Écart sur : kcal, carbs, fat."
+ },
+ {
+  "key": "pita",
+  "verdict": "a_corriger",
+  "code": "7180",
+  "nom_ciqual": "Pain pita",
+  "ciqual": {
+   "kcal": 249.0,
+   "protein": 7.5,
+   "carbs": 48.8,
+   "fat": 1.5,
+   "fib": 3.7,
+   "sel": 1.2,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 249.0,
+   "protein": 7.5,
+   "carbs": 48.8,
+   "fat": 1.5
+  },
+  "note": "Pain pita. Écart sur : kcal, protein, carbs."
+ },
+ {
+  "key": "tortilla",
+  "verdict": "a_corriger",
+  "code": "7815",
+  "nom_ciqual": "Tortilla souple (à garnir), à base de blé",
+  "ciqual": {
+   "kcal": 320.0,
+   "protein": 8.0,
+   "carbs": 53.0,
+   "fat": 7.5,
+   "fib": 2.9,
+   "sel": 1.4,
+   "ags": 1.4
+  },
+  "propose": {
+   "kcal": 320.0,
+   "protein": 8.0,
+   "carbs": 53.0,
+   "fat": 7.5
+  },
+  "note": "Tortilla souple à base de blé (présente dans Ciqual). Écart sur : kcal, carbs."
+ },
+ {
+  "key": "farine",
+  "verdict": "ok",
+  "code": "9435",
+  "nom_ciqual": "Farine de blé tendre ou froment T65",
+  "ciqual": {
+   "kcal": 346.0,
+   "protein": 10.0,
+   "carbs": 71.5,
+   "fat": 1.0,
+   "fib": 3.5,
+   "sel": 0.0,
+   "ags": null
+  },
+  "propose": {
+   "kcal": 346.0,
+   "protein": 10.0,
+   "carbs": 71.5,
+   "fat": 1.0
+  },
+  "note": "Farine de blé T65 ; la T55 donne 350 kcal / 9 g de protéines / 73,7 g de glucides, la T45 355 kcal."
+ },
+ {
+  "key": "flocons",
+  "verdict": "a_corriger",
+  "code": "32140",
+  "nom_ciqual": "Flocons d'avoine",
+  "ciqual": {
+   "kcal": 369.0,
+   "protein": 10.6,
+   "carbs": 57.7,
+   "fat": 7.8,
+   "fib": 11.2,
+   "sel": 0.0,
+   "ags": 1.4
+  },
+  "propose": {
+   "kcal": 369.0,
+   "protein": 10.6,
+   "carbs": 57.7,
+   "fat": 7.8
+  },
+  "note": "Flocons d'avoine (Ciqual : 10,6 g de protéines ; l'avoine crue 9310 en donne 16,9 g). Écart sur : protein, fat."
+ },
+ {
+  "key": "chapelure",
+  "verdict": "a_corriger",
+  "code": "7500",
+  "nom_ciqual": "Chapelure",
+  "ciqual": {
+   "kcal": 365.0,
+   "protein": 9.4,
+   "carbs": 74.3,
+   "fat": 1.6,
+   "fib": 5.4,
+   "sel": 0.7,
+   "ags": 0.5
+  },
+  "propose": {
+   "kcal": 365.0,
+   "protein": 9.4,
+   "carbs": 74.3,
+   "fat": 1.6
+  },
+  "note": "Chapelure. Écart sur : protein, fat."
+ },
+ {
+  "key": "lentilles_corail",
+  "verdict": "a_corriger",
+  "code": "20535",
+  "nom_ciqual": "Lentille corail, sèche",
+  "ciqual": {
+   "kcal": 328.0,
+   "protein": 27.7,
+   "carbs": 44.9,
+   "fat": 0.8,
+   "fib": 15.4,
+   "sel": 0.1,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 328.0,
+   "protein": 27.7,
+   "carbs": 44.9,
+   "fat": 0.8
+  },
+  "note": "Lentille corail sèche. Écart sur : kcal, protein, carbs, fat."
+ },
+ {
+  "key": "lentilles_vertes",
+  "verdict": "a_corriger",
+  "code": "20585",
+  "nom_ciqual": "Lentille verte, sèche",
+  "ciqual": {
+   "kcal": 327.0,
+   "protein": 25.1,
+   "carbs": 44.5,
+   "fat": 1.8,
+   "fib": 16.4,
+   "sel": 0.1,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 327.0,
+   "protein": 25.1,
+   "carbs": 44.5,
+   "fat": 1.8
+  },
+  "note": "Lentille verte sèche. Écart sur : carbs."
+ },
+ {
+  "key": "pois_chiches",
+  "verdict": "a_corriger",
+  "code": "20532",
+  "nom_ciqual": "Pois chiche, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 122.0,
+   "protein": 6.7,
+   "carbs": 15.0,
+   "fat": 2.7,
+   "fib": 5.5,
+   "sel": 0.5,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 122.0,
+   "protein": 6.7,
+   "carbs": 15.0,
+   "fat": 2.7
+  },
+  "note": "Pois chiche appertisé égoutté. Écart sur : kcal, protein, carbs."
+ },
+ {
+  "key": "haricots_rouges",
+  "verdict": "a_corriger",
+  "code": "20524",
+  "nom_ciqual": "Haricot rouge, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 108.0,
+   "protein": 8.3,
+   "carbs": 13.0,
+   "fat": 1.0,
+   "fib": 7.0,
+   "sel": 0.7,
+   "ags": 0.4
+  },
+  "propose": {
+   "kcal": 108.0,
+   "protein": 8.3,
+   "carbs": 13.0,
+   "fat": 1.0
+  },
+  "note": "Haricot rouge appertisé égoutté. Écart sur : kcal, carbs."
+ },
+ {
+  "key": "haricots_blancs",
+  "verdict": "a_corriger",
+  "code": "20511",
+  "nom_ciqual": "Haricot blanc, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 85.5,
+   "protein": 5.9,
+   "carbs": 10.9,
+   "fat": 0.5,
+   "fib": 7.0,
+   "sel": 0.7,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 85.5,
+   "protein": 5.9,
+   "carbs": 10.9,
+   "fat": 0.5
+  },
+  "note": "Haricot blanc appertisé égoutté (les valeurs de l'app ressemblent à du cuit à l'eau, 112 kcal). Écart sur : kcal, protein, carbs."
+ },
+ {
+  "key": "brocoli",
+  "verdict": "a_corriger",
+  "code": "20204",
+  "nom_ciqual": "Brocoli, surgelé, cru",
+  "ciqual": {
+   "kcal": 26.4,
+   "protein": 2.8,
+   "carbs": 1.5,
+   "fat": 0.4,
+   "fib": 2.8,
+   "sel": 0.0,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 26.4,
+   "protein": 2.8,
+   "carbs": 1.5,
+   "fat": 0.4
+  },
+  "note": "Brocoli surgelé cru. Écart sur : kcal, carbs."
+ },
+ {
+  "key": "courgette",
+  "verdict": "a_corriger",
+  "code": "20020",
+  "nom_ciqual": "Courgette, chair et peau, crue",
+  "ciqual": {
+   "kcal": 16.7,
+   "protein": 1.2,
+   "carbs": 1.8,
+   "fat": 0.3,
+   "fib": 1.0,
+   "sel": 0.0,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 16.7,
+   "protein": 1.2,
+   "carbs": 1.8,
+   "fat": 0.3
+  },
+  "note": "Courgette chair et peau, crue. Écart sur : carbs."
+ },
+ {
+  "key": "poivron",
+  "verdict": "a_corriger",
+  "code": "20041",
+  "nom_ciqual": "Poivron, vert, jaune ou rouge, cru",
+  "ciqual": {
+   "kcal": 22.6,
+   "protein": 0.8,
+   "carbs": 3.5,
+   "fat": 0.3,
+   "fib": 1.5,
+   "sel": 0.0,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 22.6,
+   "protein": 0.8,
+   "carbs": 3.5,
+   "fat": 0.3
+  },
+  "note": "Poivron vert, jaune ou rouge, cru (moyenne des couleurs ; le rouge cru fait 33,6 kcal). Écart sur : kcal, carbs."
+ },
+ {
+  "key": "oignon",
+  "verdict": "a_corriger",
+  "code": "20034",
+  "nom_ciqual": "Oignon, cru",
+  "ciqual": {
+   "kcal": 39.0,
+   "protein": 1.1,
+   "carbs": 6.3,
+   "fat": 0.6,
+   "fib": 1.7,
+   "sel": 0.1,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 39.0,
+   "protein": 1.1,
+   "carbs": 6.3,
+   "fat": 0.6
+  },
+  "note": "Oignon cru. Écart sur : carbs."
+ },
+ {
+  "key": "ail",
+  "verdict": "ok",
+  "code": "11000",
+  "nom_ciqual": "Ail, cru",
+  "ciqual": {
+   "kcal": 4.4,
+   "protein": 0.2,
+   "carbs": 0.7,
+   "fat": 0.0,
+   "fib": 0.2,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 4.4,
+   "protein": 0.2,
+   "carbs": 0.7,
+   "fat": 0.0
+  },
+  "note": "Ail cru × 4 g par gousse."
+ },
+ {
+  "key": "haricots_verts",
+  "verdict": "a_corriger",
+  "code": "20070",
+  "nom_ciqual": "Haricot vert, surgelé, cru",
+  "ciqual": {
+   "kcal": 33.1,
+   "protein": 1.8,
+   "carbs": 4.8,
+   "fat": 0.2,
+   "fib": 2.6,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 33.1,
+   "protein": 1.8,
+   "carbs": 4.8,
+   "fat": 0.2
+  },
+  "note": "Haricot vert surgelé cru. Écart sur : kcal."
+ },
+ {
+  "key": "epinards",
+  "verdict": "ok",
+  "code": "20083",
+  "nom_ciqual": "Epinard, haché ou purée ou en branches, surgelé, cru",
+  "ciqual": {
+   "kcal": 28.0,
+   "protein": 3.3,
+   "carbs": 1.0,
+   "fat": 0.5,
+   "fib": 3.0,
+   "sel": 0.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 28.0,
+   "protein": 3.3,
+   "carbs": 1.0,
+   "fat": 0.5
+  },
+  "note": "Épinard surgelé cru."
+ },
+ {
+  "key": "carotte",
+  "verdict": "a_corriger",
+  "code": "20009",
+  "nom_ciqual": "Carotte, crue",
+  "ciqual": {
+   "kcal": 30.2,
+   "protein": 0.8,
+   "carbs": 5.2,
+   "fat": 0.3,
+   "fib": 2.9,
+   "sel": 0.1,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 30.2,
+   "protein": 0.8,
+   "carbs": 5.2,
+   "fat": 0.3
+  },
+  "note": "Carotte crue. Écart sur : kcal, carbs."
+ },
+ {
+  "key": "concombre",
+  "verdict": "ok",
+  "code": "20019",
+  "nom_ciqual": "Concombre, chair et peau, cru",
+  "ciqual": {
+   "kcal": 16.8,
+   "protein": 0.7,
+   "carbs": 2.9,
+   "fat": 0.1,
+   "fib": 0.5,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 16.8,
+   "protein": 0.7,
+   "carbs": 2.9,
+   "fat": 0.1
+  },
+  "note": "Concombre chair et peau, cru."
+ },
+ {
+  "key": "tomates_cerise",
+  "verdict": "a_corriger",
+  "code": "20172",
+  "nom_ciqual": "Tomate cerise, crue",
+  "ciqual": {
+   "kcal": 31.8,
+   "protein": 1.3,
+   "carbs": 5.6,
+   "fat": 0.3,
+   "fib": 1.2,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 31.8,
+   "protein": 1.3,
+   "carbs": 5.6,
+   "fat": 0.3
+  },
+  "note": "Tomate cerise crue. Écart sur : kcal, carbs."
+ },
+ {
+  "key": "tomates_conc",
+  "verdict": "ok",
+  "code": "20169",
+  "nom_ciqual": "Tomate, chair, appertisée",
+  "ciqual": {
+   "kcal": 22.6,
+   "protein": 1.2,
+   "carbs": 3.6,
+   "fat": 0.3,
+   "fib": 1.8,
+   "sel": 0.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 22.6,
+   "protein": 1.2,
+   "carbs": 3.6,
+   "fat": 0.3
+  },
+  "note": "Tomate, chair, appertisée (équivalent des tomates concassées en conserve)."
+ },
+ {
+  "key": "salade",
+  "verdict": "ok",
+  "code": "25604",
+  "nom_ciqual": "Salade verte, crue, sans assaisonnement",
+  "ciqual": {
+   "kcal": 13.5,
+   "protein": 1.0,
+   "carbs": 1.5,
+   "fat": 0.1,
+   "fib": 1.3,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 13.5,
+   "protein": 1.0,
+   "carbs": 1.5,
+   "fat": 0.1
+  },
+  "note": "Aliment générique « salade verte crue » ; écarts sous les tolérances."
+ },
+ {
+  "key": "champignons",
+  "verdict": "a_corriger",
+  "code": "20056",
+  "nom_ciqual": "Champignon de Paris ou champignon de couche, cru",
+  "ciqual": {
+   "kcal": 21.0,
+   "protein": 2.1,
+   "carbs": 1.8,
+   "fat": 0.4,
+   "fib": 1.0,
+   "sel": 0.1,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 21.0,
+   "protein": 2.1,
+   "carbs": 1.8,
+   "fat": 0.4
+  },
+  "note": "Frais cru ; protéines (3 → 2,1) et glucides (1 → 1,8) hors tolérance."
+ },
+ {
+  "key": "chou_fleur",
+  "verdict": "ok",
+  "code": "20082",
+  "nom_ciqual": "Chou-fleur, surgelé, cru",
+  "ciqual": {
+   "kcal": 25.1,
+   "protein": 2.0,
+   "carbs": 2.5,
+   "fat": 0.3,
+   "fib": 2.3,
+   "sel": 0.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 25.1,
+   "protein": 2.0,
+   "carbs": 2.5,
+   "fat": 0.3
+  },
+  "note": "État surgelé cru ; glucides écart 0,5 g (limite, toléré)."
+ },
+ {
+  "key": "petits_pois",
+  "verdict": "ok",
+  "code": "20084",
+  "nom_ciqual": "Petits pois, surgelés, crus",
+  "ciqual": {
+   "kcal": 77.9,
+   "protein": 5.9,
+   "carbs": 9.5,
+   "fat": 0.4,
+   "fib": 6.5,
+   "sel": 0.2,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 77.9,
+   "protein": 5.9,
+   "carbs": 9.5,
+   "fat": 0.4
+  },
+  "note": "État surgelé cru ; tous les écarts sous les tolérances."
+ },
+ {
+  "key": "mais",
+  "verdict": "a_corriger",
+  "code": "20066",
+  "nom_ciqual": "Maïs doux, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 105.0,
+   "protein": 2.7,
+   "carbs": 18.3,
+   "fat": 1.7,
+   "fib": 3.1,
+   "sel": 0.6,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 105.0,
+   "protein": 2.7,
+   "carbs": 18.3,
+   "fat": 1.7
+  },
+  "note": "Conserve égouttée : 105 kcal, l'app sous-estime (90)."
+ },
+ {
+  "key": "legumes_mix",
+  "verdict": "a_corriger",
+  "code": "20262/20274/20498",
+  "nom_ciqual": "Moyenne : Poêlée de légumes assaisonnés sans champignon / méridionale / aux champignons, surgelées, crues",
+  "ciqual": {
+   "kcal": 43.3,
+   "protein": 1.9,
+   "carbs": 4.4,
+   "fat": 1.3,
+   "fib": 3.4,
+   "sel": 0.7,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 43.3,
+   "protein": 1.9,
+   "carbs": 4.4,
+   "fat": 1.3
+  },
+  "note": "Pas de « poêlée » générique : moyenne de 3 poêlées surgelées crues (hors version asiatique à 73 kcal) ; glucides 6 → 4,4, lipides 0,5 → 1,3 (poêlées assaisonnées avec matière grasse)."
+ },
+ {
+  "key": "avocat",
+  "verdict": "a_corriger",
+  "code": "13004",
+  "nom_ciqual": "Avocat, chair sans peau, sans noyau, cru",
+  "ciqual": {
+   "kcal": 203.0,
+   "protein": 1.6,
+   "carbs": 0.0,
+   "fat": 20.6,
+   "fib": 3.6,
+   "sel": 0.0,
+   "ags": 4.5
+  },
+  "propose": {
+   "kcal": 203.0,
+   "protein": 1.6,
+   "carbs": 0.0,
+   "fat": 20.6
+  },
+  "note": "Glucides « traces » = 0 ; l'app sous-estime fortement (160 → 203 kcal, lipides 15 → 20,6)."
+ },
+ {
+  "key": "herbes",
+  "verdict": "a_corriger",
+  "code": "11014/11033/11094",
+  "nom_ciqual": "Moyenne : Persil frais / Basilic frais / Coriandre fraîche",
+  "ciqual": {
+   "kcal": 33.3,
+   "protein": 2.8,
+   "carbs": 2.8,
+   "fat": 0.6,
+   "fib": 2.9,
+   "sel": 0.2,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 33.3,
+   "protein": 2.8,
+   "carbs": 2.8,
+   "fat": 0.6
+  },
+  "note": "Moyenne des 3 herbes fraîches les plus courantes ; protéines 2 → 2,8 et kcal 30 → 33 (impact négligeable vu les quantités)."
+ },
+ {
+  "key": "citron",
+  "verdict": "a_corriger",
+  "code": "2007",
+  "nom_ciqual": "Jus de citron, fait maison",
+  "ciqual": {
+   "kcal": 28.6,
+   "protein": 0.4,
+   "carbs": 2.5,
+   "fat": 0.2,
+   "fib": 0.3,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 28.6,
+   "protein": 0.4,
+   "carbs": 2.5,
+   "fat": 0.2
+  },
+  "note": "Jus pressé maison (2028 « pur jus » donne aussi 29 kcal) ; kcal Ciqual incluent les acides organiques (3 kcal/g), d'où kcal > macros ; densité ≈ 1,03 (négligeable)."
+ },
+ {
+  "key": "banane",
+  "verdict": "ok",
+  "code": "13005",
+  "nom_ciqual": "Banane, chair sans peau, crue",
+  "ciqual": {
+   "kcal": 87.6,
+   "protein": 1.1,
+   "carbs": 19.7,
+   "fat": 0.3,
+   "fib": 2.7,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 87.6,
+   "protein": 1.1,
+   "carbs": 19.7,
+   "fat": 0.3
+  },
+  "note": "Lipides « < 0,5 » = 0,25 ; écarts sous les tolérances."
+ },
+ {
+  "key": "pomme",
+  "verdict": "ok",
+  "code": "13039",
+  "nom_ciqual": "Pomme, chair et peau, crue",
+  "ciqual": {
+   "kcal": 54.0,
+   "protein": 0.3,
+   "carbs": 11.6,
+   "fat": 0.3,
+   "fib": 1.4,
+   "sel": 0.0,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 54.0,
+   "protein": 0.3,
+   "carbs": 11.6,
+   "fat": 0.3
+  },
+  "note": "Pomme avec peau ; valeurs conformes."
+ },
+ {
+  "key": "fruits_rouges",
+  "verdict": "a_corriger",
+  "code": "13997",
+  "nom_ciqual": "Fruits rouges, crus (framboises, fraises, groseilles, cassis)",
+  "ciqual": {
+   "kcal": 45.5,
+   "protein": 1.0,
+   "carbs": 7.0,
+   "fat": 0.5,
+   "fib": 4.5,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 45.5,
+   "protein": 1.0,
+   "carbs": 7.0,
+   "fat": 0.5
+  },
+  "note": "Pas de mélange surgelé dans Ciqual (congélation sans effet notable) ; kcal absentes, calculées 4P+4G+9L+2fib = 45,5 ; glucides 8 → 7."
+ },
+ {
+  "key": "fruit_saison",
+  "verdict": "ok",
+  "code": "13999",
+  "nom_ciqual": "Fruit cru (aliment moyen)",
+  "ciqual": {
+   "kcal": 56.6,
+   "protein": 0.7,
+   "carbs": 12.1,
+   "fat": 0.3,
+   "fib": 2.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 56.6,
+   "protein": 0.7,
+   "carbs": 12.1,
+   "fat": 0.3
+  },
+  "note": "Aliment moyen « fruit cru » ; conforme."
+ },
+ {
+  "key": "dattes",
+  "verdict": "a_corriger",
+  "code": "13011",
+  "nom_ciqual": "Datte, chair et peau, sans noyau, sèche",
+  "ciqual": {
+   "kcal": 287.0,
+   "protein": 1.8,
+   "carbs": 64.7,
+   "fat": 0.3,
+   "fib": 7.3,
+   "sel": 0.1,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 287.0,
+   "protein": 1.8,
+   "carbs": 64.7,
+   "fat": 0.3
+  },
+  "note": "Datte sèche dénoyautée ; kcal OK (2,4 %) mais protéines 2,5 → 1,8."
+ },
+ {
+  "key": "fromage_blanc",
+  "verdict": "ok",
+  "code": "19644",
+  "nom_ciqual": "Fromage blanc, nature, 0% MG",
+  "ciqual": {
+   "kcal": 48.4,
+   "protein": 7.3,
+   "carbs": 4.2,
+   "fat": 0.1,
+   "fib": 0.0,
+   "sel": 0.1,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 48.4,
+   "protein": 7.3,
+   "carbs": 4.2,
+   "fat": 0.1
+  },
+  "note": "Lipides « < 0,1 » = 0,05 ; conforme."
+ },
+ {
+  "key": "skyr",
+  "verdict": "hors_ciqual",
+  "code": "19663",
+  "nom_ciqual": "Proche : Fromage frais type petit suisse, nature, 0% MG (56,5 kcal ; 9,9 P)",
+  "ciqual": null,
+  "propose": {
+   "kcal": 60,
+   "protein": 10.5,
+   "carbs": 4,
+   "fat": 0.2
+  },
+  "note": "Skyr absent de Ciqual ; 60 kcal / 10,5 P / 4 G / 0,2 L = étiquette typique d'un skyr nature 0 % (Danone, Siggi's…) : plausible."
+ },
+ {
+  "key": "yaourt_grec",
+  "verdict": "hors_ciqual",
+  "code": "19663",
+  "nom_ciqual": "Proche : Fromage frais type petit suisse, nature, 0% MG",
+  "ciqual": null,
+  "propose": {
+   "kcal": 57,
+   "protein": 10,
+   "carbs": 3.6,
+   "fat": 0.4
+  },
+  "note": "Ciqual n'a que le yaourt à la grecque entier (19860 : 103 kcal, 3 P) ; 57 kcal / 10 P = typique d'un grec 0 % type Fage Total 0 % : plausible."
+ },
+ {
+  "key": "cottage",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 98,
+   "protein": 11,
+   "carbs": 3.4,
+   "fat": 4.3
+  },
+  "note": "Cottage cheese absent de Ciqual ; 98 kcal / 11 P / 3,4 G / 4,3 L = cottage 4 % MG standard : plausible."
+ },
+ {
+  "key": "fromage_frais",
+  "verdict": "a_corriger",
+  "code": "12068",
+  "nom_ciqual": "Fromage frais ou spécialité fromagère non affinée, nature, à tartiner, en barquette, non allégée en matière grasse",
+  "ciqual": {
+   "kcal": 225.0,
+   "protein": 6.3,
+   "carbs": 3.3,
+   "fat": 20.7,
+   "fib": 0.0,
+   "sel": 0.9,
+   "ags": 13.0
+  },
+  "propose": {
+   "kcal": 225.0,
+   "protein": 6.3,
+   "carbs": 3.3,
+   "fat": 20.7
+  },
+  "note": "Type St Môret/Carré frais nature ; kcal OK mais protéines 7 → 6,3."
+ },
+ {
+  "key": "parmesan",
+  "verdict": "a_corriger",
+  "code": "12120",
+  "nom_ciqual": "Parmesan",
+  "ciqual": {
+   "kcal": 411.0,
+   "protein": 31.1,
+   "carbs": 1.1,
+   "fat": 31.0,
+   "fib": 0.0,
+   "sel": 1.6,
+   "ags": 20.6
+  },
+  "propose": {
+   "kcal": 411.0,
+   "protein": 31.1,
+   "carbs": 1.1,
+   "fat": 31.0
+  },
+  "note": "kcal 390 → 411, lipides 28 → 31."
+ },
+ {
+  "key": "emmental",
+  "verdict": "a_corriger",
+  "code": "12118",
+  "nom_ciqual": "Emmental ou emmenthal, râpé",
+  "ciqual": {
+   "kcal": 368.0,
+   "protein": 27.6,
+   "carbs": 0.6,
+   "fat": 28.2,
+   "fib": 0.0,
+   "sel": 0.7,
+   "ags": 18.1
+  },
+  "propose": {
+   "kcal": 368.0,
+   "protein": 27.6,
+   "carbs": 0.6,
+   "fat": 28.2
+  },
+  "note": "Version râpée ; kcal 380 → 368 (3,2 %), glucides 0 → 0,6."
+ },
+ {
+  "key": "feta",
+  "verdict": "a_corriger",
+  "code": "12066",
+  "nom_ciqual": "Feta, au lait de brebis 70% minimum et lait de chèvre 30% maximum",
+  "ciqual": {
+   "kcal": 284.0,
+   "protein": 15.1,
+   "carbs": 0.5,
+   "fat": 24.3,
+   "fib": 0.2,
+   "sel": 2.3,
+   "ags": 16.8
+  },
+  "propose": {
+   "kcal": 284.0,
+   "protein": 15.1,
+   "carbs": 0.5,
+   "fat": 24.3
+  },
+  "note": "Feta AOP ; kcal 265 → 284, lipides 22 → 24,3."
+ },
+ {
+  "key": "lait",
+  "verdict": "ok",
+  "code": "19033",
+  "nom_ciqual": "Lait demi-écrémé (aliment moyen)",
+  "ciqual": {
+   "kcal": 47.5,
+   "protein": 3.5,
+   "carbs": 5.0,
+   "fat": 1.6,
+   "fib": 0.0,
+   "sel": 0.1,
+   "ags": 1.0
+  },
+  "propose": {
+   "kcal": 47.5,
+   "protein": 3.5,
+   "carbs": 5.0,
+   "fat": 1.6
+  },
+  "note": "Valeurs pour 100 g prises pour 100 ml (densité 1,03 : +3 %, sous le seuil) ; conforme."
+ },
+ {
+  "key": "lait_coco",
+  "verdict": "a_corriger",
+  "code": "18041",
+  "nom_ciqual": "Lait de coco",
+  "ciqual": {
+   "kcal": 199.0,
+   "protein": 1.9,
+   "carbs": 4.3,
+   "fat": 19.2,
+   "fib": 0.8,
+   "sel": 0.1,
+   "ags": 17.0
+  },
+  "propose": {
+   "kcal": 199.0,
+   "protein": 1.9,
+   "carbs": 4.3,
+   "fat": 19.2
+  },
+  "note": "Valeurs 100 g ≈ 100 ml (densité ≈ 1) ; kcal 180 → 199. Un lait de coco « léger » serait bien plus bas : vérifier le produit utilisé."
+ },
+ {
+  "key": "creme",
+  "verdict": "a_corriger",
+  "code": "19410",
+  "nom_ciqual": "Crème 30% MG, épaisse, rayon frais",
+  "ciqual": {
+   "kcal": 285.0,
+   "protein": 2.3,
+   "carbs": 1.4,
+   "fat": 29.9,
+   "fib": 0.0,
+   "sel": 0.1,
+   "ags": 19.5
+  },
+  "propose": {
+   "kcal": 285.0,
+   "protein": 2.3,
+   "carbs": 1.4,
+   "fat": 29.9
+  },
+  "note": "Crème fraîche épaisse 30 % ; densité ≈ 1 ; fibres « < 3 » mises à 0 (artefact, crème sans fibres) ; seuls les glucides sortent (3 → 1,4)."
+ },
+ {
+  "key": "whey",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 380,
+   "protein": 78,
+   "carbs": 6,
+   "fat": 5
+  },
+  "note": "Produit de marque, absent de Ciqual ; 380 kcal / 78 P / 6 G / 5 L = whey concentrée typique, cohérent (4P+4G+9L = 381) : plausible."
+ },
+ {
+  "key": "huile",
+  "verdict": "ok",
+  "code": "17270",
+  "nom_ciqual": "Huile d'olive vierge extra",
+  "ciqual": {
+   "kcal": 899.0,
+   "protein": 0.3,
+   "carbs": 0.0,
+   "fat": 99.9,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 15.2
+  },
+  "propose": {
+   "kcal": 899.0,
+   "protein": 0.3,
+   "carbs": 0.0,
+   "fat": 99.9
+  },
+  "note": "Conforme."
+ },
+ {
+  "key": "huile_sesame",
+  "verdict": "ok",
+  "code": "17400",
+  "nom_ciqual": "Huile de sésame",
+  "ciqual": {
+   "kcal": 900.0,
+   "protein": 0.0,
+   "carbs": 0.0,
+   "fat": 100.0,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 14.9
+  },
+  "propose": {
+   "kcal": 900.0,
+   "protein": 0.0,
+   "carbs": 0.0,
+   "fat": 100.0
+  },
+  "note": "Conforme."
+ },
+ {
+  "key": "beurre_cacahuete",
+  "verdict": "a_corriger",
+  "code": "15202",
+  "nom_ciqual": "Beurre de cacahuète ou pâte d'arachide",
+  "ciqual": {
+   "kcal": 643.0,
+   "protein": 22.2,
+   "carbs": 17.3,
+   "fat": 51.4,
+   "fib": 5.0,
+   "sel": 1.1,
+   "ags": 10.1
+  },
+  "propose": {
+   "kcal": 643.0,
+   "protein": 22.2,
+   "carbs": 17.3,
+   "fat": 51.4
+  },
+  "note": "kcal 600 → 643, protéines 25 → 22,2, glucides 15 → 17,3."
+ },
+ {
+  "key": "amandes",
+  "verdict": "a_corriger",
+  "code": "15000",
+  "nom_ciqual": "Amande, avec peau, sans sel ajouté",
+  "ciqual": {
+   "kcal": 615.0,
+   "protein": 18.8,
+   "carbs": 9.5,
+   "fat": 51.3,
+   "fib": 12.5,
+   "sel": 0.0,
+   "ags": 4.1
+  },
+  "propose": {
+   "kcal": 615.0,
+   "protein": 18.8,
+   "carbs": 9.5,
+   "fat": 51.3
+  },
+  "note": "Amande entière nature ; kcal OK (2,4 %) mais protéines 21 → 18,8 et glucides 8 → 9,5 (21 g = valeur d'amande émondée 15041)."
+ },
+ {
+  "key": "houmous",
+  "verdict": "a_corriger",
+  "code": "25621",
+  "nom_ciqual": "Houmous, préemballé",
+  "ciqual": {
+   "kcal": 258.0,
+   "protein": 8.1,
+   "carbs": 9.0,
+   "fat": 19.9,
+   "fib": 5.2,
+   "sel": 1.1,
+   "ags": 2.0
+  },
+  "propose": {
+   "kcal": 258.0,
+   "protein": 8.1,
+   "carbs": 9.0,
+   "fat": 19.9
+  },
+  "note": "kcal 290 → 258, lipides 24 → 19,9, glucides 12 → 9."
+ },
+ {
+  "key": "pesto",
+  "verdict": "a_corriger",
+  "code": "11179",
+  "nom_ciqual": "Sauce pesto, préemballée",
+  "ciqual": {
+   "kcal": 370.0,
+   "protein": 3.9,
+   "carbs": 6.6,
+   "fat": 35.4,
+   "fib": 2.5,
+   "sel": 2.6,
+   "ags": 4.4
+  },
+  "propose": {
+   "kcal": 370.0,
+   "protein": 3.9,
+   "carbs": 6.6,
+   "fat": 35.4
+  },
+  "note": "Pesto vert du commerce ; l'app surestime (450 → 370 kcal, lipides 45 → 35,4)."
+ },
+ {
+  "key": "sesame",
+  "verdict": "a_corriger",
+  "code": "15010",
+  "nom_ciqual": "Sésame, graine",
+  "ciqual": {
+   "kcal": 606.0,
+   "protein": 17.7,
+   "carbs": 12.8,
+   "fat": 49.7,
+   "fib": 11.8,
+   "sel": 0.1,
+   "ags": 7.0
+  },
+  "propose": {
+   "kcal": 606.0,
+   "protein": 17.7,
+   "carbs": 12.8,
+   "fat": 49.7
+  },
+  "note": "Graine complète (cas standard) ; 580 correspond plutôt au sésame grillé décortiqué (15038 : 582 kcal)."
+ },
+ {
+  "key": "chocolat",
+  "verdict": "hors_ciqual",
+  "code": "31074",
+  "nom_ciqual": "Proche : Chocolat noir 70 % de cacao environ, tablette (591 kcal ; 10,4 P ; 26,9 G ; 46,3 L)",
+  "ciqual": null,
+  "propose": {
+   "kcal": 590,
+   "protein": 11,
+   "carbs": 20,
+   "fat": 50
+  },
+  "note": "Pas de 85 % dans Ciqual ; 590 / 11 / 20 / 50 cohérent avec les étiquettes de 85 % (Lindt, Côte d'Or : 580-600 kcal, 19-22 G, 46-50 L) : plausible."
+ },
+ {
+  "key": "granola",
+  "verdict": "a_corriger",
+  "code": "32145",
+  "nom_ciqual": "Muesli croustillant aux fruits à coque et/ou graines uniquement, non enrichi en vitamines et minéraux",
+  "ciqual": {
+   "kcal": 450.0,
+   "protein": 10.0,
+   "carbs": 61.2,
+   "fat": 16.5,
+   "fib": 6.7,
+   "sel": 0.2,
+   "ags": 2.7
+  },
+  "propose": {
+   "kcal": 450.0,
+   "protein": 10.0,
+   "carbs": 61.2,
+   "fat": 16.5
+  },
+  "note": "Granola nature = muesli croustillant sans fruits ni chocolat ; kcal identiques, seules les protéines (9 → 10) dépassent."
+ },
+ {
+  "key": "chia",
+  "verdict": "a_corriger",
+  "code": "15047",
+  "nom_ciqual": "Chia, graine, séchée",
+  "ciqual": {
+   "kcal": 454.0,
+   "protein": 16.5,
+   "carbs": 7.7,
+   "fat": 30.7,
+   "fib": 34.4,
+   "sel": 0.0,
+   "ags": 3.3
+  },
+  "propose": {
+   "kcal": 454.0,
+   "protein": 16.5,
+   "carbs": 7.7,
+   "fat": 30.7
+  },
+  "note": "kcal 490 → 454 (fibres comptées 2 kcal/g en UE, pas 4)."
+ },
+ {
+  "key": "cacao",
+  "verdict": "a_corriger",
+  "code": "18100",
+  "nom_ciqual": "Cacao, sans sucres ajoutés, poudre soluble",
+  "ciqual": {
+   "kcal": 387.0,
+   "protein": 22.4,
+   "carbs": 11.6,
+   "fat": 20.6,
+   "fib": 29.5,
+   "sel": 0.1,
+   "ags": 12.4
+  },
+  "propose": {
+   "kcal": 387.0,
+   "protein": 22.4,
+   "carbs": 11.6,
+   "fat": 20.6
+  },
+  "note": "kcal OK (1,8 %) ; protéines 20 → 22,4, glucides 15 → 11,6."
+ },
+ {
+  "key": "soja",
+  "verdict": "a_corriger",
+  "code": "11104",
+  "nom_ciqual": "Sauce soja, préemballée",
+  "ciqual": {
+   "kcal": 39.9,
+   "protein": 7.3,
+   "carbs": 1.7,
+   "fat": 0.3,
+   "fib": 0.9,
+   "sel": 13.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 46.7,
+   "protein": 8.5,
+   "carbs": 2.0,
+   "fat": 0.4
+  },
+  "note": "Valeurs Ciqual pour 100 g ; densité ≈ 1,17 (> 5 %) donc proposé pour 100 ml = ×1,17 (46,7 kcal, 8,5 P) ; l'app surestime glucides (5 → 2)."
+ },
+ {
+  "key": "miel",
+  "verdict": "a_corriger",
+  "code": "31008",
+  "nom_ciqual": "Miel",
+  "ciqual": {
+   "kcal": 331.0,
+   "protein": 0.7,
+   "carbs": 82.1,
+   "fat": 0.0,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 331.0,
+   "protein": 0.7,
+   "carbs": 82.1,
+   "fat": 0.0
+  },
+  "note": "kcal 305 → 331 (cohérent avec 82 g de glucides × 4)."
+ },
+ {
+  "key": "agave",
+  "verdict": "a_corriger",
+  "code": "31089",
+  "nom_ciqual": "Sirop d'agave",
+  "ciqual": {
+   "kcal": 317.5,
+   "protein": 0.3,
+   "carbs": 78.0,
+   "fat": 0.5,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 317.5,
+   "protein": 0.3,
+   "carbs": 78.0,
+   "fat": 0.5
+  },
+  "note": "kcal absentes dans Ciqual, calculées 4P+4G+9L = 317,5 ; glucides 75 → 78."
+ },
+ {
+  "key": "pate_curry",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": "Proche : aucun (Ciqual n'a que curry en poudre 11005 et sauces au curry)",
+  "ciqual": null,
+  "propose": {
+   "kcal": 150,
+   "protein": 2,
+   "carbs": 12,
+   "fat": 9
+  },
+  "note": "Absente de Ciqual ; 150 / 2 / 12 / 9 plausible pour une pâte de curry thaï (étiquettes 100-200 kcal), mais très variable selon la marque."
+ },
+ {
+  "key": "moutarde",
+  "verdict": "a_corriger",
+  "code": "11013",
+  "nom_ciqual": "Moutarde",
+  "ciqual": {
+   "kcal": 151.0,
+   "protein": 6.9,
+   "carbs": 4.3,
+   "fat": 11.2,
+   "fib": 0.5,
+   "sel": 6.3,
+   "ags": 1.1
+  },
+  "propose": {
+   "kcal": 151.0,
+   "protein": 6.9,
+   "carbs": 4.3,
+   "fat": 11.2
+  },
+  "note": "Moutarde de Dijon ; fibres « < 1 » = 0,5 ; seuls les glucides sortent (5 → 4,3)."
+ },
+ {
+  "key": "concentre",
+  "verdict": "a_corriger",
+  "code": "20068",
+  "nom_ciqual": "Tomate, concentré, appertisé",
+  "ciqual": {
+   "kcal": 99.2,
+   "protein": 4.4,
+   "carbs": 17.1,
+   "fat": 0.5,
+   "fib": 4.2,
+   "sel": 0.3,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 99.2,
+   "protein": 4.4,
+   "carbs": 17.1,
+   "fat": 0.5
+  },
+  "note": "Concentré de tomate appertisé (le double concentré 20268 donne 99,5 kcal / 19,3 g glucides, même conclusion)."
+ },
+ {
+  "key": "bouillon",
+  "verdict": "a_corriger",
+  "code": "11001,11041,11174",
+  "nom_ciqual": "Moyenne bouillons déshydratés boeuf / légumes / volaille (11001, 11041, 11174)",
+  "ciqual": {
+   "kcal": 23.7,
+   "protein": 1.1,
+   "carbs": 2.0,
+   "fat": 1.2,
+   "fib": 0.0,
+   "sel": 4.6,
+   "ags": 0.7
+  },
+  "propose": {
+   "kcal": 23.7,
+   "protein": 1.1,
+   "carbs": 2.0,
+   "fat": 1.2
+  },
+  "note": "Moyenne des 3 bouillons déshydratés Ciqual × 10 g par cube ; 10 kcal par cube sous-estimait d'un facteur ~2,4 (≈ 4,6 g de sel par cube)."
+ },
+ {
+  "key": "epices",
+  "verdict": "a_corriger",
+  "code": "11081",
+  "nom_ciqual": "Epice (aliment moyen)",
+  "ciqual": {
+   "kcal": 327.0,
+   "protein": 12.6,
+   "carbs": 37.8,
+   "fat": 7.8,
+   "fib": 27.7,
+   "sel": 0.1,
+   "ags": 2.6
+  },
+  "propose": {
+   "kcal": 327.0,
+   "protein": 12.6,
+   "carbs": 37.8,
+   "fat": 7.8
+  },
+  "note": "Épice (aliment moyen) ; impact négligeable vu les quantités, mais la valeur moyenne Ciqual existe."
+ },
+ {
+  "key": "levure",
+  "verdict": "a_corriger",
+  "code": "11046",
+  "nom_ciqual": "Levure chimique ou poudre à lever",
+  "ciqual": {
+   "kcal": 108.0,
+   "protein": 0.1,
+   "carbs": 26.9,
+   "fat": 0.0,
+   "fib": 0.2,
+   "sel": null,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 108.0,
+   "protein": 0.1,
+   "carbs": 26.9,
+   "fat": 0.0
+  },
+  "note": "Levure chimique ou poudre à lever."
+ },
+ {
+  "key": "haut_cuisse",
+  "verdict": "ok",
+  "code": "36019",
+  "nom_ciqual": "Poulet, haut de cuisse, viande crue",
+  "ciqual": {
+   "kcal": 116.0,
+   "protein": 19.7,
+   "carbs": 0.0,
+   "fat": 4.1,
+   "fib": 0.0,
+   "sel": 0.2,
+   "ags": 1.1
+  },
+  "propose": {
+   "kcal": 116.0,
+   "protein": 19.7,
+   "carbs": 0.0,
+   "fat": 4.1
+  },
+  "note": "Haut de cuisse, viande crue (sans peau) : correspondance exacte."
+ },
+ {
+  "key": "boeuf_emince",
+  "verdict": "a_corriger",
+  "code": "6202",
+  "nom_ciqual": "Boeuf, boule de macreuse crue",
+  "ciqual": {
+   "kcal": 118.0,
+   "protein": 21.8,
+   "carbs": 0.0,
+   "fat": 3.4,
+   "fib": 0.0,
+   "sel": 0.1,
+   "ags": 1.2
+  },
+  "propose": {
+   "kcal": 118.0,
+   "protein": 21.8,
+   "carbs": 0.0,
+   "fat": 3.4
+  },
+  "note": "Boule de macreuse crue (seule macreuse crue de Ciqual ; l'épaule crue 6002 donne 130 kcal / 5 g lipides)."
+ },
+ {
+  "key": "aubergine",
+  "verdict": "a_corriger",
+  "code": "20053",
+  "nom_ciqual": "Aubergine, crue",
+  "ciqual": {
+   "kcal": 22.9,
+   "protein": 1.0,
+   "carbs": 2.7,
+   "fat": 0.2,
+   "fib": 3.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 22.9,
+   "protein": 1.0,
+   "carbs": 2.7,
+   "fat": 0.2
+  },
+  "note": "Aubergine crue ; seul l'écart de glucides dépasse la tolérance."
+ },
+ {
+  "key": "tomate",
+  "verdict": "a_corriger",
+  "code": "20385",
+  "nom_ciqual": "Tomate sans précision, crue (aliment moyen)",
+  "ciqual": {
+   "kcal": 19.2,
+   "protein": 0.6,
+   "carbs": 3.7,
+   "fat": 0.2,
+   "fib": 1.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 19.2,
+   "protein": 0.6,
+   "carbs": 3.7,
+   "fat": 0.2
+  },
+  "note": "Tomate sans précision, crue (aliment moyen) ; seul l'écart de glucides dépasse la tolérance."
+ },
+ {
+  "key": "pousses_soja",
+  "verdict": "a_corriger",
+  "code": "20183",
+  "nom_ciqual": "Graine germée de haricot mungo ou pousse de \"soja\", crue",
+  "ciqual": {
+   "kcal": 28.3,
+   "protein": 2.6,
+   "carbs": 3.4,
+   "fat": 0.2,
+   "fib": 1.7,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 28.3,
+   "protein": 2.6,
+   "carbs": 3.4,
+   "fat": 0.2
+  },
+  "note": "Pousse de « soja » (haricot mungo germé) crue ; seul l'écart de glucides dépasse la tolérance."
+ },
+ {
+  "key": "citron_vert",
+  "verdict": "a_corriger",
+  "code": "2031",
+  "nom_ciqual": "Jus de citron vert, pur jus",
+  "ciqual": {
+   "kcal": 25.7,
+   "protein": 0.2,
+   "carbs": 1.7,
+   "fat": 0.2,
+   "fib": 0.5,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 25.7,
+   "protein": 0.2,
+   "carbs": 1.7,
+   "fat": 0.2
+  },
+  "note": "Jus de citron vert pur jus (2031), dont le kcal intègre les acides organiques ; le « frais » 2030 (9,9 kcal) les omet, macros quasi identiques. Densité ≈ 1,03 (< 5 %). Les 7 g de glucides de l'app sont trop élevés (1,7 g)."
+ },
+ {
+  "key": "gingembre",
+  "verdict": "a_corriger",
+  "code": "11074",
+  "nom_ciqual": "Gingembre, racine fraîche",
+  "ciqual": {
+   "kcal": 33.3,
+   "protein": 1.1,
+   "carbs": 3.4,
+   "fat": 1.1,
+   "fib": 2.7,
+   "sel": 0.0,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 33.3,
+   "protein": 1.1,
+   "carbs": 3.4,
+   "fat": 1.1
+  },
+  "note": "Gingembre, racine fraîche : Ciqual 33 kcal, l'app (80 kcal, valeur type USDA) surestime fortement."
+ },
+ {
+  "key": "citronnelle",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 99,
+   "protein": 1.8,
+   "carbs": 25,
+   "fat": 0.5
+  },
+  "note": "Absente de Ciqual (plus proche : Herbes aromatiques fraîches, aliment moyen, 11080, 51 kcal) ; les valeurs actuelles correspondent aux tables de référence pour la tige crue, plausibles."
+ },
+ {
+  "key": "haricots_noirs",
+  "verdict": "hors_ciqual",
+  "code": "20524",
+  "nom_ciqual": "Haricot rouge, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 108.0,
+   "protein": 8.3,
+   "carbs": 13.0,
+   "fat": 1.0,
+   "fib": 7.0,
+   "sel": 0.7,
+   "ags": 0.4
+  },
+  "propose": {
+   "kcal": 110,
+   "protein": 7.5,
+   "carbs": 14,
+   "fat": 0.5
+  },
+  "note": "Haricot noir absent de Ciqual ; le plus proche est Haricot rouge appertisé égoutté (108 kcal, 8,3 P, 13 G, 1 L). Les valeurs actuelles (conserve égouttée) sont plausibles."
+ },
+ {
+  "key": "orzo",
+  "verdict": "ok",
+  "code": "9810",
+  "nom_ciqual": "Pâtes sèches, standard, crues",
+  "ciqual": {
+   "kcal": 364.0,
+   "protein": 12.0,
+   "carbs": 72.7,
+   "fat": 1.6,
+   "fib": 2.9,
+   "sel": 0.0,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 364.0,
+   "protein": 12.0,
+   "carbs": 72.7,
+   "fat": 1.6
+  },
+  "note": "Pâtes sèches standard, crues (l'orzo est une pâte de blé dur, pesée sèche, cook 2,3)."
+ },
+ {
+  "key": "baguette",
+  "verdict": "a_corriger",
+  "code": "7001",
+  "nom_ciqual": "Pain blanc (par ex. : baguette, boule…)",
+  "ciqual": {
+   "kcal": 287.0,
+   "protein": 8.3,
+   "carbs": 58.3,
+   "fat": 1.4,
+   "fib": 2.7,
+   "sel": 1.2,
+   "ags": 0.5
+  },
+  "propose": {
+   "kcal": 287.0,
+   "protein": 8.3,
+   "carbs": 58.3,
+   "fat": 1.4
+  },
+  "note": "Pain blanc type baguette courante (la baguette de tradition 7007 donne 279 kcal / 56,7 G / 1 L)."
+ },
+ {
+  "key": "pain_burger",
+  "verdict": "a_corriger",
+  "code": "7262",
+  "nom_ciqual": "Pain pour burger ou hot dog (bun) complet, préemballé",
+  "ciqual": {
+   "kcal": 296.0,
+   "protein": 8.6,
+   "carbs": 48.2,
+   "fat": 6.2,
+   "fib": 5.2,
+   "sel": 1.1,
+   "ags": 0.9
+  },
+  "propose": {
+   "kcal": 296.0,
+   "protein": 8.6,
+   "carbs": 48.2,
+   "fat": 6.2
+  },
+  "note": "Pain pour burger complet, préemballé."
+ },
+ {
+  "key": "cheddar",
+  "verdict": "hors_ciqual",
+  "code": "12726",
+  "nom_ciqual": "Cheddar",
+  "ciqual": {
+   "kcal": 399.0,
+   "protein": 24.7,
+   "carbs": 1.2,
+   "fat": 32.6,
+   "fib": 0.0,
+   "sel": 1.8,
+   "ags": 20.1
+  },
+  "propose": null,
+  "note": "Tranches pour burger (fromage fondu type cheddar) : valeurs d'étiquette gardées (Ciqual : vrai cheddar 399 kcal, fromage fondu 246 kcal)."
+ },
+ {
+  "key": "olives",
+  "verdict": "a_corriger",
+  "code": "13033",
+  "nom_ciqual": "Olive verte, en saumure, égouttée",
+  "ciqual": {
+   "kcal": 164.0,
+   "protein": 1.1,
+   "carbs": 0.6,
+   "fat": 16.6,
+   "fib": 3.6,
+   "sel": 2.9,
+   "ags": 2.2
+  },
+  "propose": {
+   "kcal": 164.0,
+   "protein": 1.1,
+   "carbs": 0.6,
+   "fat": 16.6
+  },
+  "note": "Olive verte en saumure, égouttée."
+ },
+ {
+  "key": "cacahuetes",
+  "verdict": "a_corriger",
+  "code": "15053",
+  "nom_ciqual": "Cacahuète, grillée, sans sel ajouté",
+  "ciqual": {
+   "kcal": 644.0,
+   "protein": 23.5,
+   "carbs": 14.4,
+   "fat": 51.9,
+   "fib": 5.7,
+   "sel": 1.0,
+   "ags": 6.0
+  },
+  "propose": {
+   "kcal": 644.0,
+   "protein": 23.5,
+   "carbs": 14.4,
+   "fat": 51.9
+  },
+  "note": "Cacahuète grillée sans sel ajouté (la version salée 15002 : 635 kcal, 22,9 P, 14,2 G, 50,8 L)."
+ },
+ {
+  "key": "nuoc_mam",
+  "verdict": "a_corriger",
+  "code": "11194",
+  "nom_ciqual": "Sauce nuoc mâm ou sauce au poisson, préemballée",
+  "ciqual": {
+   "kcal": 81.2,
+   "protein": 9.3,
+   "carbs": 10.9,
+   "fat": 0.0,
+   "fib": 0.2,
+   "sel": 22.2,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 81.2,
+   "protein": 9.3,
+   "carbs": 10.9,
+   "fat": 0.0
+  },
+  "note": "Sauce nuoc-mâm, valeurs pour 100 g ; densité ≈ 1,2 (très salée), donc pour 100 ml ≈ 97 kcal, 11 P, 13 G : l'écart de densité dépasse 5 %."
+ },
+ {
+  "key": "mirin",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 230,
+   "protein": 0.3,
+   "carbs": 43,
+   "fat": 0
+  },
+  "note": "Absent de Ciqual (seul le saké 1026 existe, 113 kcal, sans sucres) ; 230 kcal / 43 g glucides est plausible pour un mirin du commerce."
+ },
+ {
+  "key": "gochujang",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 220,
+   "protein": 4,
+   "carbs": 45,
+   "fat": 1.5
+  },
+  "note": "Absent de Ciqual ; valeurs plausibles pour une étiquette type (≈ 200-240 kcal, 45-50 g glucides)."
+ },
+ {
+  "key": "miso",
+  "verdict": "a_corriger",
+  "code": "20916",
+  "nom_ciqual": "Miso",
+  "ciqual": {
+   "kcal": 188.0,
+   "protein": 11.7,
+   "carbs": 18.1,
+   "fat": 6.0,
+   "fib": 5.4,
+   "sel": 9.3,
+   "ags": 1.1
+  },
+  "propose": {
+   "kcal": 188.0,
+   "protein": 11.7,
+   "carbs": 18.1,
+   "fat": 6.0
+  },
+  "note": "Miso (pâte)."
+ },
+ {
+  "key": "fecule",
+  "verdict": "a_corriger",
+  "code": "9510",
+  "nom_ciqual": "Amidon de maïs ou fécule de maïs",
+  "ciqual": {
+   "kcal": 365.0,
+   "protein": 0.3,
+   "carbs": 90.4,
+   "fat": 0.1,
+   "fib": 0.9,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 365.0,
+   "protein": 0.3,
+   "carbs": 90.4,
+   "fat": 0.1
+  },
+  "note": "Amidon de maïs ou fécule de maïs."
+ },
+ {
+  "key": "panko",
+  "verdict": "hors_ciqual",
+  "code": "7500",
+  "nom_ciqual": "Chapelure",
+  "ciqual": {
+   "kcal": 365.0,
+   "protein": 9.4,
+   "carbs": 74.3,
+   "fat": 1.6,
+   "fib": 5.4,
+   "sel": 0.7,
+   "ags": 0.5
+  },
+  "propose": {
+   "kcal": 375,
+   "protein": 12,
+   "carbs": 73,
+   "fat": 3.5
+  },
+  "note": "Panko absent de Ciqual ; plus proche Chapelure 7500 (365 kcal, 9,4 P, 74,3 G, 1,6 L). Valeurs actuelles plausibles pour un panko du commerce."
+ },
+ {
+  "key": "citron_confit",
+  "verdict": "hors_ciqual",
+  "code": "13009",
+  "nom_ciqual": "Citron, chair sans peau, sans pépins, cru",
+  "ciqual": {
+   "kcal": 24.3,
+   "protein": 0.2,
+   "carbs": 1.6,
+   "fat": 0.2,
+   "fib": 0.2,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 30,
+   "protein": 0.5,
+   "carbs": 5,
+   "fat": 1
+  },
+  "note": "Citron confit au sel absent de Ciqual (plus proche : citron cru 13009, 24 kcal) ; valeurs actuelles plausibles."
+ },
+ {
+  "key": "chipotle",
+  "verdict": "hors_ciqual",
+  "code": "20151",
+  "nom_ciqual": "Piment, cru",
+  "ciqual": {
+   "kcal": 37.4,
+   "protein": 1.9,
+   "carbs": 5.8,
+   "fat": 0.4,
+   "fib": 1.5,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 60,
+   "protein": 1.5,
+   "carbs": 10,
+   "fat": 1.5
+  },
+  "note": "Chipotle en adobo absent de Ciqual (plus proche : piment cru 20151, 37 kcal) ; 60 kcal plausible pour une conserve en sauce."
+ },
+ {
+  "key": "cornichons",
+  "verdict": "a_corriger",
+  "code": "11004",
+  "nom_ciqual": "Cornichon, au vinaigre",
+  "ciqual": {
+   "kcal": 16.0,
+   "protein": 1.1,
+   "carbs": 0.8,
+   "fat": 0.3,
+   "fib": 1.5,
+   "sel": 1.7,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 16.0,
+   "protein": 1.1,
+   "carbs": 0.8,
+   "fat": 0.3
+  },
+  "note": "Cornichon au vinaigre (l'aigre-doux 11097 a 36 kcal / 5 g G)."
+ },
+ {
+  "key": "vinaigre_riz",
+  "verdict": "hors_ciqual",
+  "code": "11018",
+  "nom_ciqual": "Vinaigre",
+  "ciqual": {
+   "kcal": 22.5,
+   "protein": 0.0,
+   "carbs": 0.9,
+   "fat": 0.1,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 20,
+   "protein": 0,
+   "carbs": 4,
+   "fat": 0
+  },
+  "note": "Vinaigre de riz absent de Ciqual ; Vinaigre 11018 : 22,5 kcal, 0,95 G. 4 g de glucides est plausible pour un vinaigre de riz légèrement sucré du commerce, trop élevé pour un vinaigre de riz pur."
+ },
+ {
+  "key": "mangue",
+  "verdict": "a_corriger",
+  "code": "13025",
+  "nom_ciqual": "Mangue, chair sans peau, sans noyau, crue",
+  "ciqual": {
+   "kcal": 71.1,
+   "protein": 0.6,
+   "carbs": 14.3,
+   "fat": 0.2,
+   "fib": 1.6,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 71.1,
+   "protein": 0.6,
+   "carbs": 14.3,
+   "fat": 0.2
+  },
+  "note": "Pas de mangue surgelée dans Ciqual : mangue crue (chair), équivalente à la surgelée nature non sucrée."
+ },
+ {
+  "key": "pistaches",
+  "verdict": "a_corriger",
+  "code": "15044",
+  "nom_ciqual": "Pistache, grillée, sans sel ajouté",
+  "ciqual": {
+   "kcal": 631.0,
+   "protein": 18.4,
+   "carbs": 14.9,
+   "fat": 51.6,
+   "fib": 10.2,
+   "sel": 0.0,
+   "ags": 6.5
+  },
+  "propose": {
+   "kcal": 631.0,
+   "protein": 18.4,
+   "carbs": 14.9,
+   "fat": 51.6
+  },
+  "note": "Pas de pistache nature crue dans Ciqual : pistache grillée sans sel ajouté (la salée 15009 : 617 kcal)."
+ },
+ {
+  "key": "tahini",
+  "verdict": "a_corriger",
+  "code": "15203",
+  "nom_ciqual": "Tahin ou purée de sésame",
+  "ciqual": {
+   "kcal": 631.0,
+   "protein": 17.7,
+   "carbs": 13.8,
+   "fat": 53.4,
+   "fib": 7.0,
+   "sel": 0.2,
+   "ags": 7.5
+  },
+  "propose": {
+   "kcal": 631.0,
+   "protein": 17.7,
+   "carbs": 13.8,
+   "fat": 53.4
+  },
+  "note": "Tahin ou purée de sésame."
+ },
+ {
+  "key": "nori",
+  "verdict": "a_corriger",
+  "code": "20987",
+  "nom_ciqual": "Nori (Porphyra sp., Pyropia), séchée ou déshydratée",
+  "ciqual": {
+   "kcal": 257.0,
+   "protein": 30.2,
+   "carbs": 11.7,
+   "fat": 1.8,
+   "fib": 36.8,
+   "sel": 4.8,
+   "ags": 0.5
+  },
+  "propose": {
+   "kcal": 257.0,
+   "protein": 30.2,
+   "carbs": 11.7,
+   "fat": 1.8
+  },
+  "note": "Nori séchée : Ciqual 30 P et 11,7 G (beaucoup de fibres, 36,8 g), l'app surestime protéines et glucides."
+ },
+ {
+  "key": "carre_frais",
+  "verdict": "hors_ciqual",
+  "code": "12068",
+  "nom_ciqual": "Fromage frais ou spécialité fromagère non affinée, nature, à tartiner, en barquette, non allégée en matière grasse",
+  "ciqual": {
+   "kcal": 225.0,
+   "protein": 6.2,
+   "carbs": 3.3,
+   "fat": 20.7,
+   "fib": 0.0,
+   "sel": 0.9,
+   "ags": 13.0
+  },
+  "propose": {
+   "kcal": 240,
+   "protein": 6.5,
+   "carbs": 3,
+   "fat": 23
+  },
+  "note": "Carré Frais est une marque ; plus proche Fromage frais nature à tartiner non allégé 12068 (225 kcal, 6,3 P, 3,3 G, 20,7 L). Valeurs actuelles plausibles pour l'étiquette (≈ 23 % MG)."
+ },
+ {
+  "key": "saumon_fume",
+  "verdict": "ok",
+  "code": "26037",
+  "nom_ciqual": "Saumon fumé",
+  "ciqual": {
+   "kcal": 184.0,
+   "protein": 22.2,
+   "carbs": 0.1,
+   "fat": 10.5,
+   "fib": 0.3,
+   "sel": 2.9,
+   "ags": 1.8
+  },
+  "propose": {
+   "kcal": 184.0,
+   "protein": 22.2,
+   "carbs": 0.1,
+   "fat": 10.5
+  },
+  "note": "Saumon fumé (sans précision ; élevage 26696 : 188 kcal)."
+ },
+ {
+  "key": "radis",
+  "verdict": "a_corriger",
+  "code": "20045",
+  "nom_ciqual": "Radis rouge, cru",
+  "ciqual": {
+   "kcal": 11.0,
+   "protein": 0.9,
+   "carbs": 1.5,
+   "fat": 0.2,
+   "fib": 1.4,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 11.0,
+   "protein": 0.9,
+   "carbs": 1.5,
+   "fat": 0.2
+  },
+  "note": "Radis rouge cru."
+ },
+ {
+  "key": "repas_ext",
+  "verdict": "ignore",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 300,
+   "protein": 13,
+   "carbs": 32,
+   "fat": 13
+  },
+  "note": "Pseudo-ingrédient (estimation d'un repas extérieur)."
+ },
+ {
+  "key": "feuille_riz",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 340,
+   "protein": 6,
+   "carbs": 80,
+   "fat": 0.5
+  },
+  "note": "Feuilles de riz (galettes pour rouleaux) absentes de Ciqual ; valeurs actuelles plausibles pour un produit sec du commerce (≈ 330-350 kcal, ~80 g glucides)."
+ },
+ {
+  "key": "chou_chinois",
+  "verdict": "ok",
+  "code": "20167",
+  "nom_ciqual": "Chou chinois pé-tsaï, cru",
+  "ciqual": {
+   "kcal": 16.4,
+   "protein": 1.2,
+   "carbs": 2.1,
+   "fat": 0.2,
+   "fib": 0.7,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 16.4,
+   "protein": 1.2,
+   "carbs": 2.1,
+   "fat": 0.2
+  },
+  "note": "Chou chinois pé-tsaï cru."
+ },
+ {
+  "key": "tomates_sechees",
+  "verdict": "a_corriger",
+  "code": "20256",
+  "nom_ciqual": "Tomate, séchée, à l'huile",
+  "ciqual": {
+   "kcal": 182.6,
+   "protein": 5.1,
+   "carbs": 8.0,
+   "fat": 13.2,
+   "fib": 5.8,
+   "sel": 0.7,
+   "ags": 1.9
+  },
+  "propose": {
+   "kcal": 182.6,
+   "protein": 5.1,
+   "carbs": 8.0,
+   "fat": 13.2
+  },
+  "note": "Tomate séchée à l'huile (non précisé égoutté) ; kcal absent de Ciqual, recalculé 4P+4G+9L+2fibres = 182,6 kcal."
+ },
+ {
+  "key": "ketchup",
+  "verdict": "a_corriger",
+  "code": "11008",
+  "nom_ciqual": "Ketchup, préemballé",
+  "ciqual": {
+   "kcal": 108.0,
+   "protein": 1.2,
+   "carbs": 23.7,
+   "fat": 0.2,
+   "fib": 1.8,
+   "sel": 2.4,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 108.0,
+   "protein": 1.2,
+   "carbs": 23.7,
+   "fat": 0.2
+  },
+  "note": "Ketchup préemballé ; seul l'écart de glucides (1,3 g) dépasse la tolérance."
+ },
+ {
+  "key": "vinaigre_cidre",
+  "verdict": "ok",
+  "code": "11090",
+  "nom_ciqual": "Vinaigre de cidre",
+  "ciqual": {
+   "kcal": 19.0,
+   "protein": 0.0,
+   "carbs": 0.9,
+   "fat": 0.0,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 19.0,
+   "protein": 0.0,
+   "carbs": 0.9,
+   "fat": 0.0
+  },
+  "note": "Vinaigre de cidre (11090) ; kcal absent de Ciqual, estimé à ~19 kcal (3,7 kcal de glucides + ~5 g d'acide acétique × 3 kcal ; Vinaigre 11018 : 22,5 kcal)."
+ },
+ {
+  "key": "nouilles_oeufs",
+  "verdict": "a_corriger",
+  "code": "9863",
+  "nom_ciqual": "Pâtes ou nouilles asiatiques sèches, au blé et aux oeufs, nature, crues",
+  "ciqual": {
+   "kcal": 371.0,
+   "protein": 11.9,
+   "carbs": 71.0,
+   "fat": 3.0,
+   "fib": 4.0,
+   "sel": 1.0,
+   "ags": 1.0
+  },
+  "propose": {
+   "kcal": 371.0,
+   "protein": 11.9,
+   "carbs": 71.0,
+   "fat": 3.0
+  },
+  "note": "Nouilles sèches aux œufs, crues (pesée à sec, cook 2,3) ; protéines et lipides de l'app trop hauts."
+ },
+ {
+  "key": "boudoirs",
+  "verdict": "a_corriger",
+  "code": "24430",
+  "nom_ciqual": "Biscuit sec aux oeufs à la cuillère (cuiller) ou boudoir",
+  "ciqual": {
+   "kcal": 366.0,
+   "protein": 7.8,
+   "carbs": 74.5,
+   "fat": 3.4,
+   "fib": 2.9,
+   "sel": 0.3,
+   "ags": 1.2
+  },
+  "propose": {
+   "kcal": 366.0,
+   "protein": 7.8,
+   "carbs": 74.5,
+   "fat": 3.4
+  },
+  "note": "Biscuit à la cuillère / boudoir ; l'app surestime kcal et glucides."
+ },
+ {
+  "key": "coco_rapee",
+  "verdict": "a_corriger",
+  "code": "15007",
+  "nom_ciqual": "Noix de coco, chair, sèche",
+  "ciqual": {
+   "kcal": 692.0,
+   "protein": 6.8,
+   "carbs": 7.8,
+   "fat": 66.8,
+   "fib": 13.7,
+   "sel": 0.1,
+   "ags": 60.6
+  },
+  "propose": {
+   "kcal": 692.0,
+   "protein": 6.8,
+   "carbs": 7.8,
+   "fat": 66.8
+  },
+  "note": "Noix de coco râpée = chair sèche ; l'app sous-estime de ~27 kcal."
+ },
+ {
+  "key": "cornflakes",
+  "verdict": "a_corriger",
+  "code": "32014",
+  "nom_ciqual": "Pétales de maïs nature, non enrichis en vitamines et minéraux",
+  "ciqual": {
+   "kcal": 372.0,
+   "protein": 6.9,
+   "carbs": 82.4,
+   "fat": 0.7,
+   "fib": 4.6,
+   "sel": 1.8,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 372.0,
+   "protein": 6.9,
+   "carbs": 82.4,
+   "fat": 0.7
+  },
+  "note": "Pétales de maïs nature non enrichis (la version enrichie 32005 donne 368 kcal / 6,9 g prot.) ; protéines de l'app trop hautes."
+ },
+ {
+  "key": "oignons_frits",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 590,
+   "protein": 6,
+   "carbs": 45,
+   "fat": 42
+  },
+  "note": "Absent de Ciqual (aucun oignon frit/croustillant) ; 590 kcal, 6 g P, 45 g G, 42 g L correspond aux étiquettes françaises habituelles, valeurs plausibles."
+ },
+ {
+  "key": "mayo_allegee",
+  "verdict": "a_corriger",
+  "code": "11079",
+  "nom_ciqual": "Mayonnaise à teneur réduite en matière grasse ou mayonnaise allégée, préemballée",
+  "ciqual": {
+   "kcal": 297.0,
+   "protein": 1.1,
+   "carbs": 8.8,
+   "fat": 28.5,
+   "fib": 0.3,
+   "sel": 2.1,
+   "ags": 2.5
+  },
+  "propose": {
+   "kcal": 297.0,
+   "protein": 1.1,
+   "carbs": 8.8,
+   "fat": 28.5
+  },
+  "note": "Mayonnaise allégée préemballée ; l'app sous-estime légèrement (280 → 297 kcal)."
+ },
+ {
+  "key": "gnocchis",
+  "verdict": "a_corriger",
+  "code": "26264",
+  "nom_ciqual": "Gnocchi à la pomme de terre, à cuire",
+  "ciqual": {
+   "kcal": 176.0,
+   "protein": 4.7,
+   "carbs": 35.0,
+   "fat": 1.4,
+   "fib": 2.2,
+   "sel": 1.2,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 176.0,
+   "protein": 4.7,
+   "carbs": 35.0,
+   "fat": 1.4
+  },
+  "note": "Gnocchi à la pomme de terre « à cuire » (état d'achat, frais) ; l'app à 150 kcal est trop basse (même le cuit fait 178)."
+ },
+ {
+  "key": "jambon_blanc",
+  "verdict": "ok",
+  "code": "28900",
+  "nom_ciqual": "Jambon cuit, supérieur",
+  "ciqual": {
+   "kcal": 113.0,
+   "protein": 21.0,
+   "carbs": 0.8,
+   "fat": 2.8,
+   "fib": 0.1,
+   "sel": 1.9,
+   "ags": 1.1
+  },
+  "propose": {
+   "kcal": 113.0,
+   "protein": 21.0,
+   "carbs": 0.8,
+   "fat": 2.8
+  },
+  "note": "Jambon cuit supérieur ; écarts dans les tolérances (la variante découennée dégraissée 28906 fait 115 kcal)."
+ },
+ {
+  "key": "sauce_chili",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 220,
+   "protein": 0.5,
+   "carbs": 53,
+   "fat": 0.3
+  },
+  "note": "Sauce chili douce thaï absente de Ciqual (le plus proche : sauce aigre-douce 11163, 153 kcal) ; 220 kcal / 53 g G conforme aux étiquettes du commerce, plausible."
+ },
+ {
+  "key": "sriracha",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 95,
+   "protein": 2,
+   "carbs": 19,
+   "fat": 1
+  },
+  "note": "Sriracha absente de Ciqual (proches : ketchup 11008 à 108 kcal, harissa 11112) ; 95 kcal / 19 g G / 2 g P typique des étiquettes, plausible."
+ },
+ {
+  "key": "yaourt_sl",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 62,
+   "protein": 3.8,
+   "carbs": 4.5,
+   "fat": 3
+  },
+  "note": "Pas de yaourt sans lactose dans Ciqual ; le plus proche est le yaourt nature au lait entier (19723 : 63,4 kcal, 4,3 P, 4,4 G, 2,85 L), donc les valeurs actuelles sont plausibles."
+ },
+ {
+  "key": "boisson_avoine",
+  "verdict": "a_corriger",
+  "code": "18899",
+  "nom_ciqual": "Boisson à l'avoine, nature, sans sucres ajoutés, non enrichie, préemballée",
+  "ciqual": {
+   "kcal": 41.0,
+   "protein": 0.2,
+   "carbs": 7.8,
+   "fat": 1.1,
+   "fib": 0.2,
+   "sel": 0.1,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 41.0,
+   "protein": 0.2,
+   "carbs": 7.8,
+   "fat": 1.1
+  },
+  "note": "Boisson à l'avoine nature non sucrée non enrichie ; densité ≈ 1,03 (< 5 %) ; l'app surestime surtout les protéines (1 → 0,25 g)."
+ },
+ {
+  "key": "creme_coco",
+  "verdict": "a_corriger",
+  "code": "18041",
+  "nom_ciqual": "Lait de coco",
+  "ciqual": {
+   "kcal": 199.0,
+   "protein": 1.9,
+   "carbs": 4.3,
+   "fat": 19.2,
+   "fib": 0.8,
+   "sel": 0.1,
+   "ags": 17.0
+  },
+  "propose": {
+   "kcal": 199.0,
+   "protein": 1.9,
+   "carbs": 4.3,
+   "fat": 19.2
+  },
+  "note": "Ciqual n'a que « Lait de coco » (19 % MG), qui est très proche des valeurs de l'app ; densité ≈ 1 ; seuls les glucides s'écartent (3 → 4,3 g). Une crème de coco plus épaisse peut atteindre 20-25 % MG : à vérifier sur l'étiquette."
+ },
+ {
+  "key": "pates_sg",
+  "verdict": "a_corriger",
+  "code": "9874",
+  "nom_ciqual": "Pâtes sèches, sans gluten, crues",
+  "ciqual": {
+   "kcal": 358.0,
+   "protein": 6.1,
+   "carbs": 79.0,
+   "fat": 1.5,
+   "fib": 1.0,
+   "sel": 0.0,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 358.0,
+   "protein": 6.1,
+   "carbs": 79.0,
+   "fat": 1.5
+  },
+  "note": "Pâtes sèches sans gluten crues (cook 2,3) ; protéines de l'app trop hautes (7 → 6,1 g)."
+ },
+ {
+  "key": "pain_sg",
+  "verdict": "a_corriger",
+  "code": "7130",
+  "nom_ciqual": "Pain sans gluten, préemballé",
+  "ciqual": {
+   "kcal": 249.0,
+   "protein": 4.6,
+   "carbs": 37.1,
+   "fat": 6.6,
+   "fib": 9.9,
+   "sel": 1.1,
+   "ags": 0.9
+  },
+  "propose": {
+   "kcal": 249.0,
+   "protein": 4.6,
+   "carbs": 37.1,
+   "fat": 6.6
+  },
+  "note": "Pain sans gluten préemballé ; glucides trop hauts dans l'app (45 → 37,1 g) et lipides trop bas (5 → 6,6 g)."
+ },
+ {
+  "key": "wrap_sg",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 300,
+   "protein": 4,
+   "carbs": 55,
+   "fat": 6
+  },
+  "note": "Wrap sans gluten absent de Ciqual (le plus proche : tortilla souple de maïs 7813 : 316 kcal, 6,1 P, 58 G, 5,6 L), donc les valeurs actuelles sont plausibles."
+ },
+ {
+  "key": "tamari",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 60,
+   "protein": 10,
+   "carbs": 5,
+   "fat": 0
+  },
+  "note": "Tamari absent de Ciqual (la sauce soja 11104 ne fait que 40 kcal et 7,3 g P pour 100 g). Les étiquettes de tamari donnent 60 à 110 kcal et 10 à 13 g P pour 100 ml, donc les valeurs actuelles sont plausibles. Attention : la densité ≈ 1,15-1,2 change le résultat de plus de 5 % si on convertit depuis 100 g."
+ },
+ {
+  "key": "repas_libre",
+  "verdict": "ignore",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 100,
+   "protein": 5,
+   "carbs": 11,
+   "fat": 4
+  },
+  "note": "Pseudo-ingrédient (part réservée)."
+ },
+ {
+  "key": "feculents_cuits",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 140,
+   "protein": 5,
+   "carbs": 28,
+   "fat": 1
+  },
+  "note": "Mélange non défini. Moyenne Ciqual riz blanc cuit 9104, pâtes cuites 9811 et pomme de terre bouillie 4003 : 134 kcal, 3,7 P, 27,1 G, 0,7 L. 140 kcal reste plausible pour une cantine (riz et pâtes dominants, un peu de matière grasse), à garder."
+ },
+ {
+  "key": "poireau",
+  "verdict": "ok",
+  "code": "20039",
+  "nom_ciqual": "Poireau, cru",
+  "ciqual": {
+   "kcal": 30.4,
+   "protein": 1.5,
+   "carbs": 4.5,
+   "fat": 0.3,
+   "fib": 1.8,
+   "sel": 0.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 30.4,
+   "protein": 1.5,
+   "carbs": 4.5,
+   "fat": 0.3
+  },
+  "note": "Poireau cru ; conforme."
+ },
+ {
+  "key": "butternut",
+  "verdict": "a_corriger",
+  "code": "20138",
+  "nom_ciqual": "Courge butternut (doubeurre), chair sans peau, crue",
+  "ciqual": {
+   "kcal": 30.5,
+   "protein": 1.0,
+   "carbs": 5.4,
+   "fat": 0.1,
+   "fib": 2.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 30.5,
+   "protein": 1.0,
+   "carbs": 5.4,
+   "fat": 0.1
+  },
+  "note": "Courge butternut, chair crue ; l'app surestime (40 → 30,5 kcal)."
+ },
+ {
+  "key": "pois_casses",
+  "verdict": "a_corriger",
+  "code": "20515",
+  "nom_ciqual": "Pois cassé, sec",
+  "ciqual": {
+   "kcal": 347.0,
+   "protein": 23.8,
+   "carbs": 47.5,
+   "fat": 1.2,
+   "fib": 25.5,
+   "sel": 0.0,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 347.0,
+   "protein": 23.8,
+   "carbs": 47.5,
+   "fat": 1.2
+  },
+  "note": "Pois cassé sec (cook 2,4) ; protéines (22 → 23,8) et glucides (50 → 47,5) à ajuster."
+ },
+ {
+  "key": "lin",
+  "verdict": "a_corriger",
+  "code": "15034",
+  "nom_ciqual": "Lin, graine",
+  "ciqual": {
+   "kcal": 528.0,
+   "protein": 19.0,
+   "carbs": 6.5,
+   "fat": 40.3,
+   "fib": 24.4,
+   "sel": 0.1,
+   "ags": 4.3
+  },
+  "propose": {
+   "kcal": 528.0,
+   "protein": 19.0,
+   "carbs": 6.5,
+   "fat": 40.3
+  },
+  "note": "Graine de lin (moulue = même composition) ; glucides de l'app trop bas (2 → 6,5 g)."
+ },
+ {
+  "key": "sardines",
+  "verdict": "a_corriger",
+  "code": "26034",
+  "nom_ciqual": "Sardine, à l'huile, appertisée, égouttée",
+  "ciqual": {
+   "kcal": 217.0,
+   "protein": 23.3,
+   "carbs": 0.3,
+   "fat": 13.7,
+   "fib": 0.0,
+   "sel": 0.9,
+   "ags": 3.1
+  },
+  "propose": {
+   "kcal": 217.0,
+   "protein": 23.3,
+   "carbs": 0.3,
+   "fat": 13.7
+  },
+  "note": "Sardine à l'huile, appertisée, égouttée ; léger écart (210 → 217 kcal, lipides 13 → 13,7)."
+ },
+ {
+  "key": "maquereau",
+  "verdict": "a_corriger",
+  "code": "26123",
+  "nom_ciqual": "Maquereau, filet (grillé ou non), au naturel, appertisé, égoutté",
+  "ciqual": {
+   "kcal": 221.0,
+   "protein": 18.8,
+   "carbs": 0.0,
+   "fat": 16.2,
+   "fib": 0.0,
+   "sel": 0.9,
+   "ags": 3.7
+  },
+  "propose": {
+   "kcal": 221.0,
+   "protein": 18.8,
+   "carbs": 0.0,
+   "fat": 16.2
+  },
+  "note": "Maquereau au naturel, appertisé, égoutté ; l'app sous-estime les lipides (12,5 → 16,2 g) et les kcal (195 → 221)."
+ },
+ {
+  "key": "betterave",
+  "verdict": "a_corriger",
+  "code": "20003",
+  "nom_ciqual": "Betterave rouge, cuite",
+  "ciqual": {
+   "kcal": 41.5,
+   "protein": 1.4,
+   "carbs": 7.1,
+   "fat": 0.4,
+   "fib": 2.5,
+   "sel": 0.2,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 41.5,
+   "protein": 1.4,
+   "carbs": 7.1,
+   "fat": 0.4
+  },
+  "note": "Betterave rouge cuite ; l'app surestime kcal et glucides."
+ },
+ {
+  "key": "mache",
+  "verdict": "a_corriger",
+  "code": "20099",
+  "nom_ciqual": "Mâche, crue",
+  "ciqual": {
+   "kcal": 15.0,
+   "protein": 2.0,
+   "carbs": 0.5,
+   "fat": 0.2,
+   "fib": 2.3,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 15.0,
+   "protein": 2.0,
+   "carbs": 0.5,
+   "fat": 0.2
+  },
+  "note": "Mâche crue ; glucides de l'app trop hauts (1,5 → 0,5 g), d'où 21 → 15 kcal."
+ },
+ {
+  "key": "riz_risotto",
+  "verdict": "ok",
+  "code": "9100",
+  "nom_ciqual": "Riz blanc, cru",
+  "ciqual": {
+   "kcal": 350.0,
+   "protein": 7.0,
+   "carbs": 77.5,
+   "fat": 0.8,
+   "fib": 1.5,
+   "sel": 0.0,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 350.0,
+   "protein": 7.0,
+   "carbs": 77.5,
+   "fat": 0.8
+  },
+  "note": "Pas de riz arborio/rond dans Ciqual : riz blanc cru (pesé sec, cook 2,5) ; conforme."
+ },
+ {
+  "key": "polenta",
+  "verdict": "a_corriger",
+  "code": "9614",
+  "nom_ciqual": "Polenta ou semoule de maïs, précuite, à cuire",
+  "ciqual": {
+   "kcal": 350.0,
+   "protein": 7.9,
+   "carbs": 74.0,
+   "fat": 1.8,
+   "fib": 3.2,
+   "sel": 0.0,
+   "ags": null
+  },
+  "propose": {
+   "kcal": 350.0,
+   "protein": 7.9,
+   "carbs": 74.0,
+   "fat": 1.8
+  },
+  "note": "Polenta / semoule de maïs précuite, à cuire (sèche, cook 4) ; seuls les lipides s'écartent (1,2 → 1,8 g)."
+ },
+ {
+  "key": "sirop_erable",
+  "verdict": "a_corriger",
+  "code": "31034",
+  "nom_ciqual": "Sirop d'érable",
+  "ciqual": {
+   "kcal": 269.0,
+   "protein": 0.0,
+   "carbs": 67.2,
+   "fat": 0.1,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 269.0,
+   "protein": 0.0,
+   "carbs": 67.2,
+   "fat": 0.1
+  },
+  "note": "Sirop d'érable ; kcal légèrement sous-estimées (260 → 269)."
+ },
+ {
+  "key": "chou",
+  "verdict": "a_corriger",
+  "code": "20116",
+  "nom_ciqual": "Chou blanc, cru",
+  "ciqual": {
+   "kcal": 35.2,
+   "protein": 1.4,
+   "carbs": 4.6,
+   "fat": 0.6,
+   "fib": 3.5,
+   "sel": 0.0,
+   "ags": 0.3
+  },
+  "propose": {
+   "kcal": 35.2,
+   "protein": 1.4,
+   "carbs": 4.6,
+   "fat": 0.6
+  },
+  "note": "Chou blanc cru ; l'app sous-estime (27 → 35,2 kcal)."
+ },
+ {
+  "key": "chataignes",
+  "verdict": "a_corriger",
+  "code": "15039",
+  "nom_ciqual": "Châtaigne ou marron, appertisé",
+  "ciqual": {
+   "kcal": 145.0,
+   "protein": 2.0,
+   "carbs": 28.8,
+   "fat": 1.4,
+   "fib": 4.0,
+   "sel": 0.1,
+   "ags": 0.4
+  },
+  "propose": {
+   "kcal": 145.0,
+   "protein": 2.0,
+   "carbs": 28.8,
+   "fat": 1.4
+  },
+  "note": "Les châtaignes sous vide sont stérilisées, donc on prend « Châtaigne ou marron, appertisé » (la châtaigne bouillie 15020 fait 123 kcal). L'app est 14 % plus haute, mais certaines étiquettes sous vide affichent 165-180 kcal : à recouper avec le produit acheté."
+ },
+ {
+  "key": "beurre",
+  "verdict": "ok",
+  "code": "16400",
+  "nom_ciqual": "Beurre à 80% MG minimum, doux",
+  "ciqual": {
+   "kcal": 753.0,
+   "protein": 0.6,
+   "carbs": 0.7,
+   "fat": 83.0,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 60.0
+  },
+  "propose": {
+   "kcal": 753.0,
+   "protein": 0.6,
+   "carbs": 0.7,
+   "fat": 83.0
+  },
+  "note": "Beurre doux 80 % MG ; écarts dans les tolérances."
+ },
+ {
+  "key": "noix",
+  "verdict": "a_corriger",
+  "code": "15005",
+  "nom_ciqual": "Noix, cerneau, séchée",
+  "ciqual": {
+   "kcal": 709.0,
+   "protein": 13.3,
+   "carbs": 6.9,
+   "fat": 67.3,
+   "fib": 6.7,
+   "sel": 0.1,
+   "ags": 6.5
+  },
+  "propose": {
+   "kcal": 709.0,
+   "protein": 13.3,
+   "carbs": 6.9,
+   "fat": 67.3
+  },
+  "note": "Cerneaux de noix séchés ; protéines de l'app trop hautes (15 → 13,3 g)."
+ },
+ {
+  "key": "maroilles",
+  "verdict": "ok",
+  "code": "12036",
+  "nom_ciqual": "Maroilles, sans précision",
+  "ciqual": {
+   "kcal": 325.0,
+   "protein": 21.9,
+   "carbs": 0.0,
+   "fat": 26.4,
+   "fib": 0.0,
+   "sel": 2.1,
+   "ags": 18.1
+  },
+  "propose": {
+   "kcal": 325.0,
+   "protein": 21.9,
+   "carbs": 0.0,
+   "fat": 26.4
+  },
+  "note": "Maroilles sans précision ; identique."
+ },
+ {
+  "key": "boursin",
+  "verdict": "hors_ciqual",
+  "code": null,
+  "nom_ciqual": null,
+  "ciqual": null,
+  "propose": {
+   "kcal": 385,
+   "protein": 8.5,
+   "carbs": 3,
+   "fat": 37
+  },
+  "note": "Produit de marque. Le plus proche dans Ciqual est 12070 (fromage frais ail et fines herbes non allégé : 320 kcal, 8 P, 2,7 G, 30,8 L). Boursin est plus gras (≈ 37-40 % MG), donc 385 kcal est plausible."
+ },
+ {
+  "key": "gorgonzola",
+  "verdict": "ok",
+  "code": "12524",
+  "nom_ciqual": "Gorgonzola",
+  "ciqual": {
+   "kcal": 318.0,
+   "protein": 19.5,
+   "carbs": 0.0,
+   "fat": 26.9,
+   "fib": 0.0,
+   "sel": 1.9,
+   "ags": 16.4
+  },
+  "propose": {
+   "kcal": 318.0,
+   "protein": 19.5,
+   "carbs": 0.0,
+   "fat": 26.9
+  },
+  "note": "Gorgonzola ; identique."
+ },
+ {
+  "key": "mozzarella",
+  "verdict": "ok",
+  "code": "19590",
+  "nom_ciqual": "Mozzarella au lait de vache",
+  "ciqual": {
+   "kcal": 227.0,
+   "protein": 16.5,
+   "carbs": 0.7,
+   "fat": 17.7,
+   "fib": 0.0,
+   "sel": 0.6,
+   "ags": 11.7
+  },
+  "propose": {
+   "kcal": 227.0,
+   "protein": 16.5,
+   "carbs": 0.7,
+   "fat": 17.7
+  },
+  "note": "Mozzarella au lait de vache ; identique."
+ },
+ {
+  "key": "biere",
+  "verdict": "ok",
+  "code": "5000",
+  "nom_ciqual": "Bière brune",
+  "ciqual": {
+   "kcal": 40.5,
+   "protein": 0.4,
+   "carbs": 4.1,
+   "fat": 0.0,
+   "fib": 0.0,
+   "sel": 0.0,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 40.5,
+   "protein": 0.4,
+   "carbs": 4.1,
+   "fat": 0.0
+  },
+  "note": "Bière brune ; identique (densité ≈ 1,01, et les kcal incluent l'alcool)."
+ },
+ {
+  "key": "pain_epices",
+  "verdict": "ok",
+  "code": "23200",
+  "nom_ciqual": "Pain d'épices, préemballé",
+  "ciqual": {
+   "kcal": 318.0,
+   "protein": 3.1,
+   "carbs": 71.8,
+   "fat": 1.1,
+   "fib": 3.8,
+   "sel": 0.6,
+   "ags": 0.2
+  },
+  "propose": {
+   "kcal": 318.0,
+   "protein": 3.1,
+   "carbs": 71.8,
+   "fat": 1.1
+  },
+  "note": "Pain d'épices préemballé ; identique."
+ },
+ {
+  "key": "potimarron",
+  "verdict": "ok",
+  "code": "20132",
+  "nom_ciqual": "Potimarron, chair sans peau, cru",
+  "ciqual": {
+   "kcal": 22.1,
+   "protein": 0.9,
+   "carbs": 3.1,
+   "fat": 0.3,
+   "fib": 1.7,
+   "sel": 0.1,
+   "ags": 0.0
+  },
+  "propose": {
+   "kcal": 22.1,
+   "protein": 0.9,
+   "carbs": 3.1,
+   "fat": 0.3
+  },
+  "note": "Potimarron, chair crue ; conforme."
+ },
+ {
+  "key": "poire",
+  "verdict": "ok",
+  "code": "13037",
+  "nom_ciqual": "Poire, chair et peau, crue",
+  "ciqual": {
+   "kcal": 56.6,
+   "protein": 0.4,
+   "carbs": 12.3,
+   "fat": 0.3,
+   "fib": 2.9,
+   "sel": 0.0,
+   "ags": 0.1
+  },
+  "propose": {
+   "kcal": 56.6,
+   "protein": 0.4,
+   "carbs": 12.3,
+   "fat": 0.3
+  },
+  "note": "Poire chair et peau crue ; conforme."
+ }
+]
