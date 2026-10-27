@@ -25,7 +25,7 @@ exports.mains = [
     "Le parmesan ajouté hors du feu rend la sauce lisse, sans grumeaux.", ['italien', 'gourmand', 'poêle', 'batch']),
 
   R('W82', 'Poulet façon soupe à l\'oignon, oignons confits et emmental gratiné, purée', 'dinner', '🧅', 15, 30,
-    [['poulet', 170], ['oignon', 200], ['pdt', 300], ['lait', 60], ['emmental', 30], ['bouillon', 0.5], ['fecule', 4], ['epices', 1], ['huile', 8]],
+    [['poulet', 170], ['oignon', 200], ['pdt', 300], ['lait', 60], ['emmental', 30], ['bouillon', 0.25], ['fecule', 4], ['epices', 1], ['huile', 8]],
     ["Émince finement les oignons. Coupe le poulet en morceaux de 3 cm.",
      "Dans la poêle à feu moyen-doux, fais confire les oignons 20 minutes avec les deux tiers de l'huile et une pincée de sel, en remuant de temps en temps : ils doivent être bien dorés et fondants. Ajoute une cuillère d'eau s'ils accrochent.",
      "Pousse les oignons sur le côté et fais dorer le poulet 6 à 7 minutes avec le reste de l'huile et le thym, jusqu'à ce qu'il ne soit plus rose au centre.",
@@ -46,7 +46,7 @@ exports.mains = [
     "Le contraste entre les pâtes chaudes et le yaourt froid fait tout le plat.", ['turc', 'gourmand', 'poêle', 'autocuiseur', 'batch']),
 
   R('W84', 'Bœuf mijoté façon bourguignon, champignons, carottes et purée', 'dinner', '🍲', 20, 45,
-    [['boeuf_emince', 170], ['champignons', 120], ['carotte', 100], ['oignon', 60], ['concentre', 20], ['bouillon', 0.5], ['fecule', 6], ['epices', 1], ['pdt', 300], ['lait', 60], ['huile', 5]],
+    [['boeuf_emince', 170], ['champignons', 120], ['carotte', 100], ['oignon', 60], ['concentre', 20], ['bouillon', 0.25], ['fecule', 6], ['epices', 1], ['pdt', 300], ['lait', 60], ['huile', 5]],
     ["Coupe le bœuf en cubes de 3 cm, les carottes en rondelles épaisses, l'oignon en quartiers et les champignons en deux.",
      "Mets l'autocuiseur en mode dorer et fais dorer le bœuf en deux fois dans l'huile, 4 minutes par tournée : il doit être bien coloré sur toutes les faces. Réserve-le.",
      "Fais revenir l'oignon et les champignons 4 minutes, puis ajoute le concentré et remue 1 minute.",
@@ -115,7 +115,7 @@ exports.mains = [
     "Le citron ajouté à la fin réveille la douceur du poireau.", ['italien', 'gourmand', 'air fryer', 'autocuiseur', 'batch', 'poisson']),
 
   R('W95', 'Poulet vallée d\'Auge : pommes, champignons et crème, riz', 'dinner', '🍎', 15, 30,
-    [['haut_cuisse', 170], ['pomme', 120], ['champignons', 120], ['oignon', 40], ['creme', 30], ['bouillon', 0.5], ['vinaigre_cidre', 5], ['epices', 1], ['huile', 6], ['riz', 90]],
+    [['haut_cuisse', 170], ['pomme', 120], ['champignons', 120], ['oignon', 40], ['creme', 30], ['bouillon', 0.25], ['vinaigre_cidre', 5], ['epices', 1], ['huile', 6], ['riz', 90]],
     ["Coupe le poulet en gros morceaux, la pomme en quartiers épais avec la peau, émince l'oignon et coupe les champignons en deux.",
      "Dans la poêle, fais dorer les quartiers de pomme 3 minutes avec un peu d'huile, sans les écraser. Réserve-les.",
      "Dans la même poêle, fais dorer le poulet 6 minutes avec le reste de l'huile, puis ajoute l'oignon et les champignons, 4 minutes.",
@@ -179,7 +179,7 @@ exports.mains = [
     "La châtaigne donne un velouté doux et onctueux, presque sucré.", ['français', 'gourmand', 'autocuiseur', 'batch']),
 
   S('SO09', 'Soupe à l\'oignon gratinée au bœuf effiloché', '🧅', 15, 45,
-    [['boeuf_emince', 150], ['oignon', 250], ['bouillon', 1], ['fecule', 5], ['pain', 70], ['emmental', 30], ['epices', 1], ['huile', 8]],
+    [['boeuf_emince', 150], ['oignon', 250], ['bouillon', 0.75], ['fecule', 5], ['pain', 70], ['emmental', 30], ['epices', 1], ['huile', 8]],
     ["Émince finement les oignons. Coupe le bœuf en 2 ou 3 gros morceaux.",
      "Mets l'autocuiseur en mode dorer et fais confire les oignons 20 minutes dans l'huile avec une pincée de sel, en remuant souvent, jusqu'à ce qu'ils soient bien bruns. Ajoute une cuillère d'eau s'ils accrochent.",
      "Ajoute le bœuf, le thym, le laurier, les bouillons cubes émiettés et 350 ml d'eau froide par portion. Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes.",
@@ -223,7 +223,7 @@ exports.mains = [
 
   // ── v281 : plats d'automne gourmands, validés par Pierre le 20/10/2026 ──
   R('W102', 'Blanquette de poulet aux champignons, riz', 'dinner', '🍄', 15, 25,
-    [['poulet', 170], ['champignons', 120], ['carotte', 80], ['oignon', 40], ['creme', 30], ['citron', 5], ['fecule', 6], ['bouillon', 0.5], ['riz', 80], ['beurre', 5], ['epices', 1]],
+    [['poulet', 170], ['champignons', 120], ['carotte', 80], ['oignon', 40], ['creme', 30], ['citron', 5], ['fecule', 6], ['bouillon', 0.25], ['riz', 80], ['beurre', 5], ['epices', 1]],
     ["Coupe le poulet en morceaux de 4 cm, les carottes en rondelles, l'oignon en quartiers et les champignons en deux.",
      "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et les champignons 4 minutes dans le beurre, sans les colorer. Ajoute le poulet, les carottes, le thym, le laurier, le bouillon cube émietté et 120 ml d'eau froide par portion. Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression.",
      "Délaye la fécule dans un peu d'eau froide, verse-la et laisse épaissir 2 minutes en mode dorer, en remuant. Hors du feu, ajoute la crème et le jus de citron : la sauce doit napper la cuillère. Verse la blanquette dans un plat et rince la cuve.",
