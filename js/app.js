@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T07:34:25.296Z
+// 2026-10-29T07:41:26.253Z
 
 
 // ──────────────────────────────────────────────
@@ -978,7 +978,7 @@ const RECIPES = [
   M("K05", "Overnight oats tiramisu", "sweet", "☕", 4, 0,
     [["flocons",40],["lait",120],["whey",20],["fromage_blanc",100],["cacao",3],["miel",8]],
     ["Flocons + lait + whey + 1 c.à.c de café soluble, en bocal.","Couche de fromage blanc au miel, cacao en poudre.","Une nuit au frigo."],
-    "À préparer la veille au soir : 4 minutes, et il est prêt le lendemain.", ["italien","sucré","whey"], false),
+    "Préparé pendant la session : un bocal par portion, 3 jours au frigo.", ["italien","sucré","whey","frigo-3"], true),
   M("K06", "Pancakes protéinés à la banane", "sweet", "🥞", 5, 8,
     [["flocons",40],["banane",100],["oeuf",1],["whey",20],["lait",50],["miel",8]],
     ["Mixer flocons, banane, œuf, whey, lait.","Petits pancakes à la poêle, 1 min 30 par face.","Miel ou sirop d'érable au service."],
@@ -1021,8 +1021,8 @@ const RECIPES = [
     "Le chocolat noir et le beurre de cacahuète remplacent le chocolat au lait et la graisse végétale de la recette classique.", ["français","sucré","sans cuisson","semaine","whey"], true),
   M("K16", "Tiramisu minute en verrine", "sweet", "☕", 5, 0,
     [["boudoirs",24],["yaourt_grec",150],["whey",15],["miel",5],["cacao",3]],
-    ["Trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'un verre.","Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","Saupoudre de cacao. Mange tout de suite, ou garde le verre une heure au frigo pour que les boudoirs s'imbibent."],
-    "Le yaourt grec et la whey remplacent le mascarpone et les œufs : même goût, trois fois plus de protéines.", ["italien","sucré","sans cuisson","rapide","whey"], false),
+    ["Pendant la session de cuisine, trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours."],
+    "Le yaourt grec et la whey remplacent le mascarpone et les œufs : même goût, trois fois plus de protéines.", ["italien","sucré","sans cuisson","whey","frigo-3"], true),
   M("K17", "Barres de céréales aux dattes et aux cacahuètes", "sweet", "🌾", 10, 0,
     [["dattes",30],["flocons",25],["cacahuetes",12],["whey",10],["cacao",3]],
     ["Mixe les dattes avec une cuillère à soupe d'eau chaude, jusqu'à obtenir une pâte collante.","Ajoute les flocons d'avoine, la whey et le cacao, et mixe quelques secondes seulement, pour garder des morceaux de flocons.","Incorpore les cacahuètes entières à la main : ce sont elles qui donnent le croquant.","Tasse le tout dans une petite boîte tapissée de papier cuisson, sur 1,5 cm d'épaisseur, et laisse prendre une heure au frigo.","Mise en boîtes : coupe en barres, une par portion, et garde-les au frigo. Elles se gardent une semaine."],
@@ -1049,12 +1049,12 @@ const RECIPES = [
     "Le granola maison à l'érable croustille bien plus que celui du commerce, avec moins de sucre.", ["canadien","sucré","air fryer","semaine"], true),
   M("K23", "Pommes poêlées à l'érable et à la cannelle, fromage blanc et noix", "sweet", "🍎", 3, 5,
     [["pomme",150],["sirop_erable",8],["fromage_blanc",150],["noix",10],["epices",1]],
-    ["Coupe la pomme en dés avec la peau.","Fais-la dorer 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elle soit tendre et caramélisée.","Verse le fromage blanc dans un bol, ajoute les pommes chaudes et les noix concassées."],
-    "Le contraste entre les pommes chaudes et le fromage blanc froid fait tout.", ["canadien","sucré","rapide"], false),
+    ["Pendant la session de cuisine, coupe les pommes en dés avec la peau.","Fais-les dorer 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elles soient tendres et caramélisées.","Laisse-les refroidir et range-les au frigo dans une boîte : elles se gardent 3 jours.","Au moment de manger : réchauffe les pommes 1 minute au micro-ondes, verse le fromage blanc dans un bol, ajoute les pommes chaudes et les noix concassées."],
+    "Le contraste entre les pommes chaudes et le fromage blanc froid fait tout.", ["canadien","sucré","frigo-3"], true),
   M("K24", "Overnight oats pumpkin spice à l'érable", "sweet", "🎃", 5, 4,
     [["flocons",40],["lait",120],["fromage_blanc",100],["butternut",60],["whey",15],["sirop_erable",10],["epices",1]],
-    ["La veille au soir, fais cuire la courge en petits dés 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","Mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade, dans un bocal.","Une nuit au frigo : le lendemain, c'est prêt."],
-    "Le goût du « pumpkin spice latte » en version petit-déjeuner protéiné.", ["américain","sucré","whey"], false),
+    ["Pendant la session de cuisine, fais cuire la courge en petits dés 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade.","Ferme les bocaux et range-les au frigo : ils se gardent 3 jours."],
+    "Le goût du « pumpkin spice latte » en version protéinée.", ["américain","sucré","whey","frigo-3"], true),
   M("S05", "Fruit de saison", "side", "🍐", 1, 0,
     [["fruit_saison",150]],
     ["À croquer."],
@@ -1141,7 +1141,7 @@ const TIPS = {
   C01: "Estimation moyenne d'un plateau cantine équilibré. Non compté dans les courses.",
   
   K01: "Avec de la mangue surgelée, pas besoin de glaçons.",
-  K05: "Prépare 3 bocaux d'un coup : 4 jours au frigo.",
+  K05: "Prépare tous les bocaux pendant la session : 3 jours au frigo.",
   K06: "Ils se congèlent : 1 minute à l'air fryer pour les réchauffer.",
   K08: "7 jours au frigo.",
   K11: "4 jours au frigo.",
@@ -1656,9 +1656,9 @@ const STEPS = {
     "Réchauffe la pita 2 minutes à l'air fryer à 180 °C, coupe-la en triangles et trempe-la dans le labneh."
   ],
   "K05": [
-    "La veille au soir, dans un bocal, mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.",
+    "Pendant la session de cuisine, prépare un bocal par portion : mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.",
     "Mélange le fromage blanc avec le miel et étale-le en couche par-dessus, puis saupoudre de cacao.",
-    "Ferme et laisse au frigo jusqu'au lendemain."
+    "Ferme les bocaux et range-les au frigo : ils se gardent 3 jours."
   ],
   "K06": [
     "Pendant la session de cuisine, écrase la banane à la fourchette, puis mélange-la avec les flocons, l'œuf, la whey et le lait.",
@@ -2009,6 +2009,10 @@ const SESSION_STEPS = {
   K20: {"cuts":[{"ing":"amandes","verb":"Concasse","form":"grossièrement"}],"steps":[{"text":"Mélange les amandes avec les flocons d'avoine et la whey.","kind":"prep","app":null,"min":2,"wait":0},{"text":"Fais tiédir le miel et le beurre de cacahuète 20 secondes au micro-ondes, puis verse-les sur les flocons et mélange bien, jusqu'à ce que tout soit enrobé.","kind":"cook","app":"micro","min":3,"wait":0},{"text":"Tasse la préparation sur 1,5 cm d'épaisseur sur une feuille de papier cuisson posée dans le panier de l'air fryer.","kind":"cook","app":"airfryer","min":2,"wait":0},{"text":"Fais cuire 12 minutes à 160 °C, jusqu'à ce que ce soit doré.","kind":"cook","app":"airfryer","min":1,"wait":12},{"text":"Laisse refroidir complètement avant de couper : les barres durcissent en refroidissant.","kind":"prep","app":null,"min":1,"wait":0}]},
   K21: {"cuts":[{"ing":"chocolat","verb":"Hache","form":"en petits morceaux"}],"steps":[{"text":"Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine et la whey.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Ajoute le chocolat noir.","kind":"prep","app":null,"min":1,"wait":0},{"text":"Forme 3 cookies par portion, aplatis-les à 1 cm et pose-les sur du papier cuisson dans le panier de l'air fryer.","kind":"cook","app":"airfryer","min":4,"wait":0},{"text":"Fais cuire les cookies 8 minutes à 170 °C : ils doivent être dorés sur les bords et encore moelleux au centre.","kind":"cook","app":"airfryer","min":1,"wait":8},{"text":"Laisse refroidir les cookies 10 minutes, ils se raffermissent.","kind":"prep","app":null,"min":1,"wait":10}]},
   K22: {"cuts":[{"ing":"noix","verb":"Concasse","form":"grossièrement"}],"steps":[{"text":"Mélange les noix avec les flocons d'avoine, la cannelle, le sirop d'érable et l'huile, jusqu'à ce que tout soit enrobé.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Étale le granola sur une feuille de papier cuisson dans le panier et fais-le cuire 12 à 15 minutes à l'air fryer à 150 °C, en remuant toutes les 5 minutes, jusqu'à ce qu'il soit doré.","kind":"cook","app":"airfryer","min":2,"wait":15},{"text":"Laisse refroidir le granola : il durcit en refroidissant.","kind":"prep","app":null,"min":1,"wait":0}]},
+  K05: {"cuts":[],"steps":[{"text":"Prépare un bocal par portion : mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Mélange le fromage blanc avec le miel et étale-le en couche par-dessus, puis saupoudre de cacao.","kind":"prep","app":null,"min":2,"wait":0},{"text":"Ferme les bocaux et range-les au frigo : ils se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
+  K16: {"cuts":[],"steps":[{"text":"Trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","kind":"prep","app":null,"min":2,"wait":0},{"text":"Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
+  K23: {"cuts":[{"ing":"pomme","verb":"Coupe","form":"en dés avec la peau"}],"steps":[{"text":"Fais dorer les pommes 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elles soient tendres et caramélisées.","kind":"cook","app":"poele","min":5,"wait":0},{"text":"Laisse refroidir les pommes et range-les au frigo dans une boîte : elles se gardent 3 jours.","kind":"cook","app":null,"min":1,"wait":0}]},
+  K24: {"cuts":[{"ing":"butternut","verb":"Épluche et coupe","form":"en petits dés"}],"steps":[{"text":"Fais cuire la courge 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","kind":"cook","app":"micro","min":5,"wait":0},{"text":"Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Ferme les bocaux et range-les au frigo : ils se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
 };
 
 
@@ -4097,13 +4101,23 @@ function getServedSnacks() {
 // v195 : portion minimale d'une collation (pour ne proposer que des préparées qui tiennent dans la journée)
 const snackFloorCache = {};
 const snackFloor = r => (snackFloorCache[r.id] ??= optimizeRecipe(r, { kcal: 50, protein: 5, carbs: 5, fat: 2 }, 'S', 1).macros.kcal);
-function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = Infinity, bought = null) {
+// v303 : familles de douceurs et de petits-déjeuners. Une semaine n'en a qu'une de chaque (Pierre : granola en
+// collation préparée, en bol au petit-déjeuner et en barres la même semaine, « il faudrait qq chose de plus cohérent »).
+const SNACK_FAMS = [['granola', /granola/], ['overnight', /overnight/], ['tiramisu', /tiramisu/], ['pancake', /pancake/],
+  ['porridge', /porridge/], ['barres', /\bbarres?\b/], ['cookies', /cookie/], ['energy', /energy|boules?\b|bouchees/]];
+const normName = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const familiesOf = r => (r ? SNACK_FAMS.filter(([, rx]) => rx.test(normName(r.name))).map(([f]) => f) : []);
+const clashes = (r, fams) => familiesOf(r).some(f => fams.has(f));
+// Douceur « en série » : préparée le dimanche, elle ne se garde que quelques jours (tiramisu, overnight oats, pommes
+// poêlées) : servie les premiers jours, 3 fois en général.
+const isSeries = r => !!r && r.batch && r.category === 'sweet' && fridgeDays(r) > 0;
+function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = Infinity, bought = null, avoidFam = new Set()) {
   const all = snackPool(whey, lac, glu);
   // v196 : une collation rapide qui demande un produit frais vendu à la pièce ou en sachet (avocat, salade, concombre…)
   // n'est proposée que si ce produit est déjà acheté pour les plats : sinon on achèterait un avocat entier pour 30 g
   const PACK_FRESH = ['avocat', 'salade', 'concombre', 'herbes', 'tomates_cerise', 'champignons', 'poivron', 'courgette', 'aubergine', 'butternut'];
   const needsPack = s => !!bought && s.ingredients.some(i => PACK_FRESH.includes(i.key) && !bought.has(i.key));
-  const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s));
+  const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s) && !clashes(s, avoidFam));
   // v195 / v199 : tour de rôle, pour les collations préparées comme pour les rapides. Celles servies récemment passent
   // leur tour (s'il en reste assez) ; ensuite, plus une collation attend, plus elle a de chances de sortir.
   // Le partage d'un produit avec les plats ne donne plus qu'un petit coup de pouce.
@@ -4114,14 +4128,25 @@ function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = In
   const sweet = byAge(restedQ(quick.filter(s => (s.tags || []).includes('sucré') || !(s.tags || []).includes('salé'))));
   const salty = byAge(restedQ(quick.filter(s => (s.tags || []).includes('salé'))));
   // préparée à l'avance : seulement ce qui tient toute la semaine (energy balls ; pancakes, qui se congèlent)
-  let batchPool = all.filter(s => s.batch && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')) && snackFloor(s) <= room);
+  let batchPool = all.filter(s => s.batch && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')) && snackFloor(s) <= room && !clashes(s, avoidFam));
   const rested = batchPool.filter(s => ageOf(baseSnackId(s.id)) >= 3);
   if (rested.length >= 2) batchPool = rested;
-  const batchy = batchPool.map(r => ({ r, k: Math.random() ** (1 / (ageOf(baseSnackId(r.id)) ** 2 * (sharesWith(r, prefer) ? 1.3 : 1))) })).sort((a, b) => b.k - a.k).map(x => x.r);
+  const rank = list => list.map(r => ({ r, k: Math.random() ** (1 / (ageOf(baseSnackId(r.id)) ** 2 * (sharesWith(r, prefer) ? 1.3 : 1))) })).sort((a, b) => b.k - a.k).map(x => x.r);
+  const weekly = rank(batchPool);
+  // v303 : la 2e douceur préparée est une autre famille ; une fois sur deux, c'est une douceur en série (3 jours)
+  const series = rank(all.filter(s => isSeries(s) && snackFloor(s) <= room && !clashes(s, avoidFam)));
+  const first = weekly[0];
+  const fam1 = new Set(familiesOf(first));
+  const second = (Math.random() < 0.5 ? series : weekly.slice(1)).find(r => r !== first && !clashes(r, fam1))
+    || [...weekly.slice(1), ...series].find(r => r !== first && !clashes(r, fam1));
+  const batchy = [first, second].filter(Boolean);
+  const famB = new Set([...avoidFam, ...batchy.flatMap(familiesOf)]);
+  const notB = r => !clashes(r, famB);
+  sweet.splice(0, sweet.length, ...sweet.filter(notB)); salty.splice(0, salty.length, ...salty.filter(notB));
   // v188 : 1 ou 2 collations préparées le dimanche, en alternance avec des collations rapides (fromage blanc, yaourt…).
   // Rotation [préparée, rapide, préparée ou rapide, rapide] : chaque jour, le choix se fait entre 2 voisines,
   // donc une préparée et une rapide ; une préparée revient ainsi 3 à 4 jours dans la semaine.
-  const nBatch = Math.random() < 0.5 ? 1 : 2;
+  const nBatch = 2; // v303 (Pierre) : toujours deux douceurs préparées le dimanche
   const picks = nBatch === 2 && batchy[1]
     ? [batchy[0], sweet[0], batchy[1], salty[0] || sweet[1]]
     : [batchy[0], sweet[0], salty[0], sweet[1]];
@@ -4348,7 +4373,9 @@ function pickBreakfasts(m, sessionDays, prefer = new Set()) {
     if (m.breakfast !== 'sucre' && m.breakfast !== 'sale' && rest.some(r => t(r) !== t(a))) rest = rest.filter(r => t(r) !== t(a));
     // si la première se prépare à l'avance, la seconde se fait le matin même (elle couvre les jours au-delà du frigo)
     const restQuick = a.batch ? rest.filter(r => !r.batch) : rest;
-    const b2 = weightedPick(restQuick.length ? restQuick : rest, r => caBreakfast(r) * (sharesWith(r, prefer) ? SHARE_BONUS : 1)) || a;
+    const fa = new Set(familiesOf(a)); // v303 : pas deux overnight oats ou deux granolas
+    const restQ2 = (restQuick.length ? restQuick : rest).filter(r => !clashes(r, fa));
+    const b2 = weightedPick(restQ2.length ? restQ2 : (restQuick.length ? restQuick : rest), r => caBreakfast(r) * (sharesWith(r, prefer) ? SHARE_BONUS : 1)) || a;
     used.push(a.id, b2.id);
     const out = days.map((_, k) => (k % 2 ? b2 : a));
     // au frigo : préparé le dimanche, un petit-déjeuner n'est mangé que tant qu'il se garde (lundi = 1 jour)
@@ -4601,7 +4628,8 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     return v.length ? v[Math.floor(v.length / 2)] : Infinity;
   };
   const boughtKeys = new Set(usedRecs.flatMap(r => r.ingredients.map(i => i.key)));
-  const snackBy = members.map((m, mi) => pickSnacks(m.whey !== false, lactoseOf(m.id), glutenOf(m.id), preferS, roomOf(m, mi), boughtKeys));
+  const breakfastFams = mi => new Set(dates.flatMap(d => (byMember[mi][d].meals.breakfast || []).flatMap(it => familiesOf(getById(it.id)))));
+  const snackBy = members.map((m, mi) => pickSnacks(m.whey !== false, lactoseOf(m.id), glutenOf(m.id), preferS, roomOf(m, mi), boughtKeys, breakfastFams(mi)));
   const batchDaysBy = {};
   members.forEach((m, mi) => {
     // repas libres : part de la journée réservée (par tranches de 100 kcal), rien à cuisiner ni à acheter
@@ -4626,6 +4654,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
       // pas assez de portions : on la propose d'autres jours (à la place d'une collation rapide)
       for (let d = 0; d < dates.length && servedOn(id).length < 3; d++) {
         if (P[d] || (E[dates[d]].meals.sweet || []).some(it => getById(it.id)?.batch)) continue;
+        if (isSeries(getById(id)) && d + 1 > fridgeDays(getById(id))) continue; // v303 : pas au-delà de sa conservation
         P[d] = id; refill(d, P);
         if (!servedOn(id).includes(d)) { P[d] = null; refill(d, P); }
       }
@@ -4636,25 +4665,37 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
         dates.forEach((d, dayIdx) => refill(dayIdx, P));
       }
     }
-    // v303 (Pierre : « chaque semaine un batch cooking dessert ») : s'il ne reste aucune douceur préparée le dimanche,
-    // on essaie les autres (les plus légères d'abord) : 3 jours au moins, sinon 2.
+    // v303 (Pierre, jeûne intermittent : « au moins 3 portions par dessert, donc au moins 2 par semaine ») :
+    // deux douceurs préparées le dimanche (une seule sur une semaine de moins de 6 jours), 3 portions au moins chacune.
+    // S'il en manque, on en essaie d'autres, d'une autre famille, les plus légères d'abord ; une qui n'atteint pas
+    // 3 portions est retirée.
     const isSweetBatch = id => { const r = getById(id); return !!r && r.batch && r.category === 'sweet'; };
-    if (!snackBy[mi].some(isSweetBatch)) {
-      const cands = snackPool(m.whey !== false, lactoseOf(m.id), glutenOf(m.id))
-        .filter(s => s.batch && s.category === 'sweet' && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')))
-        .sort((x, y) => snackFloor(x) - snackFloor(y));
-      let best = null;
-      for (const c of cands) {
-        snackBy[mi] = [c.id, ...snackBy[mi]];
-        const Q = batchPattern([c.id], dates.length).map((x, d) => P[d] || x);
-        dates.forEach((d, dayIdx) => refill(dayIdx, Q));
-        const n = servedOn(c.id).length;
-        if (n >= 3) { P = Q; best = null; break; }
-        if (n >= 2 && (!best || n > best.n)) best = { id: c.id, n, Q };
-        snackBy[mi] = snackBy[mi].filter(x => x !== c.id);
+    const sweetIds = () => snackBy[mi].filter(isSweetBatch);
+    const extend = id => {
+      const r = getById(id);
+      for (let d = 0; d < dates.length && servedOn(id).length < 3; d++) {
+        if (P[d] || (E[dates[d]].meals.sweet || []).some(it => getById(it.id)?.batch)) continue;
+        if (isSeries(r) && d + 1 > fridgeDays(r)) continue;
+        P[d] = id; refill(d, P);
+        if (!servedOn(id).includes(d)) { P[d] = null; refill(d, P); }
       }
-      if (best) { snackBy[mi] = [best.id, ...snackBy[mi]]; P = best.Q; }
-      dates.forEach((d, dayIdx) => refill(dayIdx, P));
+    };
+    const want = dates.length >= 6 ? 2 : 1;
+    if (sweetIds().length < want) {
+      const fams = () => new Set([...breakfastFams(mi), ...sweetIds().flatMap(id => familiesOf(getById(id)))]);
+      const cands = snackPool(m.whey !== false, lactoseOf(m.id), glutenOf(m.id))
+        .filter(s => s.batch && s.category === 'sweet' && (isSeries(s) || /^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')))
+        .sort((x, y) => snackFloor(x) - snackFloor(y));
+      for (const c of cands) {
+        if (sweetIds().length >= want) break;
+        if (snackBy[mi].includes(c.id) || clashes(c, fams())) continue;
+        const saveS = snackBy[mi], saveP = P;
+        snackBy[mi] = [...sweetIds(), c.id, ...snackBy[mi].filter(x => !isSweetBatch(x))];
+        P = batchPattern(sweetIds(), dates.length);
+        dates.forEach((d, dayIdx) => refill(dayIdx, P));
+        sweetIds().forEach(extend);
+        if (!sweetIds().every(id => servedOn(id).length >= 3)) { snackBy[mi] = saveS; P = saveP; dates.forEach((d, dayIdx) => refill(dayIdx, P)); }
+      }
     }
     batchDaysBy[m.id] = P;
   });
@@ -4769,6 +4810,15 @@ function snapToPacks(entries, dates, scale = 1, plateTargets = null, breakfastTa
 // v198 : jours des collations préparées. 1 préparée : lun, mer, ven, dim ; 2 : A lun/jeu/dim, B mar/ven/sam (3 portions chacune au moins)
 function batchPattern(batchIds, n) {
   const out = Array(n).fill(null);
+  // v303 : une douceur en série (tiramisu, overnight oats…) les premiers jours, tant qu'elle se garde ; l'autre ensuite
+  const ser = batchIds.find(id => isSeries(getById(id)));
+  if (ser) {
+    const days = Math.min(3, fridgeDays(getById(ser)), n);
+    for (let d = 0; d < days; d++) out[d] = ser;
+    const other = batchIds.find(id => id !== ser);
+    if (other) for (let d = days; d < n; d++) out[d] = other;
+    return out;
+  }
   if (batchIds.length === 1) for (let d = 0; d < n; d += 2) out[d] = batchIds[0];
   else if (batchIds.length >= 2) { const pat = ['A', 'B', null, 'A', 'B', 'B', 'A']; for (let d = 0; d < n; d++) { const k = pat[d % 7]; if (k) out[d] = batchIds[k === 'A' ? 0 : 1]; } }
   return out;

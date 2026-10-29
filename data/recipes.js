@@ -541,7 +541,7 @@ export const RECIPES = [
   M("K05", "Overnight oats tiramisu", "sweet", "☕", 4, 0,
     [["flocons",40],["lait",120],["whey",20],["fromage_blanc",100],["cacao",3],["miel",8]],
     ["Flocons + lait + whey + 1 c.à.c de café soluble, en bocal.","Couche de fromage blanc au miel, cacao en poudre.","Une nuit au frigo."],
-    "À préparer la veille au soir : 4 minutes, et il est prêt le lendemain.", ["italien","sucré","whey"], false),
+    "Préparé pendant la session : un bocal par portion, 3 jours au frigo.", ["italien","sucré","whey","frigo-3"], true),
   M("K06", "Pancakes protéinés à la banane", "sweet", "🥞", 5, 8,
     [["flocons",40],["banane",100],["oeuf",1],["whey",20],["lait",50],["miel",8]],
     ["Mixer flocons, banane, œuf, whey, lait.","Petits pancakes à la poêle, 1 min 30 par face.","Miel ou sirop d'érable au service."],
@@ -584,8 +584,8 @@ export const RECIPES = [
     "Le chocolat noir et le beurre de cacahuète remplacent le chocolat au lait et la graisse végétale de la recette classique.", ["français","sucré","sans cuisson","semaine","whey"], true),
   M("K16", "Tiramisu minute en verrine", "sweet", "☕", 5, 0,
     [["boudoirs",24],["yaourt_grec",150],["whey",15],["miel",5],["cacao",3]],
-    ["Trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'un verre.","Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","Saupoudre de cacao. Mange tout de suite, ou garde le verre une heure au frigo pour que les boudoirs s'imbibent."],
-    "Le yaourt grec et la whey remplacent le mascarpone et les œufs : même goût, trois fois plus de protéines.", ["italien","sucré","sans cuisson","rapide","whey"], false),
+    ["Pendant la session de cuisine, trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours."],
+    "Le yaourt grec et la whey remplacent le mascarpone et les œufs : même goût, trois fois plus de protéines.", ["italien","sucré","sans cuisson","whey","frigo-3"], true),
   M("K17", "Barres de céréales aux dattes et aux cacahuètes", "sweet", "🌾", 10, 0,
     [["dattes",30],["flocons",25],["cacahuetes",12],["whey",10],["cacao",3]],
     ["Mixe les dattes avec une cuillère à soupe d'eau chaude, jusqu'à obtenir une pâte collante.","Ajoute les flocons d'avoine, la whey et le cacao, et mixe quelques secondes seulement, pour garder des morceaux de flocons.","Incorpore les cacahuètes entières à la main : ce sont elles qui donnent le croquant.","Tasse le tout dans une petite boîte tapissée de papier cuisson, sur 1,5 cm d'épaisseur, et laisse prendre une heure au frigo.","Mise en boîtes : coupe en barres, une par portion, et garde-les au frigo. Elles se gardent une semaine."],
@@ -612,12 +612,12 @@ export const RECIPES = [
     "Le granola maison à l'érable croustille bien plus que celui du commerce, avec moins de sucre.", ["canadien","sucré","air fryer","semaine"], true),
   M("K23", "Pommes poêlées à l'érable et à la cannelle, fromage blanc et noix", "sweet", "🍎", 3, 5,
     [["pomme",150],["sirop_erable",8],["fromage_blanc",150],["noix",10],["epices",1]],
-    ["Coupe la pomme en dés avec la peau.","Fais-la dorer 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elle soit tendre et caramélisée.","Verse le fromage blanc dans un bol, ajoute les pommes chaudes et les noix concassées."],
-    "Le contraste entre les pommes chaudes et le fromage blanc froid fait tout.", ["canadien","sucré","rapide"], false),
+    ["Pendant la session de cuisine, coupe les pommes en dés avec la peau.","Fais-les dorer 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elles soient tendres et caramélisées.","Laisse-les refroidir et range-les au frigo dans une boîte : elles se gardent 3 jours.","Au moment de manger : réchauffe les pommes 1 minute au micro-ondes, verse le fromage blanc dans un bol, ajoute les pommes chaudes et les noix concassées."],
+    "Le contraste entre les pommes chaudes et le fromage blanc froid fait tout.", ["canadien","sucré","frigo-3"], true),
   M("K24", "Overnight oats pumpkin spice à l'érable", "sweet", "🎃", 5, 4,
     [["flocons",40],["lait",120],["fromage_blanc",100],["butternut",60],["whey",15],["sirop_erable",10],["epices",1]],
-    ["La veille au soir, fais cuire la courge en petits dés 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","Mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade, dans un bocal.","Une nuit au frigo : le lendemain, c'est prêt."],
-    "Le goût du « pumpkin spice latte » en version petit-déjeuner protéiné.", ["américain","sucré","whey"], false),
+    ["Pendant la session de cuisine, fais cuire la courge en petits dés 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade.","Ferme les bocaux et range-les au frigo : ils se gardent 3 jours."],
+    "Le goût du « pumpkin spice latte » en version protéinée.", ["américain","sucré","whey","frigo-3"], true),
   M("S05", "Fruit de saison", "side", "🍐", 1, 0,
     [["fruit_saison",150]],
     ["À croquer."],
@@ -704,7 +704,7 @@ const TIPS = {
   C01: "Estimation moyenne d'un plateau cantine équilibré. Non compté dans les courses.",
   
   K01: "Avec de la mangue surgelée, pas besoin de glaçons.",
-  K05: "Prépare 3 bocaux d'un coup : 4 jours au frigo.",
+  K05: "Prépare tous les bocaux pendant la session : 3 jours au frigo.",
   K06: "Ils se congèlent : 1 minute à l'air fryer pour les réchauffer.",
   K08: "7 jours au frigo.",
   K11: "4 jours au frigo.",
@@ -1219,9 +1219,9 @@ const STEPS = {
     "Réchauffe la pita 2 minutes à l'air fryer à 180 °C, coupe-la en triangles et trempe-la dans le labneh."
   ],
   "K05": [
-    "La veille au soir, dans un bocal, mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.",
+    "Pendant la session de cuisine, prépare un bocal par portion : mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.",
     "Mélange le fromage blanc avec le miel et étale-le en couche par-dessus, puis saupoudre de cacao.",
-    "Ferme et laisse au frigo jusqu'au lendemain."
+    "Ferme les bocaux et range-les au frigo : ils se gardent 3 jours."
   ],
   "K06": [
     "Pendant la session de cuisine, écrase la banane à la fourchette, puis mélange-la avec les flocons, l'œuf, la whey et le lait.",

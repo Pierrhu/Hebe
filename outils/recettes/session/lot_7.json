@@ -1,0 +1,17 @@
+[
+ {"id":"K05","cuts":[],"steps":[
+  {"text":"Prépare un bocal par portion : mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.","kind":"prep","app":null,"min":3,"wait":0},
+  {"text":"Mélange le fromage blanc avec le miel et étale-le en couche par-dessus, puis saupoudre de cacao.","kind":"prep","app":null,"min":2,"wait":0},
+  {"text":"Ferme les bocaux et range-les au frigo : ils se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
+ {"id":"K16","cuts":[],"steps":[
+  {"text":"Trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","kind":"prep","app":null,"min":3,"wait":0},
+  {"text":"Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","kind":"prep","app":null,"min":2,"wait":0},
+  {"text":"Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
+ {"id":"K23","cuts":[{"ing":"pomme","verb":"Coupe","form":"en dés avec la peau"}],"steps":[
+  {"text":"Fais dorer les pommes 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elles soient tendres et caramélisées.","kind":"cook","app":"poele","min":5,"wait":0},
+  {"text":"Laisse refroidir les pommes et range-les au frigo dans une boîte : elles se gardent 3 jours.","kind":"cook","app":null,"min":1,"wait":0}]},
+ {"id":"K24","cuts":[{"ing":"butternut","verb":"Épluche et coupe","form":"en petits dés"}],"steps":[
+  {"text":"Fais cuire la courge 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","kind":"cook","app":"micro","min":5,"wait":0},
+  {"text":"Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade.","kind":"prep","app":null,"min":3,"wait":0},
+  {"text":"Ferme les bocaux et range-les au frigo : ils se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]}
+]

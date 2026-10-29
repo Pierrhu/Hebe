@@ -260,13 +260,23 @@ function getServedSnacks() {
 // v195 : portion minimale d'une collation (pour ne proposer que des préparées qui tiennent dans la journée)
 const snackFloorCache = {};
 const snackFloor = r => (snackFloorCache[r.id] ??= optimizeRecipe(r, { kcal: 50, protein: 5, carbs: 5, fat: 2 }, 'S', 1).macros.kcal);
-function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = Infinity, bought = null) {
+// v303 : familles de douceurs et de petits-déjeuners. Une semaine n'en a qu'une de chaque (Pierre : granola en
+// collation préparée, en bol au petit-déjeuner et en barres la même semaine, « il faudrait qq chose de plus cohérent »).
+const SNACK_FAMS = [['granola', /granola/], ['overnight', /overnight/], ['tiramisu', /tiramisu/], ['pancake', /pancake/],
+  ['porridge', /porridge/], ['barres', /\bbarres?\b/], ['cookies', /cookie/], ['energy', /energy|boules?\b|bouchees/]];
+const normName = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+export const familiesOf = r => (r ? SNACK_FAMS.filter(([, rx]) => rx.test(normName(r.name))).map(([f]) => f) : []);
+const clashes = (r, fams) => familiesOf(r).some(f => fams.has(f));
+// Douceur « en série » : préparée le dimanche, elle ne se garde que quelques jours (tiramisu, overnight oats, pommes
+// poêlées) : servie les premiers jours, 3 fois en général.
+const isSeries = r => !!r && r.batch && r.category === 'sweet' && fridgeDays(r) > 0;
+function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = Infinity, bought = null, avoidFam = new Set()) {
   const all = snackPool(whey, lac, glu);
   // v196 : une collation rapide qui demande un produit frais vendu à la pièce ou en sachet (avocat, salade, concombre…)
   // n'est proposée que si ce produit est déjà acheté pour les plats : sinon on achèterait un avocat entier pour 30 g
   const PACK_FRESH = ['avocat', 'salade', 'concombre', 'herbes', 'tomates_cerise', 'champignons', 'poivron', 'courgette', 'aubergine', 'butternut'];
   const needsPack = s => !!bought && s.ingredients.some(i => PACK_FRESH.includes(i.key) && !bought.has(i.key));
-  const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s));
+  const quick = all.filter(s => !s.batch && (s.prepTime + s.cookTime) <= 10 && !needsPack(s) && !clashes(s, avoidFam));
   // v195 / v199 : tour de rôle, pour les collations préparées comme pour les rapides. Celles servies récemment passent
   // leur tour (s'il en reste assez) ; ensuite, plus une collation attend, plus elle a de chances de sortir.
   // Le partage d'un produit avec les plats ne donne plus qu'un petit coup de pouce.
@@ -277,14 +287,25 @@ function pickSnacks(whey = true, lac = 0, glu = 0, prefer = new Set(), room = In
   const sweet = byAge(restedQ(quick.filter(s => (s.tags || []).includes('sucré') || !(s.tags || []).includes('salé'))));
   const salty = byAge(restedQ(quick.filter(s => (s.tags || []).includes('salé'))));
   // préparée à l'avance : seulement ce qui tient toute la semaine (energy balls ; pancakes, qui se congèlent)
-  let batchPool = all.filter(s => s.batch && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')) && snackFloor(s) <= room);
+  let batchPool = all.filter(s => s.batch && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')) && snackFloor(s) <= room && !clashes(s, avoidFam));
   const rested = batchPool.filter(s => ageOf(baseSnackId(s.id)) >= 3);
   if (rested.length >= 2) batchPool = rested;
-  const batchy = batchPool.map(r => ({ r, k: Math.random() ** (1 / (ageOf(baseSnackId(r.id)) ** 2 * (sharesWith(r, prefer) ? 1.3 : 1))) })).sort((a, b) => b.k - a.k).map(x => x.r);
+  const rank = list => list.map(r => ({ r, k: Math.random() ** (1 / (ageOf(baseSnackId(r.id)) ** 2 * (sharesWith(r, prefer) ? 1.3 : 1))) })).sort((a, b) => b.k - a.k).map(x => x.r);
+  const weekly = rank(batchPool);
+  // v303 : la 2e douceur préparée est une autre famille ; une fois sur deux, c'est une douceur en série (3 jours)
+  const series = rank(all.filter(s => isSeries(s) && snackFloor(s) <= room && !clashes(s, avoidFam)));
+  const first = weekly[0];
+  const fam1 = new Set(familiesOf(first));
+  const second = (Math.random() < 0.5 ? series : weekly.slice(1)).find(r => r !== first && !clashes(r, fam1))
+    || [...weekly.slice(1), ...series].find(r => r !== first && !clashes(r, fam1));
+  const batchy = [first, second].filter(Boolean);
+  const famB = new Set([...avoidFam, ...batchy.flatMap(familiesOf)]);
+  const notB = r => !clashes(r, famB);
+  sweet.splice(0, sweet.length, ...sweet.filter(notB)); salty.splice(0, salty.length, ...salty.filter(notB));
   // v188 : 1 ou 2 collations préparées le dimanche, en alternance avec des collations rapides (fromage blanc, yaourt…).
   // Rotation [préparée, rapide, préparée ou rapide, rapide] : chaque jour, le choix se fait entre 2 voisines,
   // donc une préparée et une rapide ; une préparée revient ainsi 3 à 4 jours dans la semaine.
-  const nBatch = Math.random() < 0.5 ? 1 : 2;
+  const nBatch = 2; // v303 (Pierre) : toujours deux douceurs préparées le dimanche
   const picks = nBatch === 2 && batchy[1]
     ? [batchy[0], sweet[0], batchy[1], salty[0] || sweet[1]]
     : [batchy[0], sweet[0], salty[0], sweet[1]];
@@ -511,7 +532,9 @@ function pickBreakfasts(m, sessionDays, prefer = new Set()) {
     if (m.breakfast !== 'sucre' && m.breakfast !== 'sale' && rest.some(r => t(r) !== t(a))) rest = rest.filter(r => t(r) !== t(a));
     // si la première se prépare à l'avance, la seconde se fait le matin même (elle couvre les jours au-delà du frigo)
     const restQuick = a.batch ? rest.filter(r => !r.batch) : rest;
-    const b2 = weightedPick(restQuick.length ? restQuick : rest, r => caBreakfast(r) * (sharesWith(r, prefer) ? SHARE_BONUS : 1)) || a;
+    const fa = new Set(familiesOf(a)); // v303 : pas deux overnight oats ou deux granolas
+    const restQ2 = (restQuick.length ? restQuick : rest).filter(r => !clashes(r, fa));
+    const b2 = weightedPick(restQ2.length ? restQ2 : (restQuick.length ? restQuick : rest), r => caBreakfast(r) * (sharesWith(r, prefer) ? SHARE_BONUS : 1)) || a;
     used.push(a.id, b2.id);
     const out = days.map((_, k) => (k % 2 ? b2 : a));
     // au frigo : préparé le dimanche, un petit-déjeuner n'est mangé que tant qu'il se garde (lundi = 1 jour)
@@ -764,7 +787,8 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
     return v.length ? v[Math.floor(v.length / 2)] : Infinity;
   };
   const boughtKeys = new Set(usedRecs.flatMap(r => r.ingredients.map(i => i.key)));
-  const snackBy = members.map((m, mi) => pickSnacks(m.whey !== false, lactoseOf(m.id), glutenOf(m.id), preferS, roomOf(m, mi), boughtKeys));
+  const breakfastFams = mi => new Set(dates.flatMap(d => (byMember[mi][d].meals.breakfast || []).flatMap(it => familiesOf(getById(it.id)))));
+  const snackBy = members.map((m, mi) => pickSnacks(m.whey !== false, lactoseOf(m.id), glutenOf(m.id), preferS, roomOf(m, mi), boughtKeys, breakfastFams(mi)));
   const batchDaysBy = {};
   members.forEach((m, mi) => {
     // repas libres : part de la journée réservée (par tranches de 100 kcal), rien à cuisiner ni à acheter
@@ -789,6 +813,7 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
       // pas assez de portions : on la propose d'autres jours (à la place d'une collation rapide)
       for (let d = 0; d < dates.length && servedOn(id).length < 3; d++) {
         if (P[d] || (E[dates[d]].meals.sweet || []).some(it => getById(it.id)?.batch)) continue;
+        if (isSeries(getById(id)) && d + 1 > fridgeDays(getById(id))) continue; // v303 : pas au-delà de sa conservation
         P[d] = id; refill(d, P);
         if (!servedOn(id).includes(d)) { P[d] = null; refill(d, P); }
       }
@@ -799,25 +824,37 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
         dates.forEach((d, dayIdx) => refill(dayIdx, P));
       }
     }
-    // v303 (Pierre : « chaque semaine un batch cooking dessert ») : s'il ne reste aucune douceur préparée le dimanche,
-    // on essaie les autres (les plus légères d'abord) : 3 jours au moins, sinon 2.
+    // v303 (Pierre, jeûne intermittent : « au moins 3 portions par dessert, donc au moins 2 par semaine ») :
+    // deux douceurs préparées le dimanche (une seule sur une semaine de moins de 6 jours), 3 portions au moins chacune.
+    // S'il en manque, on en essaie d'autres, d'une autre famille, les plus légères d'abord ; une qui n'atteint pas
+    // 3 portions est retirée.
     const isSweetBatch = id => { const r = getById(id); return !!r && r.batch && r.category === 'sweet'; };
-    if (!snackBy[mi].some(isSweetBatch)) {
-      const cands = snackPool(m.whey !== false, lactoseOf(m.id), glutenOf(m.id))
-        .filter(s => s.batch && s.category === 'sweet' && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')))
-        .sort((x, y) => snackFloor(x) - snackFloor(y));
-      let best = null;
-      for (const c of cands) {
-        snackBy[mi] = [c.id, ...snackBy[mi]];
-        const Q = batchPattern([c.id], dates.length).map((x, d) => P[d] || x);
-        dates.forEach((d, dayIdx) => refill(dayIdx, Q));
-        const n = servedOn(c.id).length;
-        if (n >= 3) { P = Q; best = null; break; }
-        if (n >= 2 && (!best || n > best.n)) best = { id: c.id, n, Q };
-        snackBy[mi] = snackBy[mi].filter(x => x !== c.id);
+    const sweetIds = () => snackBy[mi].filter(isSweetBatch);
+    const extend = id => {
+      const r = getById(id);
+      for (let d = 0; d < dates.length && servedOn(id).length < 3; d++) {
+        if (P[d] || (E[dates[d]].meals.sweet || []).some(it => getById(it.id)?.batch)) continue;
+        if (isSeries(r) && d + 1 > fridgeDays(r)) continue;
+        P[d] = id; refill(d, P);
+        if (!servedOn(id).includes(d)) { P[d] = null; refill(d, P); }
       }
-      if (best) { snackBy[mi] = [best.id, ...snackBy[mi]]; P = best.Q; }
-      dates.forEach((d, dayIdx) => refill(dayIdx, P));
+    };
+    const want = dates.length >= 6 ? 2 : 1;
+    if (sweetIds().length < want) {
+      const fams = () => new Set([...breakfastFams(mi), ...sweetIds().flatMap(id => familiesOf(getById(id)))]);
+      const cands = snackPool(m.whey !== false, lactoseOf(m.id), glutenOf(m.id))
+        .filter(s => s.batch && s.category === 'sweet' && (isSeries(s) || /^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')))
+        .sort((x, y) => snackFloor(x) - snackFloor(y));
+      for (const c of cands) {
+        if (sweetIds().length >= want) break;
+        if (snackBy[mi].includes(c.id) || clashes(c, fams())) continue;
+        const saveS = snackBy[mi], saveP = P;
+        snackBy[mi] = [...sweetIds(), c.id, ...snackBy[mi].filter(x => !isSweetBatch(x))];
+        P = batchPattern(sweetIds(), dates.length);
+        dates.forEach((d, dayIdx) => refill(dayIdx, P));
+        sweetIds().forEach(extend);
+        if (!sweetIds().every(id => servedOn(id).length >= 3)) { snackBy[mi] = saveS; P = saveP; dates.forEach((d, dayIdx) => refill(dayIdx, P)); }
+      }
     }
     batchDaysBy[m.id] = P;
   });
@@ -932,6 +969,15 @@ export function snapToPacks(entries, dates, scale = 1, plateTargets = null, brea
 // v198 : jours des collations préparées. 1 préparée : lun, mer, ven, dim ; 2 : A lun/jeu/dim, B mar/ven/sam (3 portions chacune au moins)
 function batchPattern(batchIds, n) {
   const out = Array(n).fill(null);
+  // v303 : une douceur en série (tiramisu, overnight oats…) les premiers jours, tant qu'elle se garde ; l'autre ensuite
+  const ser = batchIds.find(id => isSeries(getById(id)));
+  if (ser) {
+    const days = Math.min(3, fridgeDays(getById(ser)), n);
+    for (let d = 0; d < days; d++) out[d] = ser;
+    const other = batchIds.find(id => id !== ser);
+    if (other) for (let d = days; d < n; d++) out[d] = other;
+    return out;
+  }
   if (batchIds.length === 1) for (let d = 0; d < n; d += 2) out[d] = batchIds[0];
   else if (batchIds.length >= 2) { const pat = ['A', 'B', null, 'A', 'B', 'B', 'A']; for (let d = 0; d < n; d++) { const k = pat[d % 7]; if (k) out[d] = batchIds[k === 'A' ? 0 : 1]; } }
   return out;

@@ -146,7 +146,7 @@ const TIPS = {
   C01: "Estimation moyenne d'un plateau cantine équilibré. Non compté dans les courses.",
   
   K01: "Avec de la mangue surgelée, pas besoin de glaçons.",
-  K05: "Prépare 3 bocaux d'un coup : 4 jours au frigo.",
+  K05: "Prépare tous les bocaux pendant la session : 3 jours au frigo.",
   K06: "Ils se congèlent : 1 minute à l'air fryer pour les réchauffer.",
   K08: "7 jours au frigo.",
   K11: "4 jours au frigo.",
@@ -661,9 +661,9 @@ const STEPS = {
     "Réchauffe la pita 2 minutes à l'air fryer à 180 °C, coupe-la en triangles et trempe-la dans le labneh."
   ],
   "K05": [
-    "La veille au soir, dans un bocal, mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.",
+    "Pendant la session de cuisine, prépare un bocal par portion : mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.",
     "Mélange le fromage blanc avec le miel et étale-le en couche par-dessus, puis saupoudre de cacao.",
-    "Ferme et laisse au frigo jusqu'au lendemain."
+    "Ferme les bocaux et range-les au frigo : ils se gardent 3 jours."
   ],
   "K06": [
     "Pendant la session de cuisine, écrase la banane à la fourchette, puis mélange-la avec les flocons, l'œuf, la whey et le lait.",
