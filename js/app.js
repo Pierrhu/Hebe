@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T09:53:48.881Z
+// 2026-10-29T10:05:11.002Z
 
 
 // ──────────────────────────────────────────────
@@ -6284,7 +6284,7 @@ function renderWeek() {
   const tomorrow = localYMD(new Date(new Date(today + 'T12:00:00').getTime() + 864e5));
   const dayCard = d => {
     const e = getEntry(d), m = computeDayMacros(e);
-    const miniTile = (it, lbl, cls) => { const r = getById(it.id); if (!r) return ''; return `<button class="dv-mini" data-rid="${r.id}"><div class="dv-photo">${dishThumb(r, 'dv-img')}<span class="hb-tile-lbl ${cls}">${lbl}</span></div><span class="dv-mini-name">${shortName(r.id)}</span><span class="dv-k">${Math.round(itemMacros(it).kcal)} kcal</span></button>`; };
+    const miniTile = (it, lbl, cls) => { const r = getById(it.id); if (!r) return ''; return `<button class="dv-mini" data-rid="${r.id}"><div class="dv-photo">${dishThumb(r, 'dv-img')}<span class="hb-tile-lbl ${cls}">${lbl}</span></div><span class="dv-mini-name">${simpleQty(r, it)?.name || shortName(r.id)}</span><span class="dv-k">${simpleQty(r, it)?.qty ? simpleQty(r, it).qty + ' · ' : ''}${Math.round(itemMacros(it).kcal)} kcal</span></button>`; };
     const minis = [...(e.meals.breakfast || []).slice(0, 1).map(it => miniTile(it, 'Petit-déj', 'lbl-morning')), ...extraItems(e).map(it => miniTile(it, 'Collation', 'lbl-snack'))].filter(Boolean);
     const eyebrow = d === today ? "Aujourd'hui" : d === tomorrow ? 'Demain' : '';
     // boîtes congelées du lendemain : à sortir ce soir et à mettre au frigo
@@ -6600,6 +6600,17 @@ function bindGenerator(root, onDone) {
   });
 }
 
+// v305 : collation d'un seul produit (fruit, amandes…) : la quantité est écrite sur la vignette, sinon
+// « Fruit de saison 83 kcal » un jour et « 165 kcal » le lendemain ne disent pas quoi manger (Pierre).
+// Fruit compté en pièces : le nom devient « 2 fruits de saison » ; sinon la quantité précède les kcal.
+function simpleQty(r, it) {
+  if (!r || r.ingredients.length !== 1) return null;
+  const g = r.ingredients[0], q = itemQuantities(it)[0];
+  if (!g.key || !q) return null;
+  if (PIECES[g.key]?.self) { const t = qtyWithName(g.key, q, g.unit); return { name: t.charAt(0).toUpperCase() + t.slice(1) }; }
+  return { qty: humanQty(g.key, q, g.unit) };
+}
+
 // ── Détail d'un jour : les plats en grand, puis les macros, puis les quantités ──
 function openDaySheet(date) {
   const e = getEntry(date);
@@ -6609,7 +6620,8 @@ function openDaySheet(date) {
 
   const smallTile = it => {
     const r = getById(it.id); if (!r) return '';
-    return `<button class="dv-extra cat-${r.category}" data-rid="${r.id}">${dishThumbRated(r, 'dv-ex-img')}<span class="dv-ex-name">${r.name}</span><span class="dv-k">${Math.round(itemMacros(it).kcal)} kcal</span></button>`;
+    const s = simpleQty(r, it);
+    return `<button class="dv-extra cat-${r.category}" data-rid="${r.id}">${dishThumbRated(r, 'dv-ex-img')}<span class="dv-ex-name">${s?.name || r.name}</span><span class="dv-k">${s?.qty ? s.qty + ' · ' : ''}${Math.round(itemMacros(it).kcal)} kcal</span></button>`;
   };
   const cell = (label, v, t, unit, cls) => `
     <div class="ds-cell">
