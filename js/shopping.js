@@ -77,7 +77,7 @@ const CAT_NAME = Object.fromEntries(CATEGORIES.map(c => [c.id, c.name]));
 
 // Rayon de chaque ingrédient de la base. Sans entrée : d'après son rayon générique (RAYON_FALLBACK).
 const SHOP_RAYON = {
-  fruits_legumes: 'pdt patate_douce courgette poivron oignon ail carotte concombre tomates_cerise salade champignons avocat herbes citron banane pomme fruit_saison aubergine tomate pousses_soja citron_vert gingembre radis chou_chinois poireau butternut betterave mache chou potimarron poire',
+  fruits_legumes: 'pdt patate_douce courgette poivron oignon ail carotte concombre tomates_cerise salade champignons avocat herbes citron banane pomme fruit_saison clementine kiwi orange kaki raisin fraises abricot peche prune pamplemousse aubergine tomate pousses_soja citron_vert gingembre radis chou_chinois poireau butternut betterave mache chou potimarron poire',
   boulangerie: 'baguette',
   viande: 'poulet poulet_hache boeuf haut_cuisse boeuf_emince',
   charcuterie: 'poulet_tranches jambon_blanc houmous gnocchis tofu',
@@ -347,6 +347,17 @@ const SHOP_PIECES = {
   potimarron: [1200, 'potimarron', 'potimarrons', 'Potimarron', true],
   chou: [1000, 'chou blanc', 'choux blancs', 'Chou blanc'],
   poire: [180, 'poire', 'poires', 'Poires'],
+  // v306 : fruits de la semaine
+  clementine: [60, 'clémentine', 'clémentines', 'Clémentines'],
+  kiwi: [75, 'kiwi', 'kiwis', 'Kiwis'],
+  orange: [150, 'orange', 'oranges', 'Oranges'],
+  kaki: [180, 'kaki', 'kakis', 'Kakis'],
+  raisin: [150, 'grappe', 'grappes', 'Raisin'],
+  fraises: [250, 'barquette', 'barquettes', 'Fraises'],
+  abricot: [45, 'abricot', 'abricots', 'Abricots'],
+  peche: [150, 'pêche', 'pêches', 'Pêches'],
+  prune: [40, 'prune', 'prunes', 'Prunes'],
+  pamplemousse: [250, 'pamplemousse', 'pamplemousses', 'Pamplemousses'],
 };
 
 // Quantité à acheter, arrondie au format du commerce.

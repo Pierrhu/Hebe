@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T10:05:11.002Z
+// 2026-10-29T10:14:47.011Z
 
 
 // ──────────────────────────────────────────────
@@ -125,6 +125,17 @@ const RAW = {
   pomme:         ['Pomme',                      'g',     54,  0.3,  12,  0.2, 'fruit', 2.5, 'F', { lv: 'S', min: 100, max: 200 }],
   fruits_rouges: ['Fruits rouges (surgelés)',   'g',     45.5,  1,    7,   0.5, 'fruit', 6,   'F', { lv: 'S', min: 60, max: 200 }],
   fruit_saison:  ['Fruit de saison',            'g',     55,  0.6,  12,  0.2, 'fruit', 3,   'F', { lv: 'S', min: 100, max: 250 }],
+  // v306 : fruits de la semaine (Ciqual 2025, partie comestible, crue)
+  clementine:    ['Clémentines',                'g',     45.5, 0.8,  9.2,  0.25, 'fruit', 3,   'F', { lv: 'S', min: 60, max: 240 }],
+  kiwi:          ['Kiwis',                      'g',     60.9, 0.9,  11,   0.6,  'fruit', 4,   'F', { lv: 'S', min: 75, max: 225 }],
+  orange:        ['Oranges',                    'g',     42,   0.8,  8,    0.25, 'fruit', 2.5, 'F', { lv: 'S', min: 150, max: 300 }],
+  kaki:          ['Kaki',                       'g',     66,   0.9,  14.3, 0.15, 'fruit', 4,   'F', { lv: 'S', min: 90, max: 360 }],
+  raisin:        ['Raisin',                     'g',     71,   0.7,  16.3, 0.25, 'fruit', 4,   'F', { lv: 'S', min: 75, max: 300 }],
+  fraises:       ['Fraises',                    'g',     35.1, 0.6,  6,    0.25, 'fruit', 8,   'F', { lv: 'S', min: 125, max: 500 }],
+  abricot:       ['Abricots',                   'g',     44.1, 0.8,  9,    0.25, 'fruit', 4,   'F', { lv: 'S', min: 45, max: 180 }],
+  peche:         ['Pêches',                     'g',     37.9, 0.9,  7.6,  0.25, 'fruit', 3.5, 'F', { lv: 'S', min: 75, max: 300 }],
+  prune:         ['Prunes',                     'g',     51.6, 0.7,  9.9,  0.28, 'fruit', 3.5, 'F', { lv: 'S', min: 40, max: 160 }],
+  pamplemousse:  ['Pamplemousse',               'g',     33.5, 0.8,  5.9,  0.25, 'fruit', 2.5, 'F', { lv: 'S', min: 125, max: 500 }],
   dattes:        ['Dattes dénoyautées',         'g',     287, 1.8,  64.7,  0.3, 'fruit', 8,   'E', {}],
 
   // ── Laitages ────────────────────────────────────────────────────
@@ -340,6 +351,17 @@ const PIECES = {
   citron_vert:  { g: 25,   one: 'citron vert', many: 'citrons verts', self: true, snap: true, juice: true },
   champignons:  { g: 250,  one: 'barquette', many: 'barquettes', snap: true, half: true },
   fruit_saison: { g: 150,  one: 'fruit de saison', many: 'fruits de saison', self: true },
+  // v306 : fruits de la semaine (poids comestible d'une pièce)
+  clementine:   { g: 60,   one: 'clémentine', many: 'clémentines', self: true, snap: true, step: 1 },
+  kiwi:         { g: 75,   one: 'kiwi', many: 'kiwis', self: true, snap: true, step: 1 },
+  orange:       { g: 150,  one: 'orange', many: 'oranges', self: true, snap: true },
+  kaki:         { g: 180,  one: 'kaki', many: 'kakis', self: true, snap: true },
+  raisin:       { g: 150,  one: 'grappe de raisin', many: 'grappes de raisin', self: true, snap: true },
+  fraises:      { g: 250,  one: 'barquette de fraises', many: 'barquettes de fraises', self: true, snap: true },
+  abricot:      { g: 45,   one: 'abricot', many: 'abricots', self: true, snap: true, step: 1 },
+  peche:        { g: 150,  one: 'pêche', many: 'pêches', self: true, snap: true },
+  prune:        { g: 40,   one: 'prune', many: 'prunes', self: true, snap: true, step: 1 },
+  pamplemousse: { g: 250,  one: 'pamplemousse', many: 'pamplemousses', self: true, snap: true },
   salade:       { g: 250,  one: 'salade', many: 'salades', self: true },
   tomates_cerise: { g: 250, one: 'barquette', many: 'barquettes', step: 0.5 },
   herbes:       { g: 30,   one: 'bouquet', many: 'bouquets' },
@@ -1055,6 +1077,54 @@ const RECIPES = [
     [["flocons",40],["lait",120],["fromage_blanc",100],["butternut",60],["whey",15],["sirop_erable",10],["epices",1]],
     ["Pendant la session de cuisine, fais cuire la courge en petits dés 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade.","Ferme les bocaux et range-les au frigo : ils se gardent 3 jours."],
     "Le goût du « pumpkin spice latte » en version protéinée.", ["américain","sucré","whey","frigo-3"], true),
+  M("F01", "Clémentines", "side", "🍊", 1, 0,
+    [["clementine",120]],
+    ["Épluche et croque."],
+    "De novembre à février.", ["fruit","0-cuisson"], false),
+  M("F02", "Kiwis", "side", "🥝", 1, 0,
+    [["kiwi",150]],
+    ["Coupe en deux et mange à la petite cuillère."],
+    "De novembre à avril.", ["fruit","0-cuisson"], false),
+  M("F03", "Orange", "side", "🍊", 2, 0,
+    [["orange",150]],
+    ["Épluche et sépare en quartiers."],
+    "De décembre à avril.", ["fruit","0-cuisson"], false),
+  M("F04", "Kaki", "side", "🟠", 1, 0,
+    [["kaki",180]],
+    ["Bien mûr et mou au toucher : coupe en quartiers ou mange à la cuillère."],
+    "D'octobre à décembre.", ["fruit","0-cuisson"], false),
+  M("F05", "Raisin", "side", "🍇", 1, 0,
+    [["raisin",150]],
+    ["Rince la grappe juste avant de la manger."],
+    "En septembre et octobre.", ["fruit","0-cuisson"], false),
+  M("F06", "Fraises", "side", "🍓", 2, 0,
+    [["fraises",125]],
+    ["Rince, équeute et croque."],
+    "En mai et juin.", ["fruit","0-cuisson"], false),
+  M("F07", "Abricots", "side", "🍑", 1, 0,
+    [["abricot",135]],
+    ["Rince et croque."],
+    "En juin et juillet.", ["fruit","0-cuisson"], false),
+  M("F08", "Pêche", "side", "🍑", 1, 0,
+    [["peche",150]],
+    ["Rince et croque."],
+    "De juillet à septembre.", ["fruit","0-cuisson"], false),
+  M("F09", "Prunes", "side", "🟣", 1, 0,
+    [["prune",120]],
+    ["Rince et croque."],
+    "En août et septembre.", ["fruit","0-cuisson"], false),
+  M("F10", "Pamplemousse", "side", "🍊", 2, 0,
+    [["pamplemousse",125]],
+    ["Coupe en deux et mange à la petite cuillère."],
+    "De janvier à avril.", ["fruit","0-cuisson"], false),
+  M("F11", "Pomme", "side", "🍎", 1, 0,
+    [["pomme",150]],
+    ["Rince et croque."],
+    "De septembre à avril.", ["fruit","0-cuisson"], false),
+  M("F12", "Poire", "side", "🍐", 1, 0,
+    [["poire",180]],
+    ["Rince et croque."],
+    "D'août à janvier.", ["fruit","0-cuisson"], false),
   M("S05", "Fruit de saison", "side", "🍐", 1, 0,
     [["fruit_saison",150]],
     ["À croquer."],
@@ -2569,7 +2639,8 @@ function setRating(id, value) {
 
 const PHOTOS = new Set(['B01', 'B02', 'B05', 'B06', 'B07', 'B15', 'B16', 'C01', 'K01', 'K02', 'K03', 'K05', 'K06', 'K07', 'K08', 'K09', 'K10', 'K11', 'K12', 'K13', 'K14', 'K15', 'K16', 'K17', 'K18', 'K19', 'K20', 'K21', 'S02', 'S05', 'S07', 'S08', 'S09', 'S11', 'S12', 'S16', 'SA01', 'SA11', 'W01', 'W02', 'W03', 'W04', 'W05', 'W06', 'W07', 'W08', 'W09', 'W10', 'W11', 'W12', 'W13', 'W14', 'W15', 'W16', 'W17', 'W18', 'W19', 'W20', 'W21', 'W22', 'W23', 'W24', 'W25', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34', 'W35', 'W36', 'W37', 'W38', 'W39', 'W40', 'W41', 'W43', 'W44', 'W45', 'W46', 'W47', 'W48', 'W49', 'W50', 'W51', 'W52', 'W53', 'W54', 'W55', 'W56', 'W57', 'W58', 'W59', 'W60', 'W61', 'W62', 'W63', 'W64', 'W65', 'W66', 'W67', 'W68', 'W69', 'W70', 'W71', 'W72', 'W73', 'W74', 'W75', 'W76', 'W77', 'W78', 'W79', 'W80', 'SO01', 'SO02', 'SO03', 'SO04', 'SO06', 'W81', 'W82', 'W83', 'W84', 'W89', 'W90', 'W93', 'W94', 'W95', 'W97', 'W98', 'W101', 'W102', 'W104', 'W105', 'W106', 'W107', 'W109', 'W110', 'W114', 'SO07', 'SO08', 'SO09', 'SO10', 'SO11', 'SO15', 'K22', 'K23', 'K24', 'W85']);
 
-const photoUrl = id => (PHOTOS.has(id) ? `img/dishes/${id}.webp` : null);
+// v306 : les fruits de la semaine (F01…) prennent la photo du fruit de saison tant qu'ils n'ont pas la leur
+const photoUrl = id => (PHOTOS.has(id) ? `img/dishes/${id}.webp` : /^F\d/.test(id) && PHOTOS.has('S05') ? 'img/dishes/S05.webp' : null);
 // Les variantes (ex. sans whey) reprennent la photo de leur recette d'origine (champ photo)
 const photoOf = r => photoUrl(r.photo || r.id);
 
@@ -2674,6 +2745,34 @@ function inSeason(r, when = new Date()) {
 function seasonal(list, when, min = 1) {
   const f = list.filter(r => inSeason(r, when));
   return f.length >= min ? f : list;
+}
+
+// v306 : fruit de la semaine. Pierre : « des suggestions de fruit, plus précis, ça changerait d'une semaine à l'autre ».
+// Mois de pleine saison en France (fruits de France, ou d'Espagne et d'Italie pour les agrumes).
+const FRUIT_MONTHS = {
+  F01: [11, 12, 1, 2],     // clémentines
+  F02: [11, 12, 1, 2, 3, 4], // kiwis
+  F03: [12, 1, 2, 3, 4],   // oranges
+  F04: [10, 11, 12],       // kakis
+  F05: [9, 10],            // raisin
+  F06: [5, 6],             // fraises
+  F07: [6, 7],             // abricots
+  F08: [7, 8, 9],          // pêches
+  F09: [8, 9],             // prunes
+  F10: [1, 2, 3, 4],       // pamplemousse
+  F11: [9, 10, 11, 12, 1, 2, 3, 4], // pommes
+  F12: [8, 9, 10, 11, 12, 1], // poires
+};
+// Fruit de la semaine qui commence à `date` (« AAAA-MM-JJ ») : un fruit de saison, différent d'une semaine à
+// l'autre (rotation sur les fruits du mois), parmi ceux qui conviennent (`ok`). null : aucun, on garde le fruit de saison.
+// Le même fruit toute la semaine (du lundi au dimanche), même quand elle est à cheval sur deux mois.
+function fruitOfWeek(date, ok = () => true) {
+  const days = Math.floor(Date.UTC(+date.slice(0, 4), +date.slice(5, 7) - 1, +date.slice(8, 10)) / 864e5);
+  const week = Math.floor((days + 3) / 7); // le 1er janvier 1970 était un jeudi : semaines du lundi au dimanche
+  const month = new Date((week * 7 - 3) * 864e5).getUTCMonth() + 1; // mois du lundi
+  const list = Object.keys(FRUIT_MONTHS).filter(id => FRUIT_MONTHS[id].includes(month) && ok(id));
+  if (!list.length) return null;
+  return list[week % list.length];
 }
 
 
@@ -3239,7 +3338,7 @@ function toast(msg, kind = 'ok') {
 //  3. On reste proche de la recette d'origine (pénalité d'écart) : le plat garde son identité.
 //  4. Ce qu'une assiette ne peut pas absorber est donné aux collations — pas au riz.
 
-const WHOLE_FRUIT = ['banane', 'pomme', 'poire', 'fruit_saison'];
+const WHOLE_FRUIT = ['banane', 'pomme', 'poire', 'fruit_saison', 'clementine', 'kiwi', 'orange', 'kaki', 'raisin', 'fraises', 'abricot', 'peche', 'prune', 'pamplemousse'];
 
 const MACROS = ['kcal', 'protein', 'carbs', 'fat'];
 
@@ -3267,7 +3366,7 @@ function snapQty(q, countable, key) {
   const db = key ? INGREDIENTS[key] : null;
   if (key && NATURAL_UNITS[key]) { const g = NATURAL_UNITS[key].g; return Math.max(g, Math.round(q / g) * g); } // tranche entière
   // v297 : un fruit se mange entier (1 banane, 1 pomme), pas 90 g
-  if (key && WHOLE_FRUIT.includes(key)) { const g = PIECES[key].g, u = q >= g * 0.75 ? g : g / 2; return q > 0 ? Math.max(u, Math.round(q / u) * u) : 0; } // petite quantité : ½ fruit
+  if (key && WHOLE_FRUIT.includes(key)) { const g = PIECES[key].g, u = PIECES[key].step === 1 || q >= g * 0.75 ? g : g / 2; return q > 0 ? Math.max(u, Math.round(q / u) * u) : 0; } // petite quantité : ½ fruit (sauf petits fruits, clémentine, kiwi… : entiers)
   if (db) {
     if (key === 'huile' || key === 'huile_sesame') return Math.round(q);
     if (['whey', 'beurre_cacahuete', 'amandes'].includes(key)) return Math.round(q / 5) * 5;
@@ -3300,7 +3399,7 @@ const CHARC_KEYS = ['jambon_blanc', 'poulet_tranches'];
 const CHARC_MAX = 160; // v191 : 4 tranches de 40 g par semaine, soit une barquette entière
 const RED_MEAT_KEYS = ['boeuf', 'boeuf_emince'];
 // Fruits et oléagineux : les compléments qui en contiennent sont préférés à macros équivalentes
-const FRUIT_KEYS = ['banane', 'pomme', 'fruits_rouges', 'fruit_saison', 'mangue', 'dattes'];
+const FRUIT_KEYS = ['banane', 'pomme', 'fruits_rouges', 'fruit_saison', 'mangue', 'dattes', 'poire', 'clementine', 'kiwi', 'orange', 'kaki', 'raisin', 'fraises', 'abricot', 'peche', 'prune', 'pamplemousse'];
 const NUT_KEYS = ['amandes', 'beurre_cacahuete', 'cacahuetes', 'pistaches', 'chia', 'sesame', 'tahini'];
 const FRUIT_NUT_KEYS = [...FRUIT_KEYS, ...NUT_KEYS];
 // score multiplié (plus bas = meilleur) : les oléagineux, plus caloriques, ont besoin d'un coup de pouce plus fort
@@ -3560,7 +3659,7 @@ function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09', 'S07
     // 2e collation seulement si l'écart reste vraiment important
     { pool: rotation.slice(2, 3), cap: 650, minRem: 120 },
     // petits besoins : un fruit pour combler un petit écart
-    { pool: fillers.filter(id => ['S05', 'S16'].includes(id)), cap: 200, minRem: 70, small: true },
+    { pool: fillers.filter(id => id === 'S05' || id === 'S16' || /^F\d/.test(id)), cap: 200, minRem: 70, small: true },
     // rattrapage : s'il manque encore beaucoup, n'importe quelle collation ou complément encore permis ce jour-là
     { pool: [...rotation, ...fillers], cap: 400, minRem: 100 },
     // 2e passe de rattrapage : les très gros profils (3 000 kcal et plus) ont besoin de plus de compléments
@@ -3804,6 +3903,10 @@ const MICROS = {
   wrap_sg: [2.8,1.08,0.78,23.0,0.81,20.0,120.0,0.63,2.12,0,0.25,24.5,0,0.23],
   tamari: [0.86,18.6,0.009,27.3,1.72,83.7,547.0,0.4,0.0,0.0,0.0,16.0,0.0,0.002],
 };
+// v306 : fruits de la semaine. Fibres de Ciqual 2025 ; les autres valeurs reprennent le « fruit de saison » moyen
+// (approximation : ces valeurs ne sont pas affichées et ne servent qu'à l'équilibre de la semaine).
+const FRUIT_FIB = { clementine: 1.7, kiwi: 2.4, orange: 2.7, kaki: 3.4, raisin: 1.1, fraises: 3.8, abricot: 1.7, peche: 1.5, prune: 1.4, pamplemousse: 1.1 };
+Object.entries(FRUIT_FIB).forEach(([k, fib]) => { MICROS[k] = [fib, ...MICROS.fruit_saison.slice(1)]; });
 
 // Repères journaliers pour un adulte (ANSES, références nutritionnelles 2016-2021).
 // sel et ags sont des PLAFONDS (ags : 12 % des calories), les autres des apports à atteindre.
@@ -4859,7 +4962,8 @@ function fillDay(e, dayIdx, snackIds, targets, lac = 0, glu = 0, charcBudget = C
   const okFill = id => { const r = getById(id); return r && !r.retired && dietOk(r, lac, glu) && getRating(id) >= 0; };
   const TARTINES = (dayIdx % 2 ? ['S11', 'S12'] : ['S12', 'S11']).filter(okFill);
   // poignée d'amandes et fruit de saison d'abord : ce sont eux qui complètent la journée en priorité
-  const OTHERS = ['S07', 'S05', 'S08', 'S09', 'S16'].filter(okFill);
+  // v306 : le fruit de la semaine (clémentines, kiwis…) à la place du « fruit de saison »
+  const OTHERS = ['S07', fruitOfWeek(e.date, okFill) || 'S05', 'S08', 'S09', 'S16'].filter(okFill);
   const fillers = [...TARTINES, ...OTHERS];
   fillRemainder(rem, rot, fillers, portionScale(plateTarget(targets).kcal), dayKeys, Math.max(0, charcBudget), weekUse, pin).forEach(f => e.meals[f.slot].push(f.item));
 }
@@ -7633,7 +7737,7 @@ const CAT_NAME = Object.fromEntries(CATEGORIES.map(c => [c.id, c.name]));
 
 // Rayon de chaque ingrédient de la base. Sans entrée : d'après son rayon générique (RAYON_FALLBACK).
 const SHOP_RAYON = {
-  fruits_legumes: 'pdt patate_douce courgette poivron oignon ail carotte concombre tomates_cerise salade champignons avocat herbes citron banane pomme fruit_saison aubergine tomate pousses_soja citron_vert gingembre radis chou_chinois poireau butternut betterave mache chou potimarron poire',
+  fruits_legumes: 'pdt patate_douce courgette poivron oignon ail carotte concombre tomates_cerise salade champignons avocat herbes citron banane pomme fruit_saison clementine kiwi orange kaki raisin fraises abricot peche prune pamplemousse aubergine tomate pousses_soja citron_vert gingembre radis chou_chinois poireau butternut betterave mache chou potimarron poire',
   boulangerie: 'baguette',
   viande: 'poulet poulet_hache boeuf haut_cuisse boeuf_emince',
   charcuterie: 'poulet_tranches jambon_blanc houmous gnocchis tofu',
@@ -7903,6 +8007,17 @@ const SHOP_PIECES = {
   potimarron: [1200, 'potimarron', 'potimarrons', 'Potimarron', true],
   chou: [1000, 'chou blanc', 'choux blancs', 'Chou blanc'],
   poire: [180, 'poire', 'poires', 'Poires'],
+  // v306 : fruits de la semaine
+  clementine: [60, 'clémentine', 'clémentines', 'Clémentines'],
+  kiwi: [75, 'kiwi', 'kiwis', 'Kiwis'],
+  orange: [150, 'orange', 'oranges', 'Oranges'],
+  kaki: [180, 'kaki', 'kakis', 'Kakis'],
+  raisin: [150, 'grappe', 'grappes', 'Raisin'],
+  fraises: [250, 'barquette', 'barquettes', 'Fraises'],
+  abricot: [45, 'abricot', 'abricots', 'Abricots'],
+  peche: [150, 'pêche', 'pêches', 'Pêches'],
+  prune: [40, 'prune', 'prunes', 'Prunes'],
+  pamplemousse: [250, 'pamplemousse', 'pamplemousses', 'Pamplemousses'],
 };
 
 // Quantité à acheter, arrondie au format du commerce.

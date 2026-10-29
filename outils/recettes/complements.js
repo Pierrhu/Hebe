@@ -123,6 +123,19 @@ exports.snacks = [
 ];
 
 exports.sides = [
+  // v306 : le fruit de la semaine, de saison, change d'une semaine à l'autre (data/season.js : FRUIT_MONTHS)
+  R('F01', 'Clémentines', 'side', '🍊', 1, 0, [['clementine', 120]], ['Épluche et croque.'], 'De novembre à février.', ['fruit', '0-cuisson'], false),
+  R('F02', 'Kiwis', 'side', '🥝', 1, 0, [['kiwi', 150]], ['Coupe en deux et mange à la petite cuillère.'], 'De novembre à avril.', ['fruit', '0-cuisson'], false),
+  R('F03', 'Orange', 'side', '🍊', 2, 0, [['orange', 150]], ['Épluche et sépare en quartiers.'], 'De décembre à avril.', ['fruit', '0-cuisson'], false),
+  R('F04', 'Kaki', 'side', '🟠', 1, 0, [['kaki', 180]], ['Bien mûr et mou au toucher : coupe en quartiers ou mange à la cuillère.'], "D'octobre à décembre.", ['fruit', '0-cuisson'], false),
+  R('F05', 'Raisin', 'side', '🍇', 1, 0, [['raisin', 150]], ['Rince la grappe juste avant de la manger.'], 'En septembre et octobre.', ['fruit', '0-cuisson'], false),
+  R('F06', 'Fraises', 'side', '🍓', 2, 0, [['fraises', 125]], ['Rince, équeute et croque.'], 'En mai et juin.', ['fruit', '0-cuisson'], false),
+  R('F07', 'Abricots', 'side', '🍑', 1, 0, [['abricot', 135]], ['Rince et croque.'], 'En juin et juillet.', ['fruit', '0-cuisson'], false),
+  R('F08', 'Pêche', 'side', '🍑', 1, 0, [['peche', 150]], ['Rince et croque.'], 'De juillet à septembre.', ['fruit', '0-cuisson'], false),
+  R('F09', 'Prunes', 'side', '🟣', 1, 0, [['prune', 120]], ['Rince et croque.'], 'En août et septembre.', ['fruit', '0-cuisson'], false),
+  R('F10', 'Pamplemousse', 'side', '🍊', 2, 0, [['pamplemousse', 125]], ['Coupe en deux et mange à la petite cuillère.'], 'De janvier à avril.', ['fruit', '0-cuisson'], false),
+  R('F11', 'Pomme', 'side', '🍎', 1, 0, [['pomme', 150]], ['Rince et croque.'], "De septembre à avril.", ['fruit', '0-cuisson'], false),
+  R('F12', 'Poire', 'side', '🍐', 1, 0, [['poire', 180]], ['Rince et croque.'], "D'août à janvier.", ['fruit', '0-cuisson'], false),
   R('S05', 'Fruit de saison', 'side', '🍐', 1, 0, [['fruit_saison', 150]], ['À croquer.'], 'Pomme, poire, clémentines… le moins cher selon la saison.', ['fruit', '0-cuisson'], false),
   R('S06', 'Pain complet', 'side', '🍞', 0, 0, [['pain', 40]], ['Une tranche.'], '', ['0-cuisson'], false),
   R('S08', 'Fromage blanc, miel & cacahuète', 'side', '🍯', 1, 0, [['fromage_blanc', 150], ['miel', 8], ['beurre_cacahuete', 5]], ['Un bol de fromage blanc, un filet de miel, une cuillère de beurre de cacahuète.'], '', ['0-cuisson', 'complément'], false),

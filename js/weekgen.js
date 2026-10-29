@@ -25,7 +25,7 @@ import { getRating } from '../data/prefs.js';
 import { USER } from '../data/user.js';
 import { isAvailable, getEquipment } from './adapt.js';
 import { ssEstimate } from './session.js';
-import { seasonal } from '../data/season.js';
+import { seasonal, fruitOfWeek } from '../data/season.js';
 import { getActiveMember, getMembers, weekBudget, getMaxRepeat, getSoups } from '../data/household.js';
 
 const PLAN_KEY = 'hebe_week_plan';
@@ -1018,7 +1018,8 @@ function fillDay(e, dayIdx, snackIds, targets, lac = 0, glu = 0, charcBudget = C
   const okFill = id => { const r = getById(id); return r && !r.retired && dietOk(r, lac, glu) && getRating(id) >= 0; };
   const TARTINES = (dayIdx % 2 ? ['S11', 'S12'] : ['S12', 'S11']).filter(okFill);
   // poignée d'amandes et fruit de saison d'abord : ce sont eux qui complètent la journée en priorité
-  const OTHERS = ['S07', 'S05', 'S08', 'S09', 'S16'].filter(okFill);
+  // v306 : le fruit de la semaine (clémentines, kiwis…) à la place du « fruit de saison »
+  const OTHERS = ['S07', fruitOfWeek(e.date, okFill) || 'S05', 'S08', 'S09', 'S16'].filter(okFill);
   const fillers = [...TARTINES, ...OTHERS];
   fillRemainder(rem, rot, fillers, portionScale(plateTarget(targets).kcal), dayKeys, Math.max(0, charcBudget), weekUse, pin).forEach(f => e.meals[f.slot].push(f.item));
 }

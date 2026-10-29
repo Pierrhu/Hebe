@@ -35,3 +35,31 @@ export function seasonal(list, when, min = 1) {
   const f = list.filter(r => inSeason(r, when));
   return f.length >= min ? f : list;
 }
+
+// v306 : fruit de la semaine. Pierre : « des suggestions de fruit, plus précis, ça changerait d'une semaine à l'autre ».
+// Mois de pleine saison en France (fruits de France, ou d'Espagne et d'Italie pour les agrumes).
+export const FRUIT_MONTHS = {
+  F01: [11, 12, 1, 2],     // clémentines
+  F02: [11, 12, 1, 2, 3, 4], // kiwis
+  F03: [12, 1, 2, 3, 4],   // oranges
+  F04: [10, 11, 12],       // kakis
+  F05: [9, 10],            // raisin
+  F06: [5, 6],             // fraises
+  F07: [6, 7],             // abricots
+  F08: [7, 8, 9],          // pêches
+  F09: [8, 9],             // prunes
+  F10: [1, 2, 3, 4],       // pamplemousse
+  F11: [9, 10, 11, 12, 1, 2, 3, 4], // pommes
+  F12: [8, 9, 10, 11, 12, 1], // poires
+};
+// Fruit de la semaine qui commence à `date` (« AAAA-MM-JJ ») : un fruit de saison, différent d'une semaine à
+// l'autre (rotation sur les fruits du mois), parmi ceux qui conviennent (`ok`). null : aucun, on garde le fruit de saison.
+// Le même fruit toute la semaine (du lundi au dimanche), même quand elle est à cheval sur deux mois.
+export function fruitOfWeek(date, ok = () => true) {
+  const days = Math.floor(Date.UTC(+date.slice(0, 4), +date.slice(5, 7) - 1, +date.slice(8, 10)) / 864e5);
+  const week = Math.floor((days + 3) / 7); // le 1er janvier 1970 était un jeudi : semaines du lundi au dimanche
+  const month = new Date((week * 7 - 3) * 864e5).getUTCMonth() + 1; // mois du lundi
+  const list = Object.keys(FRUIT_MONTHS).filter(id => FRUIT_MONTHS[id].includes(month) && ok(id));
+  if (!list.length) return null;
+  return list[week % list.length];
+}

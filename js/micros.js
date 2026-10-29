@@ -154,6 +154,10 @@ export const MICROS = {
   wrap_sg: [2.8,1.08,0.78,23.0,0.81,20.0,120.0,0.63,2.12,0,0.25,24.5,0,0.23],
   tamari: [0.86,18.6,0.009,27.3,1.72,83.7,547.0,0.4,0.0,0.0,0.0,16.0,0.0,0.002],
 };
+// v306 : fruits de la semaine. Fibres de Ciqual 2025 ; les autres valeurs reprennent le « fruit de saison » moyen
+// (approximation : ces valeurs ne sont pas affichées et ne servent qu'à l'équilibre de la semaine).
+const FRUIT_FIB = { clementine: 1.7, kiwi: 2.4, orange: 2.7, kaki: 3.4, raisin: 1.1, fraises: 3.8, abricot: 1.7, peche: 1.5, prune: 1.4, pamplemousse: 1.1 };
+Object.entries(FRUIT_FIB).forEach(([k, fib]) => { MICROS[k] = [fib, ...MICROS.fruit_saison.slice(1)]; });
 
 // Repères journaliers pour un adulte (ANSES, références nutritionnelles 2016-2021).
 // sel et ags sont des PLAFONDS (ags : 12 % des calories), les autres des apports à atteindre.

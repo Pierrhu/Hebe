@@ -10,7 +10,7 @@
 
 import { getById, isCantine } from '../data/recipes.js';
 import { INGREDIENTS, isCountableUnit, ingCost, NATURAL_UNITS, PIECES } from '../data/ingredients.js';
-const WHOLE_FRUIT = ['banane', 'pomme', 'poire', 'fruit_saison'];
+const WHOLE_FRUIT = ['banane', 'pomme', 'poire', 'fruit_saison', 'clementine', 'kiwi', 'orange', 'kaki', 'raisin', 'fraises', 'abricot', 'peche', 'prune', 'pamplemousse'];
 
 const MACROS = ['kcal', 'protein', 'carbs', 'fat'];
 
@@ -38,7 +38,7 @@ export function snapQty(q, countable, key) {
   const db = key ? INGREDIENTS[key] : null;
   if (key && NATURAL_UNITS[key]) { const g = NATURAL_UNITS[key].g; return Math.max(g, Math.round(q / g) * g); } // tranche entière
   // v297 : un fruit se mange entier (1 banane, 1 pomme), pas 90 g
-  if (key && WHOLE_FRUIT.includes(key)) { const g = PIECES[key].g, u = q >= g * 0.75 ? g : g / 2; return q > 0 ? Math.max(u, Math.round(q / u) * u) : 0; } // petite quantité : ½ fruit
+  if (key && WHOLE_FRUIT.includes(key)) { const g = PIECES[key].g, u = PIECES[key].step === 1 || q >= g * 0.75 ? g : g / 2; return q > 0 ? Math.max(u, Math.round(q / u) * u) : 0; } // petite quantité : ½ fruit (sauf petits fruits, clémentine, kiwi… : entiers)
   if (db) {
     if (key === 'huile' || key === 'huile_sesame') return Math.round(q);
     if (['whey', 'beurre_cacahuete', 'amandes'].includes(key)) return Math.round(q / 5) * 5;
@@ -71,7 +71,7 @@ export const CHARC_KEYS = ['jambon_blanc', 'poulet_tranches'];
 export const CHARC_MAX = 160; // v191 : 4 tranches de 40 g par semaine, soit une barquette entière
 export const RED_MEAT_KEYS = ['boeuf', 'boeuf_emince'];
 // Fruits et oléagineux : les compléments qui en contiennent sont préférés à macros équivalentes
-export const FRUIT_KEYS = ['banane', 'pomme', 'fruits_rouges', 'fruit_saison', 'mangue', 'dattes'];
+export const FRUIT_KEYS = ['banane', 'pomme', 'fruits_rouges', 'fruit_saison', 'mangue', 'dattes', 'poire', 'clementine', 'kiwi', 'orange', 'kaki', 'raisin', 'fraises', 'abricot', 'peche', 'prune', 'pamplemousse'];
 export const NUT_KEYS = ['amandes', 'beurre_cacahuete', 'cacahuetes', 'pistaches', 'chia', 'sesame', 'tahini'];
 export const FRUIT_NUT_KEYS = [...FRUIT_KEYS, ...NUT_KEYS];
 // score multiplié (plus bas = meilleur) : les oléagineux, plus caloriques, ont besoin d'un coup de pouce plus fort
@@ -331,7 +331,7 @@ export function fillRemainder(remaining, rotation, fillers = ['S12', 'S11', 'S09
     // 2e collation seulement si l'écart reste vraiment important
     { pool: rotation.slice(2, 3), cap: 650, minRem: 120 },
     // petits besoins : un fruit pour combler un petit écart
-    { pool: fillers.filter(id => ['S05', 'S16'].includes(id)), cap: 200, minRem: 70, small: true },
+    { pool: fillers.filter(id => id === 'S05' || id === 'S16' || /^F\d/.test(id)), cap: 200, minRem: 70, small: true },
     // rattrapage : s'il manque encore beaucoup, n'importe quelle collation ou complément encore permis ce jour-là
     { pool: [...rotation, ...fillers], cap: 400, minRem: 100 },
     // 2e passe de rattrapage : les très gros profils (3 000 kcal et plus) ont besoin de plus de compléments
