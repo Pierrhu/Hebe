@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T07:29:21.606Z
+// 2026-10-29T07:30:37.457Z
 
 
 // ──────────────────────────────────────────────
@@ -6810,16 +6810,21 @@ function openFreePick(oldId, date, { meal = '' } = {}) {
   const suggest = () => {
     const q = normTxt(ingIn.value.trim());
     // familles d'abord (« Poulet » avant « Blanc de poulet »), puis ce qui commence par le texte tapé
-    const rank = o => (o.keys.length > 1 ? 0 : 2) + (normTxt(o.label).startsWith(q) ? 0 : 1);
+    const rank = o => (normTxt(o.label).startsWith(q) ? 0 : 2) + (o.keys.length > 1 ? 0 : 1);
     // ce qui contient exactement le texte tapé ; à défaut seulement, ce qui s'en approche (fautes de frappe)
     const free = opts.filter(o => !picked.includes(o));
-    const exact = free.filter(o => normTxt(o.label).includes(q));
-    const hits = q ? (exact.length ? exact : free.filter(o => fuzzyHas(o.label, q))).sort((x, y) => rank(x) - rank(y)).slice(0, 8) : [];
+    // 1 ou 2 lettres : un mot qui commence par elles (« c » → Carottes, Champignons… pas Haricots)
+    const exact = free.filter(o => (q.length <= 2 ? normTxt(o.label).split(/[^a-z0-9]+/).some(w => w.startsWith(q)) : normTxt(o.label).includes(q)));
+    // champ vide : les ingrédients les plus courants, pour démarrer sans rien taper
+    const POPULAR = ['Poulet', 'Bœuf', 'Riz', 'Pâtes', 'Épinards', 'Champignons de Paris', 'Patate douce', 'Courgettes', 'Poisson', 'Fromage'];
+    const hits = q ? (exact.length ? exact : free.filter(o => fuzzyHas(o.label, q))).sort((x, y) => rank(x) - rank(y)).slice(0, 8)
+      : POPULAR.map(l => free.find(o => o.label === l)).filter(Boolean);
     sug.innerHTML = hits.map((o, i) => `<button class="sw-sug" data-sug="${opts.indexOf(o)}">${o.label}</button>`).join('');
     sug.querySelectorAll('[data-sug]').forEach(b => b.addEventListener('click', () => { picked.push(opts[+b.dataset.sug]); ingIn.value = ''; sug.innerHTML = ''; apply(); }));
   };
   search?.addEventListener('input', apply);
   ingIn?.addEventListener('input', suggest);
+  ingIn?.addEventListener('focus', suggest);
   ingIn?.addEventListener('keydown', e => { if (e.key === 'Enter') { const first = sug.querySelector('[data-sug]'); if (first) { e.preventDefault(); first.click(); } } });
   seg.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; seg.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); apply(); }));
   sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); if (date) openDaySheet(date); });
