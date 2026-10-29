@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T07:41:26.253Z
+// 2026-10-29T09:53:48.881Z
 
 
 // ──────────────────────────────────────────────
@@ -7593,18 +7593,60 @@ const checkedKey = plan => 'diet_shopping_checked_' + (plan?.generatedAt || 'x')
 const getChecked  = plan => JSON.parse(localStorage.getItem(checkedKey(plan)) || '[]');
 const saveChecked = (plan, a) => localStorage.setItem(checkedKey(plan), JSON.stringify(a));
 
-// Catégorisation simple pour grouper la liste
-// Ordre d'affichage des rayons (les noms doivent correspondre à categorize()).
+// v304 : rayons du Lidl de Manosque, dans l'ordre du parcours de Pierre (plan fait sur le tableau blanc le
+// 29 octobre 2026 : entrée → fruits et légumes → boulangerie → … → conserves → caisses).
+// ic : icône (index dans CAT_ICONS) · tone : couleur du rayon (cat-c-N dans styles.css)
 const CATEGORIES = [
-  { name: 'Viandes & poisson' },
-  { name: 'Œufs & laitages' },
-  { name: 'Légumes & fruits' },
-  { name: 'Féculents & légumineuses' },
-  { name: 'Épicerie & placard' },
-  { name: 'Placard : à vérifier' },
+  { id: 'fruits_legumes', name: 'Fruits & légumes',             ic: 2, tone: 2 },
+  { id: 'boulangerie',    name: 'Boulangerie',                  ic: 3, tone: 3 },
+  { id: 'viande',         name: 'Viande & volaille',            ic: 6, tone: 0 },
+  { id: 'charcuterie',    name: 'Charcuterie & traiteur',       ic: 6, tone: 0 },
+  { id: 'pain_emballe',   name: 'Pain emballé & wraps',         ic: 3, tone: 3 },
+  { id: 'poisson',        name: 'Poisson & crevettes',          ic: 0, tone: 1 },
+  { id: 'fruits_secs',    name: 'Fruits secs & graines',        ic: 4, tone: 4 },
+  { id: 'sucre',          name: 'Sucré & petit-déjeuner',       ic: 4, tone: 4 },
+  { id: 'pates_riz',      name: 'Pâtes, riz & céréales',        ic: 3, tone: 3 },
+  { id: 'sauces',         name: 'Sauces & condiments',          ic: 4, tone: 4 },
+  { id: 'farine',         name: 'Farine & pâtisserie',          ic: 4, tone: 4 },
+  { id: 'cremerie',       name: 'Crèmerie & œufs',              ic: 1, tone: 1 },
+  { id: 'fromages',       name: 'Fromages',                     ic: 1, tone: 1 },
+  { id: 'surgeles',       name: 'Surgelés',                     ic: 7, tone: 1 },
+  { id: 'boissons',       name: 'Boissons',                     ic: 8, tone: 1 },
+  { id: 'huile_epices',   name: 'Huile, épices & cuisine du monde', ic: 4, tone: 4 },
+  { id: 'conserves',      name: 'Conserves & légumineuses',     ic: 4, tone: 4 },
+  { id: 'ailleurs',       name: 'À chercher ailleurs',          ic: 4, tone: 5 },
+  { id: 'placard',        name: 'Placard : à vérifier',         ic: 5, tone: 5 },
 ];
+const CAT_NAME = Object.fromEntries(CATEGORIES.map(c => [c.id, c.name]));
 
-// Icônes SVG par rayon (line-art, dans l'ordre des CATEGORIES).
+// Rayon de chaque ingrédient de la base. Sans entrée : d'après son rayon générique (RAYON_FALLBACK).
+const SHOP_RAYON = {
+  fruits_legumes: 'pdt patate_douce courgette poivron oignon ail carotte concombre tomates_cerise salade champignons avocat herbes citron banane pomme fruit_saison aubergine tomate pousses_soja citron_vert gingembre radis chou_chinois poireau butternut betterave mache chou potimarron poire',
+  boulangerie: 'baguette',
+  viande: 'poulet poulet_hache boeuf haut_cuisse boeuf_emince',
+  charcuterie: 'poulet_tranches jambon_blanc houmous gnocchis tofu',
+  pain_emballe: 'pain pita tortilla pain_burger pain_sg wrap_sg',
+  poisson: 'saumon crevettes saumon_fume',
+  fruits_secs: 'amandes cacahuetes pistaches noix dattes chia lin sesame',
+  sucre: 'miel granola cornflakes boudoirs beurre_cacahuete flocons agave sirop_erable pain_epices',
+  pates_riz: 'riz pates riz_blanc pates_classiques nouilles_riz boulghour quinoa semoule lentilles_corail lentilles_vertes orzo nouilles_oeufs pates_sg pois_casses riz_risotto polenta',
+  sauces: 'soja moutarde ketchup mayo_allegee sauce_chili sriracha nuoc_mam vinaigre_riz vinaigre_cidre pesto oignons_frits',
+  farine: 'farine chapelure panko levure fecule cacao chocolat coco_rapee',
+  cremerie: 'oeuf fromage_blanc skyr yaourt_grec cottage lait creme beurre yaourt_sl boisson_avoine',
+  fromages: 'parmesan emmental feta cheddar carre_frais fromage_frais maroilles boursin gorgonzola mozzarella',
+  surgeles: 'poisson_blanc brocoli haricots_verts epinards chou_fleur petits_pois legumes_mix fruits_rouges mangue',
+  boissons: 'biere',
+  huile_epices: 'huile huile_sesame epices bouillon lait_coco creme_coco pate_curry chipotle citron_confit tahini',
+  conserves: 'thon sardines maquereau pois_chiches haricots_rouges haricots_blancs haricots_noirs tomates_conc mais chataignes tomates_sechees concentre olives cornichons',
+  // souvent absents des rayons permanents de Lidl
+  ailleurs: 'whey mirin gochujang miso nori feuille_riz tamari citronnelle',
+};
+const RAYON_OF = {};
+Object.entries(SHOP_RAYON).forEach(([cat, keys]) => keys.split(' ').forEach(k => { RAYON_OF[k] = cat; }));
+const RAYON_FALLBACK = { 'Viandes & poisson': 'viande', 'Œufs & laitages': 'cremerie', 'Légumes & fruits': 'fruits_legumes', 'Féculents & légumineuses': 'pates_riz', 'Épicerie & placard': 'conserves' };
+const shopRayon = (key, db) => RAYON_OF[key] || RAYON_FALLBACK[db?.rayon] || 'conserves';
+
+// Icônes SVG (line-art) : 0 poisson · 1 lait · 2 légumes · 3 épi · 4 sachet · 5 placard · 6 viande · 7 surgelés · 8 boisson
 const CAT_ICONS = [
   // Viandes & poisson — poisson stylisé
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-5 9-6 14-3 2 1.2 4 3 4 3s-2 1.8-4 3c-5 3-11 2-14-3z"/><path d="M17 9.5l3-2.5M17 14.5l3 2.5"/><circle cx="8" cy="11" r="1"/></svg>',
@@ -7618,6 +7660,12 @@ const CAT_ICONS = [
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10l1 12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg>',
   // Placard — étagère
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>',
+  // Viande — pièce de viande
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4c4 0 7 3 6 7-1 5-7 9-12 9-3 0-5-2-5-5 0-5 5-11 11-11z"/><circle cx="14.5" cy="9.5" r="2"/></svg>',
+  // Surgelés — flocon
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4.2" y1="7.5" x2="19.8" y2="16.5"/><line x1="4.2" y1="16.5" x2="19.8" y2="7.5"/><path d="M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/></svg>',
+  // Boissons — bouteille
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4v4l2 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10l2-3z"/></svg>',
 ];
 
 // Regroupe les variantes d'un même produit en un seul nom canonique,
@@ -7750,11 +7798,19 @@ const CANON = [
 ];
 
 // Catégorie d'un produit (déjà canonisé) → rayon du magasin.
+// (anciennes recettes sans clé d'ingrédient)
 const CAT_RULES = [
-  { name: 'Viandes & poisson',        rx: /poulet|boeuf|steak|merguez|thon|saumon|poisson|crevette|anchois|bacon/i },
-  { name: 'Œufs & laitages',          rx: /oeuf|fromage|ricotta|feta|parmesan|emmental|skyr|lait|yaourt|beurre$/i },
-  { name: 'Féculents & légumineuses', rx: /pâtes|riz|orzo|nouilles|boulghour|quinoa|flocons|lentilles|pois chiches|haricots (rouges|blancs)|maïs|tortillas|pain|crackers|chapelure/i },
-  { name: 'Légumes & fruits',         rx: /haricots verts|épinards|courgettes|chou|brocoli|champignons|carottes|concombre|tomates?|poivron|patate|pommes de terre|betterave|salade|avocat|oignon|citron|banane|mangue|pommes|fruits rouges|framboises|passion|dattes|gingembre|ail$|olives|câpres|cornichons|piment|coriandre|persil|menthe|basilic|ciboulette|thym/i },
+  { name: CAT_NAME.surgeles,       rx: /surgel|fruits rouges|framboises|mangue/i },
+  { name: CAT_NAME.conserves,      rx: /thon|anchois|haricots (rouges|blancs)|maïs|pois chiches|olives|câpres|cornichons/i },
+  { name: CAT_NAME.poisson,        rx: /saumon|poisson|crevette/i },
+  { name: CAT_NAME.viande,         rx: /poulet|boeuf|steak|merguez|bacon/i },
+  { name: CAT_NAME.fromages,       rx: /fromage|ricotta|feta|parmesan|emmental/i },
+  { name: CAT_NAME.cremerie,       rx: /oeuf|skyr|lait|yaourt|beurre$/i },
+  { name: CAT_NAME.pain_emballe,   rx: /tortillas|pain|crackers/i },
+  { name: CAT_NAME.farine,         rx: /chapelure/i },
+  { name: CAT_NAME.pates_riz,      rx: /pâtes|riz|orzo|nouilles|boulghour|quinoa|flocons|lentilles/i },
+  { name: CAT_NAME.fruits_secs,    rx: /dattes/i },
+  { name: CAT_NAME.fruits_legumes, rx: /haricots verts|épinards|courgettes|chou|brocoli|champignons|carottes|concombre|tomates?|poivron|patate|pommes de terre|betterave|salade|avocat|oignon|citron|banane|pommes|passion|gingembre|ail$|piment|coriandre|persil|menthe|basilic|ciboulette|thym/i },
 ];
 
 // Renvoie {name} canonique pour un ingrédient.
@@ -7769,7 +7825,7 @@ function categorize(name) {
   for (const cat of CAT_RULES) {
     if (cat.rx.test(name)) return cat.name;
   }
-  return 'Épicerie & placard';
+  return CAT_NAME.conserves;
 }
 
 // Liste agrégée par ingrédient de la base (data/ingredients.js).
@@ -7793,7 +7849,9 @@ function buildList(dates) {
           const key = name.toLowerCase();
           if (!map[key]) map[key] = {
             name, qty: 0, unit: db ? db.unit : ing.unit, dbKey: db ? db.key : null,
-            cat: db ? (db.pantry ? 'Placard : à vérifier' : db.rayon) : categorize(name),
+            cat: db ? (db.pantry ? PANTRY_CAT : CAT_NAME[shopRayon(ing.key, db)]) : categorize(name),
+            // rayon où le trouver s'il faut le racheter (produits du placard)
+            aisle: db ? CAT_NAME[shopRayon(ing.key, db)] : null,
           };
           map[key].qty += qty;
           if (ing.key === 'epices' && spicesOf(r.id)) { map[key].spices ||= new Set(); spicesOf(r.id).split(', ').forEach(x => map[key].spices.add(x)); }
@@ -7955,9 +8013,9 @@ function renderShopping() {
           if (!list.length && !(isPantry && haveList.length)) return '';
           const doneInCat = list.filter(it => checked.includes(it.name.toLowerCase())).length;
           return `
-            <div class="shop-cat cat-c-${ci}">
+            <div class="shop-cat cat-c-${c.tone}">
               <div class="shop-cat-head">
-                <span class="shop-cat-ic">${CAT_ICONS[ci] || ''}</span>
+                <span class="shop-cat-ic">${CAT_ICONS[c.ic] || ''}</span>
                 <span class="shop-cat-name">${c.name}</span>
                 <span class="shop-cat-count">${list.length ? `${doneInCat}/${list.length}` : ''}</span>
               </div>
@@ -7970,7 +8028,7 @@ function renderShopping() {
                   <div class="shop-check ${isChecked ? 'checked' : ''}"></div>
                   <div class="shop-info">
                     <div class="shop-name">${p.name || item.name}</div>
-                    <div class="shop-qty">${isPantry ? (item.spices ? `Vérifie : ${[...item.spices].sort((a, b) => a.localeCompare(b, 'fr')).join(', ')}` : 'Vérifie ton placard') : `${p.qty} ${p.unit}`}</div>
+                    <div class="shop-qty">${isPantry ? (item.spices ? `Vérifie : ${[...item.spices].sort((a, b) => a.localeCompare(b, 'fr')).join(', ')}` : 'Vérifie ton placard') + (item.aisle ? ` · rayon ${item.aisle.toLowerCase()}` : '') : `${p.qty} ${p.unit}`}</div>
                   </div>
                   ${isPantry ? `<button class="shop-have" data-have="${key}">J'en ai</button>` : ''}
                 </div>`;
