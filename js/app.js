@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T07:27:21.003Z
+// 2026-10-29T07:29:21.606Z
 
 
 // ──────────────────────────────────────────────
@@ -6734,7 +6734,26 @@ const ING_FAMILIES = {
   'Pommes de terre': ['pdt'], Courge: ['butternut', 'potimarron'], Poisson: ['saumon', 'poisson_blanc', 'thon', 'sardines', 'maquereau', 'saumon_fume'],
   Fromage: ['parmesan', 'emmental', 'cheddar', 'feta', 'mozzarella', 'maroilles', 'gorgonzola', 'reblochon', 'comte', 'boursin', 'cottage', 'fromage_frais'],
 };
-const normTxt = t => (t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const normTxt = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/œ/g, 'oe').replace(/æ/g, 'ae');
+// v302 : recherche tolérante aux fautes (« epinar », « champigon », « poullet ») : on compare le texte tapé au début de
+// chaque mot (distance d'édition avec inversion de deux lettres) ; 1 faute dès 4 lettres, 2 dès 8 (seulement si rien ne correspond exactement).
+function editDist(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) {
+    d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+  }
+  return d[a.length][b.length];
+}
+function fuzzyHas(text, q) {
+  const t = normTxt(text), n = normTxt(q).trim().replace(/\b(onions?|ognons?)\b/g, 'oignon'); // l'orthographe réformée et l'anglais
+  if (!n || t.includes(n)) return true;
+  const words = t.split(/[^a-z0-9]+/).filter(Boolean);
+  // plusieurs mots tapés : chacun doit se retrouver (au début d'un mot, à une ou deux fautes près)
+  return n.split(/\s+/).every(part => (part.length < 4 ? t.includes(part)
+    : words.some(w => [part.length - 1, part.length, part.length + 1].some(L => L > 0 && editDist(part, w.slice(0, L)) <= (part.length >= 8 ? 2 : 1)))));
+}
 function openFreePick(oldId, date, { meal = '' } = {}) {
   const plan = getActivePlan();
   const list = freeChoices(oldId).sort((a, b) => (b.ok - a.ok) || a.r.name.localeCompare(b.r.name, 'fr'));
@@ -6775,11 +6794,12 @@ function openFreePick(oldId, date, { meal = '' } = {}) {
   const apply = () => {
     const q = normTxt(search.value.trim());
     let n = 0;
+    const anyExact = !q || [...sh.querySelectorAll('[data-free]')].some(b => b.dataset.q.includes(q));
     sh.querySelectorAll('[data-free]').forEach(b => {
       const ks = new Set(b.dataset.k.split(' '));
       const has = o => o.keys.some(k => ks.has(k));
       const ingOk = !picked.length || (mode === 'all' ? picked.every(has) : picked.some(has));
-      b.hidden = (!!q && !b.dataset.q.includes(q)) || !ingOk;
+      b.hidden = (!!q && !(anyExact ? b.dataset.q.includes(q) : fuzzyHas(b.dataset.q, q))) || !ingOk;
       if (!b.hidden) n++;
     });
     count.textContent = q || picked.length ? (n ? `${n} plat${n > 1 ? 's' : ''}` : 'Aucun plat ne correspond : enlève un ingrédient ou passe à « Au moins un »') : '';
@@ -6791,7 +6811,10 @@ function openFreePick(oldId, date, { meal = '' } = {}) {
     const q = normTxt(ingIn.value.trim());
     // familles d'abord (« Poulet » avant « Blanc de poulet »), puis ce qui commence par le texte tapé
     const rank = o => (o.keys.length > 1 ? 0 : 2) + (normTxt(o.label).startsWith(q) ? 0 : 1);
-    const hits = q ? opts.filter(o => normTxt(o.label).includes(q) && !picked.includes(o)).sort((x, y) => rank(x) - rank(y)).slice(0, 8) : [];
+    // ce qui contient exactement le texte tapé ; à défaut seulement, ce qui s'en approche (fautes de frappe)
+    const free = opts.filter(o => !picked.includes(o));
+    const exact = free.filter(o => normTxt(o.label).includes(q));
+    const hits = q ? (exact.length ? exact : free.filter(o => fuzzyHas(o.label, q))).sort((x, y) => rank(x) - rank(y)).slice(0, 8) : [];
     sug.innerHTML = hits.map((o, i) => `<button class="sw-sug" data-sug="${opts.indexOf(o)}">${o.label}</button>`).join('');
     sug.querySelectorAll('[data-sug]').forEach(b => b.addEventListener('click', () => { picked.push(opts[+b.dataset.sug]); ingIn.value = ''; sug.innerHTML = ''; apply(); }));
   };
