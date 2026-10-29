@@ -799,6 +799,26 @@ function generateWeekOnce({ nextWeek = true, targets, proteins = null, served = 
         dates.forEach((d, dayIdx) => refill(dayIdx, P));
       }
     }
+    // v303 (Pierre : « chaque semaine un batch cooking dessert ») : s'il ne reste aucune douceur préparée le dimanche,
+    // on essaie les autres (les plus légères d'abord) : 3 jours au moins, sinon 2.
+    const isSweetBatch = id => { const r = getById(id); return !!r && r.batch && r.category === 'sweet'; };
+    if (!snackBy[mi].some(isSweetBatch)) {
+      const cands = snackPool(m.whey !== false, lactoseOf(m.id), glutenOf(m.id))
+        .filter(s => s.batch && s.category === 'sweet' && (/^K0[68]/.test(s.id) || (s.tags || []).includes('semaine')))
+        .sort((x, y) => snackFloor(x) - snackFloor(y));
+      let best = null;
+      for (const c of cands) {
+        snackBy[mi] = [c.id, ...snackBy[mi]];
+        const Q = batchPattern([c.id], dates.length).map((x, d) => P[d] || x);
+        dates.forEach((d, dayIdx) => refill(dayIdx, Q));
+        const n = servedOn(c.id).length;
+        if (n >= 3) { P = Q; best = null; break; }
+        if (n >= 2 && (!best || n > best.n)) best = { id: c.id, n, Q };
+        snackBy[mi] = snackBy[mi].filter(x => x !== c.id);
+      }
+      if (best) { snackBy[mi] = [best.id, ...snackBy[mi]]; P = best.Q; }
+      dates.forEach((d, dayIdx) => refill(dayIdx, P));
+    }
     batchDaysBy[m.id] = P;
   });
   // produits frais consommés en entier ; un complément de reste ne va qu'à qui son régime l'autorise
