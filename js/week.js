@@ -625,12 +625,30 @@ function openSwapSheet(oldId, date, { meal = '', soup = false, seen = [] } = {})
 
 // v301 : « Choisir moi-même » : tous les plats possibles, avec une recherche. Ceux qui ne se garderaient pas
 // jusqu'au dernier jour prévu sont montrés grisés, avec la raison.
+// v302 : filtre par ingrédients (« épinards », « poulet »…) : plusieurs à la fois, tous ou au moins un.
+// Quelques familles regroupent les variantes (poulet = blanc, haut de cuisse, haché…).
+const ING_FAMILIES = {
+  Poulet: ['poulet', 'haut_cuisse', 'poulet_hache', 'poulet_tranches'], 'Bœuf': ['boeuf', 'boeuf_emince'],
+  Riz: ['riz', 'riz_blanc', 'riz_risotto'], 'Pâtes': ['pates', 'pates_classiques', 'pates_sg', 'orzo'], Nouilles: ['nouilles_riz', 'nouilles_oeufs'],
+  Lentilles: ['lentilles_corail', 'lentilles_vertes'], Haricots: ['haricots_rouges', 'haricots_blancs', 'haricots_noirs'],
+  'Pommes de terre': ['pdt'], Courge: ['butternut', 'potimarron'], Poisson: ['saumon', 'poisson_blanc', 'thon', 'sardines', 'maquereau', 'saumon_fume'],
+  Fromage: ['parmesan', 'emmental', 'cheddar', 'feta', 'mozzarella', 'maroilles', 'gorgonzola', 'reblochon', 'comte', 'boursin', 'cottage', 'fromage_frais'],
+};
+const normTxt = t => (t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 export function openFreePick(oldId, date, { meal = '' } = {}) {
   const plan = getActivePlan();
   const list = freeChoices(oldId).sort((a, b) => (b.ok - a.ok) || a.r.name.localeCompare(b.r.name, 'fr'));
   if (!list.length) { toast('Aucun autre plat disponible pour le moment', 'warn'); return; }
   const portions = plan.sessions.flatMap(s => s.recipes).find(r => r.id === oldId)?.portions || 0;
-  const row = ({ r, ok }) => `<button class="sw-opt ${ok ? '' : 'sw-off'}" data-free="${r.id}" ${ok ? '' : 'aria-disabled="true"'} data-q="${(r.name + ' ' + (r.short || '') + ' ' + proteinLabel(r)).toLowerCase()}">
+  // ingrédients proposés : ceux des plats de la liste (hors placard et épices), familles en tête
+  const present = new Set(list.flatMap(({ r }) => r.ingredients.map(g => g.key)));
+  const opts = [
+    ...Object.entries(ING_FAMILIES).map(([label, keys]) => ({ label, keys: keys.filter(k => present.has(k)) })).filter(o => o.keys.length > 1),
+    ...[...present].filter(k => INGREDIENTS[k] && !INGREDIENTS[k].pantry && !['epices', 'huile', 'herbes', 'bouillon', 'fecule', 'levure'].includes(k))
+      .map(k => ({ label: INGREDIENTS[k].name.split(' (')[0], keys: [k] })),
+  ].filter((o, i, a) => a.findIndex(x => x.label === o.label) === i).sort((a, b) => a.label.localeCompare(b.label, 'fr'));
+  let picked = [], mode = 'all';
+  const row = ({ r, ok }) => `<button class="sw-opt ${ok ? '' : 'sw-off'}" data-free="${r.id}" ${ok ? '' : 'aria-disabled="true"'} data-q="${normTxt(r.name + ' ' + (r.short || '') + ' ' + proteinLabel(r) + ' ' + ((r.tags || []).map(t => CUISINES[t]).find(Boolean) || ''))}" data-k="${r.ingredients.map(g => g.key).join(' ')}">
       ${dishThumb(r, 'sw-img')}
       <span class="sw-txt"><b>${r.name}</b><small>${ok ? [(r.tags || []).map(t => CUISINES[t]).find(Boolean), proteinLabel(r)].filter(Boolean).join(' · ') : 'Ne se garde pas jusqu\'au dernier jour prévu'}</small></span>
       ${ok ? '<span class="hb-chev">›</span>' : ''}
@@ -641,15 +659,46 @@ export function openFreePick(oldId, date, { meal = '' } = {}) {
       <div class="hb-h2">Ton plat à la place de ${shortName(oldId)}</div>
       <p class="sw-sub">Il remplace les ${portions} boîtes de la session. Portions et courses se recalculent.</p>
       <input class="search-bar sw-search" placeholder="Chercher un plat, une viande, une cuisine…" autocomplete="off">
+      <div class="sw-ing">
+        <input class="search-bar sw-ing-in" placeholder="Avec ces ingrédients : épinards, poulet…" autocomplete="off">
+        <div class="sw-ing-sug"></div>
+        <div class="sw-chips"></div>
+        <div class="hb-seg sw-mode" hidden><button class="hb-seg-btn on" data-mode="all">Tous ces ingrédients</button><button class="hb-seg-btn" data-mode="any">Au moins un</button></div>
+      </div>
+      <div class="sw-count"></div>
       <div class="sw-list sw-all">${list.map(row).join('')}</div>
       <button class="out-cancel sw-cancel">Garder ${shortName(oldId)}</button>
     </div>`);
   const sh = document.querySelector('.sheet') || document;
-  const search = sh.querySelector('.sw-search');
-  search?.addEventListener('input', () => {
-    const q = search.value.trim().toLowerCase();
-    sh.querySelectorAll('[data-free]').forEach(b => { b.hidden = !!q && !b.dataset.q.includes(q); });
-  });
+  const search = sh.querySelector('.sw-search'), ingIn = sh.querySelector('.sw-ing-in');
+  const sug = sh.querySelector('.sw-ing-sug'), chips = sh.querySelector('.sw-chips'), seg = sh.querySelector('.sw-mode'), count = sh.querySelector('.sw-count');
+  const apply = () => {
+    const q = normTxt(search.value.trim());
+    let n = 0;
+    sh.querySelectorAll('[data-free]').forEach(b => {
+      const ks = new Set(b.dataset.k.split(' '));
+      const has = o => o.keys.some(k => ks.has(k));
+      const ingOk = !picked.length || (mode === 'all' ? picked.every(has) : picked.some(has));
+      b.hidden = (!!q && !b.dataset.q.includes(q)) || !ingOk;
+      if (!b.hidden) n++;
+    });
+    count.textContent = q || picked.length ? (n ? `${n} plat${n > 1 ? 's' : ''}` : 'Aucun plat ne correspond : enlève un ingrédient ou passe à « Au moins un »') : '';
+    seg.hidden = picked.length < 2;
+    chips.innerHTML = picked.map((o, i) => `<button class="sw-chip" data-rm="${i}" aria-label="Retirer ${o.label}">${o.label}<span aria-hidden="true">×</span></button>`).join('');
+    chips.querySelectorAll('[data-rm]').forEach(c => c.addEventListener('click', () => { picked.splice(+c.dataset.rm, 1); apply(); }));
+  };
+  const suggest = () => {
+    const q = normTxt(ingIn.value.trim());
+    // familles d'abord (« Poulet » avant « Blanc de poulet »), puis ce qui commence par le texte tapé
+    const rank = o => (o.keys.length > 1 ? 0 : 2) + (normTxt(o.label).startsWith(q) ? 0 : 1);
+    const hits = q ? opts.filter(o => normTxt(o.label).includes(q) && !picked.includes(o)).sort((x, y) => rank(x) - rank(y)).slice(0, 8) : [];
+    sug.innerHTML = hits.map((o, i) => `<button class="sw-sug" data-sug="${opts.indexOf(o)}">${o.label}</button>`).join('');
+    sug.querySelectorAll('[data-sug]').forEach(b => b.addEventListener('click', () => { picked.push(opts[+b.dataset.sug]); ingIn.value = ''; sug.innerHTML = ''; apply(); }));
+  };
+  search?.addEventListener('input', apply);
+  ingIn?.addEventListener('input', suggest);
+  ingIn?.addEventListener('keydown', e => { if (e.key === 'Enter') { const first = sug.querySelector('[data-sug]'); if (first) { e.preventDefault(); first.click(); } } });
+  seg.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; seg.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); apply(); }));
   sh.querySelector('.sw-cancel')?.addEventListener('click', () => { closeSheet(); if (date) openDaySheet(date); });
   sh.querySelectorAll('[data-free]').forEach(b => b.addEventListener('click', () => {
     if (b.getAttribute('aria-disabled')) { toast('Ce plat ne se garderait pas jusqu\'au dernier jour prévu : choisis-en un autre', 'warn'); return; }
