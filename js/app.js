@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-10-29T11:37:51.982Z
+// 2026-11-01T20:39:52.046Z
 
 
 // ──────────────────────────────────────────────
@@ -163,6 +163,8 @@ const RAW = {
   chocolat:      ['Chocolat noir 85%',          'g',     590, 11,   20,  50,  'flavor', 15, 'E', { pantry: true }],
   granola:       ['Granola nature',             'g',     450, 10,    61.2,  16.5,  'carb', 6,   'E', { lv: 'S', min: 30, max: 80, pack: 500 }],
   chia:          ['Graines de chia',            'g',     454, 16.5,   7.7,   30.7,  'fat', 12,  'E', { lv: 'S', min: 15, max: 40, pack: 250 }],
+  // v308 : café soluble (tiramisus) ; absent de Ciqual en poudre : valeurs USDA du café instantané en poudre
+  cafe:          ['Café soluble',               'g',     353, 12.2, 75.4, 0.5,  'flavor', 30, 'E', { pantry: true }],
   cacao:         ['Cacao non sucré',            'g',     387, 22.4,   11.6,  20.6,  'flavor', 12, 'E', { pantry: true }],
   soja:          ['Sauce soja allégée en sel',                 'ml',    107,  9.7,    6.9,   0,   'flavor', 6,  'E', { pantry: true }],
   miel:          ['Miel',                       'g',     331, 0.7,  82.1,  0,   'flavor', 10, 'E', { pantry: true }],
@@ -429,6 +431,8 @@ function humanQty(key, qty, unit, opts = {}) {
 // v195 : les « Épices » de chaque recette, nommées (rayon épices Lidl). Affichées sur la fiche,
 // dans la session de cuisine et dans le placard de la liste de courses.
 const SPICES = {
+  // v308 : épices citées dans les étapes mais absentes de la liste
+  W10: 'paprika fumé', W102: 'thym, laurier', W105: 'paprika', W107: 'thym, laurier', W109: 'origan, laurier', W110: 'paprika',
   W01: 'curry en poudre', W04: 'origan', W05: 'cumin, paprika', W06: 'cumin, paprika',
   W07: 'cumin, curcuma, gingembre en poudre, cannelle', W08: 'paprika fumé, piment', W09: 'cumin, paprika, origan',
   W11: 'paprika fumé, piment', W12: 'curry en poudre', W13: 'piment', W14: 'curry en poudre, paprika, cumin, curcuma',
@@ -443,7 +447,7 @@ const SPICES = {
   W58: 'paprika, cumin, origan, ail en poudre', W60: 'paprika', W61: 'paprika', W62: 'origan, piment', W64: 'herbes de Provence',
   W65: 'paprika', W66: 'cumin, paprika fumé', W67: 'cumin, origan', W68: 'garam masala, cumin, curcuma, piment',
   W69: 'cumin, paprika, cannelle, gingembre en poudre', W70: 'cumin, paprika, cannelle, curcuma', W71: 'cumin, paprika fumé, piment',
-  W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
+  W72: 'garam masala, curry en poudre, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
   W95: 'thym', W97: 'muscade', W98: 'paprika, poivre concassé', W101: 'thym',
@@ -524,7 +528,7 @@ const RECIPES = [
     ["Mariner le poulet : moitié du yaourt + paprika, cumin, origan, ail.","AF 200°C 15 min, puis émincer finement et repasser 2 min pour griller les bords.","Sauce blanche : reste du yaourt + ail + herbes.","Au moment de manger : galette chauffée, poulet, crudités, sauce."],
     "Le haut de cuisse reste juteux au réchauffage, c'est le secret du döner.", ["turc","air fryer","batch","gourmand","assemblage"], true, {"pairs":["SA11"]}),
   M("W10", "Smash burger & frites de patate douce", "dinner", "🍔", 10, 20,
-    [["boeuf",150],["pain_burger",70],["cheddar",20],["oignon",60],["cornichons",15],["yaourt_grec",30],["moutarde",5],["salade",20],["tomate",50],["patate_douce",200],["huile",5]],
+    [["boeuf",150],["pain_burger",70],["cheddar",20],["oignon",60],["cornichons",15],["yaourt_grec",30],["moutarde",5],["salade",20],["tomate",50],["patate_douce",200],["huile",5],["epices",2]],
     ["Frites de patate douce : bâtonnets + huile + paprika fumé, AF 200°C 18 min.","Oignons émincés caramélisés à la poêle 10 min (se préparent pour la semaine).","Steak en boule, écrasé fort dans la poêle très chaude, 2 min par face, cheddar dessus.","Sauce : yaourt + moutarde + cornichons hachés."],
     "En batch : oignons, sauce et frites précuites (réchauffées 4 min à l'AF). Le steak se cuit en 4 min au moment.", ["américain","air fryer","poêle","gourmand","assemblage"], true, {"pairs":[]}),
   M("W11", "Poulet croustillant à la coréenne", "dinner", "🍗", 15, 16,
@@ -998,7 +1002,7 @@ const RECIPES = [
     ["Yaourt grec bien épais étalé, huile d'olive, za'atar.","Pita réchauffée 2 min à l'air fryer, crudités en bâtonnets."],
     "La collation salée du Levant, à tremper.", ["libanais","salé","rapide"], false),
   M("K05", "Overnight oats tiramisu", "sweet", "☕", 4, 0,
-    [["flocons",40],["lait",120],["whey",20],["fromage_blanc",100],["cacao",3],["miel",8]],
+    [["flocons",40],["lait",120],["whey",20],["fromage_blanc",100],["cacao",3],["miel",8],["cafe",2]],
     ["Flocons + lait + whey + 1 c.à.c de café soluble, en bocal.","Couche de fromage blanc au miel, cacao en poudre.","Une nuit au frigo."],
     "Préparé pendant la session : un bocal par portion, 3 jours au frigo.", ["italien","sucré","whey","frigo-3"], true),
   M("K06", "Pancakes protéinés à la banane", "sweet", "🥞", 5, 8,
@@ -1042,8 +1046,8 @@ const RECIPES = [
     ["Fais fondre le chocolat noir au micro-ondes par tranches de 30 secondes, en remuant entre chaque, jusqu'à ce qu'il soit lisse.","Ajoute le beurre de cacahuète et la whey, et mélange jusqu'à obtenir une pâte brillante.","Ajoute les corn flakes et enrobe-les délicatement à la spatule, sans trop les écraser.","Forme de petits tas sur une feuille de papier cuisson, environ 3 par portion, et laisse-les durcir 30 minutes au frigo.","Mise en boîtes : les roses des sables dans une boîte hermétique, au frigo. Elles se gardent une semaine."],
     "Le chocolat noir et le beurre de cacahuète remplacent le chocolat au lait et la graisse végétale de la recette classique.", ["français","sucré","sans cuisson","semaine","whey"], true),
   M("K16", "Tiramisu minute en verrine", "sweet", "☕", 5, 0,
-    [["boudoirs",24],["yaourt_grec",150],["whey",15],["miel",5],["cacao",3]],
-    ["Pendant la session de cuisine, trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours."],
+    [["boudoirs",24],["yaourt_grec",150],["whey",15],["miel",5],["cacao",3],["cafe",2]],
+    ["Pendant la session de cuisine, dissous le café soluble dans 3 cuillères à soupe d'eau froide par portion, puis trempe rapidement les boudoirs dans ce café, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours."],
     "Le yaourt grec et la whey remplacent le mascarpone et les œufs : même goût, trois fois plus de protéines.", ["italien","sucré","sans cuisson","whey","frigo-3"], true),
   M("K17", "Barres de céréales aux dattes et aux cacahuètes", "sweet", "🌾", 10, 0,
     [["dattes",30],["flocons",25],["cacahuetes",12],["whey",10],["cacao",3]],
@@ -2080,7 +2084,7 @@ const SESSION_STEPS = {
   K21: {"cuts":[{"ing":"chocolat","verb":"Hache","form":"en petits morceaux"}],"steps":[{"text":"Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine et la whey.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Ajoute le chocolat noir.","kind":"prep","app":null,"min":1,"wait":0},{"text":"Forme 3 cookies par portion, aplatis-les à 1 cm et pose-les sur du papier cuisson dans le panier de l'air fryer.","kind":"cook","app":"airfryer","min":4,"wait":0},{"text":"Fais cuire les cookies 8 minutes à 170 °C : ils doivent être dorés sur les bords et encore moelleux au centre.","kind":"cook","app":"airfryer","min":1,"wait":8},{"text":"Laisse refroidir les cookies 10 minutes, ils se raffermissent.","kind":"prep","app":null,"min":1,"wait":10}]},
   K22: {"cuts":[{"ing":"noix","verb":"Concasse","form":"grossièrement"}],"steps":[{"text":"Mélange les noix avec les flocons d'avoine, la cannelle, le sirop d'érable et l'huile, jusqu'à ce que tout soit enrobé.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Étale le granola sur une feuille de papier cuisson dans le panier et fais-le cuire 12 à 15 minutes à l'air fryer à 150 °C, en remuant toutes les 5 minutes, jusqu'à ce qu'il soit doré.","kind":"cook","app":"airfryer","min":2,"wait":15},{"text":"Laisse refroidir le granola : il durcit en refroidissant.","kind":"prep","app":null,"min":1,"wait":0}]},
   K05: {"cuts":[],"steps":[{"text":"Prépare un bocal par portion : mélange les flocons, le lait, la whey et 1 cuillère à café de café soluble.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Mélange le fromage blanc avec le miel et étale-le en couche par-dessus, puis saupoudre de cacao.","kind":"prep","app":null,"min":2,"wait":0},{"text":"Ferme les bocaux et range-les au frigo : ils se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
-  K16: {"cuts":[],"steps":[{"text":"Trempe rapidement les boudoirs dans un fond de café froid, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","kind":"prep","app":null,"min":2,"wait":0},{"text":"Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
+  K16: {"cuts":[],"steps":[{"text":"Dissous le café soluble dans 3 cuillères à soupe d'eau froide par portion, puis trempe rapidement les boudoirs dans ce café, une seconde de chaque côté, et pose-les au fond d'une verrine par portion.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Mélange le yaourt grec, la whey et le miel jusqu'à ce que ce soit lisse, puis verse sur les boudoirs.","kind":"prep","app":null,"min":2,"wait":0},{"text":"Saupoudre de cacao, couvre les verrines et range-les au frigo : les boudoirs s'imbibent, elles se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
   K23: {"cuts":[{"ing":"pomme","verb":"Coupe","form":"en dés avec la peau"}],"steps":[{"text":"Fais dorer les pommes 4 à 5 minutes à la poêle avec le sirop d'érable et la cannelle, jusqu'à ce qu'elles soient tendres et caramélisées.","kind":"cook","app":"poele","min":5,"wait":0},{"text":"Laisse refroidir les pommes et range-les au frigo dans une boîte : elles se gardent 3 jours.","kind":"cook","app":null,"min":1,"wait":0}]},
   K24: {"cuts":[{"ing":"butternut","verb":"Épluche et coupe","form":"en petits dés"}],"steps":[{"text":"Fais cuire la courge 4 minutes au micro-ondes avec 1 cuillère à soupe d'eau, puis écrase-la à la fourchette.","kind":"cook","app":"micro","min":5,"wait":0},{"text":"Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, la cannelle et une pincée de muscade.","kind":"prep","app":null,"min":3,"wait":0},{"text":"Ferme les bocaux et range-les au frigo : ils se gardent 3 jours.","kind":"prep","app":null,"min":1,"wait":0}]},
 };
@@ -7744,7 +7748,7 @@ const SHOP_RAYON = {
   pain_emballe: 'pain pita tortilla pain_burger pain_sg wrap_sg',
   poisson: 'saumon crevettes saumon_fume',
   fruits_secs: 'amandes cacahuetes pistaches noix dattes chia lin sesame',
-  sucre: 'miel granola cornflakes boudoirs beurre_cacahuete flocons agave sirop_erable pain_epices',
+  sucre: 'cafe miel granola cornflakes boudoirs beurre_cacahuete flocons agave sirop_erable pain_epices',
   pates_riz: 'riz pates riz_blanc pates_classiques nouilles_riz boulghour quinoa semoule lentilles_corail lentilles_vertes orzo nouilles_oeufs pates_sg pois_casses riz_risotto polenta',
   sauces: 'soja moutarde ketchup mayo_allegee sauce_chili sriracha nuoc_mam vinaigre_riz vinaigre_cidre pesto oignons_frits',
   farine: 'farine chapelure panko levure fecule cacao chocolat coco_rapee',

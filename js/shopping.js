@@ -84,7 +84,7 @@ const SHOP_RAYON = {
   pain_emballe: 'pain pita tortilla pain_burger pain_sg wrap_sg',
   poisson: 'saumon crevettes saumon_fume',
   fruits_secs: 'amandes cacahuetes pistaches noix dattes chia lin sesame',
-  sucre: 'miel granola cornflakes boudoirs beurre_cacahuete flocons agave sirop_erable pain_epices',
+  sucre: 'cafe miel granola cornflakes boudoirs beurre_cacahuete flocons agave sirop_erable pain_epices',
   pates_riz: 'riz pates riz_blanc pates_classiques nouilles_riz boulghour quinoa semoule lentilles_corail lentilles_vertes orzo nouilles_oeufs pates_sg pois_casses riz_risotto polenta',
   sauces: 'soja moutarde ketchup mayo_allegee sauce_chili sriracha nuoc_mam vinaigre_riz vinaigre_cidre pesto oignons_frits',
   farine: 'farine chapelure panko levure fecule cacao chocolat coco_rapee',

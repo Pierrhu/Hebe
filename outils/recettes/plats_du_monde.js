@@ -44,7 +44,7 @@ exports.mains = [
     ['Mariner le poulet : moitié du yaourt + paprika, cumin, origan, ail.', 'AF 200°C 15 min, puis émincer finement et repasser 2 min pour griller les bords.', 'Sauce blanche : reste du yaourt + ail + herbes.', 'Au moment de manger : galette chauffée, poulet, crudités, sauce.'],
     'Le haut de cuisse reste juteux au réchauffage, c\'est le secret du döner.', ['turc', 'air fryer', 'batch', 'gourmand', 'assemblage'], { pairs: ['SA11'] }),
   R('W10', 'Smash burger & frites de patate douce', 'dinner', '🍔', 10, 20,
-    [['boeuf', 150], ['pain_burger', 70], ['cheddar', 20], ['oignon', 60], ['cornichons', 15], ['yaourt_grec', 30], ['moutarde', 5], ['salade', 20], ['tomate', 50], ['patate_douce', 200], ['huile', 5]],
+    [['boeuf', 150], ['pain_burger', 70], ['cheddar', 20], ['oignon', 60], ['cornichons', 15], ['yaourt_grec', 30], ['moutarde', 5], ['salade', 20], ['tomate', 50], ['patate_douce', 200], ['huile', 5], ['epices', 2]],
     ['Frites de patate douce : bâtonnets + huile + paprika fumé, AF 200°C 18 min.', 'Oignons émincés caramélisés à la poêle 10 min (se préparent pour la semaine).', 'Steak en boule, écrasé fort dans la poêle très chaude, 2 min par face, cheddar dessus.', 'Sauce : yaourt + moutarde + cornichons hachés.'],
     'En batch : oignons, sauce et frites précuites (réchauffées 4 min à l\'AF). Le steak se cuit en 4 min au moment.', ['américain', 'air fryer', 'poêle', 'gourmand', 'assemblage'], { pairs: ['SA12'] }),
   R('W11', 'Poulet croustillant à la coréenne', 'dinner', '🍗', 15, 16,

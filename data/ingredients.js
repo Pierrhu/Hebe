@@ -131,6 +131,8 @@ const RAW = {
   chocolat:      ['Chocolat noir 85%',          'g',     590, 11,   20,  50,  'flavor', 15, 'E', { pantry: true }],
   granola:       ['Granola nature',             'g',     450, 10,    61.2,  16.5,  'carb', 6,   'E', { lv: 'S', min: 30, max: 80, pack: 500 }],
   chia:          ['Graines de chia',            'g',     454, 16.5,   7.7,   30.7,  'fat', 12,  'E', { lv: 'S', min: 15, max: 40, pack: 250 }],
+  // v308 : café soluble (tiramisus) ; absent de Ciqual en poudre : valeurs USDA du café instantané en poudre
+  cafe:          ['Café soluble',               'g',     353, 12.2, 75.4, 0.5,  'flavor', 30, 'E', { pantry: true }],
   cacao:         ['Cacao non sucré',            'g',     387, 22.4,   11.6,  20.6,  'flavor', 12, 'E', { pantry: true }],
   soja:          ['Sauce soja allégée en sel',                 'ml',    107,  9.7,    6.9,   0,   'flavor', 6,  'E', { pantry: true }],
   miel:          ['Miel',                       'g',     331, 0.7,  82.1,  0,   'flavor', 10, 'E', { pantry: true }],
@@ -397,6 +399,8 @@ export function humanQty(key, qty, unit, opts = {}) {
 // v195 : les « Épices » de chaque recette, nommées (rayon épices Lidl). Affichées sur la fiche,
 // dans la session de cuisine et dans le placard de la liste de courses.
 export const SPICES = {
+  // v308 : épices citées dans les étapes mais absentes de la liste
+  W10: 'paprika fumé', W102: 'thym, laurier', W105: 'paprika', W107: 'thym, laurier', W109: 'origan, laurier', W110: 'paprika',
   W01: 'curry en poudre', W04: 'origan', W05: 'cumin, paprika', W06: 'cumin, paprika',
   W07: 'cumin, curcuma, gingembre en poudre, cannelle', W08: 'paprika fumé, piment', W09: 'cumin, paprika, origan',
   W11: 'paprika fumé, piment', W12: 'curry en poudre', W13: 'piment', W14: 'curry en poudre, paprika, cumin, curcuma',
@@ -411,7 +415,7 @@ export const SPICES = {
   W58: 'paprika, cumin, origan, ail en poudre', W60: 'paprika', W61: 'paprika', W62: 'origan, piment', W64: 'herbes de Provence',
   W65: 'paprika', W66: 'cumin, paprika fumé', W67: 'cumin, origan', W68: 'garam masala, cumin, curcuma, piment',
   W69: 'cumin, paprika, cannelle, gingembre en poudre', W70: 'cumin, paprika, cannelle, curcuma', W71: 'cumin, paprika fumé, piment',
-  W72: 'garam masala, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
+  W72: 'garam masala, curry en poudre, curcuma', W73: 'paprika fumé, cumin, ail en poudre', W74: 'ail en poudre', W75: 'piment',
   B02: 'cannelle', B16: 'cannelle', K12: 'piment',
   W76: 'curcuma, paprika', W77: 'curcuma', W78: 'cumin, paprika, coriandre moulue', W79: 'cumin, gingembre en poudre, paprika fumé',
   W95: 'thym', W97: 'muscade', W98: 'paprika, poivre concassé', W101: 'thym',
