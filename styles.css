@@ -2053,3 +2053,6 @@ button.wl-ch:disabled { cursor: default; }
 .sw-mode { margin: 4px 0 8px; }
 .sw-count { margin: 2px 2px 8px; font-size: 13px; color: var(--text-2, #5A6B60); }
 .sw-count:empty { display: none; }
+
+/* v310 : fiche ouverte depuis Cuisiner : toute la semaine ou 1 portion */
+.rd-scale { margin: 0 0 14px; }

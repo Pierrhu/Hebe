@@ -55,7 +55,20 @@ const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points=
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
 
 // item (facultatif) : la portion prévue dans la semaine → quantités et calories de cette portion-là (v195)
-export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
+// v310 : depuis Cuisiner, `week` = { portions, tot } (quantités de toute la session) : la fiche s'ouvre pour toutes
+// les portions de la semaine, avec un bouton pour revenir à une portion (Pierre : « avoir la recette pour toutes
+// les portions de la semaine »).
+// « 100 ml d'eau par portion » → « 400 ml d'eau (100 ml par portion) » pour toutes les portions
+function weekText(t, n) {
+  if (n <= 1) return t;
+  return t.replace(/(\d+(?:,\d+)?) (ml|g|cuillères? à soupe|cuillères? à café)((?: [^.,;:()]*?)?) par portion/g, (all, q, u, rest) => {
+    const v = parseFloat(q.replace(',', '.')), tot = Math.round(v * n * 10) / 10;
+    const unit = /^cuill/.test(u) ? (tot > 1 ? u.replace(/^cuillère /, 'cuillères ') : u.replace(/^cuillères /, 'cuillère ')) : u;
+    return `${String(tot).replace('.', ',')} ${unit}${rest} (${q} ${u.replace(/^cuillères /, v > 1 ? 'cuillères ' : 'cuillère ')} par portion)`;
+  });
+}
+export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, week = null) {
+  let weekMode = !!(week && week.portions > 1);
   const app = document.getElementById('app');
   app.querySelector('.view')?.remove();
 
@@ -105,7 +118,8 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
     // v195 : toujours ce que tu manges vraiment (portion de la semaine, sinon calculée pour toi)
     const pf = item && item.id === recipe.id ? { item, date: null, given: true } : portionFor(recipe.id);
     if (pf) item = pf.item;
-    const mine = !!(item && item.id === recipe.id);
+    const mine = !weekMode && !!(item && item.id === recipe.id);
+    const W = weekMode ? week.portions : 1;
     const qs = mine ? itemQuantities(item) : null;
     const m = mine ? (mm => ({ kcal: Math.round(mm.kcal), protein: Math.round(mm.protein), carbs: Math.round(mm.carbs), fat: Math.round(mm.fat) }))(itemMacros(item)) : scaledMacros(recipe, 1);
     const kcalM = m.protein * 4 + m.carbs * 4 + m.fat * 9 || 1;
@@ -133,7 +147,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
         ${wantBtn()}
 
         <div class="rd-nutri">
-          <div class="rd-kcal"><b>${m.kcal}</b><span>kcal</span></div>
+          <div class="rd-kcal"><b>${m.kcal}</b><span>${weekMode ? 'kcal / portion' : 'kcal'}</span></div>
           <div class="rd-macros">
             <div class="rd-m p"><b>${m.protein} g</b><span>Protéines</span><i style="--w:${bar(m.protein * 4)}%"></i></div>
             <div class="rd-m c"><b>${m.carbs} g</b><span>Glucides</span><i style="--w:${bar(m.carbs * 4)}%"></i></div>
@@ -143,12 +157,16 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
         ${stapleBlock(recipe)}
 
         <section class="rd-sec">
-          <div class="rd-sec-hd"><h2>Ingrédients</h2><span class="rd-raw">${mine ? (pf?.date ? `ta portion de ${new Date(pf.date + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long' })} · poids crus` : 'ta portion · poids crus') : 'poids crus · 1 portion'}</span></div>
+          ${week && week.portions > 1 ? `<div class="hb-seg rd-scale" role="radiogroup" aria-label="Quantités">
+            <button class="hb-seg-btn ${weekMode ? 'on' : ''}" data-scale="week" role="radio" aria-checked="${weekMode}">Semaine · ${week.portions} portions</button>
+            <button class="hb-seg-btn ${weekMode ? '' : 'on'}" data-scale="one" role="radio" aria-checked="${!weekMode}">1 portion</button>
+          </div>` : ''}
+          <div class="rd-sec-hd"><h2>Ingrédients</h2><span class="rd-raw">${weekMode ? `${week.portions} portions · poids crus` : mine ? (pf?.date ? `ta portion de ${new Date(pf.date + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long' })} · poids crus` : 'ta portion · poids crus') : 'poids crus · 1 portion'}</span></div>
           <div class="rd-ings">
-            ${recipe.ingredients.map((ing, k) => mine && !(qs[k] > 0) ? '' : `
+            ${recipe.ingredients.map((ing, k) => (mine && !(qs[k] > 0)) || (weekMode && !(week.tot[k] > 0)) ? '' : `
               <div class="rd-ing ${ing.extra ? 'extra' : ''}">
-                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spiceList(recipe.id, 1).split(", ").join("<br>")}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
-                <span class="rd-ing-qty">${ing.key === 'epices' && spicesOf(recipe.id) ? '' : qtyShort(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
+                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spiceList(recipe.id, W).split(", ").join("<br>")}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
+                <span class="rd-ing-qty">${ing.key === 'epices' && spicesOf(recipe.id) ? '' : qtyShort(ing.key, weekMode ? week.tot[k] : mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
                 ${ing.extra ? `<button class="rd-rm" data-rm="${ing.key}" aria-label="Retirer ${ing.name}">×</button>` : ''}
               </div>`).join('')}
           </div>
@@ -158,7 +176,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
         <section class="rd-sec">
           <div class="rd-sec-hd"><h2>Préparation</h2></div>
           <ol class="rd-steps">
-            ${recipe.steps.map((st, i) => `<li><span class="rd-num">${i + 1}</span><p>${fillSpices(st, recipe.id, 1)}</p></li>`).join('')}
+            ${recipe.steps.map((st, i) => `<li><span class="rd-num">${i + 1}</span><p>${weekText(fillSpices(st, recipe.id, W), W)}</p></li>`).join('')}
           </ol>
         </section>
 
@@ -167,6 +185,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
     `;
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
+    view.querySelectorAll('[data-scale]').forEach(b => b.addEventListener('click', () => { weekMode = b.dataset.scale === 'week'; render(); }));
     view.querySelector('[data-want]')?.addEventListener('click', openWant);
     view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {
       setDishStaple(recipe.id, b.dataset.staple); applyEquipment(); applyDiet();

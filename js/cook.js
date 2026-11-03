@@ -490,6 +490,8 @@ export function renderCook() {
   }));
   view.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', e => {
     e.preventDefault();
-    renderRecipeDetail(getById(b.dataset.rid), 'cook');
+    // v310 : la recette pour toutes les portions de la session (bouton « 1 portion » sur la fiche)
+    const x = [...list, ...batchExtras].find(y => y.r.id === b.dataset.rid);
+    renderRecipeDetail(getById(b.dataset.rid), 'cook', null, x ? { portions: x.portions, tot: x.tot } : null);
   }));
 }
