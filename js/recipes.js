@@ -1,7 +1,7 @@
 import { dietOk } from './diet.js';
 import { state, setState } from './state.js';
 import { getActiveMember } from '../data/household.js';
-import { RECIPES, proteinFamily, hasWhey, soupHidden } from '../data/recipes.js';
+import { RECIPES, proteinFamily, hasWhey } from '../data/recipes.js';
 import { dishThumb, dishThumbRated } from '../data/photos.js';
 import { getRating } from '../data/prefs.js';
 import { el }              from './utils.js';
@@ -15,6 +15,7 @@ const FILTERS = [
   { key: 'breakfast', label: 'Petits-déjeuners' },
   { key: 'sweet',  label: 'Collations'  },
   { key: 'side',   label: 'Compléments' },
+  { key: 'soupe',  label: 'Soupes' },
   { key: 'automne', label: 'Automne' },
 ];
 
@@ -78,10 +79,12 @@ export function renderRecipes() {
     const noWhey = getActiveMember().whey === false;
     const filtered = RECIPES.filter(r => {
       // ni accompagnements retirés, ni repas libres ou cantine, et une seule version de chaque recette (avec ou sans whey)
-      if (r.retired || r.category === 'extra' || soupHidden(r) || (r.tags || []).includes('cantine')) return false;
+      // v313 : les soupes restent visibles dans les recettes même quand le foyer ne les reçoit pas dans ses semaines
+      // (Pierre : « il n'y a plus les soupes ? »), avec leur filtre « Soupes »
+      if (r.retired || r.category === 'extra' || (r.tags || []).includes('cantine')) return false;
       if (noWhey ? hasWhey(r) : (r.tags || []).includes('sans-whey')) return false;
       if (!dietOk(r, getActiveMember().lactose || 0, getActiveMember().gluten || 0)) return false;
-      const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || (cat === 'automne' && (r.tags || []).includes('automne')) || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
+      const matchCat = !(r.tags || []).includes('imprevu') && (cat === 'all' || (cat === 'automne' && (r.tags || []).includes('automne')) || (cat === 'soupe' && (r.tags || []).includes('soupe')) || r.category === cat || (cat === 'main' && (r.category === 'dinner' || r.category === 'lunch') && !(r.tags || []).includes('cantine')));
       const matchProt = prot === 'all' || recipeProtein(r) === prot;
       const sweet = (r.tags || []).includes('sucré');
       const taste = state.filterTaste || 'all';
