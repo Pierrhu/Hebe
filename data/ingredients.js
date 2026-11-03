@@ -730,6 +730,16 @@ export function spiceList(id, factor = 1, { withSalt = false } = {}) {
   const q = spiceRow(id); if (!q) return spicesOf(id);
   return Object.entries(q).filter(([k]) => withSalt || (k !== 'sel' && k !== 'poivre')).map(([k, v]) => spiceQtyText(k, v, factor)).join(', ');
 }
+// « 100 ml d'eau par portion » → « 400 ml d'eau (100 ml par portion) » pour toutes les portions
+export function weekText(t, n) {
+  if (n <= 1) return t;
+  return t.replace(/(\d+(?:,\d+)?) (ml|g|cuillères? à soupe|cuillères? à café)((?: [^.,;:()]*?)?) par portion/g, (all, q, u, rest) => {
+    const v = parseFloat(q.replace(',', '.')), tot = Math.round(v * n * 10) / 10;
+    const unit = /^cuill/.test(u) ? (tot > 1 ? u.replace(/^cuillère /, 'cuillères ') : u.replace(/^cuillères /, 'cuillère ')) : u;
+    const big = (u === 'ml' || u === 'g') && tot >= 1000, shown = big ? `${String(Math.round(tot / 100) / 10).replace('.', ',')} ${u === 'ml' ? 'L' : 'kg'}` : `${String(tot).replace('.', ',')} ${unit}`;
+    return `${shown}${rest} (${q} ${u.replace(/^cuillères /, v > 1 ? 'cuillères ' : 'cuillère ')} par portion)`;
+  });
+}
 // Remplace les repères [[épice]] d'une étape par la quantité pour `factor` portions
 export function fillSpices(text, id, factor = 1) {
   if (!text || text.indexOf('[[') < 0) return text;

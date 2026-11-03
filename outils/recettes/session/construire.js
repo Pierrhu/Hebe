@@ -15,6 +15,9 @@ if (fs.existsSync(EP)) JSON.parse(fs.readFileSync(EP, 'utf8')).forEach(o => {
   if (!all[o.id] || !o.session) return;
   Object.entries(o.session).forEach(([i, t]) => { if (all[o.id].steps[+i]) all[o.id].steps[+i].text = t; });
 });
+// v310 : quantités écrites pour une portion : « par portion » (multipliées dans la session)
+const PER_PORTION = { W20: ['15 ml de sauce soja'], W49: ["5 ml d'huile"], W50: ["5 ml d'huile"], W65: ["5 ml d'huile"], W66: ["5 ml d'huile"], W35: ['30 g de yaourt grec'], W43: ['30 g de yaourt'] };
+Object.entries(PER_PORTION).forEach(([id, qs]) => all[id] && all[id].steps.forEach(s => qs.forEach(q => { if (s.text.includes(q) && !s.text.includes(q + ' par portion')) s.text = s.text.replace(q, q + ' par portion'); })));
 const out = `// sessionSteps.js — GÉNÉRÉ par outils/recettes/session/construire.js, ne pas modifier à la main.\n` +
   `// Pour chaque recette cuisinée pendant la session : ses découpes (cuts : ingrédient, verbe, forme) et ses étapes\n` +
   `// (steps : texte, prep/cook, appareil, minutes de gestes, minutes où ça cuit tout seul, dépendances).\n` +

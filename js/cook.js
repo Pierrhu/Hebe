@@ -4,7 +4,7 @@
 
 import { getEntry, getTodayDate } from '../data/log.js';
 import { getById } from '../data/recipes.js';
-import { INGREDIENTS, humanQty, qtyShort, qtyWithName, NATURAL_UNITS, spicesOf, spiceList, fillSpices } from '../data/ingredients.js';
+import { INGREDIENTS, humanQty, qtyShort, qtyWithName, NATURAL_UNITS, spicesOf, spiceList, fillSpices, weekText } from '../data/ingredients.js';
 const NATURAL_UNITS_KEYS = Object.keys(NATURAL_UNITS);
 import { el } from './utils.js';
 import { getActivePlan, planMembers, FRESH_ONLY, sessionDate, sessionWhen } from './weekgen.js';
@@ -161,7 +161,7 @@ function buildPhases(list, extras = []) {
   });
   // v309 : quantités d'épices de la session (repères [[épice]]) : celles de toutes les portions du plat
   const portionsOf = new Map([...list, ...extras].map(x => [x.r, x.portions || 1]));
-  const phases = built.phases.map(ph => ({ ...ph, steps: ph.steps.map(st => ({ text: st.chain && st.chain !== 'riz' ? fillSpices(st.text, st.chain.r.id, portionsOf.get(st.chain.r) || 1) : st.text, r: st.chain && st.chain !== 'riz' ? st.chain.r : null, bg: st.bg || '',
+  const phases = built.phases.map(ph => ({ ...ph, steps: ph.steps.map(st => ({ text: st.chain && st.chain !== 'riz' ? weekText(fillSpices(st.text, st.chain.r.id, portionsOf.get(st.chain.r) || 1), portionsOf.get(st.chain.r) || 1) : st.text, r: st.chain && st.chain !== 'riz' ? st.chain.r : null, bg: st.bg || '',
     chainKind: st.kind === 'wait' ? 'wait' : st.chain === 'riz' ? 'rice' : st.kind === 'cut' ? 'cut' : 'dish' })) }));
   const sched = { total: built.total };
   const fillAll = (r, sts) => sts.map(t => fillSpices(t, r.id, portionsOf.get(r) || 1));

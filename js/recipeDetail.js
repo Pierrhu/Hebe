@@ -1,5 +1,5 @@
 import { artFor } from '../data/photos.js';
-import { spicesOf, spiceList, fillSpices } from '../data/ingredients.js';
+import { spicesOf, spiceList, fillSpices, weekText } from '../data/ingredients.js';
 import { proteinFamily, getExtras, setExtras, getById } from '../data/recipes.js';
 import { rebalanceAfterRecipeChange, portionFor, getActivePlan, getWishes, addWish, removeWish, freeChoices, replaceDish, sessionDate } from './weekgen.js';
 import { getTodayDate } from '../data/log.js';
@@ -58,15 +58,6 @@ const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" 
 // v310 : depuis Cuisiner, `week` = { portions, tot } (quantités de toute la session) : la fiche s'ouvre pour toutes
 // les portions de la semaine, avec un bouton pour revenir à une portion (Pierre : « avoir la recette pour toutes
 // les portions de la semaine »).
-// « 100 ml d'eau par portion » → « 400 ml d'eau (100 ml par portion) » pour toutes les portions
-function weekText(t, n) {
-  if (n <= 1) return t;
-  return t.replace(/(\d+(?:,\d+)?) (ml|g|cuillères? à soupe|cuillères? à café)((?: [^.,;:()]*?)?) par portion/g, (all, q, u, rest) => {
-    const v = parseFloat(q.replace(',', '.')), tot = Math.round(v * n * 10) / 10;
-    const unit = /^cuill/.test(u) ? (tot > 1 ? u.replace(/^cuillère /, 'cuillères ') : u.replace(/^cuillères /, 'cuillère ')) : u;
-    return `${String(tot).replace('.', ',')} ${unit}${rest} (${q} ${u.replace(/^cuillères /, v > 1 ? 'cuillères ' : 'cuillère ')} par portion)`;
-  });
-}
 export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, week = null) {
   let weekMode = !!(week && week.portions > 1);
   const app = document.getElementById('app');
@@ -121,7 +112,9 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, we
     const mine = !weekMode && !!(item && item.id === recipe.id);
     const W = weekMode ? week.portions : 1;
     const qs = mine ? itemQuantities(item) : null;
-    const m = mine ? (mm => ({ kcal: Math.round(mm.kcal), protein: Math.round(mm.protein), carbs: Math.round(mm.carbs), fat: Math.round(mm.fat) }))(itemMacros(item)) : scaledMacros(recipe, 1);
+    // v310 : en mode semaine, la moyenne par portion des quantités de la session
+    const avg = weekMode ? recipe.ingredients.reduce((a, g, k) => { const x = ingMacros(g.key, week.tot[k] || 0); return { kcal: a.kcal + x.kcal, protein: a.protein + x.protein, carbs: a.carbs + x.carbs, fat: a.fat + x.fat }; }, { kcal: 0, protein: 0, carbs: 0, fat: 0 }) : null;
+    const m = avg ? { kcal: Math.round(avg.kcal / W), protein: Math.round(avg.protein / W), carbs: Math.round(avg.carbs / W), fat: Math.round(avg.fat / W) } : mine ? (mm => ({ kcal: Math.round(mm.kcal), protein: Math.round(mm.protein), carbs: Math.round(mm.carbs), fat: Math.round(mm.fat) }))(itemMacros(item)) : scaledMacros(recipe, 1);
     const kcalM = m.protein * 4 + m.carbs * 4 + m.fat * 9 || 1;
     const bar = v => Math.round(v / kcalM * 100);
     const photo = photoUrl(recipe.photo || recipe.id);

@@ -1355,6 +1355,9 @@ RECIPES.forEach(r => {
   const k = r.ingredients.findIndex(i => i.key === 'epices');
   if (k >= 0) r.ingredients[k] = row; else r.ingredients.push(row);
 });
+// v310 : quantités écrites pour une portion dans le texte : « par portion », pour que la fiche « Semaine » les multiplie
+const PER_PORTION = { W20: ['15 ml de sauce soja'], W49: ["5 ml d'huile"], W50: ["5 ml d'huile"], W65: ["5 ml d'huile"], W66: ["5 ml d'huile"], W35: ['30 g de yaourt grec'], W43: ['30 g de yaourt'] };
+RECIPES.forEach(r => (PER_PORTION[r.id] || []).forEach(q => { r.steps = r.steps.map(t => t.includes(q) && !t.includes(q + ' par portion') ? t.replace(q, q + ' par portion') : t); }));
 // Riz complet : 20 minutes sous pression au lieu de 5
 RECIPES.forEach(r => { if (['lunch', 'dinner'].includes(r.category) && r.ingredients.some(i => i.key === 'riz')) r.cookTime += 15; });
 
