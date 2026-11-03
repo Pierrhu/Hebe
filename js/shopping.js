@@ -88,7 +88,7 @@ const SHOP_RAYON = {
   pates_riz: 'riz pates riz_blanc pates_classiques nouilles_riz boulghour quinoa semoule lentilles_corail lentilles_vertes orzo nouilles_oeufs pates_sg pois_casses riz_risotto polenta',
   sauces: 'soja moutarde ketchup mayo_allegee sauce_chili sriracha nuoc_mam vinaigre_riz vinaigre_cidre pesto oignons_frits',
   farine: 'farine chapelure panko levure fecule cacao chocolat coco_rapee',
-  cremerie: 'oeuf fromage_blanc skyr yaourt_grec cottage lait creme beurre yaourt_sl boisson_avoine',
+  cremerie: 'oeuf fromage_blanc skyr yaourt_grec cottage lait creme beurre yaourt_sl boisson_avoine creme_soja creme_riz',
   fromages: 'parmesan emmental feta cheddar carre_frais fromage_frais maroilles boursin gorgonzola mozzarella',
   surgeles: 'poisson_blanc brocoli haricots_verts epinards chou_fleur petits_pois legumes_mix fruits_rouges mangue',
   boissons: 'biere',

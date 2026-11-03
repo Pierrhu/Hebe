@@ -201,6 +201,9 @@ const RAW = {
   // ── Sans lactose (v155)
   yaourt_sl:     ['Yaourt nature sans lactose', 'g',     62,  3.8,  4.5, 3,   'dairy', 4.5, 'L', { lv: 'S', min: 100, max: 250, pack: 500 }],
   boisson_avoine:['Boisson à l\'avoine',         'ml',    41,  0.2,    7.8,   1.1, 'dairy', 1.6, 'L', { pack: 1000 }],
+  // v314 : crèmes végétales pour cuisiner (sans lactose), hors Ciqual : valeurs moyennes d'étiquette
+  creme_soja:    ['Crème de soja cuisine',      'ml',    176, 2.6,  4.2,   16.8,  'fat', 3,    'L', { lv: 'P', min: 15, max: 50, pack: 200 }],
+  creme_riz:     ['Crème de riz cuisine',       'ml',    132, 0.3,  6,     12,    'fat', 3.5,  'L', { lv: 'P', min: 15, max: 50, pack: 200 }],
   creme_coco:    ['Crème de coco',              'ml',    199, 1.9,    4.3,   19.2,  'fat', 5,    'L', { lv: 'P', min: 15, max: 50, pack: 200 }],
   // ── Sans gluten (v156)
   pates_sg:      ['Pâtes sans gluten',          'g',     358, 6.1,    79,  1.5, 'carb', 4.0,  'S', { cook: 2.3, lv: 'P', min: 60, max: 180, minP: 100, pack: 500 }],

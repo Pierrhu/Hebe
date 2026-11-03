@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-11-03T16:54:41.156Z
+// 2026-11-03T17:03:50.670Z
 
 
 // ──────────────────────────────────────────────
@@ -233,6 +233,9 @@ const RAW = {
   // ── Sans lactose (v155)
   yaourt_sl:     ['Yaourt nature sans lactose', 'g',     62,  3.8,  4.5, 3,   'dairy', 4.5, 'L', { lv: 'S', min: 100, max: 250, pack: 500 }],
   boisson_avoine:['Boisson à l\'avoine',         'ml',    41,  0.2,    7.8,   1.1, 'dairy', 1.6, 'L', { pack: 1000 }],
+  // v314 : crèmes végétales pour cuisiner (sans lactose), hors Ciqual : valeurs moyennes d'étiquette
+  creme_soja:    ['Crème de soja cuisine',      'ml',    176, 2.6,  4.2,   16.8,  'fat', 3,    'L', { lv: 'P', min: 15, max: 50, pack: 200 }],
+  creme_riz:     ['Crème de riz cuisine',       'ml',    132, 0.3,  6,     12,    'fat', 3.5,  'L', { lv: 'P', min: 15, max: 50, pack: 200 }],
   creme_coco:    ['Crème de coco',              'ml',    199, 1.9,    4.3,   19.2,  'fat', 5,    'L', { lv: 'P', min: 15, max: 50, pack: 200 }],
   // ── Sans gluten (v156)
   pates_sg:      ['Pâtes sans gluten',          'g',     358, 6.1,    79,  1.5, 'carb', 4.0,  'S', { cook: 2.3, lv: 'P', min: 60, max: 180, minP: 100, pack: 500 }],
@@ -3404,12 +3407,24 @@ function applyStaples() {
 // Pour toute personne qui a coché « Intolérance » ou « Strict » :
 // - les recettes au fromage blanc, au fromage frais, au carré frais ou à la whey sont écartées pour elle ;
 // - dans les recettes restantes : yaourt grec → yaourt sans lactose, lait → boisson à l'avoine,
-//   crème → crème de coco ; en « Strict », cheddar et feta → emmental (parmesan et emmental, affinés, sont gardés).
+//   crème → crème de soja, de riz ou de coco selon le plat (v314) ; en « Strict », cheddar et feta → emmental (parmesan et emmental, affinés, sont gardés).
 // Les plats étant communs au foyer, les remplacements suivent le niveau le plus strict du foyer.
 
 const LACTOSE_OUT = ['fromage_blanc', 'fromage_frais', 'carre_frais', 'whey', 'cottage', 'boursin', 'mozzarella'];
 const SUB1 = { yaourt_grec: 'yaourt_sl', lait: 'boisson_avoine', creme: 'creme_coco', beurre: 'huile' };
 const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental' };
+// v314 : la crème ne devient plus toujours de la crème de coco (Pierre : « varier avec crème de riz ou de soja en
+// fonction ») : coco pour les currys et la cuisine indienne ou asiatique, riz (douce, légère) pour les sauces
+// blanches, risottos, veloutés et plats aux champignons, soja (tient à la cuisson) pour le reste.
+const CREME_COCO_TAGS = ['indien', 'thaï', 'thai', 'vietnamien', 'sri-lankais', 'malaisien', 'indonésien'];
+const CREME_RIZ = ['W63', 'W85', 'W94', 'W95', 'W102', 'W106', 'W110', 'SO08'];
+const CREME_NAME = { creme_coco: 'crème de coco', creme_soja: 'crème de soja', creme_riz: 'crème de riz' };
+function cremeFor(r) {
+  const id = r?.wheyOf || r?.id;
+  if ((r?.tags || []).some(t => CREME_COCO_TAGS.includes(t)) || (r?.ingredients || []).some(i => ['pate_curry', 'lait_coco'].includes(i.key))) return 'creme_coco';
+  if (CREME_RIZ.includes(id)) return 'creme_riz';
+  return 'creme_soja';
+}
 
 // Gluten : « Sensibilité » (1) ou « Strict » (2)
 const GLUTEN_OUT1 = ['chapelure', 'gnocchis', 'boudoirs', 'pain_epices', 'biere', 'orzo'];                // écartées dans les deux niveaux
@@ -3438,7 +3453,7 @@ function retext(t, sub) {
     .replace(/\bdu lait\b(?! de coco)/g, "de la boisson à l'avoine")
     .replace(/\bet lait\b(?! de coco)/g, "et boisson à l'avoine")
     .replace(/, lait\b(?! de coco)/g, ", boisson à l'avoine");
-  if (sub.creme) t = t.replace(/crème fraîche/g, 'crème de coco').replace(/\bla crème\b(?! de coco)/g, 'la crème de coco');
+  if (sub.creme) { const n = CREME_NAME[sub.creme] || 'crème de coco'; t = t.replace(/crème fraîche/g, n).replace(/\b([Ll])a crème\b(?! de (coco|soja|riz))/g, (m, l) => `${l}a ${n}`).replace(/\bde crème\b(?! de (coco|soja|riz))/g, `de ${n}`); }
   if (sub.cheddar) t = t.replace(/la tranche de cheddar/g, "l'emmental").replace(/cheddar/g, 'emmental');
   if (sub.feta) t = t.replace(/la feta émiettée/g, "l'emmental râpé").replace(/\bfeta\b/g, 'emmental');
   return t;
@@ -3503,6 +3518,7 @@ function applyDiet() {
     r.gluOut1 = b.ings.some(i => GLUTEN_OUT1.includes(i.key));
     r.gluOut2 = r.gluOut1 || b.ings.some(i => GLUTEN_OUT2.includes(i.key));
     const lused = Object.fromEntries(Object.entries(lsub).filter(([k]) => has(k)));
+    if (lused.creme) lused.creme = cremeFor(r);
     const gused = Object.fromEntries(Object.entries(gsub).filter(([k]) => has(k)));
     if (G >= 1) GDROP.forEach(k => { if (has(k)) gused[k] = null; });
     if (!Object.keys(lused).length && !Object.keys(gused).length) { r.ingredients = b.ings.map(i => ({ ...i })); r.name = b.name; r.macros = { ...b.macros }; return; }
@@ -4385,7 +4401,7 @@ const STARCH_MAX = 3;
 const FITS = new Map(); // plat × assiette → peut remplir l'assiette (voir generateWeekOnce)
 // v191 : produits vendus en gros paquet pour de petites quantités (lait de coco, feta…) : si la semaine en contient,
 // les autres plats, collations et petits-déjeuners qui les utilisent sont favorisés, pour finir le paquet
-const SHARE_KEYS = ['lait_coco', 'creme_coco', 'feta', 'fromage_frais', 'carre_frais', 'creme', 'houmous', 'cottage', 'avocat',
+const SHARE_KEYS = ['lait_coco', 'creme_coco', 'creme_soja', 'creme_riz', 'feta', 'fromage_frais', 'carre_frais', 'creme', 'houmous', 'cottage', 'avocat',
   'tortilla', 'pita', 'pain_burger', 'jambon_blanc', 'poulet_tranches', 'fromage_blanc', 'yaourt_grec'];
 const SHARE_BONUS = 3;
 const recipeKeysOf = r => (r?.ingredients || []).map(i => i.key);
@@ -4640,7 +4656,7 @@ function weekUseOf(dates, getE, e) {
 // v299 : durée visée pour la session du dimanche (minutes simulées, hors mise en boîtes)
 const SESSION_MAX = 120;
 const FRESH_KEYS = ['poulet', 'poulet_hache', 'boeuf', 'saumon', 'haut_cuisse', 'boeuf_emince', 'tofu', 'poulet_tranches', 'jambon_blanc',
-  'fromage_blanc', 'yaourt_grec', 'yaourt_sl', 'cottage', 'fromage_frais', 'carre_frais', 'feta', 'creme', 'creme_coco', 'houmous', 'lait',
+  'fromage_blanc', 'yaourt_grec', 'yaourt_sl', 'cottage', 'fromage_frais', 'carre_frais', 'feta', 'creme', 'creme_coco', 'creme_soja', 'creme_riz', 'houmous', 'lait',
   'tortilla', 'pita', 'pain_burger', 'baguette', 'pain', 'gnocchis',
   'concombre', 'avocat', 'poivron', 'courgette', 'aubergine', 'salade', 'herbes', 'tomates_cerise', 'champignons', 'chou_chinois',
   'pois_chiches', 'haricots_rouges', 'haricots_blancs', 'tomates_conc', 'lait_coco', 'mais', 'thon'];
@@ -8242,7 +8258,7 @@ const SHOP_RAYON = {
   pates_riz: 'riz pates riz_blanc pates_classiques nouilles_riz boulghour quinoa semoule lentilles_corail lentilles_vertes orzo nouilles_oeufs pates_sg pois_casses riz_risotto polenta',
   sauces: 'soja moutarde ketchup mayo_allegee sauce_chili sriracha nuoc_mam vinaigre_riz vinaigre_cidre pesto oignons_frits',
   farine: 'farine chapelure panko levure fecule cacao chocolat coco_rapee',
-  cremerie: 'oeuf fromage_blanc skyr yaourt_grec cottage lait creme beurre yaourt_sl boisson_avoine',
+  cremerie: 'oeuf fromage_blanc skyr yaourt_grec cottage lait creme beurre yaourt_sl boisson_avoine creme_soja creme_riz',
   fromages: 'parmesan emmental feta cheddar carre_frais fromage_frais maroilles boursin gorgonzola mozzarella',
   surgeles: 'poisson_blanc brocoli haricots_verts epinards chou_fleur petits_pois legumes_mix fruits_rouges mangue',
   boissons: 'biere',

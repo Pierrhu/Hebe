@@ -2,7 +2,7 @@
 // Pour toute personne qui a coché « Intolérance » ou « Strict » :
 // - les recettes au fromage blanc, au fromage frais, au carré frais ou à la whey sont écartées pour elle ;
 // - dans les recettes restantes : yaourt grec → yaourt sans lactose, lait → boisson à l'avoine,
-//   crème → crème de coco ; en « Strict », cheddar et feta → emmental (parmesan et emmental, affinés, sont gardés).
+//   crème → crème de soja, de riz ou de coco selon le plat (v314) ; en « Strict », cheddar et feta → emmental (parmesan et emmental, affinés, sont gardés).
 // Les plats étant communs au foyer, les remplacements suivent le niveau le plus strict du foyer.
 import { RECIPES } from '../data/recipes.js';
 import { INGREDIENTS, ingMacros } from '../data/ingredients.js';
@@ -13,6 +13,18 @@ import { applyStaples } from './staples.js';
 export const LACTOSE_OUT = ['fromage_blanc', 'fromage_frais', 'carre_frais', 'whey', 'cottage', 'boursin', 'mozzarella'];
 const SUB1 = { yaourt_grec: 'yaourt_sl', lait: 'boisson_avoine', creme: 'creme_coco', beurre: 'huile' };
 const SUB2 = { ...SUB1, cheddar: 'emmental', feta: 'emmental' };
+// v314 : la crème ne devient plus toujours de la crème de coco (Pierre : « varier avec crème de riz ou de soja en
+// fonction ») : coco pour les currys et la cuisine indienne ou asiatique, riz (douce, légère) pour les sauces
+// blanches, risottos, veloutés et plats aux champignons, soja (tient à la cuisson) pour le reste.
+const CREME_COCO_TAGS = ['indien', 'thaï', 'thai', 'vietnamien', 'sri-lankais', 'malaisien', 'indonésien'];
+const CREME_RIZ = ['W63', 'W85', 'W94', 'W95', 'W102', 'W106', 'W110', 'SO08'];
+const CREME_NAME = { creme_coco: 'crème de coco', creme_soja: 'crème de soja', creme_riz: 'crème de riz' };
+export function cremeFor(r) {
+  const id = r?.wheyOf || r?.id;
+  if ((r?.tags || []).some(t => CREME_COCO_TAGS.includes(t)) || (r?.ingredients || []).some(i => ['pate_curry', 'lait_coco'].includes(i.key))) return 'creme_coco';
+  if (CREME_RIZ.includes(id)) return 'creme_riz';
+  return 'creme_soja';
+}
 
 // Gluten : « Sensibilité » (1) ou « Strict » (2)
 export const GLUTEN_OUT1 = ['chapelure', 'gnocchis', 'boudoirs', 'pain_epices', 'biere', 'orzo'];                // écartées dans les deux niveaux
@@ -41,7 +53,7 @@ function retext(t, sub) {
     .replace(/\bdu lait\b(?! de coco)/g, "de la boisson à l'avoine")
     .replace(/\bet lait\b(?! de coco)/g, "et boisson à l'avoine")
     .replace(/, lait\b(?! de coco)/g, ", boisson à l'avoine");
-  if (sub.creme) t = t.replace(/crème fraîche/g, 'crème de coco').replace(/\bla crème\b(?! de coco)/g, 'la crème de coco');
+  if (sub.creme) { const n = CREME_NAME[sub.creme] || 'crème de coco'; t = t.replace(/crème fraîche/g, n).replace(/\b([Ll])a crème\b(?! de (coco|soja|riz))/g, (m, l) => `${l}a ${n}`).replace(/\bde crème\b(?! de (coco|soja|riz))/g, `de ${n}`); }
   if (sub.cheddar) t = t.replace(/la tranche de cheddar/g, "l'emmental").replace(/cheddar/g, 'emmental');
   if (sub.feta) t = t.replace(/la feta émiettée/g, "l'emmental râpé").replace(/\bfeta\b/g, 'emmental');
   return t;
@@ -106,6 +118,7 @@ export function applyDiet() {
     r.gluOut1 = b.ings.some(i => GLUTEN_OUT1.includes(i.key));
     r.gluOut2 = r.gluOut1 || b.ings.some(i => GLUTEN_OUT2.includes(i.key));
     const lused = Object.fromEntries(Object.entries(lsub).filter(([k]) => has(k)));
+    if (lused.creme) lused.creme = cremeFor(r);
     const gused = Object.fromEntries(Object.entries(gsub).filter(([k]) => has(k)));
     if (G >= 1) GDROP.forEach(k => { if (has(k)) gused[k] = null; });
     if (!Object.keys(lused).length && !Object.keys(gused).length) { r.ingredients = b.ings.map(i => ({ ...i })); r.name = b.name; r.macros = { ...b.macros }; return; }

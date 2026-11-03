@@ -101,7 +101,7 @@ const STARCH_MAX = 3;
 const FITS = new Map(); // plat × assiette → peut remplir l'assiette (voir generateWeekOnce)
 // v191 : produits vendus en gros paquet pour de petites quantités (lait de coco, feta…) : si la semaine en contient,
 // les autres plats, collations et petits-déjeuners qui les utilisent sont favorisés, pour finir le paquet
-export const SHARE_KEYS = ['lait_coco', 'creme_coco', 'feta', 'fromage_frais', 'carre_frais', 'creme', 'houmous', 'cottage', 'avocat',
+export const SHARE_KEYS = ['lait_coco', 'creme_coco', 'creme_soja', 'creme_riz', 'feta', 'fromage_frais', 'carre_frais', 'creme', 'houmous', 'cottage', 'avocat',
   'tortilla', 'pita', 'pain_burger', 'jambon_blanc', 'poulet_tranches', 'fromage_blanc', 'yaourt_grec'];
 const SHARE_BONUS = 3;
 const recipeKeysOf = r => (r?.ingredients || []).map(i => i.key);
@@ -356,7 +356,7 @@ function weekUseOf(dates, getE, e) {
 // v299 : durée visée pour la session du dimanche (minutes simulées, hors mise en boîtes)
 export const SESSION_MAX = 120;
 export const FRESH_KEYS = ['poulet', 'poulet_hache', 'boeuf', 'saumon', 'haut_cuisse', 'boeuf_emince', 'tofu', 'poulet_tranches', 'jambon_blanc',
-  'fromage_blanc', 'yaourt_grec', 'yaourt_sl', 'cottage', 'fromage_frais', 'carre_frais', 'feta', 'creme', 'creme_coco', 'houmous', 'lait',
+  'fromage_blanc', 'yaourt_grec', 'yaourt_sl', 'cottage', 'fromage_frais', 'carre_frais', 'feta', 'creme', 'creme_coco', 'creme_soja', 'creme_riz', 'houmous', 'lait',
   'tortilla', 'pita', 'pain_burger', 'baguette', 'pain', 'gnocchis',
   'concombre', 'avocat', 'poivron', 'courgette', 'aubergine', 'salade', 'herbes', 'tomates_cerise', 'champignons', 'chou_chinois',
   'pois_chiches', 'haricots_rouges', 'haricots_blancs', 'tomates_conc', 'lait_coco', 'mais', 'thon'];
