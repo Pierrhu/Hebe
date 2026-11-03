@@ -147,7 +147,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
           <div class="rd-ings">
             ${recipe.ingredients.map((ing, k) => mine && !(qs[k] > 0) ? '' : `
               <div class="rd-ing ${ing.extra ? 'extra' : ''}">
-                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spiceList(recipe.id, 1)}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
+                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spiceList(recipe.id, 1).split(", ").join("<br>")}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
                 <span class="rd-ing-qty">${ing.key === 'epices' && spicesOf(recipe.id) ? '' : qtyShort(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
                 ${ing.extra ? `<button class="rd-rm" data-rm="${ing.key}" aria-label="Retirer ${ing.name}">×</button>` : ''}
               </div>`).join('')}

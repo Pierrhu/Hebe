@@ -444,7 +444,7 @@ export function renderCook() {
           </button>
           ${(() => {
             const later = mealOnlyKeys(x.r);
-            const row = (g, i) => g.key === 'epices' && spicesOf(x.r.id) ? `<div class="ck-ing ck-ing-sp"><span>${g.name}<small>${spiceList(x.r.id, x.portions)}</small></span><span></span></div>` : `<div class="ck-ing"><span>${g.name}</span><span>${qtyShort(g.key, x.tot[i], g.unit)}</span></div>`;
+            const row = (g, i) => g.key === 'epices' && spicesOf(x.r.id) ? `<div class="ck-ing ck-ing-sp"><span>${g.name}<small>${spiceList(x.r.id, x.portions).split(", ").join("<br>")}</small></span><span></span></div>` : `<div class="ck-ing"><span>${g.name}</span><span>${qtyShort(g.key, x.tot[i], g.unit)}</span></div>`;
             const now = x.r.ingredients.map((g, i) => x.tot[i] > 0 && !later.has(g.key) ? row(g, i) : '').join('');
             const kept = x.r.ingredients.map((g, i) => x.tot[i] > 0 && later.has(g.key) ? row(g, i) : '').join('');
             const mealTxt = x.r.steps.filter(st => /^Au moment de manger : /.test(st)).map(st => cap(fillSpices(st, x.r.id, 1).replace(/^Au moment de manger : /, ''))).join(' ');

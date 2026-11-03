@@ -11,7 +11,7 @@
 // interchangeables midi/soir · sweet (collations) · side (accompagnements) · starter (entrées).
 // batch: true → se cuisine à l'avance et se garde au frigo.
 
-import { INGREDIENTS, ingMacros, ingCost } from './ingredients.js';
+import { INGREDIENTS, ingMacros, ingCost, SPICE_STEPS, spiceGrams, spicesOf } from './ingredients.js';
 
 function M(id, name, category, emoji, prepTime, cookTime, ings, steps, tip, tags, batch, extra = {}) {
   const ingredients = ings.map(([key, qty]) => {
@@ -1343,6 +1343,18 @@ const STEPS = {
 RECIPES.forEach(r => { if (STEPS[r.id]) r.steps = STEPS[r.id]; });
 // v275 : les hauts de cuisse s'achètent avec la peau, on la retire à la préparation
 RECIPES.forEach(r => { if (r.ingredients.some(i => i.key === 'haut_cuisse') && !/peau des hauts de cuisse/.test(r.steps.join(' '))) r.steps = ['Retire la peau des hauts de cuisse avec un couteau bien aiguisé.', ...r.steps]; });
+// v309 : assaisonnement en cuillères à café (data/ingredients.js, SPICE_QTY et SPICE_STEPS) : étapes réécrites
+// avec les repères [[épice]], et l'ingrédient « Épices » pesé d'après les quantités (ajouté s'il manquait)
+RECIPES.forEach(r => {
+  const e = SPICE_STEPS[r.id];
+  if (e) Object.entries(e).forEach(([i, t]) => { if (r.steps[+i] !== undefined) r.steps[+i] = t; });
+  // au moins 0,5 g dès qu'il y a une épice à acheter (vanille, laurier seuls) : elle passe ainsi dans les courses
+  const g = Math.max(Math.round(spiceGrams(r.id) * 2) / 2, spicesOf(r.id) ? 0.5 : 0);
+  if (!g) return;
+  const m = ingMacros('epices', g), row = { key: 'epices', name: INGREDIENTS.epices.name, qty: g, unit: 'g', kcal: +m.kcal.toFixed(1), protein: +m.protein.toFixed(1), carbs: +m.carbs.toFixed(1), fat: +m.fat.toFixed(1) };
+  const k = r.ingredients.findIndex(i => i.key === 'epices');
+  if (k >= 0) r.ingredients[k] = row; else r.ingredients.push(row);
+});
 // Riz complet : 20 minutes sous pression au lieu de 5
 RECIPES.forEach(r => { if (['lunch', 'dinner'].includes(r.category) && r.ingredients.some(i => i.key === 'riz')) r.cookTime += 15; });
 

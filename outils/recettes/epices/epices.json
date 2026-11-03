@@ -1,0 +1,2432 @@
+[
+ {
+  "id": "W01",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "curry en poudre": 1,
+   "cumin": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile. Ajoute l'ail, le gingembre et [[curry en poudre]], avec [[cumin]] et [[piment]], et remue 1 minute pour qu'ils dégagent leur parfum.",
+   "2": "Ajoute le poulet, l'aubergine, le poivron, le lait de coco, la sauce soja, [[sel]] et [[poivre]], puis mélange.",
+   "5": "Mise en boîtes : le riz et le poulet au curry côte à côte. La coriandre, si tu en as, reste à part."
+  },
+  "session": {
+   "1": "Ajoute l'ail, le gingembre et [[curry en poudre]], avec [[cumin]] et [[piment]], et remue 1 minute pour qu'ils dégagent leur parfum.",
+   "2": "Ajoute le poulet, l'aubergine, le poivron, le lait de coco, la sauce soja, [[sel]] et [[poivre]], puis mélange."
+  },
+  "note": "Curry dosé à 1 c. à café, avec un peu de cumin et une pincée de piment pour la profondeur ; sel réduit car la sauce soja sale déjà."
+ },
+ {
+  "id": "W02",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Écrase l'ail. Mélange-le avec la moitié de la sauce soja, la moitié du jus de citron vert, le miel, l'huile, [[sel]] et [[poivre]]. Coupe le poulet en lanières et laisse-le mariner 15 minutes au frigo.",
+   "5": "Prépare la sauce : le reste de la sauce soja et du jus de citron vert, avec 2 cuillères à soupe d'eau et [[piment]]."
+  },
+  "session": {
+   "0": "Mélange l'ail avec la moitié de la sauce soja, la moitié du jus de citron vert, le miel, l'huile, [[sel]] et [[poivre]], ajoute le poulet et laisse-le mariner 15 minutes au frigo.",
+   "2": "Prépare la sauce : le reste de la sauce soja et du jus de citron vert, avec 2 cuillères à soupe d'eau et [[piment]]."
+  },
+  "note": "Plat sans aucune épice : poivre noir et un peu de sel dans la marinade (le riz n'est pas salé), une pincée de piment dans la sauce façon nuoc-chám."
+ },
+ {
+  "id": "W03",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125
+  },
+  "steps": {
+   "1": "Dans la poêle, fais cuire l'oignon 6 minutes à feu moyen avec 100 ml d'eau par portion, la sauce soja, le miel, le vinaigre de cidre, le gingembre et [[poivre]].",
+   "3": "Fais revenir les épinards 4 minutes dans la poêle avec l'huile et [[sel]]."
+  },
+  "session": {
+   "0": "Dans la poêle, fais cuire l'oignon 6 minutes à feu moyen avec 100 ml d'eau par portion, la sauce soja, le miel, le vinaigre de cidre, le gingembre et [[poivre]].",
+   "2": "Fais revenir les épinards 4 minutes dans la poêle avec l'huile et [[sel]]."
+  },
+  "note": "Le bouillon soja-miel suffit à saler le bœuf : juste du poivre dans le jus et une pincée de sel sur les épinards, nature sinon."
+ },
+ {
+  "id": "W04",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "aneth séché": 0.125
+  },
+  "steps": {
+   "0": "Coupe le poulet en cubes de 3 cm. Mélange-le avec le jus de citron, [[origan]], [[sel]], [[poivre]], l'ail écrasé et l'huile, et laisse mariner 15 minutes, ou toute la nuit au frigo.",
+   "2": "Prépare le tzatziki : râpe le concombre, presse-le dans tes mains pour retirer l'eau, puis mélange-le avec le yaourt, une pointe d'ail et [[aneth séché]]."
+  },
+  "session": {
+   "0": "Mélange le poulet avec le jus de citron, [[origan]], [[sel]], [[poivre]], l'ail écrasé et l'huile, et laisse mariner 15 minutes, ou toute la nuit au frigo.",
+   "2": "Prépare le tzatziki : presse le concombre râpé dans tes mains pour retirer l'eau, puis mélange-le avec le yaourt, une pointe d'ail et [[aneth séché]]."
+  },
+  "note": "Origan généreux, sel et poivre dans la marinade (rien de salé dans le plat), et de l'aneth dans le tzatziki comme en Grèce."
+ },
+ {
+  "id": "W05",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "piment": 0.0625,
+   "menthe séchée": 0.125
+  },
+  "steps": {
+   "0": "Râpe l'oignon et hache le persil. Mélange-les avec le bœuf, [[cumin]], [[paprika]], [[piment]], [[sel]] et [[poivre]], puis forme des köfte allongées de la taille d'un doigt.",
+   "3": "Prépare le cacık : concombre en petits dés et yaourt, avec [[menthe séchée]]."
+  },
+  "session": {
+   "0": "Mélange l'oignon râpé et le persil haché avec le bœuf, [[cumin]], [[paprika]], [[piment]], [[sel]] et [[poivre]], puis forme des köfte allongées de la taille d'un doigt.",
+   "4": "Prépare le cacık : concombre en petits dés et yaourt, avec [[menthe séchée]]."
+  },
+  "note": "Cumin et paprika dosés franchement dans les köfte avec poivre et une pincée de piment (façon pul biber), et la menthe séchée devient systématique dans le cacık."
+ },
+ {
+  "id": "W06",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "quatre-épices": 0.125
+  },
+  "steps": {
+   "2": "Rince le riz et les lentilles séparément. Mets le riz dans l'autocuiseur avec 1,7 fois son poids d'eau, ferme et laisse cuire 14 minutes sous pression, puis fais tomber la pression : le riz complet a besoin d'une avance sur les lentilles. Ajoute les lentilles, [[cumin]], [[sel]], [[poivre]], le reste de l'huile et 2 fois le poids des lentilles en eau. Referme, laisse cuire 6 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes : tout finit de cuire ensemble sans que les lentilles se défassent.",
+   "3": "Coupe le poulet en dés de 2 cm, assaisonne-le avec [[paprika]] et [[quatre-épices]], puis fais-le cuire 10 minutes à l'air fryer à 200 °C, jusqu'à ce qu'il ne soit plus rose au centre."
+  },
+  "session": {
+   "3": "Ajoute les lentilles, [[cumin]], [[sel]], [[poivre]], le reste de l'huile et 2 fois le poids des lentilles en eau.",
+   "5": "Assaisonne le poulet avec [[paprika]] et [[quatre-épices]]."
+  },
+  "note": "Tout le cumin, le sel et le poivre vont dans les lentilles et le riz (le cœur du plat), le poulet prend paprika et quatre-épices, proche du baharat libanais."
+ },
+ {
+  "id": "W07",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "curcuma": 0.25,
+   "gingembre en poudre": 0.25,
+   "cannelle": 0.125
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir 5 minutes le poulet, l'oignon, l'huile, [[cumin]], [[paprika]], [[curcuma]], [[gingembre en poudre]], [[cannelle]], [[sel]] et [[poivre]]."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais revenir 5 minutes le poulet, l'oignon, l'huile, [[cumin]], [[paprika]], [[curcuma]], [[gingembre en poudre]], [[cannelle]], [[sel]] et [[poivre]]."
+  },
+  "note": "Ajout du paprika, base de tout tajine, et des quantités nettes pour les quatre épices ; sel modéré car les olives salent déjà."
+ },
+ {
+  "id": "W08",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika fumé": 0.75,
+   "cumin": 0.5,
+   "origan": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Coupe le blanc de poulet en 2 ou 3 morceaux épais. Mets-les dans l'autocuiseur avec les tomates, l'oignon, l'ail, [[paprika fumé]], [[cumin]], [[origan]], [[piment]], [[sel]] et [[poivre]]. Ferme et laisse cuire 10 minutes sous pression, puis fais tomber la pression : le poulet doit se défaire facilement à la fourchette."
+  },
+  "session": {
+   "0": "Mets le poulet dans l'autocuiseur avec les tomates, l'oignon, l'ail, [[paprika fumé]], [[cumin]], [[origan]], [[piment]], [[sel]] et [[poivre]]."
+  },
+  "note": "Cumin et origan ajoutés au paprika fumé (le trio mexicain qui remplace le chipotle), et du sel, absent jusqu'ici alors que rien n'est salé."
+ },
+ {
+  "id": "W09",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 0.75,
+   "cumin": 0.5,
+   "coriandre moulue": 0.25,
+   "origan": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Coupe le poulet en lanières. Mélange-le avec la moitié du yaourt, [[paprika]], [[cumin]], [[coriandre moulue]], [[origan]], [[piment]], [[sel]], [[poivre]], l'ail écrasé et l'huile."
+  },
+  "session": {
+   "0": "Mélange le poulet avec la moitié du yaourt, [[paprika]], [[cumin]], [[coriandre moulue]], [[origan]], [[piment]], [[sel]], [[poivre]], l'ail écrasé et l'huile."
+  },
+  "note": "Marinade de döner complétée par la coriandre moulue, le sel et le poivre (rien de salé dans la recette), avec une pincée de piment douce."
+ },
+ {
+  "id": "W10",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika fumé": 0.5,
+   "ail en poudre": 0.25
+  },
+  "steps": {
+   "0": "Coupe les patates douces en bâtonnets de 1 cm, mélange-les avec l'huile, [[paprika fumé]], [[ail en poudre]] et [[sel]], puis fais-les cuire 18 minutes à l'air fryer à 200 °C en secouant le panier deux fois.",
+   "3": "Divise la viande en boules (une par burger), saupoudre-les de [[poivre]], emballe-les une par une dans du film alimentaire et mets-les au congélateur tout de suite : la viande hachée crue ne se garde pas plus d'un jour au frigo."
+  },
+  "session": {
+   "0": "Mélange les patates douces avec l'huile, [[paprika fumé]], [[ail en poudre]] et [[sel]].",
+   "4": "Divise la viande en boules (une par burger), saupoudre-les de [[poivre]], emballe-les une par une dans du film alimentaire et mets-les au congélateur tout de suite : la viande hachée crue ne se garde pas plus d'un jour au frigo."
+  },
+  "note": "Frites relevées à l'ail en poudre et salées ; le steak est seulement poivré car cheddar, cornichons et moutarde salent déjà le burger."
+ },
+ {
+  "id": "W11",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika fumé": 0.25,
+   "gingembre en poudre": 0.125,
+   "piment": 0.125
+  },
+  "steps": {
+   "1": "Coupe le poulet en morceaux de 3 cm et enrobe-les de fécule mélangée avec [[sel]] et [[poivre]].",
+   "3": "Dans la poêle, chauffe 1 minute le miel, la sauce soja, le ketchup, l'ail écrasé, [[paprika fumé]], [[gingembre en poudre]] et [[piment]]. Ajoute le poulet et mélange pour bien l'enrober."
+  },
+  "session": {
+   "0": "Enrobe les morceaux de poulet de fécule mélangée avec [[sel]] et [[poivre]].",
+   "2": "Dans la poêle, chauffe 1 minute le miel, la sauce soja, le ketchup, l'ail écrasé, [[paprika fumé]], [[gingembre en poudre]] et [[piment]]."
+  },
+  "note": "Panure salée et poivrée pour un poulet qui a du goût à cœur, et sauce plus proche du gochujang avec gingembre et piment un peu plus présent."
+ },
+ {
+  "id": "W12",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "curry en poudre": 1,
+   "gingembre en poudre": 0.125,
+   "cannelle": 0.0625
+  },
+  "steps": {
+   "1": "Mets-les dans l'autocuiseur avec [[curry en poudre]], [[gingembre en poudre]], [[cannelle]], [[sel]], le miel, la sauce soja et 200 ml d'eau par portion. Ferme et laisse cuire 5 minutes sous pression.",
+   "3": "Aplatis le poulet à 1 cm d'épaisseur et saupoudre-le de [[poivre]]. Passe-le dans l'œuf battu puis dans la chapelure, badigeonne-le d'huile et fais-le cuire 12 à 14 minutes à l'air fryer à 200 °C en le retournant à mi-cuisson."
+  },
+  "session": {
+   "0": "Mets l'oignon, la carotte et la pomme de terre dans l'autocuiseur avec [[curry en poudre]], [[gingembre en poudre]], [[cannelle]], [[sel]], le miel, la sauce soja et 200 ml d'eau par portion.",
+   "4": "Passe le poulet dans l'œuf battu (après l'avoir saupoudré de [[poivre]]) puis dans la chapelure, et badigeonne-le d'huile."
+  },
+  "note": "La sauce, très diluée, reçoit le sel et une touche de gingembre et de cannelle comme un roux japonais ; le poulet est poivré avant la panure."
+ },
+ {
+  "id": "W13",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cinq-épices": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Prépare les pickles : coupe la carotte en fins bâtonnets, couvre-la de vinaigre de cidre avec [[sel]] et laisse reposer au moins 30 minutes. Ils se gardent une semaine au frigo.",
+   "1": "Écrase l'ail et mélange-le avec le jus de citron vert, la sauce soja, le miel, [[cinq-épices]] et [[poivre]]. Coupe le poulet en lanières et laisse-le mariner 15 minutes au frigo.",
+   "3": "Prépare la sauce : yaourt et [[piment]]. Coupe le concombre en fines lamelles."
+  },
+  "session": {
+   "0": "Prépare les pickles : couvre la carotte de vinaigre de cidre avec [[sel]] et laisse reposer au moins 30 minutes.",
+   "1": "Mélange l'ail avec le jus de citron vert, la sauce soja, le miel, [[cinq-épices]] et [[poivre]], ajoute le poulet et laisse-le mariner 15 minutes au frigo.",
+   "3": "Prépare la sauce : yaourt et [[piment]]."
+  },
+  "note": "Cinq-épices et poivre dans la marinade, comme le poulet grillé des bánh mì ; le sel reste dans les pickles car la baguette et la sauce soja salent déjà."
+ },
+ {
+  "id": "W14",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "curcuma": 0.25,
+   "curry en poudre": 0.5,
+   "cumin": 0.5,
+   "garam masala": 0.5,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Coupe le poulet en morceaux de 3 cm et mélange-le avec le yaourt, [[paprika]], [[curcuma]] et [[sel]]. Laisse mariner 10 minutes, ou toute la nuit au frigo.",
+   "2": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon, l'ail, le gingembre, [[curry en poudre]], [[cumin]] et [[piment]] 3 minutes, en remuant.",
+   "4": "Une fois la pression tombée, ajoute la crème, [[garam masala]] et [[poivre]], et mélange."
+  },
+  "session": {
+   "0": "Mélange le poulet avec le yaourt, [[paprika]], [[curcuma]] et [[sel]], et laisse mariner 10 minutes, ou toute la nuit au frigo.",
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon, l'ail, le gingembre, [[curry en poudre]], [[cumin]] et [[piment]] 3 minutes, en remuant.",
+   "4": "Une fois la pression tombée, ajoute la crème, [[garam masala]] et [[poivre]], et mélange."
+  },
+  "note": "Garam masala ajouté en fin de cuisson avec la crème, comme dans un vrai butter chicken, et répartition claire des épices entre marinade et base."
+ },
+ {
+  "id": "W15",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.75,
+   "origan": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Mélange le poulet avec [[cumin]], [[paprika]], [[origan]], [[poivre]], la sauce soja, le jus de citron vert et l'ail écrasé. Laisse mariner 15 minutes.",
+   "2": "Coupe les pommes de terre en frites de 1 cm, rince-les, sèche-les bien dans un torchon et mélange-les avec l'huile et [[sel]].",
+   "4": "Prépare la salsa verde : herbes hachées très finement, yaourt, un filet de citron vert et [[piment]]."
+  },
+  "session": {
+   "0": "Mélange le poulet avec [[cumin]], [[paprika]], [[origan]], [[poivre]], la sauce soja, le jus de citron vert et l'ail écrasé, et laisse mariner 15 minutes.",
+   "1": "Rince les frites, sèche-les bien dans un torchon et mélange-les avec l'huile et [[sel]].",
+   "4": "Prépare la salsa verde : herbes hachées très finement, yaourt, un filet de citron vert et [[piment]]."
+  },
+  "note": "Marinade bien chargée en paprika et cumin avec du poivre, le poulet étant salé par la sauce soja ; le sel va sur les 300 g de frites qui n'en avaient pas."
+ },
+ {
+  "id": "W16",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "cumin": 0.5,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Fais revenir le bœuf 5 minutes à la poêle en l'émiettant, jusqu'à ce qu'il ne soit plus rose. Ajoute la tomate, le poivron, l'oignon, le concentré de tomate, [[paprika]], [[cumin]], [[piment]], [[sel]] et [[poivre]], et laisse cuire encore 5 minutes : c'est la garniture."
+  },
+  "session": {
+   "1": "Ajoute la tomate, le poivron, l'oignon, le concentré de tomate, [[paprika]], [[cumin]], [[piment]], [[sel]] et [[poivre]], et laisse cuire encore 5 minutes : c'est la garniture."
+  },
+  "note": "Sel et poivre ajoutés à la garniture, qui n'en avait pas, et quantités franches de paprika et de cumin."
+ },
+ {
+  "id": "W17",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika fumé": 0.5,
+   "origan": 0.25,
+   "ail en poudre": 0.25
+  },
+  "steps": {
+   "1": "Fais-les revenir 7 minutes à la poêle avec [[cumin]], [[paprika fumé]], [[origan]], [[ail en poudre]], [[sel]] et [[poivre]], en remuant : c'est la garniture de la semaine."
+  },
+  "session": {
+   "0": "Fais revenir le poulet, le poivron et l'oignon 7 minutes à la poêle avec [[cumin]], [[paprika fumé]], [[origan]], [[ail en poudre]], [[sel]] et [[poivre]], en remuant : c'est la garniture de la semaine."
+  },
+  "note": "Origan et ail en poudre (il n'y a pas d'ail frais) pour une vraie garniture tex-mex ; sel modéré à cause de l'emmental."
+ },
+ {
+  "id": "W18",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "ail en poudre": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous. Fais tomber la pression, égoutte et rince à l'eau froide. Si tu n'as pas trouvé de nouilles aux œufs, des spaghettis conviennent très bien.",
+   "2": "Prépare la sauce : sauce soja, miel, jus de citron vert, [[ail en poudre]], [[piment]] et [[poivre]]. Coupe la carotte et le poivron en fins bâtonnets et concasse les cacahuètes."
+  },
+  "session": {
+   "0": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous.",
+   "2": "Prépare la sauce : sauce soja, miel, jus de citron vert, [[ail en poudre]], [[piment]] et [[poivre]]."
+  },
+  "note": "Un pad thaï sans ail ni piment manquait de caractère : ail en poudre, piment et poivre dans la sauce ; sel minimal car soja et cacahuètes salent."
+ },
+ {
+  "id": "W19",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "piment": 0.125,
+   "menthe séchée": 0.125
+  },
+  "steps": {
+   "2": "Hors du feu, ajoute la sauce soja, le jus de citron vert, l'oignon, [[piment]], [[menthe séchée]], [[sel]] et [[poivre]], puis mélange."
+  },
+  "session": {
+   "1": "Hors du feu, ajoute la sauce soja, le jus de citron vert, l'oignon, [[piment]], [[menthe séchée]], [[sel]] et [[poivre]], puis mélange."
+  },
+  "note": "Menthe séchée pour garantir le goût du larb même sans herbes fraîches, piment un peu plus présent (c'est un plat relevé), sel et poivre ajustés."
+ },
+ {
+  "id": "W20",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "ail en poudre": 0.25,
+   "paprika fumé": 0.25,
+   "piment": 0.125
+  },
+  "steps": {
+   "0": "Émince finement le bœuf et mélange-le avec 15 ml de sauce soja, [[ail en poudre]] et [[poivre]]. Laisse mariner 10 minutes au frigo.",
+   "2": "À la poêle, fais sauter ensemble la carotte, la courgette et les épinards 4 minutes avec l'huile et [[sel]], puis réserve-les.",
+   "4": "Prépare la sauce : le miel, le ketchup, le reste de la sauce soja, [[paprika fumé]] et [[piment]], dans un petit pot."
+  },
+  "session": {
+   "0": "Mélange le bœuf avec 15 ml de sauce soja, [[ail en poudre]] et [[poivre]], et laisse mariner 10 minutes au frigo.",
+   "1": "À la poêle, fais sauter ensemble la carotte, la courgette et les épinards 4 minutes avec l'huile et [[sel]], puis réserve-les.",
+   "3": "Prépare la sauce : le miel, le ketchup, le reste de la sauce soja, [[paprika fumé]] et [[piment]], dans un petit pot."
+  },
+  "note": "Ail en poudre et poivre dans la marinade du bœuf (pas d'ail frais), sauce façon gochujang plus nette ; une pincée de sel pour les légumes seulement."
+ },
+ {
+  "id": "W21",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "paprika fumé": 0.25,
+   "piment": 0.125,
+   "cinq-épices": 0.125
+  },
+  "steps": {
+   "2": "Ajoute la sauce soja, le ketchup, le miel, [[paprika fumé]], [[piment]], [[cinq-épices]], [[poivre]] et 150 ml d'eau par portion, puis le tofu. Laisse mijoter 5 minutes à feu doux, sans trop remuer pour ne pas casser le tofu.",
+   "4": "Fais cuire le brocoli 10 minutes à l'air fryer à 200 °C, saupoudré de [[sel]]."
+  },
+  "session": {
+   "1": "Ajoute la sauce soja, le ketchup, le miel, [[paprika fumé]], [[piment]], [[cinq-épices]], [[poivre]] et 150 ml d'eau par portion, puis le tofu.",
+   "4": "Fais cuire le brocoli 10 minutes à l'air fryer à 200 °C, saupoudré de [[sel]]."
+  },
+  "note": "Cinq-épices et poivre pour évoquer le poivre du Sichuan, piment un peu plus présent ; la sauce soja sale le mapo, une pincée de sel pour le brocoli."
+ },
+ {
+  "id": "W22",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125
+  },
+  "steps": {
+   "0": "Coupe le saumon en pavés ou en cubes de 3 cm. Mélange la sauce soja, le miel, l'ail écrasé, le gingembre râpé et [[poivre]], et fais-y mariner le saumon 10 minutes au frigo.",
+   "1": "Égoutte le saumon (garde la marinade) et fais-le cuire 7 à 8 minutes à l'air fryer à 200 °C, avec le brocoli autour saupoudré de [[sel]] : la chair doit être opaque et se détacher en lamelles."
+  },
+  "session": {
+   "0": "Mélange la sauce soja, le miel, l'ail écrasé, le gingembre râpé et [[poivre]], et fais-y mariner le saumon 10 minutes au frigo.",
+   "1": "Égoutte le saumon (garde la marinade) et fais-le cuire 7 à 8 minutes à l'air fryer à 200 °C, avec le brocoli autour saupoudré de [[sel]] : la chair doit être opaque et se détacher en lamelles."
+  },
+  "note": "Laquage soja-miel-gingembre suffisant : juste du poivre dans la marinade et une pincée de sel sur le brocoli, nature sinon."
+ },
+ {
+  "id": "W25",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.75,
+   "cannelle": 0.0625,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Hache le persil et l'oignon. Mélange le bœuf avec la moitié du persil, [[cumin]], [[cannelle]], [[sel]] et [[poivre]], puis forme des boulettes de la taille d'une noix.",
+   "1": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, ajoute les tomates, [[paprika]] et [[piment]], et laisse mijoter 8 minutes."
+  },
+  "session": {
+   "0": "Mélange le bœuf avec la moitié du persil, [[cumin]], [[cannelle]], [[sel]] et [[poivre]], puis forme des boulettes de la taille d'une noix.",
+   "1": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, ajoute les tomates, [[paprika]] et [[piment]], et laisse mijoter 8 minutes."
+  },
+  "note": "Kefta classique : cumin, pointe de cannelle, sel et poivre dans la viande, paprika et une pincée de piment dans la sauce tomate."
+ },
+ {
+  "id": "W27",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.25,
+   "ail en poudre": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "2": "Fais sauter l'oignon et la tomate 2 minutes, ajoute la sauce soja, le vinaigre de cidre, [[cumin]], [[ail en poudre]], [[piment]], [[sel]] et [[poivre]], puis remets le bœuf et mélange."
+  },
+  "session": {
+   "1": "Fais sauter l'oignon et la tomate 2 minutes, ajoute la sauce soja, le vinaigre de cidre, [[cumin]], [[ail en poudre]], [[piment]], [[sel]] et [[poivre]], puis remets le bœuf et mélange."
+  },
+  "note": "Recette sans aucune épice : ajout du cumin, de l'ail (en poudre, pas d'ail frais) et d'une pincée de piment typiques du lomo saltado ; sel réduit grâce à la sauce soja."
+ },
+ {
+  "id": "W28",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "ail en poudre": 0.25,
+   "coriandre moulue": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Fais décongeler le poisson la veille au frigo. Coupe-le en gros morceaux et fais-le mariner 10 minutes dans le jus de citron vert avec [[sel]] et [[poivre]].",
+   "2": "Dans la poêle, fais cuire l'oignon, les poivrons et la tomate 6 minutes à feu moyen avec [[paprika]], [[ail en poudre]], [[coriandre moulue]] et [[piment]]."
+  },
+  "session": {
+   "0": "Fais mariner le poisson 10 minutes dans le jus de citron vert avec [[sel]] et [[poivre]].",
+   "1": "Dans la poêle, fais cuire l'oignon, les poivrons et la tomate 6 minutes à feu moyen avec [[paprika]], [[ail en poudre]], [[coriandre moulue]] et [[piment]]."
+  },
+  "note": "Poisson salé et poivré dans la marinade, base de moqueca relevée avec ail en poudre (pas d'ail frais), coriandre moulue et une pincée de piment."
+ },
+ {
+  "id": "W29",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 1,
+   "cumin": 0.25,
+   "coriandre moulue": 0.25,
+   "cardamome": 0.0625,
+   "cannelle": 0.0625,
+   "piment": 0.125
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 5 minutes avec l'huile, l'ail, le gingembre, [[paprika]], [[cumin]], [[coriandre moulue]], [[cardamome]], [[cannelle]] et [[piment]].",
+   "2": "Ajoute les lentilles, les tomates, les épinards, [[sel]], [[poivre]] et 3 fois le poids des lentilles en eau. Pose les œufs entiers, dans leur coquille, sur le dessus. Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 5 minutes avec l'huile, l'ail, le gingembre, [[paprika]], [[cumin]], [[coriandre moulue]], [[cardamome]], [[cannelle]] et [[piment]].",
+   "1": "Ajoute les lentilles, les tomates, les épinards, [[sel]], [[poivre]] et 3 fois le poids des lentilles en eau. Pose les œufs entiers, dans leur coquille, sur le dessus."
+  },
+  "note": "Berbéré reconstitué avec les épices autorisées : beaucoup de paprika, cumin, coriandre, cardamome et cannelle, piment modéré ; lentilles enfin salées."
+ },
+ {
+  "id": "W30",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 0.75,
+   "piment": 0.125,
+   "origan": 0.25,
+   "laurier": 0.25
+  },
+  "steps": {
+   "0": "Mélange les crevettes avec [[piment]], [[paprika]], [[origan]], [[poivre]], l'ail écrasé, le jus de citron et la moitié de l'huile. Laisse mariner 10 minutes.",
+   "2": "Mets dans l'autocuiseur le riz, les tomates, l'oignon, le poivron, le reste de l'huile, [[sel]], [[laurier]] et 1,4 fois le poids du riz en eau. Ferme et laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes et retire le laurier."
+  },
+  "session": {
+   "0": "Mélange les crevettes avec [[piment]], [[paprika]], [[origan]], [[poivre]], l'ail écrasé, le jus de citron et la moitié de l'huile. Laisse mariner 10 minutes.",
+   "2": "Mets dans l'autocuiseur le riz, les tomates, l'oignon, le poivron, le reste de l'huile, [[sel]], [[laurier]] et 1,4 fois le poids du riz en eau.",
+   "3": "Ferme et laisse cuire 20 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes et retire le laurier."
+  },
+  "note": "Marinade piri-piri complétée d'origan et de poivre ; le riz à la tomate, jusque-là sans sel, reçoit le sel et une feuille de laurier."
+ },
+ {
+  "id": "W46",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika fumé": 0.5,
+   "ail en poudre": 0.25,
+   "oignon en poudre": 0.125,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "0": "Coupe le poulet en dés de 2 cm. Mélange le concentré de tomate, le miel, le vinaigre de cidre, la sauce soja, [[paprika fumé]], [[ail en poudre]], [[oignon en poudre]] et 2 cuillères à soupe d'eau : c'est la sauce barbecue.",
+   "2": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], pose le brocoli par-dessus, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte.",
+   "3": "Dans la poêle rincée, délaye la fécule dans le lait froid, puis fais chauffer à feu moyen en remuant sans arrêt, 3 à 4 minutes, jusqu'à ce que la sauce nappe la cuillère. Hors du feu, ajoute l'emmental, [[muscade]] et [[poivre]], et remue jusqu'à ce qu'il fonde."
+  },
+  "session": {
+   "0": "Mélange le concentré de tomate, le miel, le vinaigre de cidre, la sauce soja, [[paprika fumé]], [[ail en poudre]], [[oignon en poudre]] et 2 cuillères à soupe d'eau : c'est la sauce barbecue.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], pose le brocoli par-dessus, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+   "6": "Hors du feu, ajoute l'emmental, [[muscade]] et [[poivre]], et remue jusqu'à ce qu'il fonde."
+  },
+  "note": "Sauce barbecue complétée d'oignon en poudre, muscade et poivre dans la sauce au fromage ; sel modéré à cause de l'emmental et de la sauce soja."
+ },
+ {
+  "id": "W47",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Dans la poêle, fais chauffer l'huile d'olive à feu moyen. Ajoute les tomates cerises entières, l'ail écrasé et [[piment]], couvre et laisse cuire 8 minutes, jusqu'à ce que les tomates éclatent.",
+   "3": "Ajoute les crevettes, les épinards, [[origan]] et [[poivre]], et laisse cuire 3 minutes, jusqu'à ce que les crevettes soient bien roses. Arrose de jus de citron.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les à la sauce avec l'eau de cuisson gardée."
+  },
+  "session": {
+   "1": "Dans la poêle, fais chauffer l'huile d'olive à feu moyen. Ajoute les tomates cerises entières, l'ail écrasé et [[piment]], couvre et laisse cuire 8 minutes, jusqu'à ce que les tomates éclatent.",
+   "3": "Ajoute les crevettes, les épinards, [[origan]] et [[poivre]], et laisse cuire 3 minutes, jusqu'à ce que les crevettes soient bien roses. Arrose de jus de citron.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Origan généreux à la grecque, poivre et une pincée de piment avec l'ail ; sel limité à l'eau des pâtes car la feta sale déjà."
+ },
+ {
+  "id": "W48",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Ajoute l'ail, [[origan]], [[thym]], le concentré, les tomates, les pâtes et juste assez d'eau pour les couvrir à hauteur, avec [[sel]] et [[poivre]]. Mélange bien et gratte le fond, pour qu'aucune pâte n'y colle.",
+   "4": "Hors du feu, ajoute le cottage cheese, l'emmental et [[muscade]], et mélange doucement : ils remplacent la béchamel et donnent le goût des lasagnes."
+  },
+  "session": {
+   "1": "Ajoute l'ail, [[origan]], [[thym]], le concentré, les tomates, les pâtes et juste assez d'eau pour les couvrir à hauteur, avec [[sel]] et [[poivre]]. Mélange bien et gratte le fond, pour qu'aucune pâte n'y colle.",
+   "3": "Hors du feu, ajoute le cottage cheese, l'emmental et [[muscade]], et mélange doucement : ils remplacent la béchamel et donnent le goût des lasagnes."
+  },
+  "note": "Bolognaise relevée d'origan et de thym, muscade dans le cottage cheese pour rappeler la béchamel des lasagnes ; sel un peu réduit (emmental, cottage)."
+ },
+ {
+  "id": "W49",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "ail en poudre": 0.25,
+   "romarin": 0.25
+  },
+  "steps": {
+   "0": "Coupe les pommes de terre en deux avec la peau, sèche-les dans un torchon et mélange-les avec 5 ml d'huile, [[romarin]] et [[sel]], en en réservant un tiers pour le saumon et la sauce. Fais-les cuire 18 à 20 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson.",
+   "1": "Retire la peau du saumon et coupe-le en cubes de 3 cm. Mélange-les avec le reste de l'huile, la fécule, [[paprika]], [[ail en poudre]] et la moitié de ta réserve.",
+   "4": "Prépare la sauce : le yaourt, l'aneth et la ciboulette ciselés, le jus de citron, une demi-gousse d'ail écrasée, le reste de ta réserve et [[poivre]]."
+  },
+  "session": {
+   "0": "Sèche les pommes de terre dans un torchon et mélange-les avec 5 ml d'huile, [[romarin]] et [[sel]], en en réservant un tiers pour le saumon et la sauce.",
+   "2": "Mélange les cubes de saumon avec le reste de l'huile, la fécule, [[paprika]], [[ail en poudre]] et la moitié de ta réserve.",
+   "5": "Prépare la sauce : le yaourt, l'aneth et la ciboulette ciselés, le jus de citron, une demi-gousse d'ail écrasée, le reste de ta réserve et [[poivre]]."
+  },
+  "note": "Sel total réparti depuis les pommes de terre vers le saumon et la sauce, romarin sur les grenailles, paprika et ail en poudre gardés sur le saumon."
+ },
+ {
+  "id": "W50",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "thym": 0.5,
+   "paprika": 0.5
+  },
+  "steps": {
+   "0": "Coupe les pommes de terre en cubes de 2 cm avec la peau et les carottes en bâtonnets. Mélange-les avec 5 ml d'huile, [[thym]] et [[sel]], et fais-les cuire 20 minutes à l'air fryer à 200 °C, en secouant le panier toutes les 7 minutes.",
+   "1": "Mélange la moutarde, le miel, l'ail écrasé, le jus de citron, [[poivre]] et 2 cuillères à soupe d'eau.",
+   "2": "Coupe le poulet en morceaux de 3 cm, saupoudre-le de [[paprika]] et fais-le cuire 6 à 7 minutes à la poêle avec le reste de l'huile, jusqu'à ce qu'il soit doré et plus rose au centre."
+  },
+  "session": {
+   "0": "Mélange les pommes de terre et les carottes avec 5 ml d'huile, [[thym]] et [[sel]].",
+   "2": "Mélange la moutarde, le miel, l'ail écrasé, le jus de citron, [[poivre]] et 2 cuillères à soupe d'eau.",
+   "3": "Fais cuire le poulet saupoudré de [[paprika]] 6 à 7 minutes à la poêle avec le reste de l'huile, jusqu'à ce qu'il soit doré et plus rose au centre."
+  },
+  "note": "Thym généreux sur les légumes rôtis, paprika sur le poulet pour la couleur, poivre dans la sauce ; sel un peu réduit car la moutarde sale."
+ },
+ {
+  "id": "W51",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "0": "Lave les pommes de terre, pique-les plusieurs fois à la fourchette et frotte-les avec un peu d'huile. Fais-les cuire 40 à 45 minutes à l'air fryer à 200 °C, en les retournant à mi-cuisson, jusqu'à ce qu'une lame s'enfonce sans résistance.",
+   "1": "Pendant ce temps, hache l'oignon et fais-le revenir 3 minutes à la poêle avec le reste de l'huile. Ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant, puis l'ail écrasé, [[origan]], [[thym]], [[sel]], [[poivre]], le concentré et les tomates. Laisse mijoter 8 minutes.",
+   "2": "Coupe les pommes de terre en deux dans la longueur et écrase un peu la chair à la fourchette. Garnis-les de bolognaise, puis de cottage cheese mélangé à [[muscade]], et d'emmental."
+  },
+  "session": {
+   "0": "Lave les pommes de terre, pique-les plusieurs fois à la fourchette et frotte-les avec un peu d'huile.",
+   "3": "Ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant, puis l'ail écrasé, [[origan]], [[thym]], [[sel]], [[poivre]], le concentré et les tomates.",
+   "6": "Garnis les pommes de terre de bolognaise, puis de cottage cheese mélangé à [[muscade]], et d'emmental."
+  },
+  "note": "Sel concentré dans la bolognaise (qui assaisonne la chair écrasée), thym en plus de l'origan, muscade dans le cottage cheese façon béchamel."
+ },
+ {
+  "id": "W52",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika fumé": 0.5,
+   "cumin": 0.25,
+   "piment": 0.0625,
+   "paprika": 0.125,
+   "ail en poudre": 0.125
+  },
+  "steps": {
+   "1": "Rince le quinoa dans une passoire fine, puis mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau et [[sel]]. Ferme, laisse cuire 1 minute sous pression, puis laisse la pression retomber seule pendant 10 minutes. Égrène-le à la fourchette.",
+   "3": "Dans la même poêle, fais cuire les crevettes 3 minutes avec l'huile, [[paprika fumé]], [[cumin]], [[piment]] et [[poivre]], jusqu'à ce qu'elles soient bien roses.",
+   "4": "Prépare la sauce : le yaourt, la moitié du jus de citron vert, [[paprika]] et [[ail en poudre]]. Coupe les tomates cerises en deux et l'oignon rouge en fines lamelles."
+  },
+  "session": {
+   "1": "Rince le quinoa dans une passoire fine, puis mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau et [[sel]].",
+   "5": "Dans la même poêle, fais cuire les crevettes 3 minutes avec l'huile, [[paprika fumé]], [[cumin]], [[piment]] et [[poivre]], jusqu'à ce qu'elles soient bien roses.",
+   "6": "Prépare la sauce : le yaourt, la moitié du jus de citron vert, [[paprika]] et [[ail en poudre]]."
+  },
+  "note": "Cumin mexicain et poivre sur les crevettes, ail en poudre dans la sauce yaourt façon elote ; sel limité au quinoa car la feta sale."
+ },
+ {
+  "id": "W53",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "ail en poudre": 0.125
+  },
+  "steps": {
+   "0": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau et [[sel]] : 4 minutes sous pression, puis 5 minutes de décompression naturelle. Égrène-le à la fourchette. Laisse-le refroidir.",
+   "2": "Prépare la sauce : l'huile d'olive, le jus de citron, [[origan]], [[ail en poudre]] et [[poivre]]."
+  },
+  "session": {
+   "0": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau et [[sel]] : 4 minutes sous pression, puis 5 minutes de décompression naturelle.",
+   "3": "Prépare la sauce : l'huile d'olive, le jus de citron, [[origan]], [[ail en poudre]] et [[poivre]]."
+  },
+  "note": "Vinaigrette relevée d'origan généreux et d'un peu d'ail en poudre (pas d'ail frais) ; sel modéré dans le boulgour car la feta sale."
+ },
+ {
+  "id": "W54",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "cinq-épices": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "2": "Rince le quinoa dans une passoire fine, puis mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau et [[sel]]. Ferme, laisse cuire 1 minute sous pression, puis laisse la pression retomber seule pendant 10 minutes. Égrène-le à la fourchette.",
+   "3": "Dans la poêle, mélange la sauce soja, le miel, l'ail écrasé, le gingembre râpé, [[cinq-épices]], [[piment]], [[poivre]] et 3 cuillères à soupe d'eau. Fais réduire 2 minutes à feu moyen, jusqu'à ce que la sauce soit sirupeuse."
+  },
+  "session": {
+   "5": "Rince le quinoa dans une passoire fine, puis mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau et [[sel]].",
+   "8": "Dans la poêle, mélange la sauce soja, le miel, l'ail écrasé, le gingembre râpé, [[cinq-épices]], [[piment]], [[poivre]] et 3 cuillères à soupe d'eau. Fais réduire 2 minutes à feu moyen, jusqu'à ce que la sauce soit sirupeuse."
+  },
+  "note": "Laque soja-miel parfumée au cinq-épices avec poivre et une pincée de piment ; juste une pincée de sel dans le quinoa, la sauce soja salant le reste."
+ },
+ {
+  "id": "W55",
+  "spices": {
+   "poivre": 0.125,
+   "paprika": 0.25,
+   "aneth séché": 0.125
+  },
+  "steps": {
+   "0": "Mélange le thon égoutté avec le yaourt, la moutarde, [[paprika]], [[aneth séché]] et [[poivre]]. Égoutte le maïs, coupe la tomate en fines rondelles et l'oignon rouge en lamelles."
+  },
+  "session": {
+   "0": "Mélange le thon égoutté avec le yaourt, la moutarde, [[paprika]], [[aneth séché]] et [[poivre]]."
+  },
+  "note": "Aucun sel ajouté (thon en conserve, cheddar, moutarde) ; le paprika listé entre enfin dans la garniture, avec de l'aneth séché qui va bien au thon."
+ },
+ {
+  "id": "W56",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "paprika": 0.5
+  },
+  "steps": {
+   "2": "Ajoute le concentré de tomate, la sriracha, le miel, la sauce soja, [[paprika]], [[poivre]] et 100 ml d'eau par portion. Laisse mijoter 3 minutes, jusqu'à ce que la sauce épaississe.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion."
+  },
+  "session": {
+   "2": "Ajoute le concentré de tomate, la sriracha, le miel, la sauce soja, [[paprika]], [[poivre]] et 100 ml d'eau par portion. Laisse mijoter 3 minutes, jusqu'à ce que la sauce épaississe.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Paprika pour la rondeur façon gochugaru et poivre dans la sauce ; une simple pincée de sel car sriracha, soja et parmesan salent déjà."
+ },
+ {
+  "id": "W57",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "paprika fumé": 0.75,
+   "ail en poudre": 0.25,
+   "origan": 0.25,
+   "thym": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Coupe le poulet en dés de 2 cm et mélange-les avec [[paprika fumé]], [[ail en poudre]], [[origan]], [[thym]], [[piment]], [[sel]] et [[poivre]] : c'est l'assaisonnement cajun.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les à la sauce avec l'eau de cuisson gardée."
+  },
+  "session": {
+   "0": "Mélange les dés de poulet avec [[paprika fumé]], [[ail en poudre]], [[origan]], [[thym]], [[piment]], [[sel]] et [[poivre]] : c'est l'assaisonnement cajun.",
+   "6": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Mélange cajun écrit épice par épice, paprika fumé dominant et poivre ajouté ; tout le sel (réduit pour l'emmental) va sur le poulet, plus dans l'eau des pâtes."
+ },
+ {
+  "id": "W58",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "cumin": 0.5,
+   "origan": 0.25,
+   "ail en poudre": 0.25,
+   "coriandre moulue": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Coupe le poulet en lanières et mélange-les avec [[paprika]], [[cumin]], [[origan]], [[ail en poudre]], [[coriandre moulue]], [[piment]], [[sel]] et [[poivre]].",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les à la sauce avec l'eau de cuisson gardée."
+  },
+  "session": {
+   "0": "Mélange les lanières de poulet avec [[paprika]], [[cumin]], [[origan]], [[ail en poudre]], [[coriandre moulue]], [[piment]], [[sel]] et [[poivre]].",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Assaisonnement fajitas complet (paprika, cumin, origan, ail, coriandre, pincée de piment, poivre) ; sel total réduit pour le cheddar, mis sur le poulet."
+ },
+ {
+  "id": "W59",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "origan": 0.25
+  },
+  "steps": {
+   "1": "Ajoute les tomates cerises coupées en deux, l'ail écrasé, les épinards et [[origan]], et laisse cuire 3 minutes, jusqu'à ce que les tomates commencent à fondre.",
+   "2": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+   "3": "Hors du feu, mélange le pesto, le yaourt, [[poivre]] et l'eau de cuisson gardée, puis ajoute les pâtes, le poulet et les tomates. Le yaourt rend le pesto crémeux, sans crème."
+  },
+  "session": {
+   "1": "Ajoute les tomates cerises coupées en deux, l'ail écrasé, les épinards et [[origan]], et laisse cuire 3 minutes, jusqu'à ce que les tomates commencent à fondre.",
+   "2": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+   "4": "Hors du feu, mélange le pesto, le yaourt, [[poivre]] et l'eau de cuisson gardée, puis ajoute les pâtes, le poulet et les tomates. Le yaourt rend le pesto crémeux, sans crème."
+  },
+  "note": "Origan sur les tomates et poivre dans la sauce pesto-yaourt ; une simple pincée de sel car pesto et parmesan salent déjà."
+ },
+ {
+  "id": "W60",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika": 1,
+   "laurier": 0.25
+  },
+  "steps": {
+   "3": "Arrête le mode dorer, ajoute l'ail et [[paprika]] (doux), et mélange 30 secondes : hors du feu, il ne brûle pas. Ajoute les poivrons, les tomates, [[laurier]], 100 ml d'eau par portion, [[sel]] et [[poivre]].",
+   "4": "Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression et retire le laurier. Laisse réduire 3 minutes en mode dorer si la sauce est trop liquide.",
+   "5": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous. Fais tomber la pression et égoutte."
+  },
+  "session": {
+   "2": "Arrête le mode dorer, ajoute l'ail et [[paprika]] (doux), et mélange 30 secondes : hors du feu, il ne brûle pas.",
+   "3": "Ajoute les poivrons, les tomates, [[laurier]], 100 ml d'eau par portion, [[sel]] et [[poivre]].",
+   "4": "Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression et retire le laurier.",
+   "6": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous."
+  },
+  "note": "Paprika doux en vraie quantité hongroise (1 c. à café), laurier et poivre dans la sauce ; tout le sel dans le paprikás, qui assaisonne les nouilles."
+ },
+ {
+  "id": "W61",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "thym": 0.25
+  },
+  "steps": {
+   "2": "Ajoute les champignons et laisse cuire 5 minutes, jusqu'à ce qu'ils aient rendu leur eau et qu'elle se soit évaporée. Ajoute l'ail écrasé, [[paprika]], [[thym]], [[sel]], [[poivre]], la moutarde, la sauce soja et 80 ml d'eau par portion, et laisse mijoter 3 minutes.",
+   "4": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous. Fais tomber la pression et égoutte."
+  },
+  "session": {
+   "2": "Ajoute l'ail écrasé, [[paprika]], [[thym]], [[sel]], [[poivre]], la moutarde, la sauce soja et 80 ml d'eau par portion, et laisse mijoter 3 minutes.",
+   "4": "Fais cuire les nouilles aux œufs à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous."
+  },
+  "note": "Thym pour les champignons et poivre ajoutés au paprika ; sel un peu réduit (moutarde, soja) et regroupé dans la sauce."
+ },
+ {
+  "id": "W62",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Mélange le bœuf avec la moitié du parmesan, un quart de l'oignon râpé, [[origan]], [[sel]] et [[poivre]]. Forme des boulettes de la taille d'une noix.",
+   "2": "Pendant ce temps, fais revenir le reste de l'oignon haché 3 minutes à la poêle avec l'huile, puis l'ail 1 minute. Ajoute le concentré, les tomates et [[piment]], et laisse mijoter 8 minutes.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les à la sauce avec l'eau de cuisson gardée."
+  },
+  "session": {
+   "0": "Mélange le bœuf avec la moitié du parmesan, un quart de l'oignon haché, [[origan]], [[sel]] et [[poivre]].",
+   "4": "Ajoute le concentré, les tomates et [[piment]], et laisse mijoter 8 minutes.",
+   "7": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Origan généreux et poivre dans les boulettes, pincée de piment dans la sauce ; sel réduit pour le parmesan et regroupé dans les boulettes."
+ },
+ {
+  "id": "W63",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "0": "Épluche les pommes de terre, coupe-les en gros morceaux et mets-les dans l'autocuiseur avec 250 ml d'eau. Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression.",
+   "1": "Égoutte-les et écrase-les à la fourchette ou au presse-purée avec le lait chaud, [[sel]] (garde-en une pincée pour la sauce), [[poivre]] et [[muscade]].",
+   "3": "Ajoute l'ail, [[thym]], la moutarde, la pincée gardée et 60 ml d'eau par portion, laisse mijoter 2 minutes, puis ajoute la crème hors du feu."
+  },
+  "session": {
+   "0": "Mets les pommes de terre dans l'autocuiseur avec 250 ml d'eau.",
+   "2": "Égoutte les pommes de terre et écrase-les à la fourchette ou au presse-purée avec le lait chaud, [[sel]] (garde-en une pincée pour la sauce), [[poivre]] et [[muscade]].",
+   "5": "Ajoute l'ail, [[thym]], la moutarde, la pincée gardée et 60 ml d'eau par portion, laisse mijoter 2 minutes, puis ajoute la crème hors du feu."
+  },
+  "note": "Ajout de sel, poivre, thym dosé et une pointe de muscade dans la purée ; sel réparti entre purée et sauce."
+ },
+ {
+  "id": "W64",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "herbes de Provence": 0.5,
+   "paprika": 0.25
+  },
+  "steps": {
+   "1": "Coupe les pommes de terre en deux avec la peau et la courgette en demi-rondelles épaisses. Mélange-les avec la moitié de l'huile, [[herbes de Provence]], [[paprika]] et [[sel]] (garde-en une pincée pour le poulet).",
+   "3": "Pendant ce temps, fais cuire le poulet en morceaux 8 minutes à la poêle avec le reste de l'huile et la pincée gardée, jusqu'à ce qu'il soit bien doré.",
+   "4": "Baisse le feu, ajoute l'ail écrasé, le persil haché, le jus de citron et [[poivre]], et remue 1 minute sans laisser brûler l'ail."
+  },
+  "session": {
+   "0": "Mélange les pommes de terre et la courgette avec la moitié de l'huile, [[herbes de Provence]], [[paprika]] et [[sel]] (garde-en une pincée pour le poulet).",
+   "2": "Fais cuire le poulet en morceaux 8 minutes à la poêle avec le reste de l'huile et la pincée gardée, jusqu'à ce qu'il soit bien doré.",
+   "3": "Baisse le feu, ajoute l'ail écrasé, le persil haché, le jus de citron et [[poivre]], et remue 1 minute sans laisser brûler l'ail."
+  },
+  "note": "Herbes de Provence dosées, une touche de paprika pour dorer les légumes, sel partagé avec le poulet et poivre en fin de cuisson."
+ },
+ {
+  "id": "W65",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "paprika fumé": 0.25,
+   "aneth séché": 0.125
+  },
+  "steps": {
+   "0": "Coupe les pommes de terre en cubes de 2 cm avec la peau, mélange-les avec 5 ml d'huile, [[paprika]] et [[sel]] (garde-en une pincée pour la sauce yaourt), et fais-les cuire 20 minutes à l'air fryer à 200 °C, en secouant toutes les 7 minutes.",
+   "1": "Coupe le poulet en morceaux de 3 cm et fais-le cuire 6 à 7 minutes à la poêle avec le reste de l'huile et [[paprika fumé]].",
+   "3": "Prépare la sauce : le yaourt, la ciboulette ciselée, une demi-gousse d'ail écrasée, la pincée gardée, [[aneth séché]] et [[poivre]]. Coupe la carotte et le concombre en bâtonnets."
+  },
+  "session": {
+   "0": "Mélange les pommes de terre avec 5 ml d'huile, [[paprika]] et [[sel]] (garde-en une pincée pour la sauce yaourt).",
+   "2": "Fais cuire le poulet 6 à 7 minutes à la poêle avec le reste de l'huile et [[paprika fumé]].",
+   "4": "Prépare la sauce : le yaourt, la ciboulette ciselée, une demi-gousse d'ail écrasée, la pincée gardée, [[aneth séché]] et [[poivre]]."
+  },
+  "note": "Sel réduit (sriracha), paprika fumé sur le poulet et aneth séché dans la sauce yaourt façon ranch, classique avec le buffalo."
+ },
+ {
+  "id": "W66",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika fumé": 0.5,
+   "cumin": 0.375
+  },
+  "steps": {
+   "0": "Coupe les pommes de terre en dés de 1,5 cm avec la peau, mélange-les avec 5 ml d'huile et [[sel]] (garde-en une pincée pour le bœuf), et fais-les cuire 18 minutes à l'air fryer à 200 °C, en secouant toutes les 6 minutes.",
+   "1": "Pendant ce temps, fais revenir l'oignon et les poivrons en dés 5 minutes à la poêle avec le reste de l'huile. Ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant, avec l'ail, [[paprika fumé]], [[cumin]], [[poivre]] et la pincée gardée."
+  },
+  "session": {
+   "0": "Mélange les pommes de terre avec 5 ml d'huile et [[sel]] (garde-en une pincée pour le bœuf).",
+   "3": "Ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant, avec l'ail, [[paprika fumé]], [[cumin]], [[poivre]] et la pincée gardée."
+  },
+  "note": "Paprika fumé et cumin dosés, sel partagé entre pommes de terre et bœuf, poivre ajouté."
+ },
+ {
+  "id": "W67",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "origan": 0.375,
+   "laurier": 0.25
+  },
+  "steps": {
+   "2": "Ajoute l'ail, [[cumin]], [[origan]], [[laurier]], [[sel]], [[poivre]], le concentré, les tomates, les pommes de terre, les olives, le vinaigre et 60 ml d'eau par portion. Mélange.",
+   "3": "Ferme et laisse cuire 5 minutes sous pression, puis fais tomber la pression. Les pommes de terre doivent être tendres mais garder leur forme. Retire la feuille de laurier."
+  },
+  "session": {
+   "1": "Ajoute l'ail, [[cumin]], [[origan]], [[laurier]], [[sel]], [[poivre]], le concentré, les tomates, les pommes de terre, les olives, le vinaigre et 60 ml d'eau par portion. Mélange.",
+   "2": "Ferme et laisse cuire 5 minutes sous pression, puis fais tomber la pression. Les pommes de terre doivent être tendres mais garder leur forme. Retire la feuille de laurier."
+  },
+  "note": "Le plat n'avait ni sel ni poivre : sel réduit à cause des olives, cumin et origan dosés, laurier ajouté comme dans le picadillo cubain."
+ },
+ {
+  "id": "W68",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "garam masala": 0.75,
+   "cumin": 0.5,
+   "coriandre moulue": 0.25,
+   "curcuma": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Dans l'autocuiseur en mode dorer, fais revenir l'oignon 4 minutes dans l'huile, puis l'ail, le gingembre, [[garam masala]], [[cumin]], [[coriandre moulue]], [[curcuma]] et [[piment]] 1 minute.",
+   "2": "Ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant, puis les tomates, les pommes de terre, [[sel]], [[poivre]] et 80 ml d'eau par portion."
+  },
+  "session": {
+   "0": "Dans l'autocuiseur en mode dorer, fais revenir l'oignon 4 minutes dans l'huile, puis l'ail, le gingembre, [[garam masala]], [[cumin]], [[coriandre moulue]], [[curcuma]] et [[piment]] 1 minute.",
+   "1": "Ajoute le bœuf et fais-le dorer 4 minutes en l'émiettant, puis les tomates, les pommes de terre, [[sel]], [[poivre]] et 80 ml d'eau par portion."
+  },
+  "note": "Le keema n'avait pas de sel : sel et poivre ajoutés, épices indiennes dosées et coriandre moulue pour arrondir."
+ },
+ {
+  "id": "W69",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "gingembre en poudre": 0.25,
+   "cannelle": 0.125,
+   "curcuma": 0.125
+  },
+  "steps": {
+   "0": "Coupe le poulet en morceaux de 3 cm et mélange-les avec la moitié d'un mélange de [[cumin]], [[paprika]], [[gingembre en poudre]], [[cannelle]], [[curcuma]], [[sel]] et [[poivre]] (garde une pincée de ce mélange pour la semoule), le miel et la moitié de l'huile.",
+   "1": "Mélange le chou-fleur et les pois chiches égouttés avec le reste du mélange d'épices et de l'huile. Fais-les cuire 15 minutes à l'air fryer à 200 °C, en secouant à mi-cuisson, puis réserve.",
+   "3": "Verse la semoule dans un saladier avec le même volume d'eau bouillante, la pincée de mélange gardée et un filet de jus de citron. Couvre 5 minutes, puis égrène-la à la fourchette.",
+   "4": "Prépare la sauce : le yaourt, la menthe ciselée et le reste du citron. Émince l'oignon rouge très finement."
+  },
+  "session": {
+   "0": "Mélange le poulet avec la moitié d'un mélange de [[cumin]], [[paprika]], [[gingembre en poudre]], [[cannelle]], [[curcuma]], [[sel]] et [[poivre]] (garde une pincée de ce mélange pour la semoule), le miel et la moitié de l'huile.",
+   "1": "Mélange le chou-fleur et les pois chiches égouttés avec le reste du mélange d'épices et de l'huile.",
+   "4": "Verse la semoule dans un saladier avec le même volume d'eau bouillante, la pincée de mélange gardée et un filet de jus de citron. Couvre 5 minutes.",
+   "6": "Prépare la sauce : le yaourt, la menthe ciselée et le reste du citron."
+  },
+  "note": "Mélange d'épices marocain dosé avec curcuma et poivre en plus, salé une seule fois, et une pincée du mélange pour parfumer la semoule."
+ },
+ {
+  "id": "W70",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "coriandre moulue": 0.25,
+   "curcuma": 0.25,
+   "cannelle": 0.125,
+   "cardamome": 0.0625
+  },
+  "steps": {
+   "0": "Coupe le poulet en lanières et mélange-les avec [[cumin]], [[paprika]], [[coriandre moulue]], [[curcuma]], [[cannelle]], [[cardamome]], [[poivre]], la moitié du citron, l'ail écrasé, l'huile et [[sel]] (garde-en une pincée pour le boulgour). Laisse mariner 15 minutes, ou toute la nuit au frigo.",
+   "2": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau et la pincée gardée : 4 minutes sous pression, puis 5 minutes de décompression naturelle. Égrène-le à la fourchette.",
+   "3": "Prépare la sauce : le tahini, le yaourt, le reste du citron et 2 cuillères à soupe d'eau, bien mélangés jusqu'à ce que ce soit lisse."
+  },
+  "session": {
+   "0": "Mélange le poulet avec [[cumin]], [[paprika]], [[coriandre moulue]], [[curcuma]], [[cannelle]], [[cardamome]], [[poivre]], la moitié du citron, l'ail écrasé, l'huile et [[sel]] (garde-en une pincée pour le boulgour). Laisse mariner 15 minutes, ou toute la nuit au frigo.",
+   "2": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau et la pincée gardée : 4 minutes sous pression, puis 5 minutes de décompression naturelle.",
+   "4": "Prépare la sauce : le tahini, le yaourt, le reste du citron et 2 cuillères à soupe d'eau, bien mélangés jusqu'à ce que ce soit lisse."
+  },
+  "note": "Marinade shawarma complétée par coriandre moulue, une pincée de cardamome et du poivre, sel compté une fois pour poulet et boulgour."
+ },
+ {
+  "id": "W71",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika fumé": 0.5,
+   "origan": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Rince le quinoa dans une passoire fine, puis mets-le dans l'autocuiseur avec 1,7 fois son poids d'eau. Ferme, laisse cuire 1 minute sous pression, puis laisse la pression retomber seule pendant 10 minutes. Égrène-le à la fourchette.",
+   "2": "Ajoute l'ail, [[cumin]], [[paprika fumé]], [[origan]], [[piment]], [[sel]], [[poivre]], les tomates, les haricots rouges rincés et le maïs égoutté. Laisse mijoter 5 minutes."
+  },
+  "session": {
+   "0": "Mets le quinoa dans l'autocuiseur avec 1,7 fois son poids d'eau.",
+   "5": "Ajoute l'ail, [[cumin]], [[paprika fumé]], [[origan]], [[piment]], [[sel]], [[poivre]], les tomates, les haricots rouges rincés et le maïs égoutté. Laisse mijoter 5 minutes."
+  },
+  "note": "Cumin et paprika fumé dosés, origan ajouté comme au Mexique, sel mis dans la sauce qui enrobe ensuite le quinoa."
+ },
+ {
+  "id": "W72",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "garam masala": 0.5,
+   "curry en poudre": 0.5,
+   "cumin": 0.5,
+   "curcuma": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Pâte à naans : mélange la farine, la levure, [[sel]] (une pincée dans la pâte, mets le reste de côté pour la sauce) et la moitié du yaourt, puis pétris 2 minutes jusqu'à obtenir une boule souple. Laisse reposer 15 minutes sous un torchon.",
+   "1": "Pendant ce temps, fais revenir l'oignon haché 4 minutes à la poêle avec l'huile, puis l'ail, le gingembre, [[garam masala]], [[curry en poudre]], [[cumin]], [[curcuma]] et [[piment]] 1 minute.",
+   "2": "Ajoute le poulet en dés et fais-le colorer 3 minutes, puis les tomates, les pois chiches égouttés, l'assaisonnement mis de côté, [[poivre]] et 60 ml d'eau par portion. Laisse mijoter 10 minutes, ajoute les épinards 2 minutes, puis, hors du feu, le reste du yaourt."
+  },
+  "session": {
+   "0": "Pâte à naans : mélange la farine, la levure, [[sel]] (une pincée dans la pâte, mets le reste de côté pour la sauce) et la moitié du yaourt, puis pétris 2 minutes jusqu'à obtenir une boule souple. Laisse reposer 15 minutes sous un torchon.",
+   "1": "Fais revenir l'oignon haché 4 minutes à la poêle avec l'huile, puis l'ail, le gingembre, [[garam masala]], [[curry en poudre]], [[cumin]], [[curcuma]] et [[piment]] 1 minute.",
+   "2": "Ajoute le poulet en dés et fais-le colorer 3 minutes, puis les tomates, les pois chiches égouttés, l'assaisonnement mis de côté, [[poivre]] et 60 ml d'eau par portion."
+  },
+  "note": "Le curry n'était pas salé : sel réparti entre pâte et curry (réduit pour l'emmental), cumin et une pointe de piment en plus."
+ },
+ {
+  "id": "W73",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika fumé": 0.75,
+   "cumin": 0.5,
+   "ail en poudre": 0.25,
+   "origan": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Ajoute [[paprika fumé]], [[cumin]], [[ail en poudre]], [[origan]], [[piment]], [[sel]], [[poivre]], le concentré, le miel, les haricots rouges rincés et 50 ml d'eau par portion. Laisse réduire 3 minutes, jusqu'à ce que ce soit bien enrobé."
+  },
+  "session": {
+   "1": "Ajoute [[paprika fumé]], [[cumin]], [[ail en poudre]], [[origan]], [[piment]], [[sel]], [[poivre]], le concentré, le miel, les haricots rouges rincés et 50 ml d'eau par portion. Laisse réduire 3 minutes, jusqu'à ce que ce soit bien enrobé."
+  },
+  "note": "Épices tex-mex dosées avec origan et une pointe de piment, peu de sel à cause du cheddar et des wraps."
+ },
+ {
+  "id": "W74",
+  "spices": {
+   "poivre": 0.1875,
+   "ail en poudre": 0.25
+  },
+  "steps": {
+   "2": "Monte le feu, ajoute le bœuf, la sauce soja, [[ail en poudre]] et [[poivre]], et fais-le sauter 2 minutes seulement, pour qu'il reste tendre."
+  },
+  "session": {
+   "1": "Monte le feu, ajoute le bœuf, la sauce soja, [[ail en poudre]] et [[poivre]], et fais-le sauter 2 minutes seulement, pour qu'il reste tendre."
+  },
+  "note": "Pas de sel (soja, cheddar, baguette) ; ail en poudre enfin placé dans une étape et poivre bien présent comme dans un cheesesteak."
+ },
+ {
+  "id": "W75",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "piment": 0.0625,
+   "laurier": 0.25
+  },
+  "steps": {
+   "2": "Délaye le beurre de cacahuète et le concentré dans 150 ml d'eau chaude par portion. Verse-les dans la cuve avec les tomates, la carotte, la patate douce, [[piment]], [[sel]], [[poivre]] et [[laurier]].",
+   "3": "Ferme et laisse cuire 25 minutes sous pression, puis laisse la pression retomber seule. La viande doit être fondante et la sauce épaisse ; laisse réduire quelques minutes en mode dorer si besoin. Retire la feuille de laurier."
+  },
+  "session": {
+   "2": "Verse le beurre de cacahuète délayé dans la cuve avec les tomates, la carotte, la patate douce, [[piment]], [[sel]], [[poivre]] et [[laurier]].",
+   "4": "La viande doit être fondante et la sauce épaisse ; laisse réduire quelques minutes en mode dorer si besoin. Retire la feuille de laurier."
+  },
+  "note": "Sel dosé (beurre de cacahuète déjà salé), poivre et laurier ajoutés comme dans un mafé classique."
+ },
+ {
+  "id": "W76",
+  "spices": {
+   "poivre": 0.125,
+   "curcuma": 0.25,
+   "paprika": 0.5,
+   "paprika fumé": 0.25
+  },
+  "steps": {
+   "3": "Ajoute le riz et remue 1 minute pour bien l'enrober, puis saupoudre de [[curcuma]], [[paprika]] et [[paprika fumé]].",
+   "5": "Ouvre, ajoute les crevettes et les petits pois surgelés et mélange 3 à 4 minutes en mode dorer, couvercle posé sans le fermer, jusqu'à ce que les crevettes soient bien roses. Ajoute [[poivre]] et parsème de persil."
+  },
+  "session": {
+   "2": "Ajoute le riz et remue 1 minute pour bien l'enrober, puis saupoudre de [[curcuma]], [[paprika]] et [[paprika fumé]].",
+   "5": "Ouvre, ajoute les crevettes et les petits pois surgelés et mélange 3 à 4 minutes en mode dorer, couvercle posé sans le fermer, jusqu'à ce que les crevettes soient bien roses. Ajoute [[poivre]] et parsème de persil."
+  },
+  "note": "Pas de sel (bouillon cube et crevettes) ; curcuma et paprika dosés, paprika fumé ajouté pour le côté chorizo de la paella."
+ },
+ {
+  "id": "W77",
+  "spices": {
+   "poivre": 0.125,
+   "curcuma": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "4": "Dans la même poêle, fais revenir l'ail, le gingembre et [[curcuma]] 30 secondes, puis les carottes et le poivron 3 minutes, et enfin les champignons et la courgette 2 minutes : les légumes doivent rester croquants.",
+   "5": "Remets le poulet, verse le miso délayé, ajoute [[poivre]] et [[piment]] (facultatif) et laisse réduire 2 minutes à feu moyen. Arrête le feu, ajoute les nouilles et mélange 1 minute pour bien les enrober de sauce."
+  },
+  "session": {
+   "5": "Dans la même poêle, fais revenir l'ail, le gingembre et [[curcuma]] 30 secondes, puis les carottes et le poivron 3 minutes, et enfin les champignons et la courgette 2 minutes : les légumes doivent rester croquants.",
+   "6": "Remets le poulet, verse le miso délayé, ajoute [[poivre]] et [[piment]] (facultatif) et laisse réduire 2 minutes à feu moyen."
+  },
+  "note": "Pas de sel (miso) ; curcuma dosé, poivre et pointe de piment facultative dans la sauce."
+ },
+ {
+  "id": "W78",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.75,
+   "coriandre moulue": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "2": "Ajoute l'ail, [[cumin]], [[paprika]], [[coriandre moulue]] et [[piment]], et fais griller 1 minute. Ajoute les tomates et laisse compoter 5 minutes à feu moyen, puis les pois chiches, 3 minutes. Ajoute [[sel]] (garde-en une pincée pour les œufs).",
+   "3": "Creuse un petit puits par œuf dans la sauce, casse un œuf dans chacun, ajoute la pincée gardée et [[poivre]]. Couvre et laisse cuire 8 à 10 minutes à feu doux, jusqu'à ce que le blanc soit pris et le jaune cuit : il tiendra mieux au réchauffage."
+  },
+  "session": {
+   "1": "Ajoute l'ail, [[cumin]], [[paprika]], [[coriandre moulue]] et [[piment]], et fais griller 1 minute.",
+   "2": "Ajoute les tomates et laisse compoter 5 minutes à feu moyen, puis les pois chiches, 3 minutes. Ajoute [[sel]] (garde-en une pincée pour les œufs).",
+   "3": "Creuse un petit puits par œuf dans la sauce, casse un œuf dans chacun, ajoute la pincée gardée et [[poivre]]."
+  },
+  "note": "Sel enfin dosé (au lieu de « sale légèrement »), cumin, paprika et coriandre dosés, pointe de piment pour la chakchouka."
+ },
+ {
+  "id": "W79",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.375,
+   "gingembre en poudre": 0.125,
+   "paprika fumé": 0.25
+  },
+  "steps": {
+   "0": "Rince les lentilles, puis mets-les dans l'autocuiseur avec 3 fois leur poids d'eau froide, sans saler. Ferme, laisse cuire 8 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes. Égoutte-les et laisse-les refroidir.",
+   "1": "Prépare la vinaigrette : l'huile d'olive, le vinaigre de cidre, [[cumin]], [[gingembre en poudre]], [[paprika fumé]], l'ail écrasé, [[sel]] et [[poivre]]."
+  },
+  "session": {
+   "0": "Mets les lentilles dans l'autocuiseur avec 3 fois leur poids d'eau froide, sans saler.",
+   "3": "Prépare la vinaigrette : l'huile d'olive, le vinaigre de cidre, [[cumin]], [[gingembre en poudre]], [[paprika fumé]], l'ail écrasé, [[sel]] et [[poivre]]."
+  },
+  "note": "Les lentilles n'étaient pas salées : un peu de sel dans la vinaigrette (sardines déjà salées), épices dosées pour une vinaigrette crue."
+ },
+ {
+  "id": "W80",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "aneth séché": 0.125
+  },
+  "steps": {
+   "0": "Coupe les pommes de terre en cubes de 2 cm avec la peau. Mets-les dans l'autocuiseur avec 100 ml d'eau froide, ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance. Égoutte-les.",
+   "1": "Prépare la vinaigrette : la moutarde, le jus de citron, l'huile d'olive, [[sel]], [[poivre]] et [[aneth séché]]. Mélange-la aux pommes de terre encore chaudes : elles s'en imprègnent."
+  },
+  "session": {
+   "0": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide, ferme et laisse cuire 4 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+   "2": "Prépare la vinaigrette : la moutarde, le jus de citron, l'huile d'olive, [[sel]], [[poivre]] et [[aneth séché]]."
+  },
+  "note": "Sel compté une seule fois dans la vinaigrette (maquereau et moutarde salent déjà), aneth séché ajouté, classique avec maquereau et pommes de terre."
+ },
+ {
+  "id": "W81",
+  "spices": {
+   "poivre": 0.125,
+   "origan": 0.25,
+   "paprika": 0.5,
+   "thym": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "2": "Dans la même poêle, fais cuire le poulet 6 à 7 minutes avec le reste de l'huile, [[origan]], [[thym]], [[paprika]], [[piment]] et [[poivre]], jusqu'à ce qu'il soit doré et plus rose au centre."
+  },
+  "session": {
+   "1": "Dans la même poêle, fais cuire le poulet 6 à 7 minutes avec le reste de l'huile, [[origan]], [[thym]], [[paprika]], [[piment]] et [[poivre]], jusqu'à ce qu'il soit doré et ne soit plus rose au centre."
+  },
+  "note": "Pas de sel (parmesan, bouillon, tomates séchées) ; origan et paprika dosés, thym et une pointe de piment comme dans la recette d'origine."
+ },
+ {
+  "id": "W82",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "1": "Dans la poêle à feu moyen-doux, fais confire les oignons 20 minutes avec les deux tiers de l'huile et [[sel]] (garde-en une pincée pour la purée), en remuant de temps en temps : ils doivent être bien dorés et fondants. Ajoute une cuillère d'eau s'ils accrochent.",
+   "2": "Pousse les oignons sur le côté et fais dorer le poulet 6 à 7 minutes avec le reste de l'huile et [[thym]], jusqu'à ce qu'il ne soit plus rose au centre.",
+   "3": "Délaye la fécule dans 80 ml d'eau froide par portion avec le bouillon cube émietté et [[poivre]], verse dans la poêle et laisse épaissir 2 minutes en remuant : c'est le jus de la soupe à l'oignon.",
+   "4": "Épluche les pommes de terre et coupe-les en cubes de 3 cm. Mets-les dans l'autocuiseur avec 100 ml d'eau froide par portion, ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance. Égoutte, écrase-les à la fourchette avec le lait chaud, la pincée gardée et [[muscade]]."
+  },
+  "session": {
+   "0": "Dans la poêle à feu moyen-doux, fais confire les oignons 20 minutes avec les deux tiers de l'huile et [[sel]] (garde-en une pincée pour la purée), en remuant de temps en temps : ils doivent être bien dorés et fondants. Ajoute une cuillère d'eau s'ils accrochent.",
+   "1": "Pousse les oignons sur le côté et fais dorer le poulet 6 à 7 minutes avec le reste de l'huile et [[thym]], jusqu'à ce qu'il ne soit plus rose au centre.",
+   "2": "Délaye la fécule dans 80 ml d'eau froide par portion avec le bouillon cube émietté et [[poivre]], verse dans la poêle et laisse épaissir 2 minutes en remuant : c'est le jus de la soupe à l'oignon.",
+   "3": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide par portion, ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+   "4": "Égoutte les pommes de terre et écrase-les à la fourchette avec le lait chaud, la pincée gardée et [[muscade]]."
+  },
+  "note": "Sel réduit (bouillon, emmental) et compté une fois, poivre dans le jus comme une soupe à l'oignon, muscade dans la purée."
+ },
+ {
+  "id": "W83",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "menthe séchée": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Hache l'oignon. Écrase une gousse d'ail dans le yaourt avec une pincée prise sur [[sel]] mesuré dans une coupelle : c'est la sauce yaourt. Garde le reste de la coupelle pour le bœuf.",
+   "1": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis ajoute le bœuf et fais-le dorer 5 minutes en l'émiettant, jusqu'à ce qu'il ne soit plus rose. Ajoute l'autre gousse d'ail, le concentré, [[cumin]], [[poivre]], le reste de la coupelle et 2 cuillères à soupe d'eau, et laisse cuire 2 minutes.",
+   "2": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les au bœuf avec l'eau de cuisson gardée.",
+   "3": "Fais fondre le beurre 1 minute dans une petite poêle avec [[paprika]], [[menthe séchée]] et [[piment]], sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot."
+  },
+  "session": {
+   "0": "Mélange une gousse d'ail écrasée au yaourt avec une pincée prise sur [[sel]] mesuré dans une coupelle : c'est la sauce yaourt. Garde le reste de la coupelle pour le bœuf.",
+   "2": "Ajoute l'autre gousse d'ail, le concentré, [[cumin]], [[poivre]], le reste de la coupelle et 2 cuillères à soupe d'eau, et laisse cuire 2 minutes.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+   "6": "Fais fondre le beurre 1 minute dans une petite poêle avec [[paprika]], [[menthe séchée]] et [[piment]], sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot."
+  },
+  "note": "Le bœuf n'était pas salé : sel compté une fois (sauce yaourt puis bœuf, les pâtes en profitent), poivre, et menthe séchée dans le beurre au paprika à la turque."
+ },
+ {
+  "id": "W84",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "laurier": 0.25,
+   "ail en poudre": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "3": "Remets le bœuf, ajoute les carottes, [[thym]], [[laurier]], [[ail en poudre]], [[poivre]], le bouillon cube émietté et 150 ml d'eau froide par portion. Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes : le bœuf doit se couper à la fourchette.",
+   "4": "Délaye la fécule dans un peu d'eau froide, verse-la et laisse épaissir 2 minutes en mode dorer, en remuant. Retire la feuille de laurier. Verse le bourguignon dans un plat et rince la cuve.",
+   "5": "Épluche les pommes de terre et coupe-les en cubes de 3 cm. Mets-les dans l'autocuiseur avec 100 ml d'eau froide par portion, ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance. Égoutte, écrase-les à la fourchette avec le lait chaud, [[sel]] et [[muscade]]."
+  },
+  "session": {
+   "2": "Remets le bœuf, ajoute les carottes, [[thym]], [[laurier]], [[ail en poudre]], [[poivre]], le bouillon cube émietté et 150 ml d'eau froide par portion.",
+   "4": "Délaye la fécule dans un peu d'eau froide, verse-la et laisse épaissir 2 minutes en mode dorer, en remuant. Retire la feuille de laurier.",
+   "6": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide par portion, ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+   "7": "Égoutte les pommes de terre et écrase-les à la fourchette avec le lait chaud, [[sel]] et [[muscade]]."
+  },
+  "note": "Sel réduit et mis dans la purée (le bouillon sale le bourguignon), ail en poudre puisqu'il n'y a pas d'ail frais, poivre et muscade ajoutés."
+ },
+ {
+  "id": "W85",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Dans la même poêle, fais revenir l'oignon et les champignons 6 minutes à feu vif, jusqu'à ce qu'ils soient dorés, puis l'ail, [[thym]] et les châtaignes, 2 minutes.",
+   "3": "Ajoute 60 ml d'eau par portion avec le bouillon cube émietté, remets le poulet et laisse réduire 2 minutes. Hors du feu, ajoute la crème, [[muscade]] et [[poivre]], et mélange.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les à la sauce avec l'eau de cuisson gardée."
+  },
+  "session": {
+   "1": "Dans la même poêle, fais revenir l'oignon et les champignons 6 minutes à feu vif, jusqu'à ce qu'ils soient dorés, puis l'ail, [[thym]] et les châtaignes, 2 minutes.",
+   "3": "Hors du feu, ajoute la crème, [[muscade]] et [[poivre]], et mélange.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Sel compté avec le bouillon et le parmesan (dans l'eau des pâtes), thym dosé pour les champignons, pincée de muscade et poivre dans la sauce à la crème."
+ },
+ {
+  "id": "W89",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika fumé": 0.75,
+   "origan": 0.25,
+   "cannelle": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, puis le bœuf 5 minutes en l'émiettant, jusqu'à ce qu'il ne soit plus rose. Ajoute l'ail, [[cumin]], [[paprika fumé]], [[origan]], [[cannelle]] et [[piment]], 1 minute.",
+   "3": "Ajoute le chocolat noir en morceaux et remue jusqu'à ce qu'il fonde : il ne se sent pas, mais il donne une sauce profonde et ronde. Ajoute [[sel]] et [[poivre]], et mélange."
+  },
+  "session": {
+   "1": "Ajoute l'ail, [[cumin]], [[paprika fumé]], [[origan]], [[cannelle]] et [[piment]], 1 minute.",
+   "4": "Ajoute le chocolat noir en morceaux et remue jusqu'à ce qu'il fonde : il ne se sent pas, mais il donne une sauce profonde et ronde. Ajoute [[sel]] et [[poivre]], et mélange."
+  },
+  "note": "Chili sans ingrédient salé : sel plein, cumin et paprika fumé bien dosés, origan (base mexicaine) et une pointe de cannelle qui accompagne le chocolat, piment doux."
+ },
+ {
+  "id": "W90",
+  "spices": {
+   "sel": 0.125,
+   "coriandre moulue": 0.25
+  },
+  "steps": {
+   "2": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis l'ail, le gingembre, la pâte de curry et [[coriandre moulue]], 1 minute.",
+   "3": "Ajoute la courge, le lait de coco, [[sel]] et 80 ml d'eau par portion. Couvre et laisse mijoter 12 à 15 minutes, jusqu'à ce que la courge soit tendre ; écrase-en quelques morceaux pour épaissir la sauce."
+  },
+  "session": {
+   "1": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis l'ail, le gingembre, la pâte de curry et [[coriandre moulue]], 1 minute.",
+   "2": "Ajoute la courge, le lait de coco, [[sel]] et 80 ml d'eau par portion."
+  },
+  "note": "La pâte de curry apporte piment et sel : léger sel pour la courge et le riz nature, coriandre moulue pour arrondir le curry."
+ },
+ {
+  "id": "W93",
+  "spices": {
+   "poivre": 0.125,
+   "thym": 0.125,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Fais revenir l'oignon et les champignons 4 minutes avec le reste de l'huile, puis la courge, l'ail et [[thym]], 2 minutes.",
+   "5": "Remue énergiquement 1 minute : la courge fond et rend le risotto crémeux. Ajoute le parmesan râpé et le poulet avec [[muscade]] et [[poivre]], puis mélange."
+  },
+  "session": {
+   "1": "Fais revenir l'oignon et les champignons 4 minutes avec le reste de l'huile, puis la courge, l'ail et [[thym]], 2 minutes.",
+   "6": "Ajoute le parmesan râpé et le poulet avec [[muscade]] et [[poivre]], puis mélange."
+  },
+  "note": "Pas de sel (demi-bouillon cube et parmesan suffisent) ; thym pour les champignons, pincée de muscade pour la courge, poivre dosé."
+ },
+ {
+  "id": "W94",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125
+  },
+  "steps": {
+   "0": "Coupe les poireaux en fines rondelles et rince-les, émince l'oignon. Retire la peau du saumon et sale-le avec [[sel]].",
+   "4": "Remue énergiquement 1 minute, puis ajoute la crème, le parmesan, le jus de citron et [[poivre]]. Pose le saumon par-dessus."
+  },
+  "session": {
+   "0": "Sale légèrement le saumon, avec [[sel]], pose-le dans le panier et fais-le cuire 8 minutes à l'air fryer à 190 °C : le centre doit rester juste nacré.",
+   "5": "Remue énergiquement 1 minute, puis ajoute la crème, le parmesan, le jus de citron et [[poivre]]."
+  },
+  "note": "Bouillon et parmesan salent déjà le risotto : juste une pincée de sel sur le saumon et du poivre dans la crème."
+ },
+ {
+  "id": "W95",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "laurier": 0.25
+  },
+  "steps": {
+   "4": "Verse 100 ml d'eau par portion avec le bouillon cube émietté, le vinaigre de cidre, [[thym]], [[laurier]], [[sel]] et [[poivre]]. Couvre et laisse mijoter 20 minutes à feu doux : le poulet doit être tendre."
+  },
+  "session": {
+   "2": "Verse 100 ml d'eau par portion avec le bouillon cube émietté, le vinaigre de cidre, [[thym]], [[laurier]], [[sel]] et [[poivre]]."
+  },
+  "note": "Sel modéré (un quart de bouillon, riz nature), thym dosé et une feuille de laurier pour quatre dans le mijotage, poivre."
+ },
+ {
+  "id": "W97",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "0": "Coupe la courge épluchée en cubes de 1,5 cm, mélange-les avec l'huile et fais-les rôtir 18 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson, jusqu'à ce qu'ils soient dorés.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+   "4": "Mélange les pâtes au beurre noisette avec l'eau de cuisson gardée, la courge, le poulet, [[muscade]], [[sel]] et [[poivre]]."
+  },
+  "session": {
+   "0": "Mélange les cubes de courge avec l'huile.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+   "6": "Mélange les pâtes au beurre noisette avec l'eau de cuisson gardée, la courge, le poulet, [[muscade]], [[sel]] et [[poivre]]."
+  },
+  "note": "Sel regroupé dans le beurre noisette au mélange final (le parmesan est à part), muscade dosée pour la courge et poivre."
+ },
+ {
+  "id": "W98",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.25,
+   "paprika": 0.5,
+   "ail en poudre": 0.25
+  },
+  "steps": {
+   "0": "Coupe la patate douce en quartiers avec la peau, mélange-les avec les deux tiers de l'huile, [[paprika]] et [[ail en poudre]]. Fais-les rôtir 20 minutes à l'air fryer à 200 °C, en secouant le panier à mi-cuisson.",
+   "2": "Coupe le bœuf en tranches de 1 cm et roule-le dans [[sel]] et [[poivre]] concassé. Dans la poêle très chaude avec le reste de l'huile, saisis-le 1 minute de chaque côté : il doit rester rosé. Réserve-le."
+  },
+  "session": {
+   "0": "Mélange les quartiers de patate douce avec les deux tiers de l'huile, [[paprika]] et [[ail en poudre]].",
+   "3": "Sale le bœuf et roule-le dans [[sel]] et [[poivre]] concassé."
+  },
+  "note": "Plat au poivre (0,25), sel sur le bœuf seulement car bouillon et moutarde salent la sauce, ail en poudre avec le paprika pour relever les patates douces."
+ },
+ {
+  "id": "W101",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "1": "Émince les champignons et écrase l'ail. Fais-les dorer 8 minutes à la poêle très chaude avec l'huile, sans remuer au début, puis ajoute l'ail, [[thym]], [[poivre]] et le beurre, 1 minute.",
+   "2": "Dans l'autocuiseur rincé, en mode dorer, porte à frémissement le lait avec 2 fois le poids de la polenta en eau, [[sel]] et [[muscade]]. Verse la polenta en pluie en fouettant et laisse cuire le temps indiqué sur le paquet (souvent 5 minutes), en remuant sans arrêt. Hors du feu, ajoute le parmesan."
+  },
+  "session": {
+   "3": "Fais dorer les champignons 8 minutes à la poêle très chaude avec l'huile, sans remuer au début, puis ajoute l'ail, [[thym]], [[poivre]] et le beurre, 1 minute.",
+   "4": "Dans l'autocuiseur rincé, en mode dorer, porte à frémissement le lait avec 2 fois le poids de la polenta en eau, [[sel]] et [[muscade]]."
+  },
+  "note": "Sel dosé dans la polenta (le parmesan complète), muscade dans la polenta au lait, thym et poivre sur les champignons."
+ },
+ {
+  "id": "SO07",
+  "spices": {
+   "poivre": 0.125,
+   "origan": 0.5,
+   "paprika": 0.5,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, puis le poulet 4 minutes, jusqu'à ce qu'il soit doré. Ajoute l'ail, les tomates séchées, [[origan]], [[paprika]], [[piment]] et [[poivre]], 1 minute.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion."
+  },
+  "session": {
+   "1": "Ajoute l'ail, les tomates séchées, [[origan]], [[paprika]], [[piment]] et [[poivre]], 1 minute.",
+   "7": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Bouillon, parmesan et tomates séchées salent assez : aucun sel, même dans les pâtes ; paprika ajouté comme dans le « marry me chicken », origan dosé, piment doux."
+ },
+ {
+  "id": "SO08",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Ajoute les châtaignes, le bouillon cube émietté, [[thym]], [[sel]], 300 ml d'eau froide par portion et le poulet entier. Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : le poulet ne doit plus être rose au centre.",
+   "3": "Sors le poulet et effiloche-le à la fourchette. Mixe la soupe au mixeur plongeant jusqu'à ce qu'elle soit veloutée, puis ajoute la crème, [[muscade]] et [[poivre]], et remets le poulet."
+  },
+  "session": {
+   "1": "Ajoute les châtaignes, le bouillon cube émietté, [[thym]], [[sel]], 300 ml d'eau froide par portion et le poulet entier.",
+   "4": "Mixe la soupe au mixeur plongeant jusqu'à ce qu'elle soit veloutée, puis ajoute la crème, [[muscade]] et [[poivre]], et remets le poulet."
+  },
+  "note": "Demi-bouillon déjà salé : juste une pincée de sel ; thym dosé, muscade et poivre pour relever le velouté crémeux."
+ },
+ {
+  "id": "SO09",
+  "spices": {
+   "poivre": 0.125,
+   "thym": 0.25,
+   "laurier": 0.25
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais confire les oignons 20 minutes dans l'huile, en remuant souvent, jusqu'à ce qu'ils soient bien bruns. Ajoute une cuillère d'eau s'ils accrochent.",
+   "2": "Ajoute le bœuf, le liquide et les aromates : les bouillons cubes émiettés, 350 ml d'eau froide par portion, [[thym]], [[laurier]] et [[poivre]]. Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais confire les oignons 20 minutes dans l'huile, en remuant souvent, jusqu'à ce qu'ils soient bien bruns. Ajoute une cuillère d'eau s'ils accrochent.",
+   "1": "Ajoute le bœuf, le liquide et les aromates : les bouillons cubes émiettés, 350 ml d'eau froide par portion, [[thym]], [[laurier]] et [[poivre]]."
+  },
+  "note": "Trois quarts de bouillon cube et emmental : pas de sel ajouté ; thym et laurier dosés, poivre indispensable dans une soupe à l'oignon."
+ },
+ {
+  "id": "SO10",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "laurier": 0.25,
+   "paprika": 0.25
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais dorer le bœuf 4 minutes dans l'huile, puis l'oignon et les carottes, 3 minutes. Ajoute le concentré, l'ail et [[paprika]], 1 minute.",
+   "2": "Ajoute le bouillon cube émietté, [[laurier]] et 350 ml d'eau froide par portion. Ferme et laisse cuire 25 minutes sous pression, puis fais tomber la pression.",
+   "3": "Ajoute le chou, les pommes de terre, la betterave et le vinaigre de cidre. Referme et laisse cuire 5 minutes sous pression, puis fais tomber la pression : le chou et les pommes de terre doivent être tendres. Ajoute [[sel]] et [[poivre]], et mélange."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais dorer le bœuf 4 minutes dans l'huile, puis l'oignon et les carottes, 3 minutes. Ajoute le concentré, l'ail et [[paprika]], 1 minute.",
+   "1": "Ajoute le bouillon cube émietté, [[laurier]] et 350 ml d'eau froide par portion.",
+   "5": "Goûte et sale le bortsch avec [[sel]], puis ajoute [[poivre]]."
+  },
+  "note": "Le laurier listé n'apparaissait dans aucune étape : placé dans le bouillon ; sel modéré, poivre et un peu de paprika avec le concentré pour la rondeur."
+ },
+ {
+  "id": "SO11",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika": 1,
+   "cumin": 0.25,
+   "origan": 0.25,
+   "laurier": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "2": "Arrête le feu, ajoute [[paprika]], [[cumin]], [[origan]], [[piment]] et l'ail, et remue 30 secondes : il ne doit pas brûler, il deviendrait amer. Ajoute le concentré.",
+   "3": "Ajoute la carotte, le bouillon cube émietté, [[laurier]], [[sel]], [[poivre]] et 300 ml d'eau froide par portion. Ferme et laisse cuire 25 minutes sous pression, puis fais tomber la pression."
+  },
+  "session": {
+   "1": "Arrête le feu, ajoute [[paprika]], [[cumin]], [[origan]], [[piment]] et l'ail, et remue 30 secondes : il ne doit pas brûler, il deviendrait amer. Ajoute le concentré.",
+   "2": "Ajoute la carotte, le bouillon cube émietté, [[laurier]], [[sel]], [[poivre]] et 300 ml d'eau froide par portion."
+  },
+  "note": "Goulash bien relevé : paprika à 1 c. à café, cumin plus discret (rôle du carvi), origan pour la marjolaine, laurier, pointe de piment, sel modéré avec le bouillon."
+ },
+ {
+  "id": "SO15",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "menthe séchée": 0.25,
+   "piment d'Espelette": 0.125
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais fondre l'oignon et la carotte 4 minutes avec la moitié du beurre, puis ajoute le concentré et [[cumin]], 1 minute.",
+   "3": "Mixe au mixeur plongeant jusqu'à ce que ce soit bien lisse. Ajoute [[sel]] et [[poivre]], et goûte.",
+   "4": "Fais fondre le reste du beurre 1 minute avec [[paprika]], [[piment d'Espelette]] et [[menthe séchée]], sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais fondre l'oignon et la carotte 4 minutes avec la moitié du beurre, puis ajoute le concentré et [[cumin]], 1 minute.",
+   "3": "Mixe la soupe au mixeur plongeant jusqu'à ce qu'elle soit bien lisse. Ajoute [[sel]] et [[poivre]], et goûte.",
+   "4": "Fais fondre le reste du beurre 1 minute avec [[paprika]], [[piment d'Espelette]] et [[menthe séchée]], sans le laisser brunir : c'est le beurre au paprika. Verse-le dans un petit pot."
+  },
+  "note": "Cumin et paprika dosés, menthe séchée à 0,25, piment d'Espelette dans le beurre comme le pul biber turc, sel modéré avec le demi-bouillon."
+ },
+ {
+  "id": "W102",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "laurier": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et les champignons 4 minutes dans le beurre, sans les colorer. Ajoute le poulet, les carottes, [[thym]], [[laurier]], [[sel]], le bouillon cube émietté et 120 ml d'eau froide par portion. Ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression.",
+   "2": "Délaye la fécule dans un peu d'eau froide, verse-la et laisse épaissir 2 minutes en mode dorer, en remuant. Hors du feu, ajoute la crème, le jus de citron, [[muscade]] et [[poivre]] : la sauce doit napper la cuillère. Verse la blanquette dans un plat et rince la cuve."
+  },
+  "session": {
+   "1": "Ajoute le poulet, les carottes, [[thym]], [[laurier]], [[sel]], le bouillon cube émietté et 120 ml d'eau froide par portion.",
+   "4": "Hors du feu, ajoute la crème, le jus de citron, [[muscade]] et [[poivre]] : la sauce doit napper la cuillère."
+  },
+  "note": "Blanquette : thym et laurier dosés, pincée de muscade et poivre dans la sauce à la crème, sel modéré avec le quart de bouillon."
+ },
+ {
+  "id": "W104",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "1": "Dans la poêle, fais dorer le poulet 6 à 7 minutes dans l'huile, jusqu'à ce qu'il ne soit plus rose au centre. Réserve-le, puis fais dorer les champignons 5 minutes à feu vif avec l'ail et [[thym]].",
+   "2": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion.",
+   "3": "Remets le poulet dans la poêle avec les pâtes, les épinards surgelés et l'eau de cuisson gardée. Laisse chauffer 3 minutes, puis ajoute le Boursin hors du feu avec [[muscade]] et [[poivre]], et mélange jusqu'à ce qu'il fonde en sauce crémeuse."
+  },
+  "session": {
+   "1": "Fais dorer les champignons 5 minutes à feu vif avec l'ail et [[thym]].",
+   "2": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+   "5": "Laisse chauffer 3 minutes, puis ajoute le Boursin hors du feu avec [[muscade]] et [[poivre]], et mélange jusqu'à ce qu'il fonde en sauce crémeuse."
+  },
+  "note": "Le Boursin sale déjà la sauce : sel modéré dans l'eau des pâtes ; thym sur les champignons, muscade et poivre dans la sauce crémeuse aux épinards."
+ },
+ {
+  "id": "W105",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "0": "Coupe la patate douce en frites de 1 cm avec la peau. Mélange-les avec la moitié de l'huile, [[paprika]] et [[sel]].",
+   "3": "Ajoute le lait, la crème et le maroilles coupé en dés, sans la croûte, [[muscade]] et [[poivre]]. Laisse fondre 3 minutes à feu doux en remuant, jusqu'à ce que la sauce soit lisse et nappante."
+  },
+  "session": {
+   "0": "Mélange les frites de patate douce avec la moitié de l'huile, [[paprika]] et [[sel]].",
+   "3": "Ajoute le lait, la crème, le maroilles, [[muscade]] et [[poivre]]. Laisse fondre 3 minutes à feu doux en remuant, jusqu'à ce que la sauce soit lisse et nappante."
+  },
+  "note": "Maroilles très salé : sel seulement sur les frites avec le paprika dosé ; poivre et muscade dans la sauce."
+ },
+ {
+  "id": "W106",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "ail en poudre": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans la moitié de l'huile. Ajoute le potimarron, le bouillon cube émietté, [[thym]], [[ail en poudre]] et 100 ml d'eau froide par portion. Ferme et laisse cuire 6 minutes sous pression, puis fais tomber la pression. Écrase le potimarron à la fourchette avec la crème et [[muscade]] : c'est la sauce.",
+   "2": "Dans la poêle, fais dorer le poulet 6 à 7 minutes dans le reste de l'huile avec [[sel]] et [[poivre]], jusqu'à ce qu'il ne soit plus rose au centre. Ajoute les gnocchis et 2 cuillères à soupe d'eau par portion, couvre et laisse 4 minutes : ils doivent être tendres."
+  },
+  "session": {
+   "1": "Ajoute le potimarron, le bouillon cube émietté, [[thym]], [[ail en poudre]] et 100 ml d'eau froide par portion.",
+   "3": "Écrase le potimarron à la fourchette avec la crème et [[muscade]] : c'est la sauce.",
+   "4": "Dans la poêle, fais dorer le poulet 6 à 7 minutes dans le reste de l'huile avec [[sel]] et [[poivre]], jusqu'à ce qu'il ne soit plus rose au centre."
+  },
+  "note": "Plat sans aucune épice : ail en poudre (pas d'ail frais) et thym dans le potimarron, muscade dans la crème, sel et poivre sur le poulet."
+ },
+ {
+  "id": "W107",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "thym": 0.25,
+   "laurier": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Remets le bœuf, verse la bière, ajoute [[thym]], [[laurier]], le bouillon cube émietté et 60 ml d'eau froide par portion. Tartine le pain d'épices de moutarde et pose-le dessus, côté moutarde vers le bas. Ferme et laisse cuire 30 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes : le bœuf doit se couper à la fourchette.",
+   "4": "Épluche les pommes de terre et coupe-les en cubes de 3 cm. Mets-les dans l'autocuiseur avec 100 ml d'eau froide par portion et [[sel]], ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance. Égoutte, écrase-les à la fourchette avec le lait chaud, [[muscade]] et [[poivre]]."
+  },
+  "session": {
+   "2": "Remets le bœuf, verse la bière, ajoute [[thym]], [[laurier]], le bouillon cube émietté et 60 ml d'eau froide par portion.",
+   "8": "Mets les pommes de terre dans l'autocuiseur avec 100 ml d'eau froide par portion et [[sel]], ferme et laisse cuire 8 minutes sous pression, puis fais tomber la pression : une lame doit s'enfoncer sans résistance.",
+   "9": "Égoutte les pommes de terre et écrase-les à la fourchette avec le lait chaud, [[muscade]] et [[poivre]]."
+  },
+  "note": "Sel regroupé dans la cuisson des pommes de terre (bouillon et moutarde salent la carbonade), thym et laurier dosés, muscade et poivre dans la purée."
+ },
+ {
+  "id": "W109",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "origan": 0.5,
+   "laurier": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Ajoute les tomates, [[origan]], [[laurier]], [[muscade]], [[sel]], [[poivre]], le bouillon cube émietté et 80 ml d'eau froide par portion. Ferme et laisse cuire 40 minutes sous pression, puis laisse la pression retomber seule pendant 10 minutes : le bœuf doit s'effilocher à la fourchette.",
+   "4": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte, en gardant 3 cuillères à soupe d'eau de cuisson par portion. Mélange-les au ragù avec l'eau de cuisson gardée."
+  },
+  "session": {
+   "2": "Ajoute les tomates, [[origan]], [[laurier]], [[muscade]], [[sel]], [[poivre]], le bouillon cube émietté et 80 ml d'eau froide par portion.",
+   "7": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes)."
+  },
+  "note": "Sel regroupé dans le ragù où les pâtes finissent, origan dosé, laurier, pincée de muscade comme dans un ragù bolognais, poivre."
+ },
+ {
+  "id": "W110",
+  "spices": {
+   "poivre": 0.125,
+   "paprika": 0.5,
+   "piment": 0.0625,
+   "thym": 0.125
+  },
+  "steps": {
+   "2": "Dans une grande poêle, fais dorer les champignons 5 minutes à feu vif dans la moitié de l'huile avec [[thym]]. Ajoute l'orzo et l'ail, et remue 1 minute.",
+   "4": "Pendant ce temps, fais saisir les crevettes 2 minutes dans une autre poêle avec le reste de l'huile, [[paprika]] et [[piment]] : elles doivent juste devenir roses.",
+   "5": "Hors du feu, ajoute à l'orzo la crème, le parmesan râpé, le jus de citron et [[poivre]], puis les crevettes. Mélange."
+  },
+  "session": {
+   "1": "Dans une grande poêle, fais dorer les champignons 5 minutes à feu vif dans la moitié de l'huile avec [[thym]].",
+   "4": "Fais saisir les crevettes 2 minutes dans une autre poêle avec le reste de l'huile, [[paprika]] et [[piment]] : elles doivent juste devenir roses.",
+   "5": "Hors du feu, ajoute à l'orzo la crème, le parmesan râpé, le jus de citron et [[poivre]], puis les crevettes. Mélange."
+  },
+  "note": "Demi-bouillon et parmesan : aucun sel ; paprika dosé et pointe de piment sur les crevettes, thym sur les champignons, poivre au final."
+ },
+ {
+  "id": "W114",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "2": "Dans la même poêle, fais fondre les épinards surgelés 4 minutes, puis ajoute le lait, la crème et le gorgonzola en morceaux, avec [[muscade]], [[poivre]] et [[sel]]. Laisse fondre 2 minutes à feu doux en remuant, jusqu'à ce que la sauce soit lisse."
+  },
+  "session": {
+   "2": "Ajoute le lait, la crème et le gorgonzola, avec [[muscade]], [[poivre]] et [[sel]], et laisse fondre 2 minutes à feu doux en remuant, jusqu'à ce que la sauce soit lisse."
+  },
+  "note": "Sel réduit (gorgonzola déjà salé), poivre et une pincée de muscade, classique avec épinards et crème."
+ },
+ {
+  "id": "W31",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cinq-épices": 0.125
+  },
+  "steps": {
+   "1": "Mélange le poulet haché cru avec les légumes, le gingembre, l'ail, la moitié de la sauce soja, [[cinq-épices]], [[poivre]] et [[sel]]."
+  },
+  "session": {
+   "1": "Mélange le poulet haché cru avec les légumes, le gingembre, l'ail, la moitié de la sauce soja, [[cinq-épices]], [[poivre]] et [[sel]]."
+  },
+  "note": "Farce relevée au cinq-épices et au poivre, sel modéré car seule la moitié de la sauce soja (allégée) va dans la farce."
+ },
+ {
+  "id": "W32",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "paprika fumé": 0.5,
+   "cumin": 0.5,
+   "ail en poudre": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "0": "Coupe la patate douce en cubes de 2 cm, sans l'éplucher si tu veux. Mélange-la avec l'huile et [[paprika fumé]].",
+   "2": "Fais cuire le bœuf 6 à 7 minutes à la poêle avec [[cumin]], [[ail en poudre]], [[sel]] et [[poivre]], en l'émiettant, jusqu'à ce qu'il ne soit plus rose.",
+   "3": "Prépare le miel pimenté : mélange le miel avec [[piment]], dans un petit pot."
+  },
+  "session": {
+   "0": "Mélange la patate douce avec l'huile et [[paprika fumé]].",
+   "2": "Fais cuire le bœuf 6 à 7 minutes à la poêle avec [[cumin]], [[ail en poudre]], [[sel]] et [[poivre]], en l'émiettant, jusqu'à ce qu'il ne soit plus rose.",
+   "3": "Prépare le miel pimenté : mélange le miel avec [[piment]], dans un petit pot."
+  },
+  "note": "Épices existantes dosées franchement (paprika fumé, cumin), sel plein car aucun ingrédient salé, poivre ajouté."
+ },
+ {
+  "id": "W33",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "herbes de Provence": 0.5,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "0": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes). Fais tomber la pression et égoutte s'il reste de l'eau, en en gardant 3 cuillères à soupe par portion.",
+   "2": "Ajoute l'ail écrasé, les tomates séchées coupées en morceaux, les épinards et [[herbes de Provence]], et laisse cuire 3 minutes.",
+   "3": "Hors du feu, mélange le fromage blanc, le parmesan, l'eau de cuisson gardée, [[poivre]] et [[muscade]], puis ajoute les pâtes et le poulet et mélange. Le fromage blanc ne doit pas bouillir, sinon il graine."
+  },
+  "session": {
+   "0": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur avec [[sel]], et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous (5 minutes pour des pâtes complètes à 10 ou 11 minutes).",
+   "3": "Ajoute l'ail, les tomates séchées, les épinards et [[herbes de Provence]], et laisse cuire 3 minutes.",
+   "4": "Hors du feu, mélange le fromage blanc, le parmesan, l'eau de cuisson gardée, [[poivre]] et [[muscade]], puis ajoute les pâtes et le poulet et mélange. Le fromage blanc ne doit pas bouillir, sinon il graine."
+  },
+  "note": "Sel modéré (parmesan et tomates séchées), muscade ajoutée pour relever la sauce crémeuse aux épinards."
+ },
+ {
+  "id": "W34",
+  "spices": {
+   "sel": 0.0625,
+   "poivre": 0.125,
+   "cinq-épices": 0.125
+  },
+  "steps": {
+   "0": "Mélange le bœuf avec 1 gousse d'ail écrasée, le gingembre râpé, la moitié de la sauce soja, la fécule, [[cinq-épices]] et [[poivre]]. Forme des boulettes de la taille d'une noix, d'environ 30 g.",
+   "4": "Prépare le concombre : écrase-le avec le plat d'un couteau, coupe-le en morceaux, mélange-le avec [[sel]] et parsème-le de graines de sésame."
+  },
+  "session": {
+   "0": "Mélange le bœuf avec 1 gousse d'ail écrasée, le gingembre râpé, la moitié de la sauce soja, la fécule, [[cinq-épices]] et [[poivre]].",
+   "5": "Parsème le concombre de [[sel]] et de graines de sésame."
+  },
+  "note": "Cinq-épices et poivre dans les boulettes ; pas de sel dans la viande (sauce soja), juste une pincée sur le concombre écrasé."
+ },
+ {
+  "id": "W35",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "paprika": 0.75,
+   "oignon en poudre": 0.25,
+   "piment": 0.0625,
+   "ail en poudre": 0.125
+  },
+  "steps": {
+   "0": "Coupe le poulet en morceaux de 3 cm, façon nuggets, et mélange-les avec 30 g de yaourt grec, [[paprika]], [[oignon en poudre]], [[piment]], [[sel]] et [[poivre]].",
+   "4": "Prépare la sauce crémeuse : le reste du yaourt grec, la mayonnaise allégée, quelques gouttes de sauce soja et [[ail en poudre]]."
+  },
+  "session": {
+   "0": "Mélange le poulet avec 30 g de yaourt grec, [[paprika]], [[oignon en poudre]], [[piment]], [[sel]] et [[poivre]].",
+   "3": "Prépare la sauce crémeuse : le reste du yaourt grec, la mayonnaise allégée, quelques gouttes de sauce soja et [[ail en poudre]]."
+  },
+  "note": "Marinade plus relevée (paprika, oignon en poudre, sel, poivre) ; l'ail en poudre, cité deux fois, va dans la sauce crémeuse ; sel limité car sauces et oignons frits salent."
+ },
+ {
+  "id": "W36",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.75,
+   "origan": 0.25,
+   "ail en poudre": 0.25,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Fais revenir le poulet 5 minutes à feu vif dans la poêle huilée avec [[cumin]], [[paprika]], [[origan]], [[ail en poudre]], [[piment]], [[sel]] et [[poivre]], jusqu'à ce qu'il ne soit plus rose. Ajoute les poivrons et l'oignon et fais sauter encore 4 minutes : ils doivent rester un peu croquants. Arrose de jus de citron vert."
+  },
+  "session": {
+   "0": "Fais revenir le poulet 5 minutes à feu vif dans la poêle huilée avec [[cumin]], [[paprika]], [[origan]], [[ail en poudre]], [[piment]], [[sel]] et [[poivre]], jusqu'à ce qu'il ne soit plus rose."
+  },
+  "note": "Ajout d'origan, de sel et de poivre au mélange fajitas ; sel modéré à cause de l'emmental et des wraps."
+ },
+ {
+  "id": "W37",
+  "spices": {
+   "poivre": 0.125,
+   "gingembre en poudre": 0.125
+  },
+  "steps": {
+   "2": "Fais cuire le poulet 5 à 6 minutes dans la poêle huilée, jusqu'à ce qu'il ne soit plus rose, puis ajoute l'oignon, la carotte, l'ail, [[gingembre en poudre]] et les petits pois, 4 minutes.",
+   "4": "Ajoute le riz refroidi et la sauce soja avec [[poivre]], et fais sauter 3 minutes à feu vif en remuant."
+  },
+  "session": {
+   "0": "Fais cuire le poulet 5 à 6 minutes dans la poêle huilée, jusqu'à ce qu'il ne soit plus rose, puis ajoute l'oignon, la carotte, l'ail, [[gingembre en poudre]] et les petits pois, 4 minutes.",
+   "2": "Ajoute le riz refroidi et la sauce soja avec [[poivre]], et fais sauter 3 minutes à feu vif en remuant."
+  },
+  "note": "Gingembre en poudre (pas de gingembre frais ici) et poivre ; pas de sel, la sauce soja suffit."
+ },
+ {
+  "id": "W38",
+  "spices": {
+   "poivre": 0.125,
+   "cinq-épices": 0.125
+  },
+  "steps": {
+   "1": "Mélange le bœuf avec la moitié de la sauce soja, la fécule, [[cinq-épices]] et [[poivre]], et laisse reposer 10 minutes au frigo : c'est ce qui le garde tendre."
+  },
+  "session": {
+   "0": "Mélange le bœuf avec la moitié de la sauce soja, la fécule, [[cinq-épices]] et [[poivre]], et laisse reposer 10 minutes au frigo : c'est ce qui le garde tendre."
+  },
+  "note": "Cinq-épices et poivre dans la marinade du bœuf ; pas de sel, la sauce soja sale déjà."
+ },
+ {
+  "id": "W39",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "herbes de Provence": 0.5,
+   "laurier": 0.25
+  },
+  "steps": {
+   "2": "Ajoute les tomates, le concentré, [[herbes de Provence]], [[laurier]], [[sel]], [[poivre]] et 50 ml d'eau par portion. Ferme et laisse cuire 10 minutes sous pression, puis fais tomber la pression et retire le laurier.",
+   "3": "Verse la sauce dans un plat et rince la cuve. Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous. Fais tomber la pression et égoutte."
+  },
+  "session": {
+   "2": "Ajoute les tomates, le concentré, [[herbes de Provence]], [[laurier]], [[sel]], [[poivre]] et 50 ml d'eau par portion.",
+   "3": "Ferme et laisse cuire 10 minutes sous pression, puis fais tomber la pression et retire le laurier.",
+   "5": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous."
+  },
+  "note": "Sel regroupé dans la sauce (au lieu de l'eau des pâtes), poivre et laurier ajoutés pour une bolognaise plus profonde."
+ },
+ {
+  "id": "W40",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "paprika": 0.5,
+   "cannelle": 0.125,
+   "quatre-épices": 0.125,
+   "menthe séchée": 0.125
+  },
+  "steps": {
+   "0": "Râpe l'oignon et hache le persil. Mélange la moitié du persil et l'oignon avec le bœuf, [[cumin]], [[paprika]], [[cannelle]], [[quatre-épices]] et [[sel]], puis forme des kefta allongées de la taille d'un doigt.",
+   "2": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau : 4 minutes sous pression, puis 5 minutes de décompression naturelle. Laisse-le refroidir.",
+   "3": "Prépare le taboulé : le boulgour refroidi, la tomate et le concombre en petits dés, le reste du persil, le jus de citron, l'huile d'olive, [[menthe séchée]] et [[poivre]]."
+  },
+  "session": {
+   "0": "Mélange la moitié du persil et l'oignon avec le bœuf, [[cumin]], [[paprika]], [[cannelle]], [[quatre-épices]] et [[sel]].",
+   "3": "Fais cuire le boulgour à l'autocuiseur avec 1,5 fois son volume d'eau : 4 minutes sous pression, puis 5 minutes de décompression naturelle.",
+   "5": "Prépare le taboulé : le boulgour refroidi, la tomate et le concombre, le reste du persil, le jus de citron, l'huile d'olive, [[menthe séchée]] et [[poivre]]."
+  },
+  "note": "Quatre-épices dans les kefta (esprit sept épices libanais) et menthe séchée dans le taboulé ; les trois pincées de sel regroupées en une dose modérée, le houmous salant déjà."
+ },
+ {
+  "id": "W41",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "herbes de Provence": 0.5
+  },
+  "steps": {
+   "3": "Ajoute l'ail, les tomates cerises, les épinards, [[herbes de Provence]], [[sel]] et [[poivre]], et laisse cuire 4 minutes, jusqu'à ce que les tomates commencent à fondre. Remets les gnocchis et mélange."
+  },
+  "session": {
+   "2": "Ajoute l'ail, les tomates cerises, les épinards, [[herbes de Provence]], [[sel]] et [[poivre]], et laisse cuire 4 minutes, jusqu'à ce que les tomates commencent à fondre."
+  },
+  "note": "Sel et poivre ajoutés (il n'y en avait pas), sel modéré grâce au parmesan et aux gnocchis déjà salés."
+ },
+ {
+  "id": "W43",
+  "spices": {
+   "sel": 0.1875,
+   "poivre": 0.125,
+   "paprika": 0.75,
+   "cumin": 0.5,
+   "coriandre moulue": 0.25,
+   "ail en poudre": 0.25,
+   "cannelle": 0.125,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Mélange le poulet entier avec 30 g de yaourt, [[paprika]], [[cumin]], [[coriandre moulue]], [[ail en poudre]], [[cannelle]], [[piment]], l'huile et [[sel]]. Laisse mariner 15 minutes au frigo, ou toute la nuit.",
+   "4": "Prépare la sauce blanche : le reste du yaourt, une demi-gousse d'ail écrasée, les herbes et [[poivre]]. Lave la salade et coupe-la en lanières, coupe la tomate en dés et l'oignon en fines lamelles."
+  },
+  "session": {
+   "0": "Mélange le poulet entier avec 30 g de yaourt, [[paprika]], [[cumin]], [[coriandre moulue]], [[ail en poudre]], [[cannelle]], [[piment]], l'huile et [[sel]].",
+   "5": "Prépare la sauce blanche : le reste du yaourt, une demi-gousse d'ail écrasée, les herbes et [[poivre]]."
+  },
+  "note": "Coriandre moulue ajoutée à la marinade kebab ; tout le sel dans la marinade, le poivre dans la sauce blanche ; sel modéré à cause des oignons frits."
+ },
+ {
+  "id": "W44",
+  "spices": {
+   "sel": 0.25,
+   "poivre": 0.125,
+   "curry en poudre": 0.75,
+   "curcuma": 0.25,
+   "garam masala": 0.25
+  },
+  "steps": {
+   "2": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis ajoute l'ail, le gingembre, [[curry en poudre]] et [[curcuma]], 1 minute, en remuant.",
+   "3": "Ajoute les tomates et le lait de coco avec [[sel]] et [[poivre]], et laisse mijoter 5 minutes. Ajoute les épinards et laisse-les fondre 2 minutes.",
+   "4": "Pose les morceaux de poisson dans la sauce, couvre et laisse cuire 6 à 8 minutes à feu doux, sans remuer, jusqu'à ce que la chair soit opaque et se détache en lamelles. Arrose de jus de citron vert et saupoudre de [[garam masala]]."
+  },
+  "session": {
+   "0": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile, puis ajoute l'ail, le gingembre, [[curry en poudre]] et [[curcuma]], 1 minute, en remuant.",
+   "1": "Ajoute les tomates et le lait de coco avec [[sel]] et [[poivre]], et laisse mijoter 5 minutes.",
+   "4": "Arrose le curry de jus de citron vert et saupoudre de [[garam masala]]."
+  },
+  "note": "Sel plein (aucun ingrédient salé, il en manquait), curry dosé franchement et garam masala en fin de cuisson pour le parfum."
+ },
+ {
+  "id": "W45",
+  "spices": {
+   "poivre": 0.125,
+   "origan": 0.5,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile d'olive, puis l'ail et [[piment]] 1 minute. Ajoute les tomates et [[origan]], avec [[poivre]], et laisse mijoter 8 minutes.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous. Fais tomber la pression, égoutte et mélange-les à la sauce."
+  },
+  "session": {
+   "0": "Dans la poêle, fais revenir l'oignon 3 minutes dans l'huile d'olive, puis l'ail et [[piment]] 1 minute.",
+   "1": "Ajoute les tomates et [[origan]], avec [[poivre]], et laisse mijoter 8 minutes.",
+   "3": "Fais cuire les pâtes à l'autocuiseur : couvre-les d'eau juste à hauteur, et fais-les cuire sous pression la moitié du temps indiqué sur le paquet, arrondi en dessous."
+  },
+  "note": "Pas de sel (thon en conserve, olives, parmesan) ; origan bien dosé, poivre et une pointe de piment façon puttanesca."
+ },
+ {
+  "id": "SO01",
+  "spices": {
+   "poivre": 0.125,
+   "curry en poudre": 0.75,
+   "piment": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, jusqu'à ce qu'il colore légèrement, puis ajoute l'ail, le gingembre, [[curry en poudre]] et [[piment]], et remue 1 minute.",
+   "4": "Ajoute la sauce soja et le jus de citron avec [[poivre]], goûte et ajuste."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon 3 minutes dans l'huile, jusqu'à ce qu'il colore légèrement, puis ajoute l'ail, le gingembre, [[curry en poudre]] et [[piment]], et remue 1 minute.",
+   "4": "Ajoute la sauce soja et le jus de citron avec [[poivre]], goûte et ajuste."
+  },
+  "note": "Curry dosé, pointe de piment et poivre ; pas de sel, le bouillon cube et la sauce soja salent."
+ },
+ {
+  "id": "SO02",
+  "spices": {
+   "poivre": 0.125,
+   "laurier": 0.25
+  },
+  "steps": {
+   "2": "Mets les hauts de cuisse dans l'autocuiseur avec l'oignon, l'ail, le gingembre, [[laurier]], la sauce soja et 350 ml d'eau froide par portion. Porte à ébullition en mode dorer et retire à la cuillère la mousse qui se forme en surface.",
+   "6": "Prélève une louche de bouillon dans un bol, délaye-y la pâte miso, puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir. Remets le poulet effiloché et ajoute [[poivre]] : le miso et la sauce soja salent déjà bien."
+  },
+  "session": {
+   "0": "Mets les hauts de cuisse dans l'autocuiseur avec l'oignon, l'ail, le gingembre, [[laurier]], la sauce soja et 350 ml d'eau froide par portion.",
+   "7": "Remets le poulet effiloché et ajoute [[poivre]] : le miso et la sauce soja salent déjà bien."
+  },
+  "note": "Épices existantes chiffrées (laurier, poivre) ; pas de sel, miso et sauce soja suffisent."
+ },
+ {
+  "id": "SO03",
+  "spices": {
+   "poivre": 0.125,
+   "curcuma": 0.25
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'ail 1 minute dans l'huile, puis ajoute [[curcuma]] et le gingembre, 30 secondes.",
+   "5": "Prélève une louche de bouillon dans un bol, délaye-y la pâte miso avec [[poivre]], puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais revenir l'ail 1 minute dans l'huile, puis ajoute [[curcuma]] et le gingembre, 30 secondes.",
+   "4": "Prélève une louche de bouillon dans un bol, délaye-y la pâte miso avec [[poivre]], puis reverse-la dans la cuve, hors du feu : le miso ne doit jamais bouillir."
+  },
+  "note": "Curcuma chiffré et poivre ajouté ; pas de sel, le miso sale le bouillon."
+ },
+ {
+  "id": "SO04",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.5,
+   "curcuma": 0.25,
+   "coriandre moulue": 0.25,
+   "paprika fumé": 0.25,
+   "laurier": 0.25
+  },
+  "steps": {
+   "2": "Ajoute [[cumin]], [[curcuma]], [[coriandre moulue]], [[paprika fumé]] et [[poivre]], et fais-les griller 30 secondes en remuant.",
+   "3": "Ajoute les pois cassés, les carottes, [[laurier]], le bouillon cube émietté et 250 ml d'eau froide par portion. Mélange et gratte bien le fond.",
+   "4": "Ferme et laisse cuire 15 minutes sous pression, puis laisse la pression retomber seule 10 minutes : les pois cassés doivent être fondants et crémeux. Retire le laurier et ajoute [[sel]], après avoir goûté."
+  },
+  "session": {
+   "1": "Ajoute [[cumin]], [[curcuma]], [[coriandre moulue]], [[paprika fumé]] et [[poivre]], et fais-les griller 30 secondes en remuant.",
+   "2": "Ajoute les pois cassés, les carottes, [[laurier]], le bouillon cube émietté et 250 ml d'eau froide par portion. Mélange et gratte bien le fond.",
+   "4": "Retire le laurier et ajoute [[sel]], après avoir goûté."
+  },
+  "note": "Paprika fumé ajouté pour la note « lardons » des pois cassés, épices existantes chiffrées, sel modéré à cause du bouillon cube."
+ },
+ {
+  "id": "SO06",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "cumin": 0.25,
+   "muscade": 0.0625
+  },
+  "steps": {
+   "1": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et l'ail 3 à 4 minutes dans l'huile, en gardant un filet pour le service, sans coloration. Ajoute [[cumin]] les 30 dernières secondes.",
+   "3": "Mixe au mixeur plongeant jusqu'à ce que ce soit lisse, puis ajoute le lait de coco. Ajoute un peu d'eau si le velouté est trop épais. Assaisonne avec [[sel]], [[poivre]] et [[muscade]], et mélange. Verse-le dans un plat et rince la cuve."
+  },
+  "session": {
+   "0": "Mets l'autocuiseur en mode dorer et fais revenir l'oignon et l'ail 3 à 4 minutes dans l'huile, en gardant un filet pour le service, sans coloration. Ajoute [[cumin]] les 30 dernières secondes.",
+   "4": "Ajoute un peu d'eau si le velouté est trop épais. Assaisonne avec [[sel]], [[poivre]] et [[muscade]], et mélange."
+  },
+  "note": "Cumin (accord carotte-cumin) et pincée de muscade pour un velouté qui était sans épices ; sel léger à cause du bouillon cube."
+ },
+ {
+  "id": "B01",
+  "spices": {
+   "vanille": 0.25,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Pendant la session de cuisine, prépare un bocal par matin : mélange les flocons, le cacao, [[vanille]], [[sel]], la whey et le lait jusqu'à ce qu'il n'y ait plus de grumeaux."
+  },
+  "session": {
+   "0": "Prépare un bocal par matin : mélange les flocons, le cacao, [[vanille]], [[sel]], la whey et le lait jusqu'à ce qu'il n'y ait plus de grumeaux."
+  },
+  "note": "Vanille pour arrondir le cacao et une pincée de sel qui fait ressortir le chocolat."
+ },
+ {
+  "id": "B02",
+  "spices": {
+   "cannelle": 0.5,
+   "vanille": 0.25
+  },
+  "steps": {
+   "0": "Pendant la session de cuisine, prépare un bocal par matin : mélange les flocons, le fromage blanc, le lait, le miel, [[cannelle]] et [[vanille]]."
+  },
+  "session": {
+   "0": "Prépare un bocal par matin : mélange les flocons, le fromage blanc, le lait, le miel, [[cannelle]] et [[vanille]]."
+  },
+  "note": "Cannelle dosée franchement pour un vrai goût pomme-cannelle, plus de la vanille pour adoucir le fromage blanc 0 %."
+ },
+ {
+  "id": "B05",
+  "spices": {},
+  "steps": {},
+  "session": {},
+  "note": "Fromage blanc, fruits et miel : aucune épice nécessaire."
+ },
+ {
+  "id": "B06",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125,
+   "muscade": 0.0625,
+   "origan": 0.25
+  },
+  "steps": {
+   "1": "Bats les œufs avec [[sel]], [[poivre]], [[muscade]] et [[origan]], puis ajoute les épinards, le poivron et la feta émiettée."
+  },
+  "session": {
+   "1": "Bats les œufs avec [[sel]], [[poivre]], [[muscade]] et [[origan]], puis ajoute les épinards, le poivron et la feta."
+  },
+  "note": "Sel réduit à cause de la feta, poivre, muscade pour les épinards et origan pour l'accord feta-poivron à la grecque."
+ },
+ {
+  "id": "B07",
+  "spices": {
+   "ail en poudre": 0.125,
+   "herbes de Provence": 0.25,
+   "poivre": 0.125
+  },
+  "steps": {
+   "0": "Tartine le wrap de carré frais mélangé avec [[ail en poudre]], [[herbes de Provence]] et [[poivre]]."
+  },
+  "session": {},
+  "note": "Pas de sel (poulet en tranches salé) ; ail en poudre, herbes de Provence et poivre dans le carré frais, façon fromage ail et fines herbes."
+ },
+ {
+  "id": "B15",
+  "spices": {
+   "sel": 0.125,
+   "poivre": 0.125
+  },
+  "steps": {
+   "0": "Bats les œufs avec [[sel]] et [[poivre]]."
+  },
+  "session": {},
+  "note": "Sel modéré parce que l'emmental sale déjà, et poivre."
+ },
+ {
+  "id": "B16",
+  "spices": {
+   "cannelle": 0.5,
+   "sel": 0.0625,
+   "vanille": 0.25
+  },
+  "steps": {
+   "0": "Dans une petite casserole, porte le lait à frémissement avec les flocons, [[cannelle]] et [[sel]], puis laisse cuire 3 à 4 minutes à feu doux en remuant, jusqu'à ce que ce soit crémeux. Au micro-ondes : 2 minutes dans un grand bol, en remuant à mi-temps.",
+   "1": "Hors du feu, mélange la whey et [[vanille]] en remuant bien."
+  },
+  "session": {},
+  "note": "Cannelle bien présente, la pincée de sel classique du porridge et de la vanille ajoutée hors du feu."
+ },
+ {
+  "id": "K02",
+  "spices": {},
+  "steps": {},
+  "session": {},
+  "note": "Yaourt, miel et pistaches : aucune épice nécessaire."
+ },
+ {
+  "id": "K05",
+  "spices": {
+   "vanille": 0.25
+  },
+  "steps": {
+   "1": "Mélange le fromage blanc avec le miel et [[vanille]], et étale-le en couche par-dessus, puis saupoudre de cacao."
+  },
+  "session": {
+   "1": "Mélange le fromage blanc avec le miel et [[vanille]], et étale-le en couche par-dessus, puis saupoudre de cacao."
+  },
+  "note": "Vanille dans la couche de fromage blanc pour imiter la crème au mascarpone du tiramisu."
+ },
+ {
+  "id": "K06",
+  "spices": {
+   "cannelle": 0.25,
+   "vanille": 0.25,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Pendant la session de cuisine, écrase la banane à la fourchette, puis mélange-la avec les flocons, l'œuf, la whey, le lait, [[cannelle]], [[vanille]] et [[sel]]."
+  },
+  "session": {
+   "0": "Écrase la banane à la fourchette, puis mélange-la avec les flocons, l'œuf, la whey, le lait, [[cannelle]], [[vanille]] et [[sel]]."
+  },
+  "note": "Cannelle et vanille pour la pâte banane, une pincée de sel comme dans toute pâte à pancakes."
+ },
+ {
+  "id": "K08",
+  "spices": {
+   "cannelle": 0.125,
+   "sel": 0.0625
+  },
+  "steps": {
+   "1": "Écrase-les à la fourchette avec les flocons, la whey, le beurre de cacahuète, le cacao, [[cannelle]] et [[sel]], jusqu'à obtenir une pâte qui se tient."
+  },
+  "session": {
+   "1": "Égoutte les dattes, puis écrase-les à la fourchette avec les flocons, la whey, le beurre de cacahuète, le cacao, [[cannelle]] et [[sel]], jusqu'à obtenir une pâte qui se tient."
+  },
+  "note": "Un peu de cannelle, qui va très bien avec les dattes, et une pincée de sel pour relever le cacao."
+ },
+ {
+  "id": "K10",
+  "spices": {
+   "cannelle": 0.25
+  },
+  "steps": {
+   "1": "Ajoute la banane en rondelles, puis le beurre de cacahuète et le miel en filet, et termine par [[cannelle]] saupoudrée sur le dessus."
+  },
+  "session": {},
+  "note": "Cannelle saupoudrée sur la banane et le miel, pour un bol moins plat."
+ },
+ {
+  "id": "K12",
+  "spices": {
+   "sel": 0.125,
+   "cumin": 0.125,
+   "piment": 0.0625,
+   "poivre": 0.0625
+  },
+  "steps": {
+   "1": "Écrase l'avocat avec le jus de citron vert, [[sel]], [[cumin]] et [[piment]], puis étale-le sur le pain.",
+   "2": "Fais cuire l'œuf au plat 3 minutes à la poêle huilée, pose-le sur le pain, ajoute la tomate en dés et [[poivre]]."
+  },
+  "session": {},
+  "note": "L'avocat n'était pas salé : sel, une touche de cumin à la mexicaine, piment doux, et poivre sur l'œuf."
+ },
+ {
+  "id": "K13",
+  "spices": {
+   "aneth séché": 0.125,
+   "poivre": 0.125
+  },
+  "steps": {
+   "0": "Égoutte le thon et émiette-le à la fourchette avec le jus de citron, [[aneth séché]] et [[poivre]]."
+  },
+  "session": {},
+  "note": "Pas de sel (thon en conserve et carré frais) ; aneth séché, qui va avec thon, citron et concombre, et poivre."
+ },
+ {
+  "id": "K15",
+  "spices": {
+   "sel": 0.0625
+  },
+  "steps": {
+   "1": "Ajoute le beurre de cacahuète, la whey et [[sel]], et mélange jusqu'à obtenir une pâte brillante."
+  },
+  "session": {
+   "1": "Ajoute le beurre de cacahuète, la whey et [[sel]] au chocolat fondu, et mélange jusqu'à obtenir une pâte brillante."
+  },
+  "note": "Une pincée de sel pour relever le chocolat noir et le beurre de cacahuète."
+ },
+ {
+  "id": "K16",
+  "spices": {
+   "vanille": 0.25
+  },
+  "steps": {
+   "1": "Mélange le yaourt grec, la whey, le miel et [[vanille]] jusqu'à ce que ce soit lisse, puis verse sur les boudoirs."
+  },
+  "session": {
+   "1": "Mélange le yaourt grec, la whey, le miel et [[vanille]] jusqu'à ce que ce soit lisse, puis verse sur les boudoirs."
+  },
+  "note": "Vanille dans la crème au yaourt grec pour se rapprocher du mascarpone."
+ },
+ {
+  "id": "K17",
+  "spices": {
+   "cannelle": 0.125,
+   "sel": 0.0625
+  },
+  "steps": {
+   "1": "Ajoute les flocons d'avoine, la whey, le cacao, [[cannelle]] et [[sel]], et mixe quelques secondes seulement, pour garder des morceaux de flocons."
+  },
+  "session": {
+   "1": "Ajoute les flocons d'avoine, la whey, le cacao, [[cannelle]] et [[sel]], et mixe quelques secondes seulement, pour garder des morceaux de flocons."
+  },
+  "note": "Une touche de cannelle avec les dattes et le cacao, et une pincée de sel pour la pâte."
+ },
+ {
+  "id": "K18",
+  "spices": {
+   "vanille": 0.25,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Mixe les dattes avec la whey, [[vanille]], [[sel]] et une cuillère à soupe d'eau chaude : c'est le « caramel ». Étale-le sur 1 cm dans une petite boîte tapissée de papier cuisson."
+  },
+  "session": {
+   "0": "Mixe les dattes avec la whey, [[vanille]], [[sel]] et une cuillère à soupe d'eau chaude : c'est le « caramel »."
+  },
+  "note": "Vanille et pincée de sel dans le « caramel » de dattes, pour un vrai goût de caramel salé."
+ },
+ {
+  "id": "K19",
+  "spices": {
+   "vanille": 0.25,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Mélange la noix de coco râpée, le lait de coco, la whey, le miel, [[vanille]] et [[sel]] jusqu'à obtenir une pâte qui se tient. Si elle colle trop, ajoute un peu de coco."
+  },
+  "session": {
+   "0": "Mélange la noix de coco râpée, le lait de coco, la whey, le miel, [[vanille]] et [[sel]] jusqu'à obtenir une pâte qui se tient. Si elle colle trop, ajoute un peu de coco."
+  },
+  "note": "Vanille pour la coco et une pincée de sel qui réveille le chocolat."
+ },
+ {
+  "id": "K20",
+  "spices": {
+   "cannelle": 0.25,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Concasse grossièrement les amandes et mélange-les avec les flocons d'avoine, la whey, [[cannelle]] et [[sel]]."
+  },
+  "session": {
+   "0": "Mélange les amandes avec les flocons d'avoine, la whey, [[cannelle]] et [[sel]]."
+  },
+  "note": "Cannelle et pincée de sel, les deux assaisonnements de base d'un granola."
+ },
+ {
+  "id": "K21",
+  "spices": {
+   "cannelle": 0.25,
+   "vanille": 0.25,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine, la whey, [[cannelle]], [[vanille]] et [[sel]]."
+  },
+  "session": {
+   "0": "Écrase la banane à la fourchette, puis mélange-la avec les flocons d'avoine, la whey, [[cannelle]], [[vanille]] et [[sel]]."
+  },
+  "note": "Cookies sans sucre ajouté : cannelle, vanille et pincée de sel pour qu'ils aient du goût."
+ },
+ {
+  "id": "K22",
+  "spices": {
+   "cannelle": 0.375,
+   "sel": 0.0625
+  },
+  "steps": {
+   "0": "Pendant la session de cuisine, concasse grossièrement les noix et mélange-les avec les flocons d'avoine, [[cannelle]], [[sel]], le sirop d'érable et l'huile, jusqu'à ce que tout soit enrobé."
+  },
+  "session": {
+   "0": "Mélange les noix avec les flocons d'avoine, [[cannelle]], [[sel]], le sirop d'érable et l'huile, jusqu'à ce que tout soit enrobé."
+  },
+  "note": "Cannelle dosée pour le granola et une pincée de sel qui fait ressortir l'érable."
+ },
+ {
+  "id": "K23",
+  "spices": {
+   "cannelle": 0.5,
+   "vanille": 0.25
+  },
+  "steps": {
+   "1": "Fais-les dorer 4 à 5 minutes à la poêle avec le sirop d'érable, [[cannelle]] et [[vanille]], jusqu'à ce qu'elles soient tendres et caramélisées."
+  },
+  "session": {
+   "0": "Fais dorer les pommes 4 à 5 minutes à la poêle avec le sirop d'érable, [[cannelle]] et [[vanille]], jusqu'à ce qu'elles soient tendres et caramélisées."
+  },
+  "note": "Cannelle franche sur les pommes et vanille pour le côté dessert."
+ },
+ {
+  "id": "K24",
+  "spices": {
+   "cannelle": 0.375,
+   "gingembre en poudre": 0.125,
+   "muscade": 0.0625,
+   "quatre-épices": 0.0625
+  },
+  "steps": {
+   "1": "Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, [[cannelle]], [[gingembre en poudre]], [[muscade]] et [[quatre-épices]]."
+  },
+  "session": {
+   "1": "Prépare un bocal par portion : mélange la purée de courge avec les flocons, le lait, la whey, le fromage blanc, le sirop d'érable, [[cannelle]], [[gingembre en poudre]], [[muscade]] et [[quatre-épices]]."
+  },
+  "note": "Vrai pumpkin spice : cannelle et muscade complétées de gingembre et de quatre-épices (pour le clou de girofle)."
+ },
+ {
+  "id": "S05",
+  "spices": {},
+  "steps": {},
+  "session": {},
+  "note": "Fruit nature : aucune épice."
+ },
+ {
+  "id": "S08",
+  "spices": {},
+  "steps": {},
+  "session": {},
+  "note": "Fromage blanc, miel et cacahuète : aucune épice nécessaire."
+ },
+ {
+  "id": "S11",
+  "spices": {
+   "herbes de Provence": 0.125,
+   "poivre": 0.125
+  },
+  "steps": {
+   "0": "Tartine le pain de carré frais, puis ajoute [[herbes de Provence]] et [[poivre]]."
+  },
+  "session": {},
+  "note": "Pas de sel (poulet en tranches salé) ; herbes de Provence et poivre sur le carré frais."
+ },
+ {
+  "id": "S12",
+  "spices": {
+   "poivre": 0.0625
+  },
+  "steps": {
+   "1": "Ajoute le miel, une branche de thym frais effeuillée et [[poivre]]."
+  },
+  "session": {},
+  "note": "Le thym reste l'herbe fraîche de la recette ; juste une pincée de poivre dosée pour l'accord miel-poivre."
+ },
+ {
+  "id": "S07",
+  "spices": {},
+  "steps": {},
+  "session": {},
+  "note": "Amandes nature : aucune épice."
+ }
+]
