@@ -424,4 +424,49 @@ export const SPICES = {
   SO07: 'origan, piment', SO10: 'laurier', SO11: 'paprika doux, cumin', SO15: 'cumin, paprika, menthe séchée', K22: 'cannelle', K23: 'cannelle', K24: 'cannelle, muscade', SO08: 'thym', SO09: 'thym, laurier',
   SO01: 'curry en poudre', SO02: 'laurier, poivre', SO03: 'curcuma', SO04: 'cumin, curcuma, coriandre moulue, poivre, laurier',
 };
-export const spicesOf = id => (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
+// v309 : assaisonnement en cuillères à café par portion (Pierre : « la quantité d'épice en cuillère à café, à
+// chaque fois », « certains plats manquent d'assaisonnement »). Bloc généré par outils/recettes/epices/fusion.js
+// depuis outils/recettes/epices/epices.json : quantités par portion (laurier en feuilles), étapes réécrites avec
+// des repères [[épice]] que l'appli remplace par la quantité (fiche : 1 portion ; session : toutes les portions).
+// <<épices générées
+export const SPICE_QTY = {};
+export const SPICE_STEPS = {};
+// >>épices générées
+const spiceRow = id => id && (SPICE_QTY[id] || SPICE_QTY[String(id).replace(/S$/, '')]) || null;
+// Noms des épices à avoir au placard (sel et poivre exceptés)
+export const spicesOf = id => {
+  const q = spiceRow(id);
+  if (q) return Object.keys(q).filter(k => k !== 'sel' && k !== 'poivre').join(', ');
+  return (id && (SPICES[id] || SPICES[String(id).replace(/S$/, '')])) || '';
+};
+// Grammes d'épices sèches d'une portion (macros de l'ingrédient « Épices ») : ≈ 2 g la cuillère à café de poudre,
+// 1 g pour les herbes séchées ; sel, poivre et laurier ne comptent pas
+const HERB_TSP = ['origan', 'thym', 'romarin', 'herbes de Provence', 'menthe séchée', 'aneth séché'];
+export function spiceGrams(id) {
+  const q = spiceRow(id); if (!q) return 0;
+  return Object.entries(q).reduce((a, [k, v]) => a + (['sel', 'poivre', 'laurier', 'vanille'].includes(k) ? 0 : v * (HERB_TSP.includes(k) ? 1 : 2)), 0);
+}
+// « ½ c. à café de cumin », « 1 pincée de piment », « 2 feuilles de laurier »
+const TSP_FRAC = { 0.25: '¼', 0.5: '½', 0.75: '¾' };
+function tspText(v) {
+  if (v < 0.19) return '1 pincée';
+  const q = Math.round(v * 4) / 4, n = Math.floor(q), f = TSP_FRAC[+(q - n).toFixed(2)] || '';
+  return `${n ? n : ''}${n && f ? ' ' : ''}${f} c. à café`;
+}
+const deOf = n => (/^[aeiouyhéèêâîôûœ]/i.test(n) ? `d'${n}` : `de ${n}`);
+export function spiceQtyText(name, perPortion, factor = 1) {
+  const v = perPortion * factor;
+  if (name === 'laurier') { const f = Math.max(1, Math.round(v)); return `${f} ${f > 1 ? 'feuilles' : 'feuille'} de laurier`; }
+  return `${tspText(v)} ${deOf(name)}`;
+}
+// Liste lisible des épices d'une recette, pour `factor` portions : « ½ c. à café de cumin, … »
+export function spiceList(id, factor = 1, { withSalt = false } = {}) {
+  const q = spiceRow(id); if (!q) return spicesOf(id);
+  return Object.entries(q).filter(([k]) => withSalt || (k !== 'sel' && k !== 'poivre')).map(([k, v]) => spiceQtyText(k, v, factor)).join(', ');
+}
+// Remplace les repères [[épice]] d'une étape par la quantité pour `factor` portions
+export function fillSpices(text, id, factor = 1) {
+  if (!text || text.indexOf('[[') < 0) return text;
+  const q = spiceRow(id) || {};
+  return text.replace(/\[\[([^\]]+)\]\]/g, (_, k) => (q[k] ? spiceQtyText(k, q[k], factor) : k));
+}

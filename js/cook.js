@@ -4,7 +4,7 @@
 
 import { getEntry, getTodayDate } from '../data/log.js';
 import { getById } from '../data/recipes.js';
-import { INGREDIENTS, humanQty, qtyShort, qtyWithName, NATURAL_UNITS, spicesOf } from '../data/ingredients.js';
+import { INGREDIENTS, humanQty, qtyShort, qtyWithName, NATURAL_UNITS, spicesOf, spiceList, fillSpices } from '../data/ingredients.js';
 const NATURAL_UNITS_KEYS = Object.keys(NATURAL_UNITS);
 import { el } from './utils.js';
 import { getActivePlan, planMembers, FRESH_ONLY, sessionDate, sessionWhen } from './weekgen.js';
@@ -159,10 +159,13 @@ function buildPhases(list, extras = []) {
     eq: getEquipment() || { autocuiseur: true, airfryer: true }, adapt: (t, r) => adaptStep(t, getEquipment() || undefined, r), name: dishShort, qtyText: qtyWithName, qtyShort,
     rice: riceActions.map(a => ({ text: a.text, app: a.res, active: a.active, passive: a.passive })),
   });
-  const phases = built.phases.map(ph => ({ ...ph, steps: ph.steps.map(st => ({ text: st.text, r: st.chain && st.chain !== 'riz' ? st.chain.r : null, bg: st.bg || '',
+  // v309 : quantités d'épices de la session (repères [[épice]]) : celles de toutes les portions du plat
+  const portionsOf = new Map([...list, ...extras].map(x => [x.r, x.portions || 1]));
+  const phases = built.phases.map(ph => ({ ...ph, steps: ph.steps.map(st => ({ text: st.chain && st.chain !== 'riz' ? fillSpices(st.text, st.chain.r.id, portionsOf.get(st.chain.r) || 1) : st.text, r: st.chain && st.chain !== 'riz' ? st.chain.r : null, bg: st.bg || '',
     chainKind: st.kind === 'wait' ? 'wait' : st.chain === 'riz' ? 'rice' : st.kind === 'cut' ? 'cut' : 'dish' })) }));
   const sched = { total: built.total };
-  return { phases, total: sched.total, boxes: recipes.map(r => ({ r, steps: parts.get(r).box })), meals: recipes.map(r => ({ r, steps: parts.get(r).meal })).filter(x => x.steps.length) };
+  const fillAll = (r, sts) => sts.map(t => fillSpices(t, r.id, portionsOf.get(r) || 1));
+  return { phases, total: sched.total, boxes: recipes.map(r => ({ r, steps: fillAll(r, parts.get(r).box) })), meals: recipes.map(r => ({ r, steps: fillAll(r, parts.get(r).meal) })).filter(x => x.steps.length) };
 }
 
 // ── v195 : quantités de l'étape et minuteurs ──
@@ -310,16 +313,16 @@ export function renderCook() {
   const cutAt = r => { const k = r.steps.findIndex(isLater); return k < 0 ? r.steps.length : k; };
   const kindOf = r => (r.category === 'breakfast' ? 'petit-déjeuner' : 'collation');
   const de = n => (/^[aeiouhéèêâîôûœ]/i.test(n) ? `d'${n}` : `de ${n}`);
-  const qtyLine = x => `Pour ${x.portions} ${x.portions > 1 ? 'portions' : 'portion'} : ${x.r.ingredients.map((g, i) => (x.tot[i] > 0 ? qtyWithName(g.key, x.tot[i], g.unit, g.name) : '')).filter(Boolean).join(', ')}.`;
+  const qtyLine = x => `Pour ${x.portions} ${x.portions > 1 ? 'portions' : 'portion'} : ${x.r.ingredients.map((g, i) => (x.tot[i] > 0 ? (g.key === 'epices' && spicesOf(x.r.id) ? spiceList(x.r.id, x.portions) : qtyWithName(g.key, x.tot[i], g.unit, g.name)) : '')).filter(Boolean).join(', ')}.`;
   // à préparer pendant la session : planifiés avec les plats (v297), avec les quantités totales en tête
-  const batchSteps = extras.filter(x => x.r.batch).map(x => ({ r: x.r, tot: x.tot, qty: qtyLine(x),
+  const batchSteps = extras.filter(x => x.r.batch).map(x => ({ r: x.r, tot: x.tot, portions: x.portions, qty: qtyLine(x),
     steps: x.r.steps.slice(0, cutAt(x.r)).map(st => st.replace(/^Pendant la session de cuisine, /, '').replace(/^./, c => c.toUpperCase())) }));
   const plan2 = recipes.length || batchSteps.length ? buildPhases(list, batchSteps) : { phases: [], boxes: [], meals: [], total: 0 };
   const phases = plan2.phases;
   // à faire au moment : ce qu'il reste à faire, sans cuisson d'avance
   const later = extras.map(x => {
     const steps = x.r.batch ? x.r.steps.slice(cutAt(x.r)) : x.r.steps;
-    return steps.length ? { x, text: steps.join(' ').replace(/^Le matin, /, '').replace(/^Au moment de manger : /, '') } : null;
+    return steps.length ? { x, text: fillSpices(steps.join(' '), x.r.id, x.portions).replace(/^Le matin, /, '').replace(/^Au moment de manger : /, '') } : null;
   }).filter(Boolean);
   const fries = [...new Set(S.recipes.map(x => x.side).filter(Boolean))].map(getById).filter(Boolean);
   // durée simulée de la session (découpes, cuissons en parallèle), plus la mise en boîtes
@@ -441,10 +444,10 @@ export function renderCook() {
           </button>
           ${(() => {
             const later = mealOnlyKeys(x.r);
-            const row = (g, i) => `<div class="ck-ing"><span>${g.name}${g.key === 'epices' && spicesOf(x.r.id) ? `<small>${spicesOf(x.r.id)}</small>` : ''}</span><span>${qtyShort(g.key, x.tot[i], g.unit)}</span></div>`;
+            const row = (g, i) => g.key === 'epices' && spicesOf(x.r.id) ? `<div class="ck-ing ck-ing-sp"><span>${g.name}<small>${spiceList(x.r.id, x.portions)}</small></span><span></span></div>` : `<div class="ck-ing"><span>${g.name}</span><span>${qtyShort(g.key, x.tot[i], g.unit)}</span></div>`;
             const now = x.r.ingredients.map((g, i) => x.tot[i] > 0 && !later.has(g.key) ? row(g, i) : '').join('');
             const kept = x.r.ingredients.map((g, i) => x.tot[i] > 0 && later.has(g.key) ? row(g, i) : '').join('');
-            const mealTxt = x.r.steps.filter(st => /^Au moment de manger : /.test(st)).map(st => cap(st.replace(/^Au moment de manger : /, ''))).join(' ');
+            const mealTxt = x.r.steps.filter(st => /^Au moment de manger : /.test(st)).map(st => cap(fillSpices(st, x.r.id, 1).replace(/^Au moment de manger : /, ''))).join(' ');
             return `<div class="ck-card-ings">${now}${kept ? `<div class="ck-later"><div class="ck-later-h">À garder pour le jour du repas</div>${kept}<p>${mealTxt}</p></div>` : ''}</div>`;
           })()}
           <button class="ck-menu-link" data-rid="${x.r.id}">Voir la recette</button>

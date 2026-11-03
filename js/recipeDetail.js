@@ -1,5 +1,5 @@
 import { artFor } from '../data/photos.js';
-import { spicesOf } from '../data/ingredients.js';
+import { spicesOf, spiceList, fillSpices } from '../data/ingredients.js';
 import { proteinFamily, getExtras, setExtras, getById } from '../data/recipes.js';
 import { rebalanceAfterRecipeChange, portionFor, getActivePlan, getWishes, addWish, removeWish, freeChoices, replaceDish, sessionDate } from './weekgen.js';
 import { getTodayDate } from '../data/log.js';
@@ -147,8 +147,8 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
           <div class="rd-ings">
             ${recipe.ingredients.map((ing, k) => mine && !(qs[k] > 0) ? '' : `
               <div class="rd-ing ${ing.extra ? 'extra' : ''}">
-                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spicesOf(recipe.id)}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
-                <span class="rd-ing-qty">${qtyShort(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
+                <span class="rd-ing-name">${ing.name}${ing.key === 'epices' && spicesOf(recipe.id) ? `<small class="rd-spices">${spiceList(recipe.id, 1)}</small>` : ''}${ing.extra ? '<em>ajouté</em>' : ''}</span>
+                <span class="rd-ing-qty">${ing.key === 'epices' && spicesOf(recipe.id) ? '' : qtyShort(ing.key, mine ? qs[k] : ing.qty, ing.unit, { cooked: true })}</span>
                 ${ing.extra ? `<button class="rd-rm" data-rm="${ing.key}" aria-label="Retirer ${ing.name}">×</button>` : ''}
               </div>`).join('')}
           </div>
@@ -158,7 +158,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null) {
         <section class="rd-sec">
           <div class="rd-sec-hd"><h2>Préparation</h2></div>
           <ol class="rd-steps">
-            ${recipe.steps.map((st, i) => `<li><span class="rd-num">${i + 1}</span><p>${st}</p></li>`).join('')}
+            ${recipe.steps.map((st, i) => `<li><span class="rd-num">${i + 1}</span><p>${fillSpices(st, recipe.id, 1)}</p></li>`).join('')}
           </ol>
         </section>
 

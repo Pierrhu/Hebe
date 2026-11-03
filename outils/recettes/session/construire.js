@@ -9,6 +9,12 @@ fs.readdirSync(dir).filter(f => /^lot_\d+\.json$/.test(f)).sort().forEach(f => {
     all[o.id] = { cuts: o.cuts, steps: o.steps.map(s => { const x = { text: s.text, kind: s.kind, app: s.app ?? null, min: s.min, wait: s.wait }; if (s.after) x.after = s.after; return x; }) };
   });
 });
+// v309 : étapes de session réécrites avec les repères d'épices [[épice]] (outils/recettes/epices/epices.json)
+const EP = path.join(dir, '..', 'epices', 'epices.json');
+if (fs.existsSync(EP)) JSON.parse(fs.readFileSync(EP, 'utf8')).forEach(o => {
+  if (!all[o.id] || !o.session) return;
+  Object.entries(o.session).forEach(([i, t]) => { if (all[o.id].steps[+i]) all[o.id].steps[+i].text = t; });
+});
 const out = `// sessionSteps.js — GÉNÉRÉ par outils/recettes/session/construire.js, ne pas modifier à la main.\n` +
   `// Pour chaque recette cuisinée pendant la session : ses découpes (cuts : ingrédient, verbe, forme) et ses étapes\n` +
   `// (steps : texte, prep/cook, appareil, minutes de gestes, minutes où ça cuit tout seul, dépendances).\n` +
