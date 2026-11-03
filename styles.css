@@ -2058,14 +2058,10 @@ button.wl-ch:disabled { cursor: default; }
 .rd-scale { margin: 0 0 14px; }
 
 /* ── v311 : fiche recette à imprimer (A4) ── */
-#print-root { display: none; }
+/* v312 : dessinée hors écran puis convertie en PDF (js/printSheet.js) */
+#print-root { position: fixed; left: -10000px; top: 0; z-index: -1; pointer-events: none; }
 .rd-print { display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 2px 8px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line-2); background: var(--surface); color: var(--text); font: 600 14px var(--sans); }
 .rd-print svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-@media print {
-  @page { size: A4; margin: 0; }
-  html, body { background: #fff !important; }
-  body.printing > *:not(#print-root) { display: none !important; }
-  body.printing #print-root { display: block; }
   .ps { --c: #7C9885; --t: #E8F0E9; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #2A3A30; font-family: 'Outfit', -apple-system, sans-serif; }
   .ps-poulet { --c: #D9A04F; --t: #FBF0DD; } .ps-boeuf { --c: #D0825F; --t: #FAE9E0; } .ps-saumon, .ps-crevettes { --c: #5F97B6; --t: #E3EFF5; }
   .ps-tofu { --c: #7FA663; --t: #EAF3E2; } .ps-sweet { --c: #BF7D9C; --t: #F7E7EF; }
@@ -2077,30 +2073,33 @@ button.wl-ch:disabled { cursor: default; }
   .ps-emoji { font-size: 34mm; }
   .ps-brand { font-family: 'Fraunces', Georgia, serif; font-size: 15pt; letter-spacing: -0.01em; color: #2A3A30; margin-bottom: 4mm; }
   .ps-brand span { color: #7C9885; font-style: italic; }
-  .ps-kicker { display: inline-block; font-size: 8pt; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--c); background: var(--t); padding: 1.2mm 3mm; border-radius: 99px; margin-bottom: 3mm; }
+  .ps-kicker { display: inline-block; line-height: 1.2; font-size: 8pt; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--c); background: var(--t); padding: .6mm 3mm 1.8mm; border-radius: 99px; margin-bottom: 3mm; }
   .ps h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 23pt; line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 5mm; text-wrap: balance; }
   .ps-facts { display: flex; gap: 6mm; margin: 0 0 3.5mm; }
   .ps-facts div { min-width: 0; }
   .ps-facts dt { font-size: 7.5pt; text-transform: uppercase; letter-spacing: .1em; color: #5A6B60; }
   .ps-facts dd { margin: .6mm 0 0; font-family: 'Fraunces', Georgia, serif; font-size: 13pt; font-weight: 500; }
   .ps-macros { display: flex; gap: 2mm; flex-wrap: wrap; font-size: 8.5pt; color: #5A6B60; }
-  .ps-macros span { background: #F4F6F1; border-radius: 99px; padding: 1.2mm 3mm; }
+  .ps-macros span { background: #F4F6F1; border-radius: 99px; padding: .7mm 3mm 1.9mm; line-height: 1.2; }
   .ps-macros b { color: #2A3A30; font-weight: 600; }
   .ps-body { display: grid; grid-template-columns: 64mm 1fr; gap: 9mm; margin-top: 9mm; flex: 1; }
   .ps h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 14pt; margin: 0 0 1mm; }
   .ps-sub { font-size: 8pt; color: #5A6B60; margin: 0 0 3mm; }
   .ps-ings { background: var(--t); border-radius: 5mm; padding: 6mm 5mm 4mm; align-self: start; }
   .ps-ings > ul { list-style: none; margin: 0; padding: 0; }
-  .ps-ing { display: flex; align-items: baseline; gap: 2mm; font-size: 9.5pt; padding: 1.5mm 0; break-inside: avoid; }
-  .ps-box { flex: none; width: 3mm; height: 3mm; border: .35mm solid var(--c); border-radius: 1mm; transform: translateY(.3mm); }
+  .ps-ing { display: flex; align-items: flex-start; gap: 2mm; line-height: 1.35; font-size: 9.5pt; padding: 1.5mm 0; break-inside: avoid; }
+  .ps-box { flex: none; width: 3mm; height: 3mm; margin-top: 1.9mm; box-sizing: border-box; border: .35mm solid var(--c); border-radius: 1mm; }
   .ps-n { flex: 0 1 auto; min-width: 22mm; }
-  .ps-dots { flex: 1; border-bottom: .3mm dotted #B9C3B4; transform: translateY(-.8mm); min-width: 3mm; }
+  .ps-dots { flex: 1; align-self: flex-end; border-bottom: .3mm dotted #B9C3B4; margin-bottom: 1.2mm; min-width: 3mm; }
   .ps-q { flex: none; font-weight: 600; font-variant-numeric: tabular-nums; }
   .ps-sp { flex-wrap: wrap; }
   .ps-sp ul { flex-basis: 100%; list-style: none; margin: 1mm 0 0 5mm; padding: 0; font-size: 8.5pt; color: #42524A; line-height: 1.5; }
-  .ps-steps ol { list-style: none; margin: 3mm 0 0; padding: 0; counter-reset: st; }
-  .ps-steps li { display: grid; grid-template-columns: 7mm 1fr; gap: 3mm; margin-bottom: 3.2mm; break-inside: avoid; counter-increment: st; }
-  .ps-num::before { content: counter(st); display: grid; place-items: center; width: 6.5mm; height: 6.5mm; border-radius: 50%; background: var(--c); color: #fff; font: 600 9pt 'Outfit', sans-serif; }
+  .ps-steps ol { list-style: none; margin: 3mm 0 0; padding: 0; }
+  .ps-steps li { display: grid; grid-template-columns: 7mm 1fr; gap: 3mm; margin-bottom: 3.2mm; break-inside: avoid; }
+  /* numéros en SVG : html2canvas les dessine comme une image, sans décalage du texte */
+  .ps-num { display: block; width: 6.5mm; height: 6.5mm; margin-top: .4mm; }
+  .ps-num circle { fill: var(--c); }
+  .ps-num text { fill: #fff; font: 700 10.5px Arial, Helvetica, sans-serif; }
   .ps-steps p { margin: .6mm 0 0; font-size: 9.5pt; line-height: 1.45; }
   .ps-after { display: grid; grid-template-columns: repeat(auto-fit, minmax(45mm, 1fr)); gap: 4mm; margin-top: 4mm; align-items: start; }
   .ps-card { border: .35mm solid #E2E7DC; border-radius: 4mm; padding: 3.5mm 4mm; break-inside: avoid; }
@@ -2118,4 +2117,3 @@ button.wl-ch:disabled { cursor: default; }
   .ps-short h1 { font-size: 27pt; }
   .ps-short .ps-steps p { font-size: 11pt; line-height: 1.5; } .ps-short .ps-ing { font-size: 10.5pt; padding: 2mm 0; }
   .ps-short .ps-steps li { margin-bottom: 4.5mm; } .ps-short .ps-card p { font-size: 9.5pt; } .ps-short .ps-body { margin-top: 11mm; }
-}

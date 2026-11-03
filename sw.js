@@ -1,4 +1,4 @@
-const CACHE = 'hebe-v311';
+const CACHE = 'hebe-v312';
 const ASSETS = [
   './',
   './index.html',

@@ -139,7 +139,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, we
         </div>
         <h1 class="rd-title">${recipe.name}</h1>
         <div class="rate-hint">${rateHint(getRating(recipe.id))}</div>
-        ${wantBtn()}<button class="rd-print" data-print>${ICON_PRINT}Fiche à imprimer</button>
+        ${wantBtn()}<button class="rd-print" data-print>${ICON_PRINT}Télécharger la fiche</button>
 
         <div class="rd-nutri">
           <div class="rd-kcal"><b>${m.kcal}</b><span>${weekMode ? 'kcal / portion' : 'kcal'}</span></div>
@@ -181,10 +181,15 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, we
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
     // v311 : fiche à imprimer ou à enregistrer en PDF, avec les quantités affichées
-    view.querySelector('[data-print]')?.addEventListener('click', () => printRecipe(recipe, {
-      W, m, cuisine, mine,
-      qty: k => (weekMode ? week.tot[k] : mine ? qs[k] : recipe.ingredients[k].qty),
-    }));
+    view.querySelector('[data-print]')?.addEventListener('click', async e => {
+      const b = e.currentTarget; if (b.disabled) return;
+      const label = b.innerHTML; b.disabled = true; b.innerHTML = `${ICON_PRINT}PDF en préparation…`;
+      try {
+        await printRecipe(recipe, { W, m, cuisine, mine, qty: k => (weekMode ? week.tot[k] : mine ? qs[k] : recipe.ingredients[k].qty) });
+      } catch (err) {
+        toast("Le PDF n'a pas pu être créé. Vérifie ta connexion et réessaie.", 'warn');
+      } finally { b.disabled = false; b.innerHTML = label; }
+    });
     view.querySelectorAll('[data-scale]').forEach(b => b.addEventListener('click', () => { weekMode = b.dataset.scale === 'week'; render(); }));
     view.querySelector('[data-want]')?.addEventListener('click', openWant);
     view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {

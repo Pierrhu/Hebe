@@ -1,5 +1,5 @@
 // DIET — bundled app (généré par build.js)
-// 2026-11-03T08:55:28.888Z
+// 2026-11-03T09:05:05.790Z
 
 
 // ──────────────────────────────────────────────
@@ -6378,15 +6378,18 @@ function renderNav() {
 // printSheet.js — v311 : fiche recette à imprimer ou à enregistrer en PDF (Pierre : « une fiche à imprimer ultra
 // sympa, design, dans le style de l'app, que l'on peut télécharger »). Une page A4 : photo, titre, repères
 // (portions, temps, calories), ingrédients à cocher, étapes numérotées, mise en boîtes et réchauffage, astuce.
-// La fiche suit les quantités affichées (1 portion ou toute la semaine). Impression du navigateur : « Enregistrer
-// en PDF » sur ordinateur, « Imprimer » puis partager en PDF sur téléphone.
+// La fiche suit les quantités affichées (1 portion ou toute la semaine).
+// v312 : le bouton télécharge directement le PDF (Pierre : « faut juste que ça télécharge le pdf ») : la page est
+// dessinée hors écran, photographiée (html2canvas) et mise dans un PDF A4 (jsPDF), deux bibliothèques chargées
+// seulement au premier clic (js/vendor/). Dans l'appli installée sur iPhone, où un téléchargement ne s'enregistre
+// pas, le PDF passe par le menu de partage (« Enregistrer dans Fichiers »).
 
 // espaces insécables des guillemets et de la ponctuation double, comme en typographie française
 const psEsc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/« /g, '«\u00a0').replace(/ (»|:|;|\?|!)/g, '\u00a0$1');
 const LATER = /^(Mise en boîtes|Au moment de manger) : /;
 
 // opt : { W: nombre de portions, qty(k) : quantité de l'ingrédient k, m : macros par portion, cuisine, mine }
-function printRecipe(recipe, opt) {
+async function printRecipe(recipe, opt) {
   const { W = 1, qty, m, cuisine = '', mine = false } = opt;
   const fam = recipe.category === 'sweet' || recipe.category === 'breakfast' ? 'sweet' : proteinFamily(recipe);
   const photo = photoUrl(recipe.photo || recipe.id);
@@ -6439,7 +6442,7 @@ function printRecipe(recipe, opt) {
         </section>
         <section class="ps-steps">
           <h2>Préparation</h2>
-          <ol>${steps.map(st => `<li><span class="ps-num"></span><p>${txt(st)}</p></li>`).join('')}</ol>
+          <ol>${steps.map((st, i) => `<li><svg class="ps-num" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><text x="10" y="10.5" text-anchor="middle" dominant-baseline="middle">${i + 1}</text></svg><p>${txt(st)}</p></li>`).join('')}</ol>
           ${box.length || eat.length ? `<div class="ps-after">
             ${box.length ? `<div class="ps-card"><h3>Mise en boîtes</h3><p>${box.map(s => txt(cap(s))).join(' ')}</p></div>` : ''}
             ${eat.length ? `<div class="ps-card"><h3>Au moment de manger</h3><p>${eat.map(s => txt(cap(s))).join(' ')}</p></div>` : ''}
@@ -6452,14 +6455,43 @@ function printRecipe(recipe, opt) {
 
   document.getElementById('print-root')?.remove();
   document.body.appendChild(root);
-  document.body.classList.add('printing');
-  const title = document.title;
-  document.title = `Hébé · ${recipe.short || recipe.name}`; // nom proposé pour le PDF
-  const done = () => { document.body.classList.remove('printing'); root.remove(); document.title = title; window.removeEventListener('afterprint', done); };
-  window.addEventListener('afterprint', done);
-  const img = root.querySelector('img');
-  const go = () => setTimeout(() => window.print(), 60);
-  if (img && !img.complete) { img.addEventListener('load', go, { once: true }); img.addEventListener('error', go, { once: true }); } else go();
+  try {
+    await Promise.all([loadScript('js/vendor/html2canvas-1.4.1.min.js'), loadScript('js/vendor/jspdf-2.5.1.min.js')]);
+    await document.fonts?.ready;
+    const img = root.querySelector('img');
+    if (img && !img.complete) await new Promise(res => { img.onload = res; img.onerror = res; });
+    const page = root.querySelector('.ps-page');
+    const canvas = await window.html2canvas(page, { scale: 2.5, backgroundColor: '#ffffff', useCORS: true, logging: false });
+    const pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', compress: true });
+    // une page A4 : la fiche y tient en largeur ; une fiche plus haute est réduite pour tenir sur la page
+    let w = 210, h = canvas.height * 210 / canvas.width;
+    if (h > 297) { w = 297 * canvas.width / canvas.height; h = 297; }
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', (210 - w) / 2, 0, w, h);
+    const name = `Hébé - ${(recipe.short || recipe.name).replace(/[\\/:*?"<>|]/g, '')}${W > 1 ? ` - ${W} portions` : ''}.pdf`;
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const standalone = window.navigator.standalone || window.matchMedia?.('(display-mode: standalone)').matches;
+    const file = new File([pdf.output('blob')], name, { type: 'application/pdf' });
+    if (ios && standalone && navigator.canShare?.({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: name }); } catch (e) { if (e?.name !== 'AbortError') throw e; }
+    } else {
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    }
+  } finally {
+    root.remove();
+  }
+}
+
+// Charge une bibliothèque une seule fois
+const LOADED = {};
+function loadScript(src) {
+  return LOADED[src] ||= new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = () => { delete LOADED[src]; rej(new Error('script ' + src)); };
+    document.head.appendChild(s);
+  });
 }
 
 
@@ -6591,7 +6623,7 @@ function renderRecipeDetail(recipe, fromView = 'recipes', item = null, week = nu
         </div>
         <h1 class="rd-title">${recipe.name}</h1>
         <div class="rate-hint">${rateHint(getRating(recipe.id))}</div>
-        ${wantBtn()}<button class="rd-print" data-print>${ICON_PRINT}Fiche à imprimer</button>
+        ${wantBtn()}<button class="rd-print" data-print>${ICON_PRINT}Télécharger la fiche</button>
 
         <div class="rd-nutri">
           <div class="rd-kcal"><b>${m.kcal}</b><span>${weekMode ? 'kcal / portion' : 'kcal'}</span></div>
@@ -6633,10 +6665,15 @@ function renderRecipeDetail(recipe, fromView = 'recipes', item = null, week = nu
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
     // v311 : fiche à imprimer ou à enregistrer en PDF, avec les quantités affichées
-    view.querySelector('[data-print]')?.addEventListener('click', () => printRecipe(recipe, {
-      W, m, cuisine, mine,
-      qty: k => (weekMode ? week.tot[k] : mine ? qs[k] : recipe.ingredients[k].qty),
-    }));
+    view.querySelector('[data-print]')?.addEventListener('click', async e => {
+      const b = e.currentTarget; if (b.disabled) return;
+      const label = b.innerHTML; b.disabled = true; b.innerHTML = `${ICON_PRINT}PDF en préparation…`;
+      try {
+        await printRecipe(recipe, { W, m, cuisine, mine, qty: k => (weekMode ? week.tot[k] : mine ? qs[k] : recipe.ingredients[k].qty) });
+      } catch (err) {
+        toast("Le PDF n'a pas pu être créé. Vérifie ta connexion et réessaie.", 'warn');
+      } finally { b.disabled = false; b.innerHTML = label; }
+    });
     view.querySelectorAll('[data-scale]').forEach(b => b.addEventListener('click', () => { weekMode = b.dataset.scale === 'week'; render(); }));
     view.querySelector('[data-want]')?.addEventListener('click', openWant);
     view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {
