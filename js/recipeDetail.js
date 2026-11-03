@@ -16,6 +16,7 @@ import { getStaples, setDishStaple } from '../data/household.js';
 import { stapleKind, isWhole } from './staples.js';
 import { applyDiet } from './diet.js';
 import { applyEquipment, getEquipment } from './adapt.js';
+import { printRecipe } from './printSheet.js';
 
 // Choix complet / classique sur la fiche, en mode « plat par plat » (Mon profil → Riz et pâtes)
 function stapleBlock(recipe) {
@@ -52,6 +53,7 @@ const CUISINES = {
   'méditerranéen': 'Méditerranéen', 'scandinave': 'Scandinave', 'hongrois': 'Hongrois', 'russe': 'Russe', 'cubain': 'Cubain', 'sénégalais': 'Sénégalais', 'cajun': 'Cajun', 'français': 'Français', 'espagnol': 'Espagnol', 'ukrainien': 'Ukrainien', 'roumain': 'Roumain', 'géorgien': 'Géorgien', 'canadien': 'Canadien', 'belge': 'Belge',
 };
 const ICON_BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
+const ICON_PRINT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14h10v6.5H7z"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
 
 // item (facultatif) : la portion prévue dans la semaine → quantités et calories de cette portion-là (v195)
@@ -137,7 +139,7 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, we
         </div>
         <h1 class="rd-title">${recipe.name}</h1>
         <div class="rate-hint">${rateHint(getRating(recipe.id))}</div>
-        ${wantBtn()}
+        ${wantBtn()}<button class="rd-print" data-print>${ICON_PRINT}Fiche à imprimer</button>
 
         <div class="rd-nutri">
           <div class="rd-kcal"><b>${m.kcal}</b><span>${weekMode ? 'kcal / portion' : 'kcal'}</span></div>
@@ -178,6 +180,11 @@ export function renderRecipeDetail(recipe, fromView = 'recipes', item = null, we
     `;
 
     view.querySelector('.rd-back').addEventListener('click', () => window._nav?.(fromView));
+    // v311 : fiche à imprimer ou à enregistrer en PDF, avec les quantités affichées
+    view.querySelector('[data-print]')?.addEventListener('click', () => printRecipe(recipe, {
+      W, m, cuisine, mine,
+      qty: k => (weekMode ? week.tot[k] : mine ? qs[k] : recipe.ingredients[k].qty),
+    }));
     view.querySelectorAll('[data-scale]').forEach(b => b.addEventListener('click', () => { weekMode = b.dataset.scale === 'week'; render(); }));
     view.querySelector('[data-want]')?.addEventListener('click', openWant);
     view.querySelectorAll('[data-staple]').forEach(b => b.addEventListener('click', () => {
